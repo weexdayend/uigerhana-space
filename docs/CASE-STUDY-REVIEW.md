@@ -25,7 +25,7 @@ The following are generalized candidate workstreams based on the supplied résum
 | Transaction intelligence | Extraction of unstructured business/financial data into canonical structured data | Data examples must be sanitized; architecture and role confirmation |
 | Public-service digital platform | Backend architecture and integration contribution | Organization/project disclosure approval and exact contribution |
 | Infrastructure field reporting | Field reports for physical network infrastructure issues | Product status, user workflow, screenshots without sensitive infrastructure details |
-| Network monitoring | SNMP monitoring for Metro and OLT devices, live dashboards, uptime/downtime alerts | Security review, topology sanitization, project attribution approval |
+| Network monitoring | SNMP-based network monitoring, live dashboards, and uptime/downtime alerts | Security review, topology sanitization, project attribution approval |
 | Enterprise security and DLP | Secure internal systems and policy-driven DLP solutions | Security review and explicit approval; no sensitive implementation details |
 | Hydropower reporting workflows | Automated extraction and reporting for hydropower operations | Project/client disclosure approval, role and data-scope review |
 | Distribution monitoring | Monitoring dashboard and visualization for distribution logistics | Client disclosure, public data permission, screenshots and contribution review |
