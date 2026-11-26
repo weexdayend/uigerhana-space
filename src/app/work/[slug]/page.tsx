@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CaseStudyArchitecture } from "@/components/CaseStudyArchitecture";
 import { CaseStudyContributionBreakdown } from "@/components/CaseStudyContributionBreakdown";
+import { CaseStudyEvidenceMap } from "@/components/CaseStudyEvidenceMap";
 import { CaseStudyTechnologyMap } from "@/components/CaseStudyTechnologyMap";
 import { CaseStudyVisualGallery } from "@/components/CaseStudyVisualGallery";
 import { getPublicCaseStudy, PUBLIC_CASE_STUDIES } from "@/data/case-studies";
@@ -118,7 +119,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
 
         <CaseStudyContributionBreakdown contributions={study.contributions} />
         <CaseStudyArchitecture diagram={study.architectureDiagram} />
-        <CaseStudyVisualGallery visuals={study.visualStudies} />
+        {study.evidenceMap && <CaseStudyEvidenceMap evidence={study.evidenceMap} />}
+        {study.visualStudies.length > 0 && <CaseStudyVisualGallery visuals={study.visualStudies} />
 
         <div className="mt-2">
           <ContentSection {...study.challenge} />

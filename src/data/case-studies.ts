@@ -2,6 +2,18 @@ import type { DitherArtKind } from "@/lib/dither";
 
 export type CaseStudyPublicationStatus = "draft" | "approved";
 export type CaseStudyProjectStatus = "in-progress" | "completed" | "maintained";
+export type CaseStudyEvidenceStatus =
+  | "source-backed"
+  | "target-only"
+  | "acceptance-open"
+  | "publication-pending";
+
+export interface CaseStudyEvidenceItem {
+  id: string;
+  claim: string;
+  status: CaseStudyEvidenceStatus;
+  explanation: string;
+}
 
 export interface CaseStudySection {
   heading: string;
@@ -53,6 +65,7 @@ export interface CaseStudy {
     description: string;
     stages: CaseStudyArchitectureStage[];
   };
+  evidenceMap?: CaseStudyEvidenceItem[];
   visualStudies: CaseStudyVisualStudy[];
   technologyGroups: CaseStudyTechnologyGroup[];
 }
@@ -226,7 +239,192 @@ export const CASE_STUDIES: CaseStudy[] = [
         technologies: ["TypeScript", "ESLint", "GitHub Actions"],
       },
     ],
+  },,
+  {
+    slug: "professional-services-automation-platform",
+    title: "Designing a connected operating platform for IT services",
+    eyebrow: "Independent product · In progress · Draft",
+    summary:
+      "An in-progress professional services automation platform designed to connect commercial work, project delivery, finance, and ongoing service operations in one coherent operating model.",
+    publicationStatus: "draft",
+    projectStatus: "in-progress",
+    context: "Independent product initiative",
+    role:
+      "Product direction and platform engineering. Specific personal contribution boundaries, team context, and public attribution still require owner review.",
+    challenge: {
+      heading: "The problem space",
+      paragraphs: [
+        "The product strategy identifies a fragmented operating model across sales and presales, technical delivery, finance, and ongoing service operations.",
+        "The intended product connects those workflows while preserving the history, approvals, evidence, and financial boundaries that each business process requires.",
+      ],
+    },
+    approach: {
+      heading: "Product and domain approach",
+      paragraphs: [
+        "Define one connected professional-services lifecycle and deliver it through incremental, production-grade vertical slices rather than treating the full product as a demo or narrow MVP.",
+        "Keep customer-facing commercial records, internal cost models, supplier commitments, delivery evidence, finance records, and service operations as distinct domains with explicit relationships.",
+      ],
+      bullets: [
+        "Model the full operating lifecycle as a product target, not as a claim that every stage has shipped.",
+        "Separate provider, customer, and supplier responsibilities and access boundaries.",
+        "Make auditability, authorization, data integrity, and operational behavior part of each vertical slice.",
+      ],
+    },
+    implementation: {
+      heading: "Platform implementation",
+      paragraphs: [
+        "The reviewed source architecture specifies a Go modular monolith, a Next.js and TypeScript web application, PostgreSQL as the authoritative store, and a contract-first API.",
+        "The current source tree contains identity, passkey, session, tenant-access, invitation, browser handoff, and authenticated application foundations. These source records establish platform-foundation evidence, not completion of the full PSA lifecycle.",
+      ],
+      bullets: [
+        "Go modular-monolith architecture.",
+        "Next.js, React, and TypeScript web application.",
+        "PostgreSQL data foundation and PgBouncer connection pooling.",
+        "OpenAPI contract with generated Go and TypeScript artifacts.",
+        "Repository-level validation, release, backup, and operating documentation.",
+      ],
+    },
+    currentState: {
+      heading: "Current state and boundaries",
+      paragraphs: [
+        "The project is in active development. The reviewed product strategy defines the complete IT-services PSA lifecycle, while the architecture and roadmap distinguish the existing platform and identity foundations from business-domain capabilities that remain future vertical slices.",
+        "The full commercial-to-service lifecycle must not be described as shipped. No client-facing outcome metrics, external customer testimonials, or approved product screenshots were present in this source review.",
+        "The source repository is private. This draft intentionally omits the product name, repository URL, deployment hosts, customer references, and operational topology until the owner clears the material for public disclosure.",
+      ],
+    },
+    contributions: [
+      {
+        area: "Product strategy",
+        description:
+          "The owner-approved product strategy defines the target customer, operating model, complete PSA lifecycle, and an incremental production-grade delivery approach.",
+      },
+      {
+        area: "Domain architecture",
+        description:
+          "Architecture documentation establishes boundaries between identity, tenant access, commercial work, project delivery, procurement, finance, acceptance, and ongoing service operations. These are target module boundaries, not proof that every module is implemented.",
+      },
+      {
+        area: "Platform architecture",
+        description:
+          "The reviewed architecture specifies a Go modular monolith, PostgreSQL source of truth, contract-first API, and Next.js web application rather than defaulting to independently deployed microservices.",
+      },
+      {
+        area: "Identity and tenant foundations",
+        description:
+          "The current source tree contains account, passkey, session, tenant membership, invitation, browser handoff, and authenticated web application foundations. Exact personal implementation and team contribution boundaries remain to be confirmed.",
+      },
+      {
+        area: "Production engineering discipline",
+        description:
+          "The repository contains explicit validation, release, backup, recovery, and operating procedures. Repository checks, runtime evidence, recovery evidence, and owner acceptance are tracked as separate claims.",
+      },
+    ],
+    architectureDiagram: {
+      title: "From product mandate to implemented foundations",
+      description:
+        "This map separates the approved product target from the current platform foundation. The final business workflow layer remains roadmap scope and is not presented as a shipped capability.",
+      stages: [
+        {
+          label: "Product model",
+          description: "Owner-approved direction",
+          items: [
+            "Commercial and presales work",
+            "Project delivery and acceptance",
+            "Finance and reconciliation",
+            "Ongoing service operations",
+          ],
+        },
+        {
+          label: "Platform foundation",
+          description: "Architecture and source evidence",
+          items: [
+            "Go modular monolith",
+            "Next.js and TypeScript web app",
+            "PostgreSQL and API contracts",
+            "Identity and tenant-access foundations",
+          ],
+        },
+        {
+          label: "Vertical delivery",
+          description: "Incremental implementation",
+          items: [
+            "Slice-specific scope and evidence",
+            "Authorization and data-integrity gates",
+            "Validation and release procedures",
+            "Business domains delivered incrementally",
+          ],
+        },
+      ],
+    },
+    evidenceMap: [
+      {
+        id: "product-direction",
+        claim: "Product mandate and target lifecycle",
+        status: "source-backed",
+        explanation:
+          "Present in the owner-approved product strategy. This confirms product direction, not delivery of every lifecycle stage.",
+      },
+      {
+        id: "platform-architecture",
+        claim: "Backend, API, data, and web architecture",
+        status: "source-backed",
+        explanation:
+          "Documented in the domain architecture and reflected by the current repository structure.",
+      },
+      {
+        id: "identity-foundation",
+        claim: "Identity and tenant-access foundations",
+        status: "source-backed",
+        explanation:
+          "Relevant backend and web application source areas are present. Production and owner acceptance remain separate evidence categories.",
+      },
+      {
+        id: "business-lifecycle",
+        claim: "Complete commercial-to-service business workflow",
+        status: "target-only",
+        explanation:
+          "Defined by strategy and roadmap. The source architecture explicitly distinguishes target business modules from current platform and identity foundations.",
+      },
+      {
+        id: "operations-acceptance",
+        claim: "Complete disaster-recovery and operational acceptance",
+        status: "acceptance-open",
+        explanation:
+          "Operational procedures and partial runtime evidence exist, but external recovery and remaining owner-acceptance gates are still open in source records.",
+      },
+      {
+        id: "public-proof",
+        claim: "Public attribution, product screenshots, and measurable outcomes",
+        status: "publication-pending",
+        explanation:
+          "The source repository is private and this review did not contain owner-approved public visuals, customer references, or attributable outcome metrics.",
+      },
+    ],
+    visualStudies: [],
+    technologyGroups: [
+      {
+        category: "Backend and API",
+        purpose: "Domain services, API behavior, and background processing",
+        technologies: ["Go", "OpenAPI 3.1"],
+      },
+      {
+        category: "Web application",
+        purpose: "Browser workflows and application experience",
+        technologies: ["Next.js", "React", "TypeScript"],
+      },
+      {
+        category: "Data platform",
+        purpose: "Transactional persistence and connection pooling",
+        technologies: ["PostgreSQL", "PgBouncer"],
+      },
+      {
+        category: "Engineering workflow",
+        purpose: "Source validation and controlled delivery",
+        technologies: ["Generated API clients", "Docker Compose", "Release runbooks"],
+      },
+    ],
   },
+
 ];
 
 export const PUBLIC_CASE_STUDIES = CASE_STUDIES.filter(
