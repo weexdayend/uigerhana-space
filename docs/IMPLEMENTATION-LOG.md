@@ -82,3 +82,13 @@ The GitHub Actions run for commit `648e3d7ce148b0b651c09a8359d54aa5034435e5` com
 - Collect real screenshots or sanitized artifacts for selected workstreams.
 - Confirm status, timeframes, individual contribution, and team context.
 - Promote projects individually only after evidence and owner approval.
+
+
+## 2026-11-26 — Public-repository disclosure sanitization
+
+- Reviewed the public repository for client, customer, product, and institution names copied from résumé-backed workstreams.
+- Replaced unapproved third-party project labels in the master brief with generalized workstream descriptions.
+- Generalized independent/private product candidate names in the public implementation brief.
+- Removed the assistant product label and specific network device family names from public experience copy.
+- Kept employer names and owner-approved public identity information separate from third-party project attribution.
+- Retained exact project/source detail only in the owner's original résumé, not in new public repository artifacts.

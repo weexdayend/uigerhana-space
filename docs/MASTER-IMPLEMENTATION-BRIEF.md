@@ -74,7 +74,7 @@ Do not fill these gaps with generic assumptions, generated statistics, inferred 
 
 The supplied résumé contains a personal phone number and email address. They are deliberately **not copied into this repository brief**. Before the website is public, the owner must select the contact details intended for public exposure. The existing \`hello@uigerhana.space\` value also requires verification; do not assume it is operational.
 
-The résumé names organizations, institutions, and projects. Before publishing detailed case studies, screenshots, architecture diagrams, or implementation specifics, check whether each item is approved for public disclosure. A résumé entry is a source for the owner's stated experience, not blanket permission to disclose confidential client information.
+The résumé names organizations, institutions, and projects. Before publishing detailed case studies, screenshots, architecture diagrams, or implementation specifics, check whether each item is approved for public disclosure. A résumé entry is a source for the owner's stated experience, not blanket permission to disclose confidential client information. Because this GitHub repository is public, review-only documentation and data files must also use generalized client/product labels until attribution is cleared.
 
 ## 3. Brand and narrative
 
@@ -169,30 +169,32 @@ The website should lead with **Product Engineer** rather than copying the résum
 **Infomedia Nusantara (Telkom Group)** — Bandung, Indonesia  
 **2017 – Present** (as stated in the résumé)
 
-Résumé-listed work:
+Résumé-listed work, generalized here because client, product, and institution attribution has not yet been cleared for public disclosure:
 
-- **BillinAI & ChatAI Platforms:** AI-driven data-reporting automation and an intelligent ChatAI assistant; continuous-learning pipeline combining NER, BERT, and LLMs to parse and extract unstructured financial and operational data.
-- **Utip — Transaction Intelligence:** transaction extraction system for transforming unstructured business and financial pipelines into structured canonical data for enterprise tracking and validation.
-- **Plasa Digital Jawa Barat:** backend architecture and integration contribution to an e-government platform supporting digital business and public-service transformation across West Java.
-- **Infrastructure Care:** field-reporting system for identifying, logging, and resolving physical network infrastructure issues, including open Optical Distribution Points (ODP) and disorganized cabling anomalies.
-- **TIF — Network Monitoring:** network-monitoring platforms using SNMP for Metro and OLT devices, with real-time dashboard visualization and uptime/downtime alerts.
-- **Enterprise Security:** secure internal systems and Data Loss Prevention (DLP) solutions using policy-driven controls.
+- AI-assisted reporting and conversational assistant: reporting automation and an intelligent assistant; a continuous-learning pipeline combining NER, BERT, and LLMs to parse unstructured financial and operational data.
+- Transaction data extraction: transforming unstructured business and financial pipelines into structured canonical data for enterprise tracking and validation.
+- Public-sector digital platform: backend architecture and integration contribution to an e-government platform supporting digital business and public-service transformation across West Java.
+- Network infrastructure field reporting: identifying, logging, and resolving physical network infrastructure issues on site.
+- Network monitoring and alerting: SNMP-based monitoring, real-time dashboard visualization, and uptime/downtime alerts.
+- Internal security and DLP: secure internal systems and Data Loss Prevention solutions using policy-driven controls.
 
 #### Co-Founder & Lead Software Engineer
 **Saptakarya** — Bandung, Indonesia  
 **2021 – Present** (as stated in the résumé)
 
-Résumé-listed work:
+Résumé-listed work, with external client and product labels generalized pending disclosure review:
 
-- **PLN — Hydropower Data Workflows:** automated data-extraction pipelines and reporting workflows for hydropower plants (PLTA).
-- **Pupuk Indonesia — Distribution Monitoring:** monitoring dashboard and data-visualization ecosystem for fertilizer-distribution logistics across West Java.
-- **Bandung City Government — Waste Management:** software architecture and end-to-end delivery of a digital waste-management application for municipal logistics and operational processes.
-- **Sakabite — F&B POS Platform:** core internal system for a POS and management platform for the Indonesian market, including technical foundation and scalability.
-- **GeoID — Retail Distribution Tracking:** geographic identification and mapping platform for retail-goods distributors across Tasikmalaya and Garut.
-- **Enterprise Business Solutions:** HRM, CRM, and automated accounting-journal platforms for business operations and financial reporting.
-- **Chronodex — Data Analytics Middleware:** data-analytics pipeline and integration middleware for extracting insights from existing POS, ERP, and CRM systems.
-- **Microservice-Based ERP Architecture:** modular ERP design with business domains isolated into standalone services and distinct databases, plus migration files and team layouts.
-- **Frictiona — AI UI/UX Auditing:** automated AI UI/UX auditing framework on Bun, orchestrating 14 parallel agents for layout analysis and heuristic reasoning.
+- Hydropower data workflows: automated data-extraction pipelines and reporting workflows for hydropower plants.
+- Distribution logistics monitoring: monitoring dashboard and data-visualization ecosystem for fertilizer-distribution logistics across West Java.
+- Municipal waste-management application: software architecture and end-to-end delivery for municipal logistics and operational processes.
+- F&B point-of-sale platform: core internal POS and management system, including technical foundation and scalability.
+- Retail distributor mapping: geographic identification and mapping for retail-goods distributors in two areas of West Java.
+- Business operations platforms: HRM, CRM, and automated accounting-journal systems for business operations and financial reporting.
+- Business-system analytics middleware: integration pipeline for extracting insights from existing POS, ERP, and CRM systems.
+- Modular ERP architecture: business domains isolated into standalone services and distinct databases, with migration files and team layouts.
+- AI-assisted UI/UX auditing: automated framework on Bun, orchestrating 14 parallel agents for layout analysis and heuristic reasoning.
+
+Do not restore client, institution, or product names from the source résumé into this public repository until the owner explicitly approves each attribution.
 
 ### 5.3 Technical skills from the résumé
 
@@ -242,40 +244,40 @@ The portfolio is the primary evidence layer of the site. A project card must lea
 
 ### 6.1 Project inventory from the résumé
 
-Candidate projects should first be grouped by the professional context in which the résumé lists them:
+The résumé describes 15 workstreams across the two roles above. The public repository intentionally stores only generalized descriptors until disclosure is approved:
 
-**Infomedia Nusantara**
-- BillinAI & ChatAI
-- Utip
-- Plasa Digital Jawa Barat
-- Infrastructure Care
-- TIF Network Monitoring
-- Enterprise Security / DLP
+**Enterprise engineering role**
+- AI-assisted reporting and conversational assistant.
+- Transaction data extraction and canonicalization.
+- Public-sector platform integration.
+- Network infrastructure field reporting.
+- Network monitoring and alerting.
+- Internal security and DLP.
 
-**Saptakarya**
-- PLN Hydropower Data Workflows
-- Pupuk Indonesia Distribution Monitoring
-- Bandung City Government Waste Management
-- Sakabite F&B POS
-- GeoID Retail Distribution Tracking
-- HRM / CRM / Accounting Journal
-- Chronodex
-- Microservice-Based ERP Architecture
-- Frictiona
+**Co-founder / lead engineering role**
+- Hydropower data extraction and reporting.
+- Distribution logistics monitoring.
+- Municipal waste-management application.
+- F&B point-of-sale platform.
+- Retail distributor mapping.
+- HRM, CRM, and accounting platforms.
+- Business-system analytics middleware.
+- Modular ERP architecture.
+- AI-assisted UI/UX auditing.
 
-These names and summaries are sourced from the résumé. Before publication, confirm public disclosure permission, project timeframes, exact role, team context, links, visuals, and technical details.
+The detailed, machine-readable source-derived register is maintained in `src/data/project-evidence.ts` and summarized in `docs/PROJECT-EVIDENCE-REGISTER.md`. Those records are review-only and are not public case studies. The source résumé remains the factual basis; no client/product labels, timeframes, project status, screenshots, or outcomes should be inferred.
 
 ### 6.2 Additional project candidates from existing product context
 
-The following have appeared in prior project discussions and may be evaluated as independent product or engineering stories. They are **not automatically résumé entries** and must not be presented as client engagements or launched products without owner confirmation:
+The following independent product workstreams have appeared in prior project discussions and may be evaluated separately from résumé-listed employment projects. Their public names, current status, ownership, and disclosure are not established by this brief:
 
-- FlowlessHub — IT Services PSA platform.
-- Petshop ERP / POS — inventory, FEFO, and moving-weighted-average workflows.
-- Pakar Platform — product/platform engineering and administrative workflows.
-- Agentic Billing AI Platform — billing automation and AI workflows.
+- An IT services PSA platform.
+- A pet-retail ERP/POS workflow covering expiry-sensitive inventory and valuation.
+- A creator platform with public discovery and administrative workspaces.
+- An AI-assisted billing workflow/platform.
 - UI Gerhana itself — the personal site and its custom visual system.
 
-For each, confirm status (concept, active development, deployed, or retired), ownership, public URL, and what evidence can be shown.
+Do not infer that any of these are publicly launched, client engagements, or approved portfolio stories. Confirm ownership, status, public naming, URL, and which implementation evidence may be shown before adding a case study.
 
 ### 6.3 Case-study content contract
 

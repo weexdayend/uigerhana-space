@@ -48,6 +48,7 @@ Professional facts are maintained in typed modules under `src/data`:
 - `skills.ts` — skills, certification, and publication profile handles
 - `projects.ts` — generalized work domains for the public homepage
 - `case-studies.ts` — evidence-led case studies with an explicit publication approval gate
+- `project-evidence.ts` — résumé-derived, generalized review records; not imported by public routes
 - `approach.ts` — engineering principles
 - `site.ts` — site-level identity and location metadata
 
@@ -59,7 +60,7 @@ Keep the homepage, experience section, and résumé aligned to these shared sour
 
 - Public display name: **Irvan Gerhana**.
 - Professional positioning: **Product Engineer**.
-- Named project case studies require review before detailed public disclosure.
+- Named client, product, and institution attributions require explicit disclosure approval; the source-derived project evidence register is generalized and excluded from public rendering.
 - Personal phone and email details are not published by default.
 - Use verified, individual URLs for repositories, articles, and social profiles.
 - Distinguish production work, prototypes, experiments, and work in progress.

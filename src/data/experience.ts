@@ -35,11 +35,11 @@ export const EXPERIENCE: ExperienceRole[] = [
     summary:
       "Worked across enterprise information systems, cybersecurity, network monitoring, data operations, and intelligent automation.",
     highlights: [
-      "Engineered AI-assisted data-reporting automation and an intelligent ChatAI assistant using NER, BERT, and LLM integrations.",
+      "Engineered AI-assisted data-reporting automation and an intelligent assistant using NER, BERT, and LLM integrations.",
       "Developed transaction-intelligence workflows that transform unstructured business and financial data into structured canonical data.",
       "Contributed to backend architecture and integrations for a public-sector digital platform in West Java.",
       "Built field-reporting workflows for identifying, logging, and resolving physical network infrastructure issues.",
-      "Designed SNMP-based monitoring platforms for Metro and OLT devices, with real-time dashboards and uptime/downtime alerts.",
+      "Designed SNMP-based monitoring platforms for network devices, with real-time dashboards and uptime/downtime alerts.",
       "Developed secure internal systems and policy-driven Data Loss Prevention (DLP) solutions.",
     ],
   },

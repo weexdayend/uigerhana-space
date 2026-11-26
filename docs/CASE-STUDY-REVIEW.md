@@ -21,7 +21,7 @@ The following are generalized candidate workstreams based on the supplied résum
 
 | Candidate workstream | Résumé evidence available | Required review before publication |
 |---|---|---|
-| Enterprise AI and intelligent reporting | AI reporting automation, ChatAI assistant, NER, BERT, LLM integration | Exact project scope, contribution boundaries, approved diagrams/screenshots, disclosure |
+| Enterprise AI and intelligent reporting | AI reporting automation, intelligent assistant, NER, BERT, LLM integration | Exact project scope, contribution boundaries, approved diagrams/screenshots, disclosure |
 | Transaction intelligence | Extraction of unstructured business/financial data into canonical structured data | Data examples must be sanitized; architecture and role confirmation |
 | Public-service digital platform | Backend architecture and integration contribution | Organization/project disclosure approval and exact contribution |
 | Infrastructure field reporting | Field reports for physical network infrastructure issues | Product status, user workflow, screenshots without sensitive infrastructure details |
