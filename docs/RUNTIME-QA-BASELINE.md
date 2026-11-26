@@ -1,15 +1,15 @@
 # Runtime QA Baseline — UI Gerhana
 
 **Date:** 2026-11-27  
-**Validated commit:** `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`  
-**Automated status:** <badge>passed</badge> 28 Playwright tests passed in Chromium; axe reported no violations in its declared scan scope.  
-**Human review status:** Six homepage viewport captures and the final mobile story collision fixes have been reviewed. Full manual accessibility and production sign-off remain open.
+**Validated commit:** `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a`  
+**Automated status:** 31 Playwright tests passed in Chromium on both push and pull-request runs; 0 failed, 0 flaky. Axe reported no violations in its declared scan scope.  
+**Human review status:** Six homepage viewport captures, desktop/mobile story stages, final mobile collision fixes, and the final two-page A4 CV PDF have been reviewed. Manual assistive-technology, physical-device, literal browser-zoom, production, and owner sign-off remain open.
 
 ## 1. Correction to the previous audit status
 
-The original experience audit was based on repository/source inspection only. It did **not** execute the rendered website in a browser, run axe, exercise keyboard interactions, test screen readers, or test 200% zoom. Its responsive and accessibility notes were implementation observations, not completed QA.
+The original experience audit was based on repository/source inspection only. It did **not** execute the rendered site in a browser, run axe, exercise keyboard interactions, test screen readers, or test 200% zoom. Its responsive and accessibility notes were source observations, not completed QA.
 
-A follow-up runtime suite now executes the production Next.js build in Chromium in GitHub Actions. This is real browser validation of the branch build—not verification of the live production domain. The live domain was not accessible from the inspection environment in this session, so deployment parity remains unverified.
+The follow-up suite executes the production Next.js build in Chromium in GitHub Actions. This is real browser validation of the repository build—not verification of the live production domain. The domain `https://uigerhana.space` was not accessible to the inspection path in this session, so deployment parity remains unverified.
 
 Keep the original source audit as a historical inventory; use this document for the current runtime QA status.
 
@@ -41,64 +41,69 @@ Test dependencies are installed ephemerally at pinned versions; application runt
 - Document/body horizontal overflow and hero title-line overflow.
 - Hero copy/art non-overlap at the tablet-portrait breakpoint (768–820px).
 - Route response, main landmark, H1, and horizontal overflow for `/`, `/work`, `/work/uigerhana-space`, and `/cv` at desktop and mobile sizes.
-- Mobile navigation open/close, Escape handling, and focus return.
-- Skip-to-content behavior and keyboard scrolling of the horizontal story region.
-- Desktop reduced-motion layout: all four story chapters remain in document flow and the animated progress indicator is removed.
-- axe-core scans tagged for WCAG 2.0 A/AA, WCAG 2.1 A/AA, WCAG 2.2 AA, and axe best practices across four routes × two viewports (eight scans).
+- Mobile navigation keyboard open/close, Escape handling, accessible-name changes, `aria-expanded`, and focus return.
+- Keyboard traversal on all four routes using the actual Chromium Tab sequence: focus-visible on every visited control, no positive `tabindex`, key destination coverage, and no keyboard trap.
+- Skip-to-content and keyboard scrolling of the horizontal story region.
+- Reduced-motion desktop **and mobile** layout: all four story chapters remain in normal document flow, with no horizontal scroll/pinning and the progress indicator removed.
+- axe-core scans tagged for WCAG 2.0 A/AA, WCAG 2.1 A/AA, WCAG 2.2 AA, and axe best practices across four routes × desktop/mobile (eight scans).
+- An additional effective 200%-zoom reflow simulation at a 720 × 450 CSS viewport for all four routes, including overflow checks and axe scans (four more scans).
+- CV print media: controls and non-print footer are hidden, an A4 PDF is generated from the production browser build, and the PDF page count is asserted to be exactly two.
 - Hero viewport screenshots wait for the entrance animation to settle.
 - Full-page desktop/mobile captures use reduced-motion layout so the pinned desktop story does not create a misleading blank region.
 - Separate captures cover all four desktop pinned-story states and all four mobile horizontal-story panels.
-- Playwright traces, failure screenshots, and HTML reports are uploaded as GitHub Actions artifacts.
+- Playwright traces, failure screenshots, PDF, and HTML reports are uploaded as GitHub Actions artifacts.
+
+**Zoom boundary:** 720 × 450 CSS pixels approximates the effective layout viewport of a 1440 × 900 desktop at 200% zoom. This checks responsive reflow and accessibility at the equivalent width. It does **not** operate the browser's actual zoom control, emulate OS text scaling, or replace a manual zoom test.
 
 ## 3. Runtime findings and corrections
 
-The first browser run on `fed623273efcf7536abf7c06aeaec66b94c6af6b` (run [45880651981](https://github.com/weexdayend/uigerhana-space/actions/runs/45880651981)) returned 15 passing, 9 failing, and 1 flaky result. The failures were retained and investigated rather than suppressed.
+The first production-browser run identified low-contrast story labels, section eyebrows, decorative indices, footer metadata, and case-study diagram descriptions. Axe also found a heading-order issue on `/work`. Those findings were fixed at their source; no axe rule was disabled.
 
-Axe identified low-contrast labels in the story, section eyebrows, decorative indices, footer metadata, and case-study diagrams. It also found a heading-order issue on `/work`. The initial responsive test also used an ambiguous hero CTA locator.
+Human review of subsequent captures found and drove fixes for:
+- Mobile story metadata colliding with the interface artwork.
+- Mobile software-architecture nodes overlapping.
+- The tablet-portrait hero using a cramped two-column composition at 768px.
 
-A subsequent passing run exposed further issues during human review of its screenshots:
+A subsequent keyboard test found its locator was unstable because the mobile menu trigger changes its accessible name when open. The test now locates the same button via `aria-controls` and verifies its accessible name and expanded state across both transitions.
 
-- On mobile, the story's conceptual-UI metadata collided visually with the interface artwork.
-- On mobile, the software-architecture diagram's absolute-positioned nodes overlapped.
-- At 768px tablet portrait, the hero still used a cramped two-column desktop layout; the artwork entered the copy/CTA area.
+The keyboard traversal test was also corrected after it initially treated every element with a CSS layout box as a required Tab stop. The final version follows Chromium's actual Tab sequence, verifies focus visibility and required controls on each route, and rejects keyboard traps. Route-specific expected controls are grounded in each route's actual structure rather than assuming that every page contains the homepage header.
 
-The corrective changes now in the branch:
-
-- Increased contrast for the specific reported text classes and removed opacity modulation from story reveal text.
-- Added a screen-reader-visible H2 before the selected case-study cards on `/work`.
-- Made the hero CTA test selector unique and wait for the hero entrance to settle.
-- Separated viewport screenshots, reduced-motion full-page screenshots, desktop pinned-story stage captures, and mobile swipe-panel captures.
-- Shortened and repositioned mobile story metadata.
-- Rebuilt the mobile architecture diagram into a responsive grid and added a Playwright geometry assertion for node collisions.
-- Added a stacked tablet-portrait hero layout for 768–820px and a Playwright geometry assertion for copy/art overlap.
+CV print inspection found a nearly empty trailing page. The CV footer is now hidden in print, and the browser test counts PDF page objects and rejects anything other than two pages.
 
 ## 4. Exact-SHA automated result
 
-Final validated commit: `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`
+Final validated commit: `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a`
 
-GitHub Actions run: [45882720414](https://github.com/weexdayend/uigerhana-space/actions/runs/45882720414)
+GitHub Actions:
+- Push run: [45886068015](https://github.com/weexdayend/uigerhana-space/actions/runs/45886068015)
+- Pull-request run: [45886076242](https://github.com/weexdayend/uigerhana-space/actions/runs/45886076242)
 
-- Application quality job: typecheck, content publication gates, lint, and production build passed.
-- Browser QA job: e2e TypeScript check, Chromium install, production build, and runtime suite passed.
-- Playwright result: **28 passed (28.7s), 0 failed, 0 flaky**.
-- axe-core result: no violations across the eight declared route/viewport scans.
-- Responsive geometry assertions passed for the tablet portrait hero, mobile visual metadata, and mobile architecture nodes.
+Both runs passed the application quality job (typecheck, content publication gates, lint, production build) and the browser QA job (e2e TypeScript check, Chromium install, production build, runtime suite).
 
-### Human screenshot review
+- Playwright result: **31 passed, 0 failed, 0 flaky** on both runs.
+- axe-core result: no violations across the 12 declared route/viewport scans (four routes × desktop/mobile plus four routes at the 720 × 450 effective reflow viewport).
+- Responsive geometry assertions passed for the tablet-portrait hero, mobile story metadata, and mobile architecture nodes.
+- Keyboard traversal and mobile-navigation tests passed.
+- Reduced-motion desktop/mobile checks passed.
+- CV print test generated a valid **two-page A4 PDF**.
 
-The final run's artifact was opened and reviewed for all six homepage viewport captures. Four desktop pinned-story states and the mobile story-panel captures were also reviewed; the final mobile interface-label and architecture screenshots were re-opened after their fixes.
+### Human screenshot and PDF review
 
-That review drove and then rechecked the mobile collision repairs and tablet-portrait layout change. This is a human review of the supplied Chromium screenshots, not a full design approval or a substitute for interactive device testing.
+The six final homepage viewport screenshots, four desktop pinned-story stages, and four mobile story panels were reviewed. The mobile metadata/diagram collision fixes and tablet-portrait layout were rechecked in the final artifacts.
 
-Artifacts: `portfolio-browser-qa-d7c130d87c44162c4aef82d227cfb3edbdfa7f48` (GitHub Actions run 45882720414).
+The final CV PDF was extracted from the exact-SHA CI artifact, verified as two A4 pages, rendered to page images, and visually reviewed. The previous nearly empty third page is gone. Page 1 retains some lower-page whitespace because the next experience block moves to page 2; it is not an orphaned blank page.
 
-## 5. Accessibility corrections included
+Artifact: `portfolio-browser-qa-1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a` (push run 45886068015).
+
+## 5. Accessibility and print corrections included
 
 1. Added a visible-on-focus skip link to the homepage and a focus target on the main landmark.
 2. Made the horizontal product-journey region programmatically focusable, named, and keyboard-scrollable on touch layouts; added a dedicated focus-visible indicator.
-3. Added Escape-to-close behavior to the mobile navigation and returned focus to its trigger.
+3. Added Escape-to-close behavior to mobile navigation and returned focus to its trigger.
 4. Increased contrast for the nodes flagged by axe and removed animated text opacity reduction.
 5. Added a semantic H2 to restore heading order on `/work`.
+6. Added automated route-wide keyboard traversal and effective 200%-width reflow coverage.
+7. Hid the non-print CV footer and asserted a two-page A4 print result.
 
 These are targeted usability/accessibility repairs, not a visual redesign or brand concept selection.
 
@@ -107,32 +112,34 @@ These are targeted usability/accessibility repairs, not a visual redesign or bra
 - Whether the entire visual composition is polished against an approved design reference; no pixel-diff reference exists.
 - Real-device Safari/WebKit or Firefox behavior.
 - Physical touch-device interaction.
-- A complete manual keyboard audit beyond the covered flows.
+- A full manual keyboard review in the owner's day-to-day browser environment.
 - Screen-reader usability with VoiceOver, NVDA, or TalkBack.
-- A genuine browser 200% zoom/text-scaling review.
-- Résumé print pagination or saved-PDF output.
+- Literal browser 200% zoom, OS-level text scaling, or high-contrast modes.
+- Native browser print dialog and operating-system Save as PDF behavior on the owner's device.
 - Production deployment health or whether the live domain serves this validated commit.
 
-Axe is an automated detector, not a substitute for assistive-technology testing or manual review.
+Axe and scripted keyboard tests are not substitutes for assistive-technology testing or manual review.
 
 ## 7. Remaining manual sign-off matrix
 
 - [x] Inspect all six final homepage viewport screenshots (desktop, laptop, tablet landscape, tablet portrait, mobile, and small mobile).
 - [x] Review all four desktop pinned-story stage captures and mobile story-panel captures; recheck the final mobile collision fixes.
-- [ ] Manually operate desktop ScrollTrigger pinning, progress feedback, and final-panel reachability in a browser.
-- [ ] Complete a full keyboard pass: focus order, visible focus, Escape behavior, no traps, and route navigation.
-- [ ] Manually review reduced motion at desktop and mobile sizes.
+- [x] Exercise Chromium Tab traversal on all four routes; verify required controls, visible focus, no positive tabindex, and no keyboard trap.
+- [x] Check reduced-motion document flow at desktop and mobile sizes in Chromium.
+- [x] Run four-route axe and reflow checks at the effective 720 × 450 CSS viewport.
+- [x] Generate, count, and visually review the two-page A4 CV PDF from the production browser build.
+- [ ] Manually operate desktop ScrollTrigger pinning, progress feedback, and final-panel reachability in the owner's interactive browser.
 - [ ] Test on a physical touch device.
-- [ ] Test at 200% browser zoom/text scaling without loss of content or function.
-- [ ] Test at least one screen reader (VoiceOver or NVDA) for landmarks, headings, navigation, story region, and CV controls.
-- [ ] Review CV print preview and saved PDF.
+- [ ] Test literal 200% browser zoom / text scaling on the owner's browser and OS.
+- [ ] Test at least one screen reader (VoiceOver, NVDA, or TalkBack) for landmarks, headings, navigation, story region, and CV controls.
+- [ ] Review native browser print/Save PDF flow on the owner's device.
 - [ ] Verify the deployed production domain and its commit.
 - [ ] Confirm the preferred direct public contact channel and complete owner acceptance.
 
 ## 8. Pass criteria
 
-The **automated runtime gate** is complete for commit `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`: its exact-SHA CI run is green, its declared axe scans report no violations, and the screenshot captures have been reviewed.
+The **automated Chromium runtime gate** is complete for commit `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a`: both exact-SHA CI triggers are green, all 31 Playwright tests pass without retries/flakiness, declared axe scans report no violations, and the final screenshots/PDF have been reviewed.
 
-The broader **Phase 1 experience and accessibility sign-off remains open** until the outstanding manual checks, production verification, and owner decisions above are recorded.
+The broader **Phase 1 experience and accessibility sign-off remains open** until the outstanding assistive-technology, physical-device, literal zoom, native print, production-domain, and owner checks above are recorded.
 
 **Build success is not runtime QA. Automated runtime success is not full accessibility or design sign-off.**

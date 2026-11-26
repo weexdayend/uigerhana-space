@@ -466,3 +466,34 @@ The repair run is pending. The initial runtime run is a failed run and must rema
 This exact-SHA pass establishes the declared Chromium automated scope, not full design or accessibility approval. Manual full-keyboard testing, VoiceOver/NVDA, physical touch devices, real Safari/WebKit/Firefox, 200% zoom, CV print output, production-domain verification, and owner acceptance remain open. The live domain was not accessible from this inspection environment, so no production deployment claim is made.
 
 See `docs/RUNTIME-QA-BASELINE.md` for the full viewport matrix, automated scope, first-run failures, final result, artifact details, and manual sign-off checklist.
+
+
+## 2026-11-27 — Phase 1 keyboard, reflow, and CV print QA
+
+**Branch:** `qa/phase1-manual-accessibility-automation`  
+**Validated commit:** `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a`  
+**GitHub Actions:** [push run 45886068015](https://github.com/weexdayend/uigerhana-space/actions/runs/45886068015) · [PR run 45886076242](https://github.com/weexdayend/uigerhana-space/actions/runs/45886076242)
+
+### Automated result
+
+- Both application quality jobs passed typecheck, publication gates, lint, and production build.
+- Both browser jobs passed e2e typecheck, Chromium install, production build, and runtime suite.
+- Playwright: **31 passed (27.7s push / 25.0s PR), 0 failed, 0 flaky**.
+- Axe-core reported no violations across 12 route/viewport scans.
+- Keyboard traversal followed the actual Chromium Tab sequence on all four routes, verified required controls and visible focus, rejected positive tabindex, and confirmed the sequence ended without a keyboard trap.
+- Mobile navigation verified keyboard open, Tab to Work, Escape close, accessible-name and `aria-expanded` changes, and focus return.
+- Reduced-motion checks passed at desktop and mobile sizes.
+- Effective 200%-width reflow/axe checks passed on all four routes at 720 × 450 CSS pixels.
+
+### CV print result and correction
+
+- The first generated CV PDF had three pages, with the final page nearly empty.
+- Added `no-print` to the nonessential CV footer.
+- Added a PDF page-count assertion requiring exactly two A4 pages.
+- The final PDF was extracted from the exact-SHA CI artifact, verified at two A4 pages, rendered into page images, and visually reviewed. The blank trailing page no longer appears.
+
+### Verification boundary
+
+The effective-width test is not a literal browser zoom-control or OS text-scaling test. CI does not replace VoiceOver/NVDA/TalkBack, physical touch-device review, Safari/WebKit/Firefox, native print-dialog behavior, production-domain parity, or owner acceptance. The live domain remained inaccessible through the available inspection path; no production deployment claim is made.
+
+See `docs/RUNTIME-QA-BASELINE.md` for the exact test scope and remaining manual sign-off matrix.

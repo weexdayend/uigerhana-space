@@ -15,6 +15,16 @@ const A11Y_VIEWPORTS = [
   { name: "mobile", width: 390, height: 844 },
 ] as const;
 
+const FOCUSABLE_SELECTOR = [
+  "a[href]:not([tabindex='-1'])",
+  "button:not([disabled]):not([tabindex='-1'])",
+  "input:not([disabled]):not([tabindex='-1'])",
+  "select:not([disabled]):not([tabindex='-1'])",
+  "textarea:not([disabled]):not([tabindex='-1'])",
+  "[contenteditable='true']:not([tabindex='-1'])",
+  "[tabindex]:not([tabindex='-1'])",
+].join(", ");
+
 test.describe("responsive homepage runtime", () => {
   for (const viewport of VIEWPORTS) {
     test(`renders without clipped hero copy or document overflow at ${viewport.name}`, async ({ page }, testInfo) => {
@@ -220,26 +230,182 @@ test.describe("keyboard and motion behavior", () => {
     await expect.poll(() => region.evaluate((el) => el.scrollLeft)).toBeGreaterThan(initial);
   });
 
-  test("mobile navigation closes with Escape and restores trigger focus", async ({ page }) => {
+  test("mobile navigation is keyboard reachable and Escape restores trigger focus", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.getByRole("button", { name: "Open navigation menu" }).click();
-    await expect(page.getByRole("navigation", { name: "Mobile navigation" })).toBeVisible();
+    const trigger = page.locator('button[aria-controls="mobile-navigation"]');
+    await expect(trigger).toHaveAccessibleName("Open navigation menu");
+    await trigger.focus();
+    await page.keyboard.press("Enter");
+    const navigation = page.getByRole("navigation", { name: "Mobile navigation" });
+    await expect(navigation).toBeVisible();
+    await expect(trigger).toHaveAccessibleName("Close navigation menu");
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    await page.keyboard.press("Tab");
+    await expect(navigation.getByRole("link", { name: "Work" })).toBeFocused();
+
     await page.keyboard.press("Escape");
-    await expect(page.getByRole("navigation", { name: "Mobile navigation" })).toBeHidden();
-    await expect(page.getByRole("button", { name: "Open navigation menu" })).toBeFocused();
+    await expect(navigation).toBeHidden();
+    await expect(trigger).toBeFocused();
+    await expect(trigger).toHaveAccessibleName("Open navigation menu");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
-  test("reduced-motion desktop presents all story chapters in document flow", async ({ page }) => {
+  test("keyboard traversal exposes important controls and exits without traps on all routes", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    const track = page.locator(".motion-story__track");
-    await expect.poll(() => track.evaluate((el) => getComputedStyle(el).display)).toBe("grid");
-    const chapters = page.locator("[data-story-panel]");
-    await expect(chapters).toHaveCount(4);
-    for (let i = 0; i < 4; i += 1) await expect(chapters.nth(i).locator("h2")).toBeVisible();
-    await expect(page.getByRole("progressbar", { name: "Story progress" })).toBeHidden();
+
+    const requiredLabels: Record<string, string[]> = {
+      "/": ["Skip to content", "UI Gerhana home", "Work", "About", "Notes", "Résumé", "Explore selected work", "Product journey", "Explore work", "Back to top"],
+      "/work": ["UI Gerhana", "Read case study", "View résumé"],
+      "/work/uigerhana-space": ["All work", "Résumé", "Explore more work", "UI Gerhana home"],
+      "/cv": ["Back to uigerhana.space", "Print / Save PDF"],
+    };
+
+    for (const route of ROUTES) {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      const positiveTabIndex = await page.locator("[tabindex]").evaluateAll((nodes) =>
+        nodes
+          .filter((element) => Number(element.getAttribute("tabindex")) > 0)
+          .map((element) => element.outerHTML.slice(0, 160))
+      );
+      expect(positiveTabIndex, `Positive tabindex on ${route}`).toEqual([]);
+
+      const visited: Array<{ index: number; label: string; href: string | null }> = [];
+      const seen = new Set<number>();
+      let sequenceEnded = false;
+
+      for (let step = 0; step < 80; step += 1) {
+        await page.keyboard.press("Tab");
+        const focused = await page.evaluate((selector) => {
+          const active = document.activeElement as HTMLElement | null;
+          if (!active || active === document.body || active === document.documentElement) {
+            return { end: true as const };
+          }
+
+          const candidates = Array.from(document.querySelectorAll<HTMLElement>(selector));
+          const index = candidates.indexOf(active);
+          return {
+            end: false as const,
+            index,
+            label: active.getAttribute("aria-label") || active.innerText?.trim().slice(0, 80) || active.tagName,
+            href: active instanceof HTMLAnchorElement ? active.getAttribute("href") : null,
+            outlineStyle: getComputedStyle(active).outlineStyle,
+          };
+        }, FOCUSABLE_SELECTOR);
+
+        if (focused.end) {
+          sequenceEnded = true;
+          break;
+        }
+
+        expect(focused.index, `Tab moved to an element outside the focusable set on ${route}: ${JSON.stringify(focused)}`).toBeGreaterThanOrEqual(0);
+        expect(focused.outlineStyle, `No visible focus indicator on ${route}: ${JSON.stringify(focused)}`).not.toBe("none");
+
+        if (seen.has(focused.index)) {
+          // Chromium can return to the first control after the final tab stop.
+          sequenceEnded = true;
+          break;
+        }
+
+        seen.add(focused.index);
+        visited.push({ index: focused.index, label: focused.label, href: focused.href });
+      }
+
+      expect(sequenceEnded, `Keyboard traversal did not reach the end on ${route}`).toBe(true);
+      const minimumStops: Record<string, number> = { "/": 12, "/work": 3, "/work/uigerhana-space": 4, "/cv": 4 };
+      expect(visited.length, `Too few keyboard stops on ${route}; reached ${JSON.stringify(visited)}`).toBeGreaterThanOrEqual(minimumStops[route] ?? 1);
+
+      const labels = visited.map((entry) => entry.label);
+      for (const required of requiredLabels[route] ?? []) {
+        expect(
+          labels.some((label) => label.includes(required)),
+          `Keyboard traversal missed "${required}" on ${route}. Reached: ${JSON.stringify(labels)}`
+        ).toBe(true);
+      }
+    }
+  });
+
+  test("reduced motion keeps all story chapters in document flow on desktop and mobile", async ({ page }) => {
+    for (const viewport of [
+      { name: "desktop", width: 1440, height: 900 },
+      { name: "mobile", width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+
+      const track = page.locator(".motion-story__track");
+      await expect.poll(() => track.evaluate((el) => getComputedStyle(el).display)).toBe("grid");
+      await expect.poll(() => page.locator(".motion-story__viewport").evaluate((el) => getComputedStyle(el).overflowX)).toBe("visible");
+
+      const chapters = page.locator("[data-story-panel]");
+      await expect(chapters).toHaveCount(4);
+      const chapterTops: number[] = [];
+      for (let index = 0; index < 4; index += 1) {
+        await expect(chapters.nth(index).locator("h2")).toBeVisible();
+        chapterTops.push(await chapters.nth(index).evaluate((element) => element.getBoundingClientRect().top));
+      }
+      expect(chapterTops[1]).toBeGreaterThan(chapterTops[0]);
+      expect(chapterTops[2]).toBeGreaterThan(chapterTops[1]);
+      expect(chapterTops[3]).toBeGreaterThan(chapterTops[2]);
+      await expect(page.getByRole("progressbar", { name: "Story progress" })).toBeHidden();
+    }
+  });
+
+  test("200% desktop zoom-equivalent viewport reflows all routes without overflow", async ({ page }) => {
+    // A 1440×900 desktop viewport at 200% browser zoom has an effective layout
+    // viewport close to 720×450 CSS pixels. This checks that reflow width, not
+    // browser chrome's physical zoom setting.
+    await page.setViewportSize({ width: 720, height: 450 });
+
+    for (const route of ROUTES) {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
+      const dimensions = await page.evaluate(() => ({
+        viewport: document.documentElement.clientWidth,
+        document: document.documentElement.scrollWidth,
+        body: document.body.scrollWidth,
+      }));
+      expect(dimensions.document, `Document overflow on ${route} at effective 200% width`).toBeLessThanOrEqual(dimensions.viewport + 1);
+      expect(dimensions.body, `Body overflow on ${route} at effective 200% width`).toBeLessThanOrEqual(dimensions.viewport + 1);
+      const results = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"])
+        .analyze();
+      expect(
+        results.violations.map((violation) => ({
+          id: violation.id,
+          impact: violation.impact,
+          targets: violation.nodes.map((node) => node.target.join(" ")),
+        })),
+        `axe violations on ${route} at effective 200% width`
+      ).toEqual([]);
+    }
+  });
+
+  test("CV print stylesheet removes controls and produces a valid A4 PDF", async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 1200, height: 900 });
+    await page.goto("/cv", { waitUntil: "domcontentloaded" });
+    await expect(page.getByRole("button", { name: /Print \/ Save PDF/ })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Professional Experience" })).toBeVisible();
+
+    await page.emulateMedia({ media: "print" });
+    await expect(page.getByRole("button", { name: /Print \/ Save PDF/ })).toBeHidden();
+    const printLayout = await page.evaluate(() => ({
+      pageBackground: getComputedStyle(document.body).backgroundColor,
+      articleWidth: document.querySelector("article")?.getBoundingClientRect().width ?? 0,
+      documentWidth: document.documentElement.scrollWidth,
+      viewportWidth: document.documentElement.clientWidth,
+    }));
+    expect(printLayout.articleWidth).toBeGreaterThan(0);
+    expect(printLayout.documentWidth).toBeLessThanOrEqual(printLayout.viewportWidth + 1);
+
+    const pdfPath = testInfo.outputPath("irvan-gerhana-cv-print-preview.pdf");
+    const pdf = await page.pdf({ path: pdfPath, format: "A4", printBackground: true });
+    expect(pdf.byteLength).toBeGreaterThan(5_000);
+    expect(pdf.subarray(0, 5).toString()).toBe("%PDF-");
+    const pdfPageCount = (pdf.toString("latin1").match(/\/Type\s*\/Page\b/g) ?? []).length;
+    expect(pdfPageCount, "CV print output must not append a mostly empty trailing page").toBe(2);
   });
 });
 
