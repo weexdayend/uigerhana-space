@@ -159,7 +159,7 @@ Exit criteria:
 
 **Goal:** turn the selected concept into a reusable identity system.
 
-**Status:** initial System Atlas art direction is being refined for owner review. Typography, delegated palette, GSAP choreography, and rem-based spacing guidance are documented; this is not a production token freeze.
+**Status:** Initial component-system and interaction-state package prepared for owner review on 2026-11-27. Semantic token roles, component anatomy, responsive layout rules, and interaction behavior are documented as proposals; this is not a production token freeze or final accessibility sign-off.
 
 Work:
 - Define color roles and contrast behavior.
@@ -172,12 +172,14 @@ Work:
 - Separate core identity assets from optional treatments.
 
 Deliverables:
-- Visual system sheet.
-- Color and typography tokens.
-- Layout and spacing rules.
-- Graphic and imagery guidelines.
-- Interaction-state examples.
-- Responsive rules.
+- [x] Initial visual-system sheet and reusable component catalogue.
+- [x] Semantic color, typography, spacing, border, and layout token proposal.
+- [x] Component anatomy for navigation, buttons, links, case-study cards, domain rows, article cards, and résumé actions.
+- [x] Interaction-state contract for hover, focus-visible, pressed, disabled, external links, mobile navigation, and reduced motion.
+- [x] Responsive, reading-order, and evidence-hierarchy rules.
+- [x] Desktop and mobile component-state specimens with surface-specific contrast recommendations.
+- [ ] Owner review of semantic roles, token values, component density, and interaction examples.
+- [ ] Browser-state contrast verification and real-font metric review before token freeze.
 
 Exit criteria:
 - The system works beyond one hero.
@@ -185,6 +187,8 @@ Exit criteria:
 - The identity remains recognizable without hero artwork.
 
 ## Phase 5 — Full-page styleframes and experience validation
+
+**Status:** Initial connected styleframe package prepared for owner review on 2026-11-27. Owner acceptance remains open. The package includes desktop/tablet/mobile homepage frames, work index, the currently approved in-progress case study, résumé route, motion storyboard, and design/content QA notes. See `docs/styleframes/system-atlas/connected/README.md`.
 
 **Goal:** prove the concept across a connected visitor journey before implementation.
 
@@ -198,11 +202,12 @@ Work:
 7. Revise hierarchy, density, and rhythm based on these checks.
 
 Deliverables:
-- Connected homepage styleframe set.
-- Responsive styleframes.
-- Case-study and content-page examples.
-- Motion storyboard and reduced-motion alternative.
-- Design QA notes.
+- [x] Connected homepage styleframes at desktop (1440), tablet (834), and mobile (390) artboard widths.
+- [x] Work index, approved in-progress case-study detail, and résumé route examples.
+- [x] Static GSAP choreography storyboard and explicit reduced-motion state.
+- [x] Content provenance and design-QA review notes.
+- [ ] Owner review and revision of the connected visual system.
+- [ ] Acceptance of the responsive hierarchy, section rhythm, and route-level examples.
 
 **Owner review gate:** approve the connected visual system. Approval of one hero image alone does not authorize a full-site redesign.
 
@@ -331,10 +336,10 @@ A visual effect must not compromise a higher-priority item.
 
 ## 7. Immediate next action
 
-Finish the remaining Phase 1 checks: literal browser 200% zoom/OS text scaling, native print-dialog behavior, production-domain/commit parity, the preferred public contact-channel decision, and owner review of the prioritized findings. The real-device and assistive-technology checks are owner-confirmed complete; do not ask the owner to repeat them unless new evidence shows a gap.
+Review the connected System Atlas package in `docs/styleframes/system-atlas/connected/README.md` as one visitor journey, not as isolated screens. Review desktop, tablet, and mobile compositions; the work index; the currently approved in-progress case study; and the résumé reading/print direction. Record owner decisions before freezing palette roles, typography metrics, final section composition, or motion choreography.
 
-In parallel, produce four comparable **static, non-binding** hero styleframe studies using the shared copy and frame in `docs/CREATIVE-CONCEPT-EXPLORATION.md`. Use the same copy, hierarchy, viewport, and content density so the visual territory—not wording or layout changes—is what gets compared. Include the top of the next section and keep conceptual art clearly separate from real product evidence.
+Phase 1 remains open for its previously listed owner-only gates: literal browser 200% zoom/OS text scaling, native print-dialog behavior, production-domain/commit parity, public contact-channel decision, owner acceptance of prioritized findings, and cross-browser coverage not already evidenced. Real-device and assistive-technology checks remain owner-confirmed complete; do not ask the owner to repeat them without a demonstrated gap.
 
-Do not select a winner, approve permanent tokens, change public copy, implement a new hero, or alter application UI until the remaining Phase 1 gates are closed and the owner explicitly approves a direction. Review the connected experience, not just the hero.
+This package is documentation and static design research only. Do not change `src/`, `app/`, CSS, dependencies, public profile copy, routes, or publication state. Do not present the SVGs as browser-rendered production captures. Phase 5 approval and any subsequent implementation authorization remain separate owner decisions.
 
 **End of roadmap — v1.0**
