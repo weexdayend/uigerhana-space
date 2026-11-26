@@ -5,9 +5,9 @@
 **Prepared:** 2026-11-26  
 **Brand identity revision:** 2026-11-27  
 **Repository:** \`weexdayend/uigerhana-space\`  
-**Working branch:** \`work/uigerhana-personal-identity-v1\`  
+**Baseline branch:** \`main\`  
 **Base branch:** \`main\`  
-**Base commit:** \`52abff0e783366fd7c73231d492ae3a9883908da\`
+**Baseline commit:** \`34553f2df728c47a71965cbef422563a040bd139\`
 
 ---
 
@@ -568,7 +568,7 @@ The repository contains an \`AGENTS.md\` instruction requiring implementers to c
 
 The brand identity and visual-direction work must follow the review gates in `docs/BRAND-IDENTITY-PLAN.md` before a new hero or site-wide visual system is implemented. This section continues to govern content and product implementation after the relevant identity decisions are approved.
 
-Work in the single branch \`work/uigerhana-personal-identity-v1\`. Do not open a pull request until explicitly requested.
+Use a scoped branch for each approved phase and keep the base branch stable. Do not begin visual implementation during concept exploration; open a pull request when the owner requests review or merge.
 
 ### Phase 0 — Content integrity and inventory
 
@@ -657,15 +657,15 @@ The reconstruction is complete when:
 
 ## 16. Working agreement
 
-- One working branch for this initiative: \`work/uigerhana-personal-identity-v1\`.
-- Base is the inspected \`main\` commit listed at the top of this document.
-- Do not push implementation changes to \`main\`.
-- Do not open a PR unless the owner explicitly asks.
-- Keep commits scoped and descriptive.
+- Use scoped, descriptive branches for approved phases and vertical slices.
+- Keep `main` stable; do not push unreviewed implementation directly to it.
+- Keep strategy/spec documentation, concept exploration, visual implementation, and content changes separately reviewable.
+- Do not begin visual implementation until the owner approves the connected direction and styleframes.
+- Open a PR when the owner requests review or merge; keep PR scope narrow and commits descriptive.
 - Prefer vertical, reviewable increments over a large unreviewable rewrite.
 - When a factual gap is found, mark it as missing and continue with supported content.
-- Do not block all implementation on optional biography details; build the structure so missing information can be added later.
-- Before any sensitive or client-specific content is made public, request owner confirmation.
+- Before sensitive or client-specific content is made public, request owner confirmation.
+- Passing CI does not replace browser-based visual QA or deployment verification.
 
 ---
 
