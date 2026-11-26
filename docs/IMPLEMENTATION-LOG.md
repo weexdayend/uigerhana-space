@@ -282,3 +282,31 @@ This validates source checks and the production build only; browser-based deskto
 - The new branch starts from the verified main merge commit 6076a6c069af865ac10b91cb5a2b2f6893eae158.
 - Typecheck, content publication gates, lint, and production build must pass on this branch's exact SHA before the hero is considered implementation-validated.
 - Desktop/mobile browser inspection remains necessary to assess actual composition, visual weight, and motion timing.
+
+## 2026-11-27 — Organic-to-modular pixel hero
+
+**Branch:** work/uigerhana-organic-to-modular-hero  
+**Scope:** homepage hero and compact primary navigation
+
+### Direction
+
+- Replaced the superseded conceptual system-cutaway hero with the owner-selected Organic to Modular visual direction.
+- Established one continuous Bayer-dithered pixel material that moves from an organic flowing form toward structured modular geometry.
+- Restored the approved “From pixel to production.” headline and the Product Engineer identity, using the shared profile content.
+- Applied the Obsidian / Stone / Amber palette with restrained amber emphasis, generous negative space, and no decorative eyebrow, HUD, or framed artwork panel.
+- Simplified the primary navigation to Work, About, and Notes while retaining the résumé link.
+- Kept the existing motion-narrative and all other homepage sections unchanged.
+
+### Motion and accessibility
+
+- Added a dedicated canvas renderer for crisp Bayer 4×4 dithering and the organic-to-modular morphology.
+- Added a sequenced GSAP intro that reveals the artwork and copy while progressing through the morph.
+- Added restrained pointer-responsive deformation on the artwork.
+- Added a reduced-motion path that presents the resolved visual without the cinematic sequence.
+- Adapted the composition for narrow viewports instead of shrinking the desktop layout.
+
+### Verification
+
+- Exact-SHA GitHub Actions run for `c8316af8641e5126ccc066b0e4ef8bec2290b5e8` passed dependency installation, typecheck, content publication gates, ESLint, and Next.js production build.
+- Browser-based visual QA and direct desktop/mobile runtime inspection remain to be completed.
+- No PR or deployment was performed as part of this implementation commit.
