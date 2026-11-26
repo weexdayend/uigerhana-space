@@ -239,7 +239,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         technologies: ["TypeScript", "ESLint", "GitHub Actions"],
       },
     ],
-  },,
+  },
   {
     slug: "professional-services-automation-platform",
     title: "Designing a connected operating platform for IT services",
