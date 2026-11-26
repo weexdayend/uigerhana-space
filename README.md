@@ -74,6 +74,6 @@ Keep the homepage, experience section, and résumé aligned to these shared sour
 
 ## Design direction
 
-The visual identity retains the existing Obsidian / Stone / Amber palette, Geist typography, Pixelify Sans accents, editorial grids, pixel geometry, and Bayer dithering. The homepage pairs a full-viewport introduction with a GSAP-pinned horizontal narrative on desktop; smaller screens use native swipeable panels, while reduced-motion preferences present the story as a vertical sequence.
+The visual identity retains the existing Obsidian / Stone / Amber palette, Geist typography, Pixelify Sans accents, editorial grids, pixel geometry, and Bayer dithering. The homepage hero opens with the idea that the interface is only the beginning: a conceptual cutaway connects the visible experience to the product logic, data, and runtime beneath it. Its motion is restrained and supports that single narrative.
 
 See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the full implementation contract, `docs/CASE-STUDY-REVIEW.md` for the project disclosure checklist, `docs/PROJECT-SOURCE-REVIEW.md` for the sanitized private-source review, and `docs/IMPLEMENTATION-LOG.md` for delivered work.

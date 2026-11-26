@@ -252,3 +252,33 @@ This validates source checks and the production build only; browser-based deskto
 - Repository source and branch ancestry were inspected before implementation. The working branch starts from the verified `main` merge commit `f759f6e7c1466ce6aeb89ac817e109441b8c8419`.
 - The execution environment could not resolve GitHub from the local terminal, so `npm ci`, typecheck, content gates, lint, production build, and browser QA could not be run locally in this pass.
 - The exact-SHA GitHub Actions result must be inspected before treating the implementation as validated. No PR was opened and no merge or deployment was performed.
+
+
+## 2026-11-27 — Hero art-direction reset
+
+**Branch:** work/uigerhana-hero-art-direction-v2  
+**Scope:** homepage hero only
+
+### Direction
+
+- Reframed the hero around one central idea: the interface is only the beginning of a digital product.
+- Replaced the previous two-column dither panel and eyebrow-led hierarchy with a direct editorial headline and a single explanatory introduction.
+- Removed the decorative eyebrow, top labels, duplicate headline, and extra visual chrome from the hero.
+- Designed one conceptual cutaway illustration: a visible product interface above the domain-logic, data/integration, and runtime layers that support it.
+- Kept the approved Product Engineer positioning, owner-approved profile copy, and the existing Obsidian / Stone / Amber identity.
+- Reduced motion to one entrance sequence that reveals the headline, connected system layers, and signal path in the same narrative order.
+- Added a subtle pointer-following light treatment to the artwork; it does not move the page or compete with reading.
+- Preserved keyboard focus states and a static composition for reduced-motion preferences.
+- Left the existing story section and all sections after the hero unchanged; this iteration is intentionally limited to hero art direction.
+
+### Illustration and claim boundary
+
+- The system cutaway is a conceptual visual, not an actual product screenshot or a claim about one named project.
+- Layer labels describe general product-engineering concerns and do not disclose private architecture.
+- No client attribution, metrics, testimonial, or unapproved project material was added.
+
+### Verification boundary
+
+- The new branch starts from the verified main merge commit 6076a6c069af865ac10b91cb5a2b2f6893eae158.
+- Typecheck, content publication gates, lint, and production build must pass on this branch's exact SHA before the hero is considered implementation-validated.
+- Desktop/mobile browser inspection remains necessary to assess actual composition, visual weight, and motion timing.
