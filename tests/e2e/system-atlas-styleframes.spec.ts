@@ -119,7 +119,7 @@ test("renders all System Atlas artboards with the selected fonts and no text col
           box.bottom > viewBox.height + 1
       );
 
-      const overlaps: Array<{ first: string; second: string; area: number }> = [];
+      const overlaps: Array<{ first: string; second: string; area: number; intersectionWidth: number; intersectionHeight: number }> = [];
       for (let firstIndex = 0; firstIndex < boxes.length; firstIndex += 1) {
         const first = boxes[firstIndex];
         for (let secondIndex = firstIndex + 1; secondIndex < boxes.length; secondIndex += 1) {
