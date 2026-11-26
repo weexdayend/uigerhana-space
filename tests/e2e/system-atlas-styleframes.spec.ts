@@ -142,6 +142,28 @@ test("renders all System Atlas artboards with the selected fonts and no text col
 
       const visualContractFailures: string[] = [];
 
+      if (artboardName === "home-tablet") {
+        const headline = textNodes.find((node) =>
+          (node.textContent || "").includes("I build digital products")
+        );
+        const route = Array.from(svg.querySelectorAll<SVGPathElement>("path")).find((node) =>
+          (node.getAttribute("d") || "").startsWith("M 530 205")
+        );
+
+        if (!headline || !route) {
+          visualContractFailures.push("The tablet hero headline or route illustration is missing.");
+        } else {
+          const headlineBox = headline.getBoundingClientRect();
+          const routeBox = route.getBoundingClientRect();
+          const clearance = routeBox.left - headlineBox.right;
+          if (clearance < 24) {
+            visualContractFailures.push(
+              `Tablet hero route must remain at least 24px clear of the headline (found ${Math.round(clearance * 100) / 100}px).`
+            );
+          }
+        }
+      }
+
       if (artboardName === "interaction-states-desktop") {
         const introduction = textNodes.find((node) =>
           (node.textContent || "").includes("Hover is enhancement.")
