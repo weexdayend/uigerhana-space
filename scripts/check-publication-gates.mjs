@@ -106,6 +106,10 @@ const hasDraftInvitationDeepDive =
   /slug: "passwordless-team-invitations",[\s\S]*?publicationStatus: "draft"/.test(
     caseStudySource
   );
+const hasDraftBackupRecoveryDeepDive =
+  /slug: "verifiable-backup-and-recovery-operations",[\s\S]*?publicationStatus: "draft"/.test(
+    caseStudySource
+  );
 
 if (!hasApprovedSelector) {
   fail("public case studies must be filtered by explicit approved status");
@@ -121,6 +125,10 @@ if (!hasDraftDeepDive) {
 
 if (!hasDraftInvitationDeepDive) {
   fail("the passwordless invitation vertical-slice deep dive must remain a draft until owner approval");
+}
+
+if (!hasDraftBackupRecoveryDeepDive) {
+  fail("the backup and recovery case study must remain a draft until owner approval");
 }
 
 if (process.exitCode !== 1) {

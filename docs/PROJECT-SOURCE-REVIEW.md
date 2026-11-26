@@ -133,3 +133,36 @@ The record says the real passkey creation ceremony was not tried in a browser be
 ### Portfolio claim boundary
 
 This is evidence of a locally implemented and locally tested vertical slice, not a production release. The public case-study draft must keep its status explicit and must not imply general availability. No real product screenshot was approved in the source review; the workflow illustration is source-derived and labelled accordingly.
+
+
+## 7. Source-backed operational case study — backup and recovery
+
+### S0.10: accepted isolated restore
+
+The S0.10 acceptance record states that the owner accepted and closed the checkpoint on 12 November 2026. The recorded PostgreSQL 17.11 archive was readable, its off-host workstation copy matched the source checksum, and an isolated disposable database restore completed successfully with 2/2 user schemas and 9/9 user relations, including the platform schema.
+
+The restore container had networking disabled, no published ports, bounded CPU/memory, swap disabled, and an anonymous ephemeral data volume. Production was not the restore target. Post-drill application health and workload-isolation checks passed. The workstation copy was off-host from the VPS but was not geographic/cloud off-site storage.
+
+### S0.11: scheduled off-site operations
+
+The 14 November 2026 current-runtime addendum records:
+
+- the timer active and enabled, with a natural timer-originated backup invocation completing successfully;
+- successful remote snapshot listing and archive/checksum-sidecar read-back with matching integrity evidence;
+- a delivered operational success notification;
+- one local retention apply that deleted one eligible older artifact group only after final remote read-back, preserving the two newest local groups;
+- no remote snapshot pruning.
+
+This runtime evidence is distinct from the S0.10 restore acceptance and does not imply that the S0.11 checkpoint is closed.
+
+### Remaining S0.11 acceptance boundary
+
+The current checkpoint continues to identify S0.11 as open. The dedicated external disposable recovery environment was not provisioned, no external PostgreSQL restore drill was completed, and the approved 24-hour RPO and 24-hour RTO objectives were not measured. Explicit S0.11 owner acceptance remains outstanding.
+
+### Safe draft narrative
+
+A verifiable backup and recovery workflow for a PostgreSQL-backed production platform: archive integrity checks, isolated restore rehearsal, scheduled off-site object copies, remote byte read-back, guarded local retention, and operational success notification. The restore drill is accepted at S0.10 scope; S0.11 has scheduled/off-site runtime evidence but retains external recovery and owner-acceptance gates.
+
+### Public disclosure boundary
+
+The private product identity, source repository URL, hostnames, bucket/account identifiers, artifact filenames, checksums, message IDs, customer/partner references, credentials, and infrastructure topology are intentionally omitted. No application screenshot or public outcome metric was approved in this review.

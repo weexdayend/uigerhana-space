@@ -181,3 +181,24 @@ This validates source checks and the production build only; browser-based deskto
 - The new invitation deep dive remains `draft`, excluded from `PUBLIC_CASE_STUDIES`.
 - Its diagram is an implementation-derived workflow illustration, not a browser screenshot.
 - No product name, private source URL, customer reference, deployment host, credential, or operational topology was added.
+
+
+## 2026-11-27 — Verifiable backup and recovery case study
+
+### Delivered
+
+- Added a third private-source case-study draft focused on PostgreSQL backup integrity, isolated restore, scheduled off-site copies, and guarded retention.
+- Reused the workflow map with a configurable branch heading so it can present operational paths rather than only identity paths.
+- Extended evidence status labels to distinguish owner-accepted work from runtime-verified operations.
+- Added a source-derived workflow and an architecture map separating remote-copy verification from isolated database restore.
+- Recorded S0.10's owner-accepted and closed restore drill independently from S0.11's runtime-verified scheduled/off-site operations.
+- Added S0.11 open gates for external restore, measured RPO/RTO, and explicit owner acceptance.
+- Left the product visual gallery empty because no owner-approved operational screenshot was available in the source review.
+- Added sanitized source evidence, review requirements, and a third draft-only CI publication assertion.
+
+### Claim boundaries
+
+- S0.10 owner acceptance does not close S0.11.
+- Remote archive/checksum read-back is not an external PostgreSQL restore.
+- The S0.10 workstation copy was off-host but not geographic/cloud off-site.
+- No RPO/RTO achievement, remote prune, public customer outcome, or S0.11 owner acceptance is claimed.

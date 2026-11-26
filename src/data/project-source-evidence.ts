@@ -85,4 +85,43 @@ export const PROJECT_SOURCE_EVIDENCE = [
     attributionDisclosure: "not-cleared",
     publicationState: "review-required",
   },
+  {
+    id: "verifiable-backup-and-recovery-operations",
+    title: "PostgreSQL backup integrity and recovery operations",
+    sourceClass: "owner-controlled-private-repository",
+    sourceVisibility: "private",
+    reviewedOn: "2026-11-26",
+    reviewedArtifacts: [
+      "S0.10 backup integrity and isolated restore acceptance record",
+      "S0.11 scheduled backup operations acceptance record",
+      "S0.11 current runtime status addendum dated 14 November 2026",
+      "Backup, verification, restore, off-site upload, retention, and service-unit source",
+      "Canonical Windows and VPS operating runbook",
+    ],
+    ownerAccepted: [
+      "S0.10 was explicitly owner-accepted and closed on 12 November 2026.",
+      "S0.10 reports a readable PostgreSQL 17.11 archive and a successful isolated restore with 2/2 schemas and 9/9 relations.",
+    ],
+    runtimeVerified: [
+      "The 14 November addendum records a natural timer-originated scheduled backup completing successfully.",
+      "The remote snapshot was listed and the archive/checksum-sidecar read-back matched local integrity evidence.",
+      "A real operational success notification was delivered for the scheduled backup.",
+      "One eligible older local backup artifact group was removed after final remote read-back while the two newest local groups were retained.",
+    ],
+    acceptanceOpen: [
+      "No dedicated external disposable recovery environment was provisioned in the latest runtime record.",
+      "No external PostgreSQL restore drill was completed.",
+      "The approved 24-hour RPO and 24-hour RTO objectives were not measured.",
+      "S0.11 explicit owner acceptance remains outstanding; remote snapshot pruning was not performed.",
+    ],
+    publicationPending: [
+      "Public product identity and URL.",
+      "Exact personal contribution and team boundaries.",
+      "Owner-approved production screenshots or sanitized operational evidence.",
+      "Any attributable customer/business outcome metrics.",
+    ],
+    projectStatus: "in-progress",
+    attributionDisclosure: "not-cleared",
+    publicationState: "review-required",
+  },
 ] as const;

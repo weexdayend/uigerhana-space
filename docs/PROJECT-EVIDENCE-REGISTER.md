@@ -69,3 +69,6 @@ The private product name, source repository URL, deployment hosts, and customer/
 
 
 | `passwordless-team-invitations` | Role-aware organization invitations and passkey-first joining | Owner-controlled private repository; S1.3 slice specification, Go domain/BFF, PostgreSQL migration/tests, Next.js pages, checkpoint 56 | Patches 1–3 implemented locally, not released; PostgreSQL 17, negative-case, row-security, concurrency and local-browser evidence; real passkey ceremony, mailbox placement, manual validator, race detector and production acceptance remain open | `review-required`; project in progress; attribution and screenshots not cleared |
+
+
+| `verifiable-backup-and-recovery-operations` | PostgreSQL backup integrity and recovery operations | Owner-controlled private repository; S0.10 acceptance, S0.11 acceptance/runtime addendum, operational scripts and runbook | S0.10 owner-accepted isolated restore; S0.11 natural scheduled invocation, remote archive/checksum read-back, success alert, and guarded local retention recorded; external restore, measured RPO/RTO, and S0.11 owner acceptance remain open | `review-required`; project in progress; attribution and visuals not cleared |

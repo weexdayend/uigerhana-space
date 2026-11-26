@@ -121,3 +121,30 @@ Before changing a candidate to approved, complete and review:
 ### Publication guardrails
 
 Do not say "production-ready", "released", or "generally available". Do not imply that real-world passkey ceremonies, inbox placement, manual validator, race detector, or production acceptance passed. The workflow map is derived from source and checkpoint records; it is not an application screenshot. The product identity, screenshots, and exact personal/team contribution remain pending owner clearance.
+
+
+## Operational case-study candidate — verifiable backup and recovery workflow
+
+- **Publication state:** Draft only; excluded from the public work index and detail routes.
+- **Source class:** Owner-controlled private repository; S0.10 and S0.11 acceptance/runtime records reviewed read-only.
+- **S0.10:** Explicitly owner-accepted and closed on 12 November 2026. The accepted evidence reports a readable PostgreSQL 17.11 archive, matching off-host workstation copy, and successful isolated restore with 2/2 schemas and 9/9 relations.
+- **S0.11:** The 14 November runtime addendum records a natural scheduled backup invocation, successful service completion, remote snapshot listing and archive/checksum-sidecar read-back, a delivered success notification, and one guarded local retention apply retaining the two newest local groups.
+- **Important distinction:** The S0.10 workstation copy was off-host but not geographic/cloud off-site storage. S0.11 later added remote object storage, but remote byte read-back does not prove an external PostgreSQL restore.
+- **Still open:** No dedicated external recovery environment or external restore drill was recorded; approved 24-hour RPO/RTO objectives remain unmeasured; explicit S0.11 owner acceptance remains outstanding; remote snapshot pruning was not performed.
+- **Public material:** No approved product screenshots, public product identity, or precise personal/team contribution statement were included in the private source review. Keep the workflow graphic labelled as source-derived, not an application screenshot.
+
+### Permitted claims
+
+- S0.10 isolated restore was owner-accepted and closed.
+- S0.11 scheduled backup, remote object read-back, alert delivery, and guarded local retention had runtime evidence in the 14 November addendum.
+- The backup archive/checksum/manifest and isolated restore were separate parts of the operational design.
+- Remote read-back is not the same as an external restore drill.
+
+### Claims not permitted
+
+- S0.11 is closed or fully owner-accepted.
+- External disaster recovery was rehearsed successfully.
+- 24-hour RPO/RTO targets were achieved or measured.
+- Remote snapshot pruning was applied.
+- The S0.10 workstation copy was geographic/cloud off-site.
+- Public customer outcomes or metrics without additional evidence.
