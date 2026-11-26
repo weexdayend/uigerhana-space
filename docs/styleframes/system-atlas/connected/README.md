@@ -81,6 +81,7 @@ The examples are reusable design contracts, not implemented components. Final to
 - [Static SVG copy-integrity review](./COPY-INTEGRITY-REVIEW.md)
 - [Browser font-rendering review](./FONT-RENDERING-REVIEW.md)
 - [Responsive acceptance matrix — viewport samples, behaviors, failure criteria, and test register](./RESPONSIVE-ACCEPTANCE-MATRIX.md)
+- [Manual acceptance runbook — owner visual review, browser zoom, OS text scaling, native print, and deployment parity](./MANUAL-ACCEPTANCE-RUNBOOK.md)
 - [Interaction-state contract](../../../design-system/SYSTEM-ATLAS-INTERACTION-STATES.md)
 
 These boards are static design proposals. Focus, hover, pressed, disabled, and mobile disclosure states still require real-browser validation after a separately approved implementation.

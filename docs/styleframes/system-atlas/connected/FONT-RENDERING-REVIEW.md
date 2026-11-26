@@ -48,3 +48,12 @@ The selected fonts are fetched from Google's hosted CSS/font endpoints at test t
 The geometric checks are intentionally strict. A failure must be reviewed with its screenshot and bounding-box report before deciding whether it indicates a genuine collision or an intentional text composition. The test does not claim to assess aesthetic quality, color contrast, optical balance, reading order, or assistive-technology behavior of the SVG artwork.
 
 This remains a static-artboard browser test. It does not modify application CSS, Next.js font loading, public content, routes, dependencies, or production UI. Manual review and owner acceptance remain separate.
+
+
+## Cross-engine static-artboard result
+
+The same ten-artboard fixture was executed under the Chromium, Firefox, and WebKit Playwright projects in run [#45912275133](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133). All three executions loaded Manrope and Plus Jakarta Sans and reported zero out-of-viewBox text, zero text-node intersections, and zero failures in the targeted artboard layout contracts.
+
+The artifact contains one PNG for each of the ten artboards per engine. The JSON's browser-name field in this initial multi-engine run was still hard-coded to “Playwright Chromium”; a follow-up test change records the actual browser name and version. The test result and artifact folder names identify each engine independently.
+
+This closes only automated static-artboard geometry regression under the three Playwright engines. It does not certify native Safari, owner aesthetics, responsive production CSS, actual browser zoom, OS text scaling, or native print behavior.

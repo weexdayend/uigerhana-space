@@ -27,8 +27,9 @@ const ARTBOARDS = [
   { name: "motion-storyboard", file: "motion-storyboard.svg", width: 1440, height: 1500 },
 ] as const;
 
-test("renders all System Atlas artboards with the selected fonts and no text collisions", async ({ page }, testInfo) => {
+test("renders all System Atlas artboards with the selected fonts and no text collisions", async ({ page, browserName }, testInfo) => {
   test.setTimeout(90_000);
+  const browserVersion = page.context().browser()?.version() ?? "unknown";
 
   const pageErrors: string[] = [];
   page.on("pageerror", (error) => pageErrors.push(error.message));
@@ -72,8 +73,8 @@ test("renders all System Atlas artboards with the selected fonts and no text col
     };
   });
 
-  expect(fontLoad.manrope, "Manrope must be downloaded and loaded in Chromium").toBeGreaterThan(0);
-  expect(fontLoad.plusJakartaSans, "Plus Jakarta Sans must be downloaded and loaded in Chromium").toBeGreaterThan(0);
+  expect(fontLoad.manrope, "Manrope must be downloaded and loaded in the current browser engine").toBeGreaterThan(0);
+  expect(fontLoad.plusJakartaSans, "Plus Jakarta Sans must be downloaded and loaded in the current browser engine").toBeGreaterThan(0);
 
   const reports: Array<{
     name: string;
@@ -248,7 +249,8 @@ test("renders all System Atlas artboards with the selected fonts and no text col
       {
         fontStylesheet: FONT_STYLESHEET,
         fontLoad,
-        browser: "Playwright Chromium",
+        browser: browserName,
+        browserVersion,
         reports,
       },
       null,

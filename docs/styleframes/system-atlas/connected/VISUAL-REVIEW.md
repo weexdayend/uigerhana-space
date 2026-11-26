@@ -66,3 +66,15 @@ The connected studies also contain documented, scoped surface/state values. See 
 Owner-confirmed real-device and assistive-technology checks from 2026-11-27 remain recorded at category level in the project review notes. Exact device, OS/browser, AT combinations, scenarios, and results were not supplied here; this artifact does not claim to repeat or certify those checks.
 
 No application routes, application CSS, public profile data, dependencies, publication state, or deployment behavior changed in this bake.
+
+
+## Related cross-browser runtime findings (current app; separate from static SVG inspection)
+
+The expanded Playwright suite ran the current application at ten viewport samples on all four routes in Chromium, Firefox, and WebKit. It also rendered all ten connected SVG artboards in all three engines with Manrope and Plus Jakarta Sans loaded.
+
+- Run [#45912275133](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133) reported 204 passed, 4 failed, and 2 skipped. The ten-artboard static geometry/font regression passed in all three engines.
+- **ROOT-01 · P1:** setting the CSS root font size to 200% at a 390px viewport produced a 435px document width in Chromium, Firefox, and WebKit and visibly clipped the homepage hero heading. This is a current-app diagnostic, not native OS text-scaling evidence. No production CSS is changed by this PR.
+- One Firefox 768px hero-overlap failure was a measurement false positive: the test treated the transparent top portion of the art mask as visible content. The regression assertion is corrected to account for the 35% transparent mask region.
+- The current suite's 720 × 450 viewport test is only an effective-layout-width proxy; native browser zoom, actual OS scaling, actual Safari, native print dialog, and production parity remain independent gates.
+
+[Cross-browser runtime artifact](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133/artifacts/15160233789) retains the failing screenshots/traces plus the three-engine artboard specimens and Chromium A4 PDF output.

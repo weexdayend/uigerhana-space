@@ -82,3 +82,16 @@ Owner-confirmed real-device and assistive-technology checks from 2026-11-27 rema
 A positive review of one SVG or one hero does not approve the whole connected system. Phase 5 requires owner acceptance of the connected journey and responsive compositions. Phase 1 remains open for the browser, print, deployment-parity, contact-channel, and prioritized-finding gates recorded in `docs/BRAND-IDENTITY-PLAN.md`.
 
 No production runtime, CSS, route, content data, dependency, or publication state is changed by this review package.
+
+
+## Cross-engine acceptance bake — findings and boundaries
+
+- [x] Added Playwright projects for Chromium, Firefox, and WebKit; CI installs all three engines.
+- [x] Expanded responsive smoke coverage to ten viewport samples across all four existing public routes.
+- [x] Added 200% CSS root-font-size diagnostics and split print-media assertions from Chromium-only A4 PDF generation.
+- [x] All ten System Atlas static SVG artboards rendered in all three engines with Manrope and Plus Jakarta Sans loaded; geometry, text containment, and targeted layout contracts passed.
+- [ ] **ROOT-01 · P1:** current application homepage heading clips under 200% root-font-size stress (435px document width at 390px viewport) in all three engines. This remains an open production-app finding and is not fixed in the static-styleframe PR.
+- [ ] Native OS text scaling, literal browser 200% zoom, actual Safari, native print dialog, and owner visual acceptance remain manual.
+- [ ] Production/deployed-commit parity remains blocked; this branch is not approved for deployment.
+
+The first three-engine run [#45912275133](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133) reported 204 passed / 4 failed / 2 skipped. The Firefox 768px overlap item was a test-geometry false positive due to the artboard's transparent mask and is corrected in the next test revision. See [responsive acceptance matrix](./RESPONSIVE-ACCEPTANCE-MATRIX.md), [visual review](./VISUAL-REVIEW.md), and [manual acceptance runbook](./MANUAL-ACCEPTANCE-RUNBOOK.md).
