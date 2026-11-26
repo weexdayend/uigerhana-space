@@ -79,6 +79,7 @@ The Gerhana identity is larger than any visual style used to express it. The dur
 - `docs/BRAND-IDENTITY-SPEC.md` — source of truth for identity, perception, experience, voice, visual principles, motion, and content guardrails.
 - `docs/BRAND-IDENTITY-PLAN.md` — phased roadmap, deliverables, approval gates, and implementation sequence.
 - `docs/CURRENT-EXPERIENCE-AUDIT.md` — source-based audit of the current routes, visitor journey, content evidence, navigation, interactions, and prioritized opportunities.
+- `docs/CREATIVE-CONCEPT-EXPLORATION.md` — four distinct visual territories with a shared comparison baseline; all directions remain unselected.
 
 Visual treatments such as palettes, typefaces, pixel/dither graphics, anime-inspired illustration, environments, and cinematic motion are expressive options, not the identity itself. They must be selected against the brand specification and validated across the whole site.
 
