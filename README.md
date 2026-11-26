@@ -30,6 +30,8 @@ npm run lint
 npm run build
 ```
 
+The typecheck script runs `next typegen` before `tsc --noEmit` so generated App Router route helpers exist on a clean checkout.
+
 ## Routes
 
 - `/` — personal homepage
@@ -49,6 +51,8 @@ Professional facts are maintained in typed modules under `src/data`:
 - `approach.ts` — engineering principles
 - `site.ts` — site-level identity and location metadata
 
+Case-study presentation is composed from reusable components for contribution breakdowns, code-architecture maps, generated visual studies, and technology maps.
+
 Keep the homepage, experience section, and résumé aligned to these shared sources. Do not add unsupported metrics, testimonials, credentials, project status, or client disclosures. The supplied résumé does not include education history or language proficiency, so those sections are intentionally omitted.
 
 ## Content integrity
@@ -59,9 +63,10 @@ Keep the homepage, experience section, and résumé aligned to these shared sour
 - Personal phone and email details are not published by default.
 - Use verified, individual URLs for repositories, articles, and social profiles.
 - Distinguish production work, prototypes, experiments, and work in progress.
+- Generated visual studies must not be presented as product screenshots.
 
 ## Design direction
 
 The visual identity retains the existing Obsidian / Stone / Amber palette, Geist typography, Pixelify Sans accents, editorial grids, pixel geometry, and Bayer dithering.
 
-See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the full implementation contract and `docs/CASE-STUDY-REVIEW.md` for the project disclosure and evidence checklist.
+See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the full implementation contract, `docs/CASE-STUDY-REVIEW.md` for the project disclosure and evidence checklist, and `docs/IMPLEMENTATION-LOG.md` for delivered work.

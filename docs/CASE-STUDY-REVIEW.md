@@ -9,9 +9,10 @@
 
 - **Status:** In progress.
 - **Context:** Independent personal project.
-- **Owner-confirmed scope:** personal identity, information architecture, design direction, content model, homepage, and online résumé implementation.
+- **Owner-confirmed scope:** personal identity, information architecture, design direction, content model, homepage, portfolio routes, and online résumé implementation.
 - **Public visibility:** approved as the owner's own personal website.
-- **Evidence in repository:** typed profile, experience, skills, work-domain, and approach modules; homepage sections; /cv route; custom dither canvas.
+- **Evidence in repository:** typed profile, experience, skills, work-domain, case-study, and approach modules; homepage sections; /work and /work/[slug] routes; /cv route; custom dither renderer.
+- **Visual material:** the case-study gallery uses generated artwork/studies from the repository. It does not represent product screenshots or evidence of a completed launch.
 - **Do not claim:** completed launch, user adoption, conversion, performance uplift, or business outcomes that have not been measured.
 
 ## Résumé-backed case-study candidates

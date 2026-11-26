@@ -2,8 +2,7 @@
 
 ## 2026-11-26 — Portfolio case-study foundation
 
-**Branch:** work/uigerhana-personal-identity-v1  
-**Status:** Implemented in branch; CI execution not yet verified.
+**Branch:** work/uigerhana-personal-identity-v1
 
 ### Delivered
 
@@ -15,7 +14,6 @@
 - Added one approved, in-progress case study for the owner's personal website.
 - Connected the homepage work section to the case-study system.
 - Added a review inventory for résumé-backed workstreams, including required evidence and disclosure checks.
-- Updated README route and content architecture documentation.
 
 ### Publication safeguards
 
@@ -23,11 +21,30 @@
 - No client names, testimonials, unsupported metrics, or confidential architecture details were introduced.
 - The UI Gerhana case study is explicitly labelled in progress; no completed launch or business outcome is claimed.
 
-### Verification still required
+## 2026-11-26 — Visual storytelling and CI repair
 
-- Run npm ci.
-- Run npm run typecheck.
-- Run npm run lint.
-- Run npm run build.
-- Inspect /, /work, /work/uigerhana-space, and /cv on desktop and mobile.
+**Branch:** work/uigerhana-personal-identity-v1  
+**Current implementation:** visual-storytelling pass committed; CI result pending.
+
+### Delivered
+
+- Added a code-architecture map showing shared typed content, App Router pages, and reusable presentation layers.
+- Added a contribution breakdown that lists workstreams without invented percentage or effort estimates.
+- Added a visual gallery using actual generated Bayer-renderer artwork and studies from the repository.
+- Explicitly labelled generated visuals as visual assets/studies rather than screenshots of a shipped product.
+- Added a technology map grouped by the role each technology plays in the site.
+- Expanded the case-study data contract to carry visual, architecture, contribution, and technology details.
+
+### Quality workflow repair
+
+- The earlier CI run stopped at typecheck because Next.js route-aware helper types were not generated before `tsc --noEmit`.
+- Updated the typecheck script to run `next typegen` before TypeScript checking.
+- The next GitHub Actions run must confirm typecheck, lint, and production build.
+
+### Remaining verification
+
+- Confirm the newest GitHub Actions run completes successfully.
+- Inspect /, /work, /work/uigerhana-space, and /cv at desktop and mobile sizes.
 - Verify an unapproved or unknown case-study slug returns not found.
+- Review print pagination and save-to-PDF output in a browser.
+- Continue collecting evidence and disclosure decisions for the résumé-backed case-study candidates.
