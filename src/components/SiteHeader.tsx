@@ -5,27 +5,24 @@ import { SITE_META } from "@/data/site";
 import { PixelMark } from "@/components/PixelGraphics";
 
 const NAV_LINKS = [
-  { href: "#about", label: "About" },
-  { href: "#story", label: "Story" },
   { href: "#work", label: "Work" },
-  { href: "#expertise", label: "Expertise" },
-  { href: "#experience", label: "Experience" },
-  { href: "#approach", label: "Approach" },
-  { href: "#writing", label: "Writing" },
+  { href: "#about", label: "About" },
+  { href: "#writing", label: "Notes" },
 ];
 
 export function SiteHeader() {
-  const [darkBand, setDarkBand] = useState(false);
+  const [darkBand, setDarkBand] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const evaluateBand = () => {
       const bands = Array.from(document.querySelectorAll<HTMLElement>("[data-band]"));
-      const probeY = 56;
+      const probeY = 64;
 
-      for (let i = bands.length - 1; i >= 0; i--) {
-        const band = bands[i];
+      for (let index = bands.length - 1; index >= 0; index--) {
+        const band = bands[index];
         const rect = band.getBoundingClientRect();
+
         if (rect.top <= probeY && rect.bottom > probeY) {
           setDarkBand(band.dataset.band === "dark");
           return;
@@ -44,66 +41,72 @@ export function SiteHeader() {
   }, []);
 
   const surfaceClass = darkBand
-    ? "bg-[#0b0e11] text-[#e8e4d8] border-[#e8e4d8]/20"
-    : "bg-[#f2efe7] text-[#121518] border-[#121518]/18";
+    ? "border-[#e8e4d8]/10 bg-[#0b0e11] text-[#e8e4d8]"
+    : "border-[#121518]/12 bg-[#f2efe7] text-[#121518]";
 
-  const borderClass = darkBand
-    ? "border-[#e8e4d8]/20"
-    : "border-[#121518]/18";
+  const linkClass = darkBand
+    ? "text-[#e8e4d8]/75 hover:text-[#f0b765]"
+    : "text-[#121518]/70 hover:text-[#8a5a20]";
 
-  const ctaClass = darkBand
-    ? "bg-[#e8e4d8] text-[#0b0e11] hover:bg-[#f0b765]"
-    : "bg-[#0b0e11] text-[#e8e4d8] hover:bg-[#b8680c]";
+  const resumeClass = darkBand
+    ? "text-[#f0b765] hover:text-[#ffd18e]"
+    : "text-[#8a5a20] hover:text-[#b8680c]";
 
+  const borderClass = darkBand ? "border-[#e8e4d8]/10" : "border-[#121518]/12";
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className={`sticky top-0 z-40 border-b transition-colors duration-200 ${surfaceClass}`}>
-      <div className="flex h-[49px] w-full items-stretch justify-between text-sm">
+    <header
+      className={`sticky top-0 z-40 border-b transition-colors duration-300 ${surfaceClass}`}
+    >
+      <div className="mx-auto flex h-16 w-full max-w-[1680px] items-center justify-between px-5 sm:px-8 lg:px-12">
         <a
           href="#top"
           aria-label={`${SITE_META.brand} home`}
-          className={`flex shrink-0 items-center gap-2.5 border-r px-4 sm:px-6 ${borderClass}`}
+          className="flex shrink-0 items-center gap-3"
         >
-          <PixelMark className="h-4 w-4" />
-          <span className="font-pixel text-base font-bold tracking-tight">
-            {SITE_META.brand}
+          <PixelMark className="h-[18px] w-[18px] text-[#f0b765]" />
+          <span className="text-[13px] font-semibold tracking-[0.23em]">
+            GERHANA
           </span>
         </a>
 
-        <nav aria-label="Main navigation" className="hidden flex-1 items-stretch md:flex">
+        <nav aria-label="Main navigation" className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className={`flex items-center border-r px-4 text-sm transition-opacity hover:opacity-65 lg:px-5 ${borderClass}`}
+              className={`text-sm transition-colors duration-200 ${linkClass}`}
             >
               {item.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-stretch">
-          <span className={`hidden items-center border-l px-4 text-xs opacity-70 xl:flex ${borderClass}`}>
-            {SITE_META.location}
-          </span>
+        <div className="flex h-full items-center gap-5">
           <a
             href="/cv"
-            className={`flex items-center px-4 text-sm transition-colors sm:px-5 ${ctaClass}`}
+            className={`hidden items-center gap-2 text-sm transition-colors duration-200 sm:inline-flex ${resumeClass}`}
           >
-            Résumé ↗
+            Résumé <span aria-hidden="true">↗</span>
           </a>
+
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
             aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-            className={`flex w-12 cursor-pointer items-center justify-center border-l md:hidden ${borderClass}`}
+            className={`flex h-10 w-10 cursor-pointer items-center justify-center md:hidden ${borderClass}`}
           >
-            <span className="font-mono text-base leading-none" aria-hidden="true">
-              {menuOpen ? "×" : "="}
-            </span>
+            {menuOpen ? (
+              <span className="text-xl leading-none" aria-hidden="true">×</span>
+            ) : (
+              <span className="flex flex-col gap-[5px]" aria-hidden="true">
+                <span className="h-px w-5 bg-current" />
+                <span className="h-px w-3 bg-current" />
+              </span>
+            )}
           </button>
         </div>
       </div>
@@ -112,19 +115,23 @@ export function SiteHeader() {
         <nav
           id="mobile-navigation"
           aria-label="Mobile navigation"
-          className={`border-t md:hidden ${borderClass}`}
+          className={`border-t px-5 py-3 md:hidden ${borderClass}`}
         >
           {NAV_LINKS.map((item) => (
             <a
               key={item.href}
               href={item.href}
               onClick={closeMenu}
-              className={`block border-b px-5 py-3 text-sm ${borderClass}`}
+              className={`block py-3 text-sm transition-colors ${linkClass}`}
             >
               {item.label}
             </a>
           ))}
-          <a href="/cv" onClick={closeMenu} className="block px-5 py-3 text-sm">
+          <a
+            href="/cv"
+            onClick={closeMenu}
+            className={`block py-3 text-sm transition-colors ${resumeClass}`}
+          >
             View résumé ↗
           </a>
         </nav>
