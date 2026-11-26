@@ -49,13 +49,13 @@ if (forbiddenReferences.length > 0) {
 const evidenceSource = await readFile(EVIDENCE_PATH, "utf8");
 const evidenceRecordCount = (evidenceSource.match(/^\s+id: "/gm) ?? []).length;
 const reviewRequiredCount = (
-  evidenceSource.match(/publicationState: "review-required"/g) ?? []
+  evidenceSource.match(/^    publicationState: "review-required",$/gm) ?? []
 ).length;
 const unconfirmedStatusCount = (
-  evidenceSource.match(/projectStatus: "not-confirmed"/g) ?? []
+  evidenceSource.match(/^    projectStatus: "not-confirmed",$/gm) ?? []
 ).length;
 const unclearedAttributionCount = (
-  evidenceSource.match(/attributionDisclosure: "not-cleared"/g) ?? []
+  evidenceSource.match(/^    attributionDisclosure: "not-cleared",$/gm) ?? []
 ).length;
 
 if (evidenceRecordCount === 0) {
