@@ -11,16 +11,16 @@ The System Atlas SVG artboards declare Manrope for display/headings and Plus Jak
 
 ## Browser fixture
 
-A dedicated Playwright test, \`tests/e2e/system-atlas-styleframes.spec.ts\`, renders all ten connected SVG artboards in Chromium. The fixture loads the selected Manrope and Plus Jakarta Sans variable families through the Google Fonts CSS2 endpoint, then waits for both font families to finish loading before measuring text geometry.
+A dedicated Playwright test, `tests/e2e/system-atlas-styleframes.spec.ts`, renders all ten connected SVG artboards in Chromium. The fixture loads the selected Manrope and Plus Jakarta Sans variable families through the Google Fonts CSS2 endpoint, then waits for both font families to finish loading before measuring text geometry.
 
 For every artboard it:
 - confirms both selected font families loaded in Chromium;
-- measures every SVG text node with \`getBBox()\`;
-- fails when a text bounding box crosses the artboard's \`viewBox\`;
+- measures every SVG text node with `getBBox()`;
+- fails when a text bounding box crosses the artboard's `viewBox`;
 - checks pairwise text-node bounding-box intersections and fails on collisions;
 - captures a full-page PNG and a JSON geometry report in the Playwright test artifact directory.
 
-The existing CI browser job uploads \`test-results/\` and \`playwright-report/\`, so these captures and diagnostics are retained with the workflow run.
+The existing CI browser job uploads `test-results/` and `playwright-report/`, so these captures and diagnostics are retained with the workflow run.
 
 ## Determinism and limits
 
