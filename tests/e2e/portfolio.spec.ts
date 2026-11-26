@@ -43,11 +43,22 @@ test.describe("responsive homepage runtime", () => {
           titleOverflows: lines.filter((el) => el.scrollWidth > el.clientWidth + 1).map((el) => ({
             text: el.textContent?.trim(), clientWidth: el.clientWidth, scrollWidth: el.scrollWidth,
           })),
+          heroColumnsOverlap: (() => {
+            const copy = document.querySelector<HTMLElement>(".hero-organic__copy");
+            const art = document.querySelector<HTMLElement>(".hero-organic__art");
+            if (!copy || !art) return false;
+            const a = copy.getBoundingClientRect();
+            const b = art.getBoundingClientRect();
+            return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+          })(),
         };
       });
       expect(layout.document).toBeLessThanOrEqual(layout.viewport + 1);
       expect(layout.body).toBeLessThanOrEqual(layout.viewport + 1);
       expect(layout.titleOverflows).toEqual([]);
+      if (viewport.width >= 768 && viewport.width <= 820) {
+        expect(layout.heroColumnsOverlap).toBe(false);
+      }
       expect(runtimeErrors).toEqual([]);
       await page.screenshot({
         path: testInfo.outputPath("homepage-viewport.png"),
