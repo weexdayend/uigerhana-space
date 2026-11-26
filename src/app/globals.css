@@ -211,7 +211,7 @@ body {
 }
 
 .motion-story__eyebrow span:first-child {
-  color: rgba(240, 183, 101, 0.58);
+  color: rgba(240, 183, 101, 0.72);
 }
 
 .motion-story__copy h2 {
@@ -349,7 +349,7 @@ body {
 }
 
 .story-node__index {
-  color: rgba(232, 228, 216, 0.42);
+  color: rgba(232, 228, 216, 0.72);
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.62rem;
 }
@@ -361,13 +361,13 @@ body {
 }
 
 .story-node--accent .story-node__index {
-  color: rgba(18, 21, 24, 0.58);
+  color: #121518;
 }
 
 .story-flow__caption {
   grid-column: 1 / -1;
   margin-top: 0.7rem;
-  color: rgba(232, 228, 216, 0.48);
+  color: rgba(232, 228, 216, 0.72);
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.62rem;
   letter-spacing: 0.08em;
@@ -680,7 +680,7 @@ body {
   z-index: 3;
   display: flex;
   justify-content: space-between;
-  color: rgba(232, 228, 216, 0.42);
+  color: rgba(232, 228, 216, 0.72);
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.58rem;
   letter-spacing: 0.1em;

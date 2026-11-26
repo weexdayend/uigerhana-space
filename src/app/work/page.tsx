@@ -36,6 +36,7 @@ export default function WorkIndexPage() {
           shared.
         </p>
 
+        <h2 className="sr-only">Selected case studies</h2>
         <div className="mt-14 grid gap-4 lg:grid-cols-2">
           {PUBLIC_CASE_STUDIES.map((study) => (
             <CaseStudyCard key={study.slug} study={study} />

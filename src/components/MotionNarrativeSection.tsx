@@ -247,9 +247,8 @@ export function MotionNarrativeSection() {
 
         timeline.fromTo(
           elements,
-          { opacity: 0.62, y: 28 },
+          { y: 28 },
           {
-            opacity: 1,
             y: 0,
             duration: 0.42,
             stagger: 0.05,
@@ -262,7 +261,6 @@ export function MotionNarrativeSection() {
           timeline.to(
             elements,
             {
-              opacity: 0.72,
               y: -18,
               duration: 0.22,
               ease: "power1.in",

@@ -26,9 +26,9 @@ export function ContactAndFooter() {
       <div className="mx-auto flex max-w-[1360px] flex-col justify-between gap-4 px-5 py-8 sm:flex-row sm:items-center sm:px-10">
         <div>
           <p className="font-pixel text-xl font-bold">{SITE_META.brand}</p>
-          <p className="mt-1 text-xs text-[#e8e4d8]/45">{PROFILE.displayName} · {PROFILE.positioning} · {SITE_META.location}</p>
+          <p className="mt-1 text-xs text-[#e8e4d8]/75">{PROFILE.displayName} · {PROFILE.positioning} · {SITE_META.location}</p>
         </div>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-xs text-[#e8e4d8]/55">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-xs text-[#e8e4d8]/75">
           {PUBLIC_PROFILES.map((profile) => (
             <a key={profile.id} href={profile.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[#f0b765]">
               {profile.label} ↗

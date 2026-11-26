@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-27  
 **Baseline commit:** `d1cfdce622908c5706a167c8f848bb79e0fe6258`  
-**Status:** Runtime QA harness added; first exact-SHA CI execution and human screenshot review are pending.
+**Status:** Runtime QA harness is executing against the production build. The first run found real contrast and heading-order defects; corrective changes and a repeat exact-SHA run are in progress. Human screenshot and manual assistive-technology review remain open.
 
 ## 1. Correction to the previous audit status
 
@@ -43,9 +43,26 @@ Test dependencies are installed ephemerally in CI with exact versions; the appli
 - Skip-to-content behavior and keyboard scrolling of the horizontal story region.
 - Reduced-motion desktop layout: all four story chapters remain in normal document flow and the animated progress indicator is removed.
 - axe-core checks tagged for WCAG 2.0 A/AA, WCAG 2.1 A/AA, WCAG 2.2 AA, and axe best practices across the four routes at desktop and mobile sizes.
-- Full-page homepage screenshots and Playwright traces/screenshots for failures are uploaded as GitHub Actions artifacts.
+- Per-viewport homepage screenshots wait for the hero entrance to settle; complete desktop/mobile page captures use the reduced-motion layout so the pinned desktop story does not create a misleading blank region.
+- Separate captures record all four desktop pinned-story progress states and all four mobile horizontal-story panels.
+- Playwright traces, failure screenshots, and HTML reports are uploaded as GitHub Actions artifacts.
 
-## 3. Accessibility corrections included
+## 3. First runtime findings and corrective work
+
+The first browser run on commit `fed623273efcf7536abf7c06aeaec66b94c6af6b` (GitHub Actions run [45880651981](https://github.com/weexdayend/uigerhana-space/actions/runs/45880651981)) executed the real production build and reported 15 passing, 9 failing, and 1 flaky test result. The failures were not hidden or waived.
+
+The axe findings included low-contrast story labels and hints, light-theme section eyebrows and decorative numbers, footer metadata, and case-study diagram descriptions. The `/work` index also jumped from its H1 directly to case-study card H3 headings. The responsive test's hero CTA locator was ambiguous because the same accessible name exists in the hero and story.
+
+The corrective changes in this branch:
+- Increase contrast for the affected story labels, light-surface eyebrows/numbers, case-study descriptions, and footer metadata.
+- Remove opacity fades from story reveal text so the animation does not temporarily reduce text contrast.
+- Add a screen-reader-visible section heading before the selected case-study cards on `/work`.
+- Target the hero CTA by its component class and wait for the hero intro to finish before capturing screenshots.
+- Separate full-page reduced-motion captures from actual desktop pinned-story and mobile swipe-panel captures.
+
+The repeat run must confirm that the changes remove the reported violations; no pass is claimed yet.
+
+## 4. Accessibility corrections included
 
 Source inspection exposed three gaps worth fixing before accepting the baseline:
 
@@ -55,7 +72,7 @@ Source inspection exposed three gaps worth fixing before accepting the baseline:
 
 These are targeted interaction/accessibility repairs, not a visual redesign or brand concept selection.
 
-## 4. What automated tests do not prove
+## 5. What automated tests do not prove
 
 Even when the CI job passes, it does not establish:
 
@@ -71,7 +88,7 @@ Even when the CI job passes, it does not establish:
 
 Axe is an automated detector, not a substitute for assistive-technology testing or manual review.
 
-## 5. Manual sign-off matrix — still open
+## 6. Manual sign-off matrix — still open
 
 - [ ] Inspect all six viewport screenshots; record visual defects and review date.
 - [ ] Review desktop ScrollTrigger pinning, progress feedback, and final-panel reachability.
@@ -84,7 +101,7 @@ Axe is an automated detector, not a substitute for assistive-technology testing 
 - [ ] Record the browser/OS/device and attach annotated screenshots for each defect.
 - [ ] Owner accepts the rendered result.
 
-## 6. Pass criteria
+## 7. Pass criteria
 
 The runtime QA gate is not complete until:
 

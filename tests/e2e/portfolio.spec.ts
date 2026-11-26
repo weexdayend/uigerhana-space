@@ -24,8 +24,16 @@ test.describe("responsive homepage runtime", () => {
       const response = await page.goto("/", { waitUntil: "domcontentloaded" });
       expect(response?.status()).toBe(200);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-      await expect(page.getByRole("link", { name: /Explore selected work/ })).toBeVisible();
+      await expect(page.locator(".hero-organic__primary-link")).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
+      for (const selector of [
+        "[data-hero-title]",
+        "[data-hero-byline]",
+        "[data-hero-copy]",
+        "[data-hero-actions]",
+      ]) {
+        await expect(page.locator(selector)).toHaveCSS("opacity", "1");
+      }
       const layout = await page.evaluate(() => {
         const lines = Array.from(document.querySelectorAll<HTMLElement>(".hero-organic__title-line, .hero-organic__title-second"));
         return {
@@ -42,12 +50,89 @@ test.describe("responsive homepage runtime", () => {
       expect(layout.titleOverflows).toEqual([]);
       expect(runtimeErrors).toEqual([]);
       await page.screenshot({
-        path: testInfo.outputPath("homepage-full-page.png"),
-        fullPage: true,
+        path: testInfo.outputPath("homepage-viewport.png"),
         animations: "disabled",
       });
     });
   }
+});
+
+test.describe("visual state captures", () => {
+  test("captures complete reduced-motion pages at desktop and mobile sizes", async ({ page }, testInfo) => {
+    for (const viewport of [
+      { name: "desktop", width: 1440, height: 900 },
+      { name: "mobile", width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      await page.evaluate(() => document.fonts.ready);
+      const chapters = page.locator("[data-story-panel]");
+      await expect(chapters).toHaveCount(4);
+      for (let index = 0; index < 4; index += 1) {
+        await expect(chapters.nth(index).locator("h2")).toBeVisible();
+      }
+      await page.screenshot({
+        path: testInfo.outputPath(`homepage-full-page-${viewport.name}-reduced-motion.png`),
+        fullPage: true,
+        animations: "disabled",
+      });
+    }
+  });
+
+  test("captures all four stages of the desktop pinned story", async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    for (const selector of ["[data-hero-title]", "[data-hero-actions]"]) {
+      await expect(page.locator(selector)).toHaveCSS("opacity", "1");
+    }
+    const story = page.locator(".motion-story");
+    await expect(story).toBeVisible();
+    await page.waitForFunction(() =>
+      document.querySelector(".motion-story")?.parentElement?.classList.contains("pin-spacer")
+    );
+    const dimensions = await story.evaluate((element) => {
+      const spacer = element.parentElement as HTMLElement;
+      return {
+        start: spacer.getBoundingClientRect().top + window.scrollY - 49,
+        travel: Math.max(0, spacer.offsetHeight - element.offsetHeight),
+      };
+    });
+    expect(dimensions.travel).toBeGreaterThan(0);
+
+    for (let index = 0; index < 4; index += 1) {
+      const fraction = index / 3;
+      await page.evaluate(
+        ({ start, travel, fraction }) => window.scrollTo(0, start + travel * fraction),
+        { ...dimensions, fraction }
+      );
+      await page.waitForTimeout(1100);
+      await page.screenshot({
+        path: testInfo.outputPath(`desktop-story-stage-${index + 1}.png`),
+        animations: "disabled",
+      });
+    }
+  });
+
+  test("captures each horizontal story panel at mobile width", async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const region = page.getByRole("region", { name: "Product journey" });
+    await region.scrollIntoViewIfNeeded();
+
+    for (let index = 0; index < 4; index += 1) {
+      await region.evaluate((element, panelIndex) => {
+        const panel = element.querySelectorAll<HTMLElement>("[data-story-panel]")[panelIndex];
+        const delta = panel.getBoundingClientRect().left - element.getBoundingClientRect().left;
+        element.scrollLeft += delta;
+      }, index);
+      await page.waitForTimeout(150);
+      await page.screenshot({
+        path: testInfo.outputPath(`mobile-story-stage-${index + 1}.png`),
+        animations: "disabled",
+      });
+    }
+  });
 });
 
 test.describe("route runtime smoke", () => {
@@ -121,6 +206,16 @@ test.describe("automated accessibility audit (axe-core)", () => {
         await page.setViewportSize({ width: viewport.width, height: viewport.height });
         await page.goto(route, { waitUntil: "domcontentloaded" });
         await page.evaluate(() => document.fonts.ready);
+        if (route === "/") {
+          for (const selector of [
+            "[data-hero-title]",
+            "[data-hero-byline]",
+            "[data-hero-copy]",
+            "[data-hero-actions]",
+          ]) {
+            await expect(page.locator(selector)).toHaveCSS("opacity", "1");
+          }
+        }
         const results = await new AxeBuilder({ page })
           .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"])
           .analyze();

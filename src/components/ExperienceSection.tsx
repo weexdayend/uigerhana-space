@@ -10,7 +10,7 @@ export function ExperienceSection() {
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
         <div className="grid items-end gap-6 lg:grid-cols-12">
           <div className="lg:col-span-6">
-            <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#b8680c]">
+            <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">
               Professional experience
             </p>
             <h2 className="mt-4 max-w-[12ch] text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
@@ -32,7 +32,7 @@ export function ExperienceSection() {
               className="grid gap-6 border-b border-[#121518]/20 py-8 lg:grid-cols-12 lg:gap-10 lg:py-10"
             >
               <div className="lg:col-span-4">
-                <span className="font-pixel text-2xl text-[#b8680c]">
+                <span className="font-pixel text-2xl text-[#8a5a20]">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <p className="mt-4 font-mono text-xs uppercase tracking-[0.08em] text-[#585f5e]">

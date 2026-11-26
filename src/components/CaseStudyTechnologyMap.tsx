@@ -30,7 +30,7 @@ export function CaseStudyTechnologyMap({
               <h3 className="mt-3 text-lg font-normal tracking-tight">
                 {group.category}
               </h3>
-              <p className="mt-1 text-xs leading-relaxed text-[#121518]/55">
+              <p className="mt-1 text-xs leading-relaxed text-[#121518]/70">
                 {group.purpose}
               </p>
               <div className="mt-5 flex flex-wrap gap-2">

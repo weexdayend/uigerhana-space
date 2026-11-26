@@ -411,3 +411,30 @@ Complete the Phase 1 browser/owner validation, then create comparable static sty
 At authoring time, the exact-SHA runtime CI result and manual screenshot review are pending. The live domain was not accessible to the browser retrieval environment in this session. No claim is made that rendered visual QA, screen-reader testing, 200% zoom review, real-device testing, or production verification has passed.
 
 See `docs/RUNTIME-QA-BASELINE.md` for the actual test scope, limitations, and open manual sign-off matrix.
+
+
+## 2026-11-27 — First production-browser QA findings and correction
+
+**Branch:** `qa/runtime-visual-accessibility-gates`  
+**First browser-test SHA:** `fed623273efcf7536abf7c06aeaec66b94c6af6b`  
+**GitHub Actions:** [run 45880651981](https://github.com/weexdayend/uigerhana-space/actions/runs/45880651981)
+
+### Actual runtime findings
+
+- The first production-build Playwright run executed in Chromium and produced 15 passing, 9 failing, and 1 flaky result.
+- axe-core flagged text contrast in the story sequence, light-surface section labels and decorative indices, footer metadata, and descriptions inside case-study diagrams.
+- axe-core found a heading-order issue on `/work`: the case-study card headings started at H3 without a preceding H2.
+- The responsive test locator matched both the hero and story CTAs, so its strict-mode failure was a test-selector defect rather than a confirmed layout defect.
+- Initial full-page screenshots were not adequate evidence for the pinned desktop story: a browser full-page capture does not naturally represent the story's different ScrollTrigger scroll states. Some captures were also taken before the hero's GSAP intro completed.
+
+### Corrective changes
+
+- Increased text contrast for every reported source class rather than excluding axe rules.
+- Removed opacity modulation from story reveal text, preserving positional movement without lowering text contrast during the pinned transition.
+- Added an H2 label for the selected case-study group on the standalone `/work` page.
+- Made the hero CTA selector unique and wait for the intro state before capturing.
+- Split screenshot evidence into regular viewport frames, full-page reduced-motion pages, four desktop pinned-story states, and four mobile horizontal-story states.
+
+### Verification boundary
+
+The repair run is pending. The initial runtime run is a failed run and must remain recorded as such. No visual sign-off, screen-reader sign-off, 200% zoom sign-off, real-device approval, or production-domain verification is claimed. See `docs/RUNTIME-QA-BASELINE.md` for the remaining manual checklist.
