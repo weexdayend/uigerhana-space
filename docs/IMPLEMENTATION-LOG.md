@@ -94,3 +94,11 @@ The GitHub Actions run for commit `648e3d7ce148b0b651c09a8359d54aa5034435e5` com
 - Retained exact project/source detail only in the owner's original résumé, not in new public repository artifacts.
 
 - Final disclosure scan removed remaining device-family labels from public review documentation; network infrastructure details stay generalized pending security review.
+
+
+## 2026-11-26 — Publication gate enforcement
+
+- Added `npm run verify:content` to the quality scripts.
+- Added a CI step that fails if public app/components import the review-only project evidence register.
+- Added a CI assertion that all evidence records remain in review-required state until owner review.
+- Added a CI assertion that public case studies are selected exclusively through the explicit approved-publication filter.

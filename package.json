@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typegen": "next typegen",
-    "typecheck": "npm run typegen && tsc --noEmit"
+    "typecheck": "npm run typegen && tsc --noEmit",
+    "verify:content": "node scripts/check-publication-gates.mjs"
   },
   "dependencies": {
     "next": "16.4.6",

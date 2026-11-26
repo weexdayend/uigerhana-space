@@ -26,11 +26,12 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
 npm run typecheck
+npm run verify:content
 npm run lint
 npm run build
 ```
 
-The typecheck script runs `next typegen` before `tsc --noEmit` so generated App Router route helpers exist on a clean checkout.
+The typecheck script runs `next typegen` before `tsc --noEmit` so generated App Router route helpers exist on a clean checkout. The content gate ensures review-only project evidence is never imported into public UI and the public case-study selector requires explicit approval.
 
 ## Routes
 
