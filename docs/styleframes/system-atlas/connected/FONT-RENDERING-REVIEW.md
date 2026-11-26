@@ -1,6 +1,6 @@
 # System Atlas — browser font-rendering review
 
-**Status:** Post-fix browser font-rendering and layout checks passed on exact SHA `a615ad41286dc85381d063823f7a56bac8f3c500` · 2026-11-27
+**Status:** Latest completed Chromium font-rendering and layout checks passed on code/styleframe SHA `7c2b7008271c597ad48ac9f6363766c0950d7cc2` · 2026-11-27
 **Scope:** Static SVG artboards only  
 **Application typography:** Unchanged — the portfolio application still uses its existing Geist setup  
 **Production implementation:** Not authorized
@@ -23,18 +23,21 @@ For every artboard it:
 The existing CI browser job uploads `test-results/` and `playwright-report/`, so these captures and diagnostics are retained with the workflow run.
 
 
-## Latest execution result
+## Latest completed execution result
 
-On exact code SHA `a615ad41286dc85381d063823f7a56bac8f3c500`, GitHub Actions [run #190](https://github.com/weexdayend/uigerhana-space/actions/runs/45902670980) passed both CI jobs:
+On code/styleframe SHA `7c2b7008271c597ad48ac9f6363766c0950d7cc2`, GitHub Actions [PR run #198](https://github.com/weexdayend/uigerhana-space/actions/runs/45904594136) passed both CI jobs:
 
 - Typecheck, content-publication checks, System Atlas static copy/SVG integrity, lint, and production build: passed.
 - Runtime visual and accessibility QA: passed.
 - Playwright: **32 tests passed, 0 failed**, including the selected-font render pass across all ten artboards.
-- The geometry report records both font families loaded, with zero out-of-viewBox text, zero intersecting text-node boxes, and zero targeted visual-contract failures.
+- The geometry contracts passed with both font families loaded, zero out-of-viewBox text, zero intersecting text-node boxes, and zero targeted visual-contract failures.
+- The CI runner used Playwright Chromium / Chrome for Testing **159.0.8154.6**.
 
 The targeted visual contracts protect three defects found during screenshot inspection: the tablet hero route crossing its headline, desktop interaction-board copy being obscured by the first panel, and the component-library card action exceeding its content inset.
 
-The [post-fix browser QA artifact](https://github.com/weexdayend/uigerhana-space/actions/runs/45902670980/artifacts/15155194933) contains the ten PNG specimens and JSON report. See [VISUAL-REVIEW.md](./VISUAL-REVIEW.md) for the human visual inspection notes and remaining acceptance gates.
+The [latest completed browser QA artifact](https://github.com/weexdayend/uigerhana-space/actions/runs/45904594136/artifacts/15158165064) contains the 29-file Playwright report and test-results bundle, including the ten PNG specimens and JSON geometry/font report. Artifact digest: `sha256:1e71347429965b017e8518580ad23ddbf23a32afb4cdbcebcbec3c06205fd094`. See [VISUAL-REVIEW.md](./VISUAL-REVIEW.md) for human visual inspection notes and remaining acceptance gates.
+
+The current PR head is documentation-only commit `2dc6cb690011fe0a0c9b4d8f476dca1850b1bedc`, which reconciles evidence references without changing the artboards, application, or tests. Its exact-HEAD CI is running in [PR run #45911865021](https://github.com/weexdayend/uigerhana-space/actions/runs/45911865021); it must complete before that documentation refresh is treated as CI-verified.
 
 This execution validates the static SVG specimens in Chromium, not owner acceptance, the live application's font setup, an accessibility certification of the SVG artboards, or the remaining browser/zoom/print/deployment gates.
 
