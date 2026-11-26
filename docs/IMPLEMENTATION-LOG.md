@@ -202,3 +202,5 @@ This validates source checks and the production build only; browser-based deskto
 - Remote archive/checksum read-back is not an external PostgreSQL restore.
 - The S0.10 workstation copy was off-host but not geographic/cloud off-site.
 - No RPO/RTO achievement, remote prune, public customer outcome, or S0.11 owner acceptance is claimed.
+
+- Updated the repository README to enumerate all private-source draft categories without exposing product identity or private references.

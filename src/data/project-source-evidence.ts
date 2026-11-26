@@ -1,5 +1,5 @@
 /**
- * Sanitized evidence record for one owner-controlled private product source.
+ * Sanitized evidence records for owner-controlled private product sources.
  *
  * This file is not imported by public routes. It deliberately contains no
  * product name, private repository URL, customer/partner names, hostnames,
