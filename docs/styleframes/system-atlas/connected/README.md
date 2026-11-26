@@ -99,6 +99,7 @@ The static route and every waypoint remain visible without JavaScript. Reduced m
 
 - [Design QA and owner review checklist](./DESIGN-QA.md)
 - [Static artboard visual review — corrected layout findings and browser evidence](./VISUAL-REVIEW.md)
+- [Palette and contrast reconciliation — semantic roles and regression coverage](./PALETTE-RECONCILIATION.md)
 - [Content provenance and disclosure boundaries](./CONTENT-PROVENANCE.md)
 - [System Atlas visual-system proposal](../../../design-system/SYSTEM-ATLAS-ART-DIRECTION.md)
 - [Brand identity roadmap](../../../BRAND-IDENTITY-PLAN.md)

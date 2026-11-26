@@ -31,6 +31,16 @@ A follow-up static QA pass found missing leading text in several editorial SVGs:
 
 See [Static artboard visual review](./VISUAL-REVIEW.md) for the three corrected defects, artboard-by-artboard notes, evidence, and remaining gates. The Chromium checks cover static SVG rendering; they do not prove production CSS reflow, zoom behavior, native print output, or live interactive semantics.
 
+## Palette contrast reconciliation
+
+- [x] Small Signal Copper text on light surfaces replaced with Light Secondary Text in the work index, case-study status, and résumé date metadata.
+- [x] Corrected text pairs exceed 4.5:1 in static calculations on their authored surfaces.
+- [x] Résumé document surfaces and pressed/disabled state colors documented as scoped candidates, not global palette additions.
+- [x] Static verifier rejects undocumented SVG colors and out-of-scope use of specimen-only colors.
+- [ ] Owner acceptance of the semantic palette and scoped surface/state candidates remains open.
+
+See [Palette and contrast reconciliation](./PALETTE-RECONCILIATION.md) for audited values and regression boundaries.
+
 ## Owner review checklist
 
 ### Identity and hierarchy

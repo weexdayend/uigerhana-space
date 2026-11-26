@@ -46,6 +46,12 @@ GitHub Actions run [#190 · 45902670980](https://github.com/weexdayend/uigerhana
 
 This inspection is a visual review of the exported static frames, not owner sign-off of the overall brand direction or an implementation acceptance.
 
+## Palette contrast corrections
+
+A palette pass found Signal Copper used as small text on light surfaces. The work-index eyebrow and domain indices, case-study status label, and résumé date metadata now use Light Secondary Text. Their static contrast ratios are 5.01:1 on inset light, 5.48:1 on Limestone, and 5.80:1 on résumé paper. Copper remains for CTA fills, dark-surface labels, waypoint accents, and restrained visual markers.
+
+The connected studies also contain documented, scoped surface/state values. See [PALETTE-RECONCILIATION.md](./PALETTE-RECONCILIATION.md). This is a static color-pair review, not rendered-state or production accessibility certification.
+
 ## Remaining gates
 
 - Owner visual acceptance of the connected System Atlas journey and responsive compositions.
