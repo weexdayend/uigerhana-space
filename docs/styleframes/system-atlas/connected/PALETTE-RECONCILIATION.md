@@ -10,7 +10,7 @@ The existing base palette remains unchanged. Review of the ten Chromium-rendered
 
 | Artboard | Text | Surface | Original ratio | Correction | New ratio |
 |---|---|---|---:|---|---:|
-| Work index | `02 / WORK DOMAINS` | Inset light `#E8E6DC` | 2.08:1 | Light Secondary Text `#53645E` | 5.01:1 |
+| Work index | `02 / WORK DOMAINS` | Inset light `#E8E6DC` | 1.90:1 | Light Secondary Text `#53645E` | 5.01:1 |
 | Work index | Domain indices `01–04` | Limestone `#F1F0E8` | 2.08:1 | Light Secondary Text `#53645E` | 5.48:1 |
 | Case study | `STATUS · IN PROGRESS` | Limestone `#F1F0E8` | 2.08:1 | Light Secondary Text `#53645E` | 5.48:1 |
 | Résumé | `2021 — PRESENT`, `2017 — PRESENT` | Paper `#F8F6F0` | 2.20:1 | Light Secondary Text `#53645E` | 5.80:1 |
@@ -31,6 +31,14 @@ The connected artboards use the following additional values beyond the ten base 
 | `#E2E1D8` | Disabled light state | `interaction-states-desktop.svg` |
 
 The résumé-specific pair is document chrome, not a new general page palette. Pressed/disabled tones are interaction-state variants, not decorative accents. The base palette itself has not expanded.
+
+## Post-fix browser evidence
+
+The exact code SHA `900df7b3442627eeb1caff2f47e88846b4ff232a` passed GitHub Actions [run #196](https://github.com/weexdayend/uigerhana-space/actions/runs/45904204824):
+- Typecheck, content/publication checks, static styleframe integrity, lint, and production build: passed.
+- Runtime visual/accessibility job: passed.
+- Playwright: **32 passed, 0 failed**.
+- The [post-palette browser QA artifact](https://github.com/weexdayend/uigerhana-space/actions/runs/45904204824/artifacts/15157900713) contains the updated work-index, case-study, and résumé PNG captures plus the ten-artboard geometry report.
 
 ## Regression coverage
 
