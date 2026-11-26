@@ -5,6 +5,7 @@ const SOURCE_ROOTS = ["src/app", "src/components"];
 const EVIDENCE_PATH = "src/data/project-evidence.ts";
 const SOURCE_EVIDENCE_PATH = "src/data/project-source-evidence.ts";
 const CASE_STUDY_PATH = "src/data/case-studies.ts";
+const WRITING_PATH = "src/data/writing.ts";
 
 async function collectSourceFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -129,6 +130,30 @@ if (!hasDraftInvitationDeepDive) {
 
 if (!hasDraftBackupRecoveryDeepDive) {
   fail("the backup and recovery case study must remain a draft until owner approval");
+}
+
+
+const writingSource = await readFile(WRITING_PATH, "utf8");
+const requiredPublicProfileUrls = [
+  "https://github.com/weexdayend",
+  "https://dev.to/uigerhana",
+  "https://medium.com/@weexdayend",
+];
+const writingProfileCount = (writingSource.match(/id: "(?:github|dev|medium)"/g) ?? []).length;
+const featuredWritingCount = (writingSource.match(/id: "article-[^"]+"/g) ?? []).length;
+
+if (writingProfileCount !== requiredPublicProfileUrls.length) {
+  fail("the public GitHub, DEV, and Medium profile records must remain present");
+}
+
+for (const url of requiredPublicProfileUrls) {
+  if (!writingSource.includes(url)) {
+    fail("missing verified public profile URL: " + url);
+  }
+}
+
+if (featuredWritingCount < 3) {
+  fail("at least three owner-authored public writing links must remain available");
 }
 
 if (process.exitCode !== 1) {

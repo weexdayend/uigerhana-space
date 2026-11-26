@@ -50,7 +50,3 @@ export const CERTIFICATIONS = [
   },
 ] as const;
 
-export const PUBLICATION_PROFILES = [
-  { platform: "DEV Community", handle: "@uigerhana" },
-  { platform: "Medium", handle: "@weexdayend" },
-] as const;

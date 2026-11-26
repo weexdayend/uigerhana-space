@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "#expertise", label: "Expertise" },
   { href: "#experience", label: "Experience" },
   { href: "#approach", label: "Approach" },
+  { href: "#writing", label: "Writing" },
 ];
 
 export function SiteHeader() {

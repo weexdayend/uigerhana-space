@@ -4,6 +4,7 @@ import { WorkSection } from "@/components/WorkSection";
 import { ExpertiseSection } from "@/components/ExpertiseSection";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { ProcessSection } from "@/components/ProcessSection";
+import { WritingSection } from "@/components/WritingSection";
 import { ContactAndFooter } from "@/components/ContactAndFooter";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
         <ExpertiseSection />
         <ExperienceSection />
         <ProcessSection />
+        <WritingSection />
       </main>
       <ContactAndFooter />
     </div>

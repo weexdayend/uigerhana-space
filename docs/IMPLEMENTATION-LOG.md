@@ -204,3 +204,24 @@ This validates source checks and the production build only; browser-based deskto
 - No RPO/RTO achievement, remote prune, public customer outcome, or S0.11 owner acceptance is claimed.
 
 - Updated the repository README to enumerate all private-source draft categories without exposing product identity or private references.
+
+
+## 2026-11-27 — Writing, public profiles, and discoverability
+
+### Delivered
+
+- Verified the public DEV Community profile and Medium profile before adding outbound links.
+- Selected three owner-authored public articles covering engineering knowledge, enterprise reconciliation, and canonical data architecture.
+- Added a responsive Writing section to the homepage and a Writing anchor in desktop/mobile navigation.
+- Added verified GitHub, DEV Community, and Medium profile links to the footer; made publication profiles clickable in the online résumé.
+- Added a generated Open Graph image aligned with the Obsidian / Stone / Amber identity.
+- Added canonical homepage metadata, explicit Open Graph/Twitter image references, and a Person JSON-LD identity record.
+- Added sitemap and robots metadata routes. Sitemap entries are generated only for approved public case studies.
+- Extended the content publication gate to retain all three public profile links and at least three featured writing links.
+
+### Verification boundary
+
+- The exact-SHA CI run must confirm typecheck, publication gates, lint, and production build.
+- The live domain and deployment status were not verified in this pass because the site endpoint did not return a readable page from the available inspection path.
+- Browser-based visual review, keyboard/mobile interaction review, print pagination, and runtime accessibility checks remain open; a successful build is not a substitute for those checks.
+- No unverified email address, client attribution, private project screenshot, or case-study approval was introduced.

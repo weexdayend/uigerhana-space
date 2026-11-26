@@ -3,7 +3,8 @@ import Link from "next/link";
 import { CvPrintButton } from "@/components/CvPrintButton";
 import { EXPERIENCE } from "@/data/experience";
 import { PROFILE } from "@/data/profile";
-import { CERTIFICATIONS, PUBLICATION_PROFILES, SKILL_GROUPS } from "@/data/skills";
+import { CERTIFICATIONS, SKILL_GROUPS } from "@/data/skills";
+import { PUBLICATION_PROFILES } from "@/data/writing";
 import { SITE_META } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -73,7 +74,11 @@ export default function CvPage() {
             Focus areas include Enterprise AI Engineering, AI Governance, Context Engineering, Canonical Data Architecture, Agentic Systems, and Distributed Software Architecture.
           </p>
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#121518]/75">
-            {PUBLICATION_PROFILES.map((profile) => <span key={profile.platform}>{profile.platform}: {profile.handle}</span>)}
+            {PUBLICATION_PROFILES.map((profile) => (
+              <a key={profile.id} href={profile.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[#8a5a20]">
+                {profile.platform}: {profile.handle} ↗
+              </a>
+            ))}
           </div>
         </section>
         <footer className="mt-10 border-t border-[#121518]/20 pt-4 text-xs text-[#121518]/55">{PROFILE.displayName} · {PROFILE.positioning} · {SITE_META.timezone}</footer>

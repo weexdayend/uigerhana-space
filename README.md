@@ -39,6 +39,8 @@ The typecheck script runs `next typegen` before `tsc --noEmit` so generated App 
 - `/work` — selected work and generalized work domains
 - `/work/[slug]` — approved case-study details only
 - `/cv` — online résumé with browser print / Save PDF support
+- `/sitemap.xml` and `/robots.txt` — crawler discovery and indexing rules
+- `/opengraph-image` — generated social preview image
 
 ## Content architecture
 
@@ -53,8 +55,9 @@ Professional facts are maintained in typed modules under `src/data`:
 - `project-source-evidence.ts` — generalized private-source review records; not imported by public routes
 - `approach.ts` — engineering principles
 - `site.ts` — site-level identity and location metadata
+- `writing.ts` — verified public profiles and selected owner-authored articles
 
-Case-study presentation is composed from reusable components for contribution breakdowns, code-architecture maps, evidence maturity maps, source-derived workflow maps, generated visual studies, and technology maps. The IT-services platform overview, passwordless team-invitation slice, and backup/recovery operations case study remain draft-only and are excluded from public routes.
+Case-study presentation is composed from reusable components for contribution breakdowns, code-architecture maps, evidence maturity maps, source-derived workflow maps, generated visual studies, and technology maps. The homepage includes a curated Writing section with links to verified public articles and author profiles. The IT-services platform overview, passwordless team-invitation slice, and backup/recovery operations case study remain draft-only and are excluded from public routes.
 
 Keep the homepage, experience section, and résumé aligned to these shared sources. Do not add unsupported metrics, testimonials, credentials, project status, or client disclosures. The supplied résumé does not include education history or language proficiency, so those sections are intentionally omitted.
 

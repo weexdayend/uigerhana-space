@@ -1,5 +1,6 @@
 import { PROFILE } from "@/data/profile";
 import { SITE_META } from "@/data/site";
+import { PUBLIC_PROFILES } from "@/data/writing";
 
 export function ContactAndFooter() {
   return (
@@ -27,7 +28,12 @@ export function ContactAndFooter() {
           <p className="font-pixel text-xl font-bold">{SITE_META.brand}</p>
           <p className="mt-1 text-xs text-[#e8e4d8]/45">{PROFILE.displayName} · {PROFILE.positioning} · {SITE_META.location}</p>
         </div>
-        <div className="flex items-center gap-5 text-xs text-[#e8e4d8]/55">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-xs text-[#e8e4d8]/55">
+          {PUBLIC_PROFILES.map((profile) => (
+            <a key={profile.id} href={profile.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[#f0b765]">
+              {profile.label} ↗
+            </a>
+          ))}
           <a href="#top" className="transition-colors hover:text-[#e8e4d8]">Back to top ↑</a>
           <a href="/cv" className="transition-colors hover:text-[#e8e4d8]">Résumé ↗</a>
         </div>
