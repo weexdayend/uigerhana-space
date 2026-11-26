@@ -1,44 +1,47 @@
-import React from "react";
-import { PROCESS_COPY } from "@/data/site";
-import { ProcessIcon } from "@/components/PixelGraphics";
+import { ENGINEERING_PRINCIPLES } from "@/data/approach";
 
 export function ProcessSection() {
   return (
     <section
-      id="process"
-      data-band="light"
-      className="bg-[#f2efe7] py-20 text-[#121518] sm:py-28"
+      id="approach"
+      data-band="dark"
+      className="bg-[#0b0e11] py-20 text-[#e8e4d8] sm:py-28"
     >
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
         <div className="grid items-end gap-6 lg:grid-cols-12">
           <div className="lg:col-span-6">
-            <h2 className="text-[clamp(2rem,3.6vw,3.1rem)] font-normal leading-[1.06] tracking-[-0.03em]">
-              {PROCESS_COPY.heading}
+            <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#f0b765]">
+              Engineering philosophy
+            </p>
+            <h2 className="mt-4 max-w-[13ch] text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
+              How I think about building software.
             </h2>
           </div>
-          <div className="lg:col-span-6">
-            <p className="max-w-[50ch] text-sm leading-[1.65] text-[#121518]/70 sm:text-[15px]">
-              {PROCESS_COPY.intro}
-            </p>
-          </div>
+          <p className="max-w-[50ch] text-sm leading-[1.75] text-[#e8e4d8]/65 sm:text-base lg:col-span-6 lg:justify-self-end">
+            Principles shaped by working with enterprise data, operational
+            workflows, user interfaces, intelligent automation, and production
+            systems.
+          </p>
         </div>
 
-        <div className="mt-14 grid gap-px border border-[#121518]/16 bg-[#121518]/16 sm:grid-cols-2 lg:grid-cols-4">
-          {PROCESS_COPY.steps.map((step) => (
-            <div key={step.id} className="flex flex-col bg-[#f2efe7] p-6">
-              <div className="flex items-center justify-between">
-                <ProcessIcon id={step.id} />
-                <span className="font-pixel text-xl font-bold text-[#121518]/20">
-                  {String(PROCESS_COPY.steps.indexOf(step) + 1).padStart(2, "0")}
-                </span>
+        <div className="mt-14 grid gap-px border border-[#e8e4d8]/18 bg-[#e8e4d8]/18 sm:grid-cols-2 lg:grid-cols-4">
+          {ENGINEERING_PRINCIPLES.map((principle) => (
+            <article
+              key={principle.id}
+              className="flex min-h-[240px] flex-col bg-[#0b0e11] p-6 sm:p-7"
+            >
+              <span className="font-pixel text-3xl text-[#f0b765]">
+                {principle.index}
+              </span>
+              <div className="mt-auto pt-12">
+                <h3 className="text-xl font-normal tracking-tight">
+                  {principle.title}
+                </h3>
+                <p className="mt-3 text-sm leading-[1.7] text-[#e8e4d8]/60">
+                  {principle.description}
+                </p>
               </div>
-              <h3 className="mt-5 text-lg font-normal tracking-tight text-[#121518]">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-sm leading-[1.6] text-[#121518]/70">
-                {step.description}
-              </p>
-            </div>
+            </article>
           ))}
         </div>
       </div>
