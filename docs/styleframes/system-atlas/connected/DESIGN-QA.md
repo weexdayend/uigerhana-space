@@ -21,6 +21,16 @@ The artboards are vector studies, not responsive browser implementations. Their 
 
 A follow-up static QA pass found missing leading text in several editorial SVGs: engineering-principle labels/descriptions, article titles/summaries, work-domain descriptions, role labels/highlights, skill prefixes, and motion-storyboard captions. These were restored or reflowed against the existing typed source records. See [Static SVG copy-integrity review](./COPY-INTEGRITY-REVIEW.md). This was source/text validation only; browser font metrics, visual overflow, and owner acceptance remain open.
 
+## Chromium static-artboard visual pass
+
+- [x] All ten connected SVG artboards rendered in Chromium with Manrope and Plus Jakarta Sans loaded.
+- [x] Text stays inside each SVG viewBox; no text-node bounding-box intersections remain.
+- [x] Tablet hero route/headline clearance, desktop introduction/panel clearance, and component-card action inset have explicit regression assertions.
+- [x] Post-fix run 45902670980 passed: 32 Playwright tests, typecheck, lint, static copy/SVG integrity, and production build.
+- [ ] Owner visual acceptance of the connected direction remains open.
+
+See [Static artboard visual review](./VISUAL-REVIEW.md) for the three corrected defects, artboard-by-artboard notes, evidence, and remaining gates. The Chromium checks cover static SVG rendering; they do not prove production CSS reflow, zoom behavior, native print output, or live interactive semantics.
+
 ## Owner review checklist
 
 ### Identity and hierarchy
