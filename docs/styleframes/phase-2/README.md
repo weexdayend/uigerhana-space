@@ -61,7 +61,7 @@ Scores are qualitative design-review estimates on a 1–10 scale, assigned again
 | Evidence compatibility | 15% | 8 | 9 | 6 | 9 |
 | Extensibility | 10% | 9 | 9 | 7 | 8 |
 | Accessibility/performance | 10% | 8 | 9 | 8 | 8 |
-| **Weighted result / 10** | **100%** | **8.15** | **8.35** | **7.55** | **8.40** |
+| **Weighted result / 10** | **100%** | **8.15** | **8.35** | **7.60** | **8.40** |
 
 ### Score rationale and trade-offs
 
@@ -102,6 +102,17 @@ All concepts support the same next-step cue, “How the work connects.” This i
 - **Typography:** SVG font families are portability fallbacks, not recommendations or token decisions.
 - **Phase 1:** remains open; static concept research proceeds in parallel without sign-off.
 - **Production boundary:** no `src/`, `app/`, CSS, components, profile data, dependency or publication status was changed.
+
+## Exact-commit CI evidence
+
+**Validated PR head:** `c414d4f958d3c2bb24b7388d5f856c799cdbb1d7`  
+**GitHub Actions run:** [Run #120](https://github.com/weexdayend/uigerhana-space/actions/runs/45890536683) — completed successfully.  
+**Browser QA artifact:** `portfolio-browser-qa-7a7df46ba71fb2c4f034a0ad9649c9eb02814820` (Playwright report, screenshots, traces, and print-preview PDF).
+
+- Typecheck, publication checks, lint, and production build: passed.
+- Playwright runtime suite: **31 expected / 31 total**, 0 unexpected, 0 flaky, 0 skipped.
+- Axe-core: eight automated accessibility scans completed successfully within the configured route/viewport scope.
+- This CI validates the existing site runtime and does not constitute browser-rendered visual QA of these standalone SVG styleframes, real-device owner review, literal browser zoom/OS text scaling, native print-dialog validation, or production deployment parity.
 
 ## Validation notes
 
