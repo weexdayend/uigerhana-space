@@ -5,9 +5,13 @@ const VIEWPORTS = [
   { name: "wide desktop", width: 1440, height: 900 },
   { name: "laptop", width: 1280, height: 800 },
   { name: "tablet landscape", width: 1024, height: 768 },
-  { name: "tablet portrait", width: 768, height: 1024 },
-  { name: "mobile", width: 390, height: 844 },
+  { name: "tablet portrait authored width", width: 834, height: 1112 },
+  { name: "narrow tablet", width: 768, height: 1024 },
+  { name: "large mobile", width: 430, height: 932 },
+  { name: "mobile reference", width: 390, height: 844 },
   { name: "small mobile", width: 360, height: 800 },
+  { name: "narrow reflow", width: 320, height: 800 },
+  { name: "short mobile", width: 390, height: 667 },
 ] as const;
 const ROUTES = ["/", "/work", "/work/uigerhana-space", "/cv"] as const;
 const A11Y_VIEWPORTS = [
@@ -191,10 +195,7 @@ test.describe("visual state captures", () => {
 
 test.describe("route runtime smoke", () => {
   for (const route of ROUTES) {
-    for (const viewport of [
-      { name: "desktop", width: 1440, height: 900 },
-      { name: "mobile", width: 390, height: 844 },
-    ]) {
+    for (const viewport of VIEWPORTS) {
       test(`${route} responds and retains main content at ${viewport.name}`, async ({ page }) => {
         await page.setViewportSize({ width: viewport.width, height: viewport.height });
         const response = await page.goto(route, { waitUntil: "domcontentloaded" });
@@ -383,22 +384,83 @@ test.describe("keyboard and motion behavior", () => {
     }
   });
 
-  test("CV print stylesheet removes controls and produces a valid A4 PDF", async ({ page }, testInfo) => {
+  test("200% root-font-size stress keeps primary headings and routes readable", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+
+    for (const route of ROUTES) {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await page.addStyleTag({
+        content: "html { font-size: 200% !important; }",
+      });
+      await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
+
+      const layout = await page.evaluate(() => {
+        const heading = document.querySelector<HTMLElement>("main h1");
+        const headingBox = heading?.getBoundingClientRect();
+        const clippedHeadings = Array.from(document.querySelectorAll<HTMLElement>("main h1, main h2"))
+          .filter((element) => element.scrollWidth > element.clientWidth + 1)
+          .map((element) => element.innerText.trim().slice(0, 80));
+        return {
+          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          viewportWidth: document.documentElement.clientWidth,
+          documentWidth: document.documentElement.scrollWidth,
+          bodyWidth: document.body.scrollWidth,
+          headingWithinViewport: Boolean(
+            headingBox &&
+            headingBox.left >= -1 &&
+            headingBox.right <= document.documentElement.clientWidth + 1
+          ),
+          clippedHeadings,
+        };
+      });
+
+      expect(layout.rootFontSize).toBeGreaterThanOrEqual(32);
+      expect(layout.documentWidth, `Document overflow at 200% root-font-size on ${route}`).toBeLessThanOrEqual(layout.viewportWidth + 1);
+      expect(layout.bodyWidth, `Body overflow at 200% root-font-size on ${route}`).toBeLessThanOrEqual(layout.viewportWidth + 1);
+      expect(layout.headingWithinViewport, `Primary heading escapes the viewport on ${route}`).toBe(true);
+      expect(layout.clippedHeadings, `Heading text is clipped at 200% root-font-size on ${route}`).toEqual([]);
+    }
+  });
+
+  test("CV print media hides browser controls and preserves all résumé sections", async ({ page }) => {
     await page.setViewportSize({ width: 1200, height: 900 });
     await page.goto("/cv", { waitUntil: "domcontentloaded" });
     await expect(page.getByRole("button", { name: /Print \/ Save PDF/ })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Professional Experience" })).toBeVisible();
 
     await page.emulateMedia({ media: "print" });
     await expect(page.getByRole("button", { name: /Print \/ Save PDF/ })).toBeHidden();
-    const printLayout = await page.evaluate(() => ({
-      pageBackground: getComputedStyle(document.body).backgroundColor,
-      articleWidth: document.querySelector("article")?.getBoundingClientRect().width ?? 0,
-      documentWidth: document.documentElement.scrollWidth,
-      viewportWidth: document.documentElement.clientWidth,
-    }));
+    await expect(page.getByRole("link", { name: /Back to uigerhana.space/ })).toBeHidden();
+
+    for (const heading of [
+      "Professional Experience",
+      "Technical Skills",
+      "Certification",
+      "Technical Leadership & Publications",
+    ]) {
+      await expect(page.getByRole("heading", { name: heading })).toBeVisible();
+    }
+
+    const printLayout = await page.evaluate(() => {
+      const article = document.querySelector("article");
+      return {
+        background: getComputedStyle(document.body).backgroundColor,
+        articleBackground: article ? getComputedStyle(article).backgroundColor : "",
+        articleBorder: article ? getComputedStyle(article).borderTopWidth : "",
+        articleWidth: article?.getBoundingClientRect().width ?? 0,
+        documentWidth: document.documentElement.scrollWidth,
+        viewportWidth: document.documentElement.clientWidth,
+      };
+    });
     expect(printLayout.articleWidth).toBeGreaterThan(0);
+    expect(printLayout.articleBorder).toBe("0px");
     expect(printLayout.documentWidth).toBeLessThanOrEqual(printLayout.viewportWidth + 1);
+  });
+
+  test("CV Chromium print output produces a valid two-page A4 PDF", async ({ page, browserName }, testInfo) => {
+    test.skip(browserName !== "chromium", "Playwright page.pdf is Chromium-only; other engines run print-media checks above.");
+    await page.setViewportSize({ width: 1200, height: 900 });
+    await page.goto("/cv", { waitUntil: "domcontentloaded" });
+    await page.emulateMedia({ media: "print" });
 
     const pdfPath = testInfo.outputPath("irvan-gerhana-cv-print-preview.pdf");
     const pdf = await page.pdf({ path: pdfPath, format: "A4", printBackground: true });

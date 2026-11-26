@@ -50,7 +50,7 @@ jobs:
   browser-qa:
     name: Runtime visual and accessibility QA
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 50
 
     steps:
       - name: Checkout
@@ -71,8 +71,8 @@ jobs:
       - name: Typecheck browser tests
         run: npm run typecheck:e2e
 
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Install Chromium, Firefox, and WebKit
+        run: npx playwright install --with-deps chromium firefox webkit
 
       - name: Build production application
         run: npm run build
