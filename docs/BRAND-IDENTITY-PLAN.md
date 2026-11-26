@@ -56,7 +56,7 @@ Exit criteria:
 - [x] Existing content-integrity safeguards remain authoritative.
 
 ## Phase 1 — Current experience and content audit
-**Status:** Static source inventory, exact-SHA Chromium/axe runtime suite, route-wide keyboard traversal, reduced-motion desktop/mobile, effective 200%-width reflow, and two-page A4 CV print-preview checks are complete. The final automated run passed 31 tests with no failures or flaky retries on `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a` ([push 45886068015](https://github.com/weexdayend/uigerhana-space/actions/runs/45886068015), [PR 45886076242](https://github.com/weexdayend/uigerhana-space/actions/runs/45886076242)). Manual screen-reader, physical-device, literal browser zoom, production-domain, and owner validation remain open. See `docs/CURRENT-EXPERIENCE-AUDIT.md` and `docs/RUNTIME-QA-BASELINE.md`.
+**Status:** Static source inventory, the exact-SHA Chromium/axe runtime suite, route-wide keyboard traversal, reduced-motion desktop/mobile, effective 200%-width reflow, screenshot review, and the two-page A4 CV print-preview check are complete. The runtime suite passed 31 Playwright tests with 0 failures and 0 flaky retries on `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a` ([push 45886068015](https://github.com/weexdayend/uigerhana-space/actions/runs/45886068015), [PR 45886076242](https://github.com/weexdayend/uigerhana-space/actions/runs/45886076242)). On 2026-11-27, the owner confirmed that real-device checks and assistive-technology checks are complete. This is recorded as a category-level owner attestation; device, OS/browser, assistive-technology versions, scenarios, and detailed results were not supplied. Phase 1 remains open for literal browser 200% zoom/OS text scaling, native print-dialog behavior, production-domain/commit parity, the public contact-channel decision, and owner acceptance of the prioritized findings. Cross-browser coverage beyond the owner's unspecified checks is not inferred. See `docs/CURRENT-EXPERIENCE-AUDIT.md` and `docs/RUNTIME-QA-BASELINE.md`.
 
 
 **Goal:** understand what already exists before changing the design.
@@ -82,7 +82,7 @@ Exit criteria:
 - The highest-impact experience problems are prioritized.
 
 ## Phase 2 — Creative concept exploration
-**Exploration brief prepared:** `docs/CREATIVE-CONCEPT-EXPLORATION.md` (v0.1). Four territories are documented for comparison; no direction is selected. Formal concept review remains subject to the open Phase 1 manual accessibility, production, and owner-validation items; the automated runtime and screenshot-review work has been completed.
+**Exploration brief prepared:** `docs/CREATIVE-CONCEPT-EXPLORATION.md` (v0.2). Four territories are documented for comparison; no direction is selected. The owner-confirmed real-device and assistive-technology checks remove two previously open manual items. Static styleframe exploration may proceed as non-binding design research, but concept selection, token approval, and UI implementation remain gated on the outstanding Phase 1 production, zoom/print, contact-channel, and owner-acceptance items.
 
 
 **Goal:** find a distinct visual territory that grows from Gerhana's identity rather than copying a popular style.
@@ -322,10 +322,10 @@ A visual effect must not compromise a higher-priority item.
 
 ## 7. Immediate next action
 
-Complete manual VoiceOver/NVDA (or TalkBack), physical touch-device, literal browser 200% zoom/text scaling, and native print-dialog checks. Verify the production domain and commit parity, confirm the preferred public contact-channel decision, and review findings with the owner. The concept exploration brief may be used as preparation, but do not select a visual direction until the Phase 1 review is genuinely closed.
+Finish the remaining Phase 1 checks: literal browser 200% zoom/OS text scaling, native print-dialog behavior, production-domain/commit parity, the preferred public contact-channel decision, and owner review of the prioritized findings. The real-device and assistive-technology checks are owner-confirmed complete; do not ask the owner to repeat them unless new evidence shows a gap.
 
-Then produce comparable static hero studies for the four territories using the shared copy and frame defined in `docs/CREATIVE-CONCEPT-EXPLORATION.md`. Review the whole experience—not just the hero—before approving an art direction.
+In parallel, produce four comparable **static, non-binding** hero styleframe studies using the shared copy and frame in `docs/CREATIVE-CONCEPT-EXPLORATION.md`. Use the same copy, hierarchy, viewport, and content density so the visual territory—not wording or layout changes—is what gets compared. Include the top of the next section and keep conceptual art clearly separate from real product evidence.
 
-Do not create another hero implementation yet. Concept exploration should use consistent copy, viewport, and information hierarchy so the visual direction—not changing content or layout—is what gets evaluated.
+Do not select a winner, approve permanent tokens, change public copy, implement a new hero, or alter application UI until the remaining Phase 1 gates are closed and the owner explicitly approves a direction. Review the connected experience, not just the hero.
 
 **End of roadmap — v1.0**

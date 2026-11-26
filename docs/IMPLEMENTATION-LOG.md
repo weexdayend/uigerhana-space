@@ -497,3 +497,29 @@ See `docs/RUNTIME-QA-BASELINE.md` for the full viewport matrix, automated scope,
 The effective-width test is not a literal browser zoom-control or OS text-scaling test. CI does not replace VoiceOver/NVDA/TalkBack, physical touch-device review, Safari/WebKit/Firefox, native print-dialog behavior, production-domain parity, or owner acceptance. The live domain remained inaccessible through the available inspection path; no production deployment claim is made.
 
 See `docs/RUNTIME-QA-BASELINE.md` for the exact test scope and remaining manual sign-off matrix.
+
+## 2026-11-27 — Owner confirmation: real-device and assistive-technology checks
+
+**Scope:** Phase 1 manual QA status correction and Phase 2 handoff  
+**Status:** owner-reported real-device and assistive-technology checks complete; Phase 1 overall sign-off remains open
+
+### Owner-confirmed
+
+- The owner confirmed that real-device checks are complete.
+- The owner confirmed that assistive-technology checks are complete.
+- These are recorded as category-level owner attestations dated 2026-11-27.
+
+### Evidence boundary
+
+- No device models, OS/browser versions, assistive-technology products/versions, tested routes or workflows, or detailed findings were provided in this handoff.
+- No specific browser matrix, WCAG conformance claim, or complete accessibility sign-off is inferred from the confirmation.
+- Literal browser 200% zoom/OS text scaling, native print-dialog behavior, desktop pinned-story interaction, production-domain/commit parity, public contact-channel selection, and owner acceptance of prioritized findings remain open.
+- The live production domain and deployed commit were not verified in this documentation update.
+
+### Roadmap handoff
+
+- Updated the Phase 1 status in the roadmap, runtime QA baseline, current-experience audit, and creative-concept brief.
+- Allowed four static concept styleframes to proceed as non-binding exploration in parallel.
+- Preserved the prohibition on concept selection, permanent token approval, public-copy changes, and application UI implementation before the remaining Phase 1 gates and explicit owner approval.
+
+No application code, website UI, public copy, contact details, project evidence, publication state, or deployment configuration changed.

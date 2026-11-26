@@ -3,7 +3,11 @@
 **Date:** 2026-11-27  
 **Validated commit:** `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a`  
 **Automated status:** 31 Playwright tests passed in Chromium on both push and pull-request runs; 0 failed, 0 flaky. Axe reported no violations in its declared scan scope.  
-**Human review status:** Six homepage viewport captures, desktop/mobile story stages, final mobile collision fixes, and the final two-page A4 CV PDF have been reviewed. Manual assistive-technology, physical-device, literal browser-zoom, production, and owner sign-off remain open.
+**Human review status:** Six homepage viewport captures, desktop/mobile story stages, final mobile collision fixes, and the final two-page A4 CV PDF have been reviewed. On 2026-11-27, the owner confirmed completion of real-device checks and assistive-technology checks. Literal browser zoom/text scaling, native print-dialog behavior, production parity, and remaining owner decisions are still open.
+
+## Owner-confirmed manual checks — 2026-11-27
+
+The owner reports that real-device checks and assistive-technology checks have been completed. This repository update records that confirmation at category level only. No device model, OS/browser version, assistive-technology product/version, tested routes or workflows, or detailed findings were included in the handoff; none are inferred here. This confirmation closes the corresponding physical-device and assistive-technology items in the manual matrix below, but it does not establish cross-browser coverage, literal 200% zoom, OS-level text scaling, native print-dialog behavior, or production deployment parity.
 
 ## 1. Correction to the previous audit status
 
@@ -110,15 +114,13 @@ These are targeted usability/accessibility repairs, not a visual redesign or bra
 ## 6. What automated tests and screenshot review do not prove
 
 - Whether the entire visual composition is polished against an approved design reference; no pixel-diff reference exists.
-- Real-device Safari/WebKit or Firefox behavior.
-- Physical touch-device interaction.
+- Cross-browser Safari/WebKit or Firefox behavior beyond the owner's unspecified real-device checks; no browser/platform matrix is recorded here.
 - A full manual keyboard review in the owner's day-to-day browser environment.
-- Screen-reader usability with VoiceOver, NVDA, or TalkBack.
 - Literal browser 200% zoom, OS-level text scaling, or high-contrast modes.
 - Native browser print dialog and operating-system Save as PDF behavior on the owner's device.
 - Production deployment health or whether the live domain serves this validated commit.
 
-Axe and scripted keyboard tests are not substitutes for assistive-technology testing or manual review.
+Axe and scripted keyboard tests are not substitutes for assistive-technology testing or manual review. The owner has separately confirmed assistive-technology and real-device checks are complete; this baseline records that as an owner attestation rather than a reproducible device/AT test matrix.
 
 ## 7. Remaining manual sign-off matrix
 
@@ -129,9 +131,9 @@ Axe and scripted keyboard tests are not substitutes for assistive-technology tes
 - [x] Run four-route axe and reflow checks at the effective 720 × 450 CSS viewport.
 - [x] Generate, count, and visually review the two-page A4 CV PDF from the production browser build.
 - [ ] Manually operate desktop ScrollTrigger pinning, progress feedback, and final-panel reachability in the owner's interactive browser.
-- [ ] Test on a physical touch device.
+- [x] Complete real-device checks (owner-confirmed 2026-11-27; device/browser matrix and detailed results were not supplied).
 - [ ] Test literal 200% browser zoom / text scaling on the owner's browser and OS.
-- [ ] Test at least one screen reader (VoiceOver, NVDA, or TalkBack) for landmarks, headings, navigation, story region, and CV controls.
+- [x] Complete assistive-technology checks (owner-confirmed 2026-11-27; exact AT product/version, workflows, and detailed results were not supplied).
 - [ ] Review native browser print/Save PDF flow on the owner's device.
 - [ ] Verify the deployed production domain and its commit.
 - [ ] Confirm the preferred direct public contact channel and complete owner acceptance.
@@ -140,6 +142,6 @@ Axe and scripted keyboard tests are not substitutes for assistive-technology tes
 
 The **automated Chromium runtime gate** is complete for commit `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a`: both exact-SHA CI triggers are green, all 31 Playwright tests pass without retries/flakiness, declared axe scans report no violations, and the final screenshots/PDF have been reviewed.
 
-The broader **Phase 1 experience and accessibility sign-off remains open** until the outstanding assistive-technology, physical-device, literal zoom, native print, production-domain, and owner checks above are recorded.
+The broader **Phase 1 experience and accessibility sign-off remains open** until the remaining literal zoom/text-scaling, native print-dialog, production-domain/commit-parity, contact-channel, desktop interaction, cross-browser (where required), and owner-acceptance checks above are recorded. The real-device and assistive-technology categories are owner-confirmed complete, with no detailed matrix supplied.
 
 **Build success is not runtime QA. Automated runtime success is not full accessibility or design sign-off.**

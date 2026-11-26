@@ -46,7 +46,7 @@ npm run build
 npm run test:e2e
 ```
 
-The suite covers desktop/tablet/mobile viewport behavior, route smoke checks, selected keyboard and reduced-motion flows, and axe-core WCAG A/AA checks. GitHub Actions uploads screenshots and traces as artifacts. These automated checks do not replace manual screenshot review, real-device testing, screen-reader testing, or 200% zoom review. See `docs/RUNTIME-QA-BASELINE.md`.
+The suite covers desktop/tablet/mobile viewport behavior, route smoke checks, selected keyboard and reduced-motion flows, and axe-core WCAG A/AA checks. GitHub Actions uploads screenshots and traces as artifacts. The owner has confirmed that real-device and assistive-technology checks are complete; literal 200% zoom/text scaling and native print-dialog checks remain open. See `docs/RUNTIME-QA-BASELINE.md` for exact scope and evidence boundaries.
 
 ## Routes
 
