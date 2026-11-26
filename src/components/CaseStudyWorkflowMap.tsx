@@ -40,7 +40,7 @@ export function CaseStudyWorkflowMap({
 
       <div className="mt-8">
         <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#8a5a20]">
-          Identity paths
+          {workflow.branchHeading ?? "Workflow paths"}
         </p>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
           {workflow.branches.map((branch) => (

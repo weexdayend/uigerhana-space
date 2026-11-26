@@ -10,7 +10,9 @@ export type CaseStudyEvidenceStatus =
   | "built-local"
   | "tested-local"
   | "not-verified"
-  | "not-released";
+  | "not-released"
+  | "owner-accepted"
+  | "runtime-verified";
 
 export interface CaseStudyEvidenceItem {
   id: string;
@@ -34,6 +36,7 @@ export interface CaseStudyWorkflowBranch {
 export interface CaseStudyWorkflowDiagram {
   title: string;
   description: string;
+  branchHeading?: string;
   stages: CaseStudyWorkflowStage[];
   branches: CaseStudyWorkflowBranch[];
   safeguards: string[];
@@ -566,6 +569,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     },
     workflowDiagram: {
       title: "From invite to active membership",
+      branchHeading: "Identity paths",
       description:
         "Implementation-derived workflow map based on the reviewed source and S1.3 patch record. It is a technical flow illustration, not a screenshot of the application.",
       stages: [
@@ -701,6 +705,272 @@ export const CASE_STUDIES: CaseStudy[] = [
         category: "Messaging",
         purpose: "Transactional invitation notification",
         technologies: ["Transactional outbox", "Email adapter"],
+      },
+    ],
+  },
+
+  {
+    slug: "verifiable-backup-and-recovery-operations",
+    title: "Building a verifiable backup and recovery workflow",
+    eyebrow: "Production engineering · Operational evidence · Draft",
+    summary:
+      "A PostgreSQL backup and recovery workflow that validates archive integrity, rehearses restore in an isolated disposable database, and adds scheduled off-site copies with controlled retention.",
+    publicationStatus: "draft",
+    projectStatus: "in-progress",
+    context: "Independent product initiative · S0.10 backup integrity and isolated restore · S0.11 scheduled backup operations",
+    role:
+      "Engineering and operational workflow contribution represented in the owner acceptance and runtime records. Exact personal contribution boundaries and any team context remain subject to owner review.",
+    challenge: {
+      heading: "The reliability problem",
+      paragraphs: [
+        "A successful database dump is not enough to establish recoverability. An operational backup must be readable, checksummed, safely stored, and proven to restore without touching the production database.",
+        "The workflow also needs to distinguish a verified backup from a verified recovery, and a remote object read-back from a complete external disaster-recovery drill.",
+      ],
+    },
+    approach: {
+      heading: "Integrity before retention",
+      paragraphs: [
+        "Treat every backup as an artifact set: a PostgreSQL custom-format archive, a checksum sidecar, and a non-secret manifest. Validate the local archive, copy it to remote object storage, read the exact artifact back, compare integrity evidence, and only then record the remote-copy marker.",
+        "Keep restore rehearsal separate from production. Use a disposable PostgreSQL instance with no network and no published ports, restore the archive in a transaction, and verify the resulting schemas and relations before checking production service health.",
+      ],
+      bullets: [
+        "Serialize backup, verification, upload, retention, and restore operations with a shared lock.",
+        "Apply resource and health guards before backup/restore work.",
+        "Require exact remote read-back before a local artifact becomes eligible for retention.",
+        "Keep remote snapshot pruning and external recovery acceptance as independent gates.",
+      ],
+    },
+    implementation: {
+      heading: "Implementation",
+      paragraphs: [
+        "The reviewed source includes backup, verification, and isolated-restore scripts; a scheduled orchestrator; systemd service/timer units; off-site object-storage upload; Restic-backed snapshots; guarded local retention; and operational notifications.",
+        "The accepted S0.10 restore used PostgreSQL 17.11 in an ephemeral container with networking disabled and no published ports. The restore ran with bounded CPU/memory and an anonymous temporary data volume.",
+        "S0.11 adds scheduled operation and off-site object read-back. Its later runtime addendum records a natural scheduled invocation, remote archive/checksum read-back, a delivered success notification, and one guarded local retention apply.",
+      ],
+      bullets: [
+        "PostgreSQL custom-format archive and pg_restore validation.",
+        "SHA-256 sidecar and non-secret manifest.",
+        "Docker-isolated restore execution.",
+        "systemd scheduling and service lifecycle.",
+        "Restic-backed remote object storage and read-back verification.",
+        "Guarded retention and operational alerting.",
+      ],
+    },
+    currentState: {
+      heading: "Accepted restore, open disaster-recovery gate",
+      paragraphs: [
+        "S0.10 was explicitly owner-accepted and closed on 12 November 2026. Its evidence records a readable PostgreSQL 17.11 archive, a matching off-host workstation copy, and a successful isolated restore with two of two user schemas and nine of nine user relations restored, including the platform schema.",
+        "S0.11's 14 November runtime addendum records the first natural scheduled backup invocation, successful service completion, off-site snapshot listing and archive/checksum read-back, a delivered operational success alert, and a local retention apply that removed one eligible older artifact group after final remote read-back while keeping the two newest local groups.",
+        "The S0.10 workstation copy was off-host from the VPS, but it was not geographic or cloud off-site storage. S0.11 later adds remote object storage; remote read-back is still not an external PostgreSQL restore.",
+        "The external disposable recovery environment has not been provisioned, no external restore drill has been completed, and the approved 24-hour RPO and 24-hour RTO objectives remain unmeasured. The current checkpoint still treats S0.11 as open, with explicit owner acceptance outstanding. No remote snapshot prune is claimed.",
+      ],
+    },
+    contributions: [
+      {
+        area: "Backup integrity contract",
+        description:
+          "Defined the archive, checksum, and manifest as one verifiable backup artifact set, with readable-archive and integrity checks before it can be treated as valid.",
+      },
+      {
+        area: "Isolated recovery rehearsal",
+        description:
+          "Designed a disposable PostgreSQL restore path with no network or published ports, bounded resources, ephemeral storage, and post-restore schema/relation verification.",
+      },
+      {
+        area: "Off-site copy verification",
+        description:
+          "Added remote snapshot selection and exact artifact read-back so the remote copy is checked against local integrity evidence before its marker is recorded.",
+      },
+      {
+        area: "Retention safety",
+        description:
+          "Separated local retention from remote pruning and required a final remote read-back before removing an eligible local artifact group.",
+      },
+      {
+        area: "Operational visibility",
+        description:
+          "Added scheduled execution and lifecycle notifications while keeping successful backup execution distinct from restore and disaster-recovery acceptance.",
+      },
+    ],
+    architectureDiagram: {
+      title: "From database archive to recoverability evidence",
+      description:
+        "A source-derived view of the backup and restore controls. Remote copy verification and isolated PostgreSQL restore are separate evidence paths; neither is silently substituted for the other.",
+      stages: [
+        {
+          label: "Database",
+          description: "Production data source",
+          items: [
+            "Health and resource preflight",
+            "Serialized operation",
+            "FlowlessHub-scoped backup",
+          ],
+        },
+        {
+          label: "Integrity package",
+          description: "Local artifact set",
+          items: [
+            "PostgreSQL archive",
+            "SHA-256 sidecar",
+            "Non-secret manifest",
+          ],
+        },
+        {
+          label: "Remote copy",
+          description: "Object storage verification",
+          items: [
+            "Tagged snapshot",
+            "Exact artifact read-back",
+            "Checksum comparison",
+          ],
+        },
+        {
+          label: "Restore proof",
+          description: "Isolated disposable database",
+          items: [
+            "No network / no ports",
+            "Transactional restore",
+            "Schema and relation checks",
+          ],
+        },
+      ],
+    },
+    workflowDiagram: {
+      title: "Backup, verify, and rehearse recovery",
+      description:
+        "The two operational paths share the same artifact-integrity contract but prove different things: remote-copy integrity and database restore capability.",
+      branchHeading: "Operational paths",
+      stages: [
+        {
+          title: "Preflight",
+          description:
+            "Check database health, host resources, runtime boundaries, and the shared operation lock before starting.",
+        },
+        {
+          title: "Create archive",
+          description:
+            "Produce a custom-format PostgreSQL archive with a SHA-256 sidecar and non-secret manifest.",
+        },
+        {
+          title: "Verify copy",
+          description:
+            "Read the exact remote artifact back and compare its integrity evidence before recording the remote-copy marker.",
+        },
+        {
+          title: "Control retention",
+          description:
+            "Re-check local files and remote snapshot evidence before local deletion; keep remote pruning separately gated.",
+        },
+      ],
+      branches: [
+        {
+          title: "Off-site backup path",
+          description:
+            "The scheduled service creates and verifies an archive, then proves the uploaded copy can be read back from the selected snapshot.",
+          steps: [
+            "Run the scheduled backup and local archive verifier",
+            "Upload the artifact set to remote object storage",
+            "Read the exact archive and checksum sidecar back",
+            "Compare integrity evidence and record the verified-copy marker",
+          ],
+          outcome:
+            "A remotely readable, checksum-matched backup copy is recorded. This is not an external PostgreSQL restore.",
+        },
+        {
+          title: "Isolated restore path",
+          description:
+            "A disposable database validates that the backup can be restored without connecting to production or exposing a network endpoint.",
+          steps: [
+            "Start an ephemeral PostgreSQL 17.11 container with network disabled",
+            "Restore with pg_restore --exit-on-error --single-transaction",
+            "Verify user schemas, relations, and the platform schema",
+            "Re-check production health and workload isolation",
+          ],
+          outcome:
+            "S0.10 restore was owner-accepted with 2/2 schemas and 9/9 relations restored.",
+        },
+      ],
+      safeguards: [
+        "Never restore into the production database.",
+        "The restore container had no network, no published ports, and an anonymous ephemeral data volume.",
+        "CPU, memory, swap, host-health, and disk guards constrain operational work.",
+        "A shared lock serializes backup, verification, off-site, retention, and restore operations.",
+        "Local retention requires final remote read-back; remote snapshot pruning remains a separate gate.",
+        "Production application color and unrelated workloads were preserved during the accepted S0.10 drill.",
+      ],
+    },
+    evidenceMap: [
+      {
+        id: "s010-restore",
+        claim: "S0.10 archive integrity and isolated PostgreSQL restore",
+        status: "owner-accepted",
+        explanation:
+          "The owner accepted and closed S0.10 on 12 November 2026. The acceptance record reports a readable archive, matching off-host workstation copy, and successful isolated restore with 2/2 schemas and 9/9 relations.",
+      },
+      {
+        id: "s011-scheduled-run",
+        claim: "Natural scheduled backup invocation",
+        status: "runtime-verified",
+        explanation:
+          "The 14 November runtime addendum records the timer as active/enabled and a natural timer-originated invocation completing successfully.",
+      },
+      {
+        id: "s011-remote-readback",
+        claim: "Off-site snapshot and remote artifact read-back",
+        status: "runtime-verified",
+        explanation:
+          "The runtime addendum records the remote snapshot listing, archive/checksum-sidecar read-back, matching integrity evidence, and a written upload marker.",
+      },
+      {
+        id: "s011-local-retention",
+        claim: "Guarded local retention apply",
+        status: "runtime-verified",
+        explanation:
+          "One eligible older local artifact group was removed only after final remote read-back; the two newest local groups were kept. No remote snapshot pruning was performed.",
+      },
+      {
+        id: "s011-external-restore",
+        claim: "External disposable restore and measured recovery objectives",
+        status: "acceptance-open",
+        explanation:
+          "The external recovery environment was not provisioned, no external restore drill was completed, and the approved 24-hour RPO/RTO objectives remain unmeasured.",
+      },
+      {
+        id: "s011-owner-acceptance",
+        claim: "S0.11 explicit owner acceptance",
+        status: "acceptance-open",
+        explanation:
+          "The current checkpoint keeps S0.11 open pending external recovery evidence and explicit owner acceptance.",
+      },
+      {
+        id: "s011-publication",
+        claim: "Public product attribution and approved operational visuals",
+        status: "publication-pending",
+        explanation:
+          "The source repository is private. Product identity, exact personal/team contribution, and any public screenshot or sanitized evidence artifact remain uncleared.",
+      },
+    ],
+    visualStudies: [],
+    technologyGroups: [
+      {
+        category: "Database and archive",
+        purpose: "Consistent backup and restore verification",
+        technologies: ["PostgreSQL 17.11", "pg_dump / pg_restore", "SHA-256"],
+      },
+      {
+        category: "Isolation and scheduling",
+        purpose: "Disposable execution and controlled service lifecycle",
+        technologies: ["Docker", "systemd", "Bash"],
+      },
+      {
+        category: "Off-site storage",
+        purpose: "Remote snapshots and artifact read-back",
+        technologies: ["Restic", "S3-compatible object storage"],
+      },
+      {
+        category: "Operations",
+        purpose: "Retention safety and event notifications",
+        technologies: ["Guarded retention", "Operational alerting"],
       },
     ],
   },

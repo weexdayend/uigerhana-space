@@ -9,6 +9,8 @@ const STATUS_LABELS: Record<CaseStudyEvidenceStatus, string> = {
   "tested-local": "Tested locally",
   "not-verified": "Not verified",
   "not-released": "Not released",
+  "owner-accepted": "Owner accepted",
+  "runtime-verified": "Runtime verified",
 };
 
 const STATUS_STYLES: Record<CaseStudyEvidenceStatus, string> = {
@@ -20,6 +22,8 @@ const STATUS_STYLES: Record<CaseStudyEvidenceStatus, string> = {
   "tested-local": "border-[#52745c]/35 text-[#43634c]",
   "not-verified": "border-[#8a5a20]/30 text-[#8a5a20]",
   "not-released": "border-[#121518]/20 text-[#585f5e]",
+  "owner-accepted": "border-[#52745c]/35 text-[#43634c]",
+  "runtime-verified": "border-[#52745c]/35 text-[#43634c]",
 };
 
 export function CaseStudyEvidenceMap({
