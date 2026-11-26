@@ -1,12 +1,13 @@
 # UI Gerhana — Master Implementation Brief
 
-**Document version:** 1.0  
-**Status:** Approved foundation; implementation brief  
+**Document version:** 1.1  
+**Status:** Content, evidence, and implementation baseline; brand identity governed by BRAND-IDENTITY-SPEC v1.0  
 **Prepared:** 2026-11-26  
+**Brand identity revision:** 2026-11-27  
 **Repository:** \`weexdayend/uigerhana-space\`  
-**Working branch:** \`work/uigerhana-personal-identity-v1\`  
+**Baseline branch:** \`main\`  
 **Base branch:** \`main\`  
-**Base commit:** \`52abff0e783366fd7c73231d492ae3a9883908da\`
+**Baseline commit:** \`34553f2df728c47a71965cbef422563a040bd139\`
 
 ---
 
@@ -14,7 +15,7 @@
 
 This document is the implementation contract for reshaping **uigerhana.space** into Irvan Gerhana's personal professional platform: a coherent identity, portfolio, professional profile, and résumé experience.
 
-This is not an agency rebrand and not a visual rewrite from zero. The existing visual language is a strong foundation. The work is primarily a narrative, information-architecture, content-integrity, and product-experience reconstruction, followed by targeted technical refinement.
+This brief remains the factual, content-governance, information-architecture, and technical implementation baseline for uigerhana.space. The brand and visual direction has since been reopened. Use `docs/BRAND-IDENTITY-SPEC.md` as the current source of truth for identity, perception, experience, visual principles, voice, and motion; use `docs/BRAND-IDENTITY-PLAN.md` for the staged creative and implementation process. Earlier visual assumptions in this brief are historical and must not constrain the new identity.
 
 The site must let a visitor understand:
 
@@ -439,38 +440,40 @@ Before release:
 - Confirm whether project/client names may be published.
 - Confirm education and language details if the owner wants them included.
 
-## 10. Visual direction and design constraints
+## 10. Visual direction and brand identity governance
 
-### 10.1 Preserve the current visual foundation
+The earlier version of this brief treated the existing Obsidian / Stone / Amber palette, Geist typography, Pixelify Sans, Bayer dithering, and pixel geometry as the visual foundation to preserve. That was an implementation-era direction, not a permanent definition of the Gerhana brand.
 
-The following should remain recognizable:
+As of 27 November 2026, the visual direction has been reopened and is governed by:
 
-| Element | Existing direction |
-|---|---|
-| Primary dark | Obsidian \`#0b0e11\` |
-| Primary light | Stone \`#f2efe7\` |
-| Text on dark | Bone \`#e8e4d8\` |
-| Accent | Amber \`#f0b765\` |
-| Core sans | Geist |
-| Monospace | Geist Mono |
-| Pixel accent | Pixelify Sans |
-| Visual signature | Bayer dithering, pixel geometry, and isometric graphics |
-| Layout language | Editorial grids, deliberate borders, asymmetric composition, restrained surfaces |
+- `docs/BRAND-IDENTITY-SPEC.md` — identity, perception, experience, visual principles, voice, motion, and guardrails.
+- `docs/BRAND-IDENTITY-PLAN.md` — sequence, deliverables, owner review gates, and implementation plan.
 
-Preserve high legibility and use pixel treatments as a signature, not as noise behind long-form reading content.
+### 10.1 Durable identity vs. visual treatment
 
-### 10.2 Visual behavior
+- The durable identity is Irvan Gerhana as a Product Engineer and product-minded systems builder.
+- “From pixel to production.” remains the approved brand line.
+- The visual system must express product thinking, interface craft, software engineering, and production-minded systems work.
+- No specific palette, font, illustration style, environment, animation technique, or visual motif is a permanent brand requirement until selected through the new process.
+- Existing colors, typefaces, pixel/dither renderers, and previous hero concepts may be reused only when they serve the approved concept. They are not mandatory brand invariants.
+- Anime, cyberpunk, urban scenes, literal workspaces, 3D cutaways, and other trend or reference styles must never substitute for a coherent identity.
 
-- Keep light/dark polarity transitions intentional and readable.
-- Use motion to support narrative and orientation, not as a requirement to consume content.
-- Honor \`prefers-reduced-motion\`.
-- Ensure touch users can access every interaction without pointer-only behavior.
-- Maintain responsive behavior from small mobile through wide desktop.
-- Avoid ornamental UI that competes with project evidence and professional content.
+### 10.2 Experience and visual behavior
 
-### 10.3 Existing scroll-driven hero
+- The hero must communicate identity and professional value before visual spectacle.
+- Use one dominant visual idea per major section and maintain a coherent relationship between sections.
+- Preserve legibility, useful hierarchy, negative space, and deliberate responsive composition.
+- Avoid unnecessary eyebrow labels, decorative HUDs, badge collections, floating cards, and pseudo-technical detail.
+- Motion must communicate a meaningful transition or guide attention; it must not delay or hide content.
+- Avoid mandatory pre-loaders, long blocking intro sequences, and scroll interactions that make core information difficult to reach.
+- Honor `prefers-reduced-motion`; touch users must have equivalent access.
+- Keep generated visuals clearly separated from real product screenshots and project evidence.
 
-The current hero uses a tall desktop scroll runway, sticky positioning, a clip-path expansion, and staged service content. Review this interaction against the new personal narrative. Keep it only if it strengthens the introduction and does not hide, delay, or complicate access to the core content. A simpler hero is acceptable if it communicates the identity more clearly.
+### 10.3 Accessibility, performance, and content constraints
+
+The accessibility, performance, responsive, SEO, privacy, and evidence requirements in this brief remain in force. The new brand specification supplements those requirements; it does not override them.
+
+A visual concept is not approved for implementation until it has been evaluated in a connected experience, including at least the hero, the next-section transition, selected work, and a representative content-heavy page.
 
 ## 11. Content and data architecture
 
@@ -563,7 +566,9 @@ The repository contains an \`AGENTS.md\` instruction requiring implementers to c
 
 ## 14. Implementation phases and checkpoints
 
-Work in the single branch \`work/uigerhana-personal-identity-v1\`. Do not open a pull request until explicitly requested.
+The brand identity and visual-direction work must follow the review gates in `docs/BRAND-IDENTITY-PLAN.md` before a new hero or site-wide visual system is implemented. This section continues to govern content and product implementation after the relevant identity decisions are approved.
+
+Use a scoped branch for each approved phase and keep the base branch stable. Do not begin visual implementation during concept exploration; open a pull request when the owner requests review or merge.
 
 ### Phase 0 — Content integrity and inventory
 
@@ -652,16 +657,16 @@ The reconstruction is complete when:
 
 ## 16. Working agreement
 
-- One working branch for this initiative: \`work/uigerhana-personal-identity-v1\`.
-- Base is the inspected \`main\` commit listed at the top of this document.
-- Do not push implementation changes to \`main\`.
-- Do not open a PR unless the owner explicitly asks.
-- Keep commits scoped and descriptive.
+- Use scoped, descriptive branches for approved phases and vertical slices.
+- Keep `main` stable; do not push unreviewed implementation directly to it.
+- Keep strategy/spec documentation, concept exploration, visual implementation, and content changes separately reviewable.
+- Do not begin visual implementation until the owner approves the connected direction and styleframes.
+- Open a PR when the owner requests review or merge; keep PR scope narrow and commits descriptive.
 - Prefer vertical, reviewable increments over a large unreviewable rewrite.
 - When a factual gap is found, mark it as missing and continue with supported content.
-- Do not block all implementation on optional biography details; build the structure so missing information can be added later.
-- Before any sensitive or client-specific content is made public, request owner confirmation.
+- Before sensitive or client-specific content is made public, request owner confirmation.
+- Passing CI does not replace browser-based visual QA or deployment verification.
 
 ---
 
-**End of master brief — v1.0**
+**End of master brief — v1.1**

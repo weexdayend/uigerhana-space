@@ -72,8 +72,13 @@ Keep the homepage, experience section, and résumé aligned to these shared sour
 - Distinguish production work, prototypes, experiments, and work in progress.
 - Generated visual studies must not be presented as product screenshots.
 
-## Design direction
+## Brand identity
 
-The visual identity pairs an Obsidian / Stone / Amber palette with Geist typography, crisp Bayer-dithered pixels, and a playful-to-precise organic-to-modular hero. A custom canvas artwork transforms from an organic pixel field into structured modules through a cinematic GSAP sequence, with reduced-motion and responsive fallbacks.
+The Gerhana identity is larger than any visual style used to express it. The durable foundation is Irvan Gerhana as a Product Engineer and product-minded systems builder: connecting product thinking, interface craft, software engineering, and production-minded systems work.
 
-See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the full implementation contract, `docs/CASE-STUDY-REVIEW.md` for the project disclosure checklist, `docs/PROJECT-SOURCE-REVIEW.md` for the sanitized private-source review, and `docs/IMPLEMENTATION-LOG.md` for delivered work.
+- `docs/BRAND-IDENTITY-SPEC.md` — source of truth for identity, perception, experience, voice, visual principles, motion, and content guardrails.
+- `docs/BRAND-IDENTITY-PLAN.md` — phased roadmap, deliverables, approval gates, and implementation sequence.
+
+Visual treatments such as palettes, typefaces, pixel/dither graphics, anime-inspired illustration, environments, and cinematic motion are expressive options, not the identity itself. They must be selected against the brand specification and validated across the whole site.
+
+See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the factual and technical baseline, `docs/CASE-STUDY-REVIEW.md` for the project disclosure checklist, `docs/PROJECT-SOURCE-REVIEW.md` for the sanitized private-source review, and `docs/IMPLEMENTATION-LOG.md` for delivered work.
