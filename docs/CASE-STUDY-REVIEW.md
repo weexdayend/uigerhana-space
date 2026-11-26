@@ -103,3 +103,21 @@ Before changing a candidate to approved, complete and review:
 - [ ] Redact tenant, customer, partner, financial, identity, and infrastructure details.
 - [ ] Reconcile source, test, manual-validation, CI, runtime, and acceptance evidence independently.
 - [ ] Owner approves the final public copy and visual materials.
+
+
+## Vertical slice candidate — passwordless team invitations
+
+- **Publication state:** Draft only; excluded from the public selector and public work index.
+- **Source state:** S1.3 patches 1–3 are recorded as implemented locally, not released.
+- **Workflow:** owner/admin creates an invitation → invitation and notification intent persist transactionally → the link opens in read-only mode → existing-account or new-passkey-account path → invitation acceptance and active membership.
+- **Authorization:** owners and admins may invite members; only owners may invite admins or owners. Inviting an elevated role requires fresh passkey evidence.
+- **Invitation controls:** seven-day lifetime, twenty per organization per day, token digest storage, resend replacement, cancellation, expiry and one-use handling.
+- **New-account path:** display name and passkey registration with user verification; account, confirmed address, passkey, membership and audit commit in one transaction; no session is opened by joining.
+- **Recorded local validation:** PostgreSQL 17, migration up/down/up and Goose, fresh-database Go tests, row-level security enabled/disabled, concurrency/negative cases, and local browser review.
+- **Negative-case evidence:** 23 deliberate break cases were recorded. 17 failed as expected in the first pass, two missing test cases were added and caught, and four conditions were covered by a secondary guard.
+- **Local browser evidence:** invitation creation, already-member refusal, invitation listing, invitation page fields, ended-link state, and mobile layout without horizontal overflow.
+- **Not verified:** real passkey creation on the intended origin, actual recipient mailbox delivery/inbox placement, manual validator, race detector, production release/runtime, and slice owner acceptance.
+
+### Publication guardrails
+
+Do not say "production-ready", "released", or "generally available". Do not imply that real-world passkey ceremonies, inbox placement, manual validator, race detector, or production acceptance passed. The workflow map is derived from source and checkpoint records; it is not an application screenshot. The product identity, screenshots, and exact personal/team contribution remain pending owner clearance.

@@ -5,6 +5,10 @@ const STATUS_LABELS: Record<CaseStudyEvidenceStatus, string> = {
   "target-only": "Target only",
   "acceptance-open": "Acceptance open",
   "publication-pending": "Publication pending",
+  "built-local": "Built locally",
+  "tested-local": "Tested locally",
+  "not-verified": "Not verified",
+  "not-released": "Not released",
 };
 
 const STATUS_STYLES: Record<CaseStudyEvidenceStatus, string> = {
@@ -12,6 +16,10 @@ const STATUS_STYLES: Record<CaseStudyEvidenceStatus, string> = {
   "target-only": "border-[#8a5a20]/30 text-[#8a5a20]",
   "acceptance-open": "border-[#8a5a20]/30 text-[#8a5a20]",
   "publication-pending": "border-[#121518]/20 text-[#585f5e]",
+  "built-local": "border-[#8a5a20]/30 text-[#8a5a20]",
+  "tested-local": "border-[#52745c]/35 text-[#43634c]",
+  "not-verified": "border-[#8a5a20]/30 text-[#8a5a20]",
+  "not-released": "border-[#121518]/20 text-[#585f5e]",
 };
 
 export function CaseStudyEvidenceMap({

@@ -156,3 +156,28 @@ This validates source checks and the production build only; browser-based deskto
 
 - Corrected a missing JSX brace in the conditional visual-gallery render discovered by exact-SHA typecheck.
 - Added an explicit publication-gate assertion that the private-source IT-services deep dive remains draft-only until owner approval.
+
+
+## 2026-11-26 — Passwordless team-invitation vertical slice
+
+### Delivered
+
+- Added a separate draft case study for the role-aware invitation and passkey-first joining workflow.
+- Added a source-derived workflow map showing the invitation lifecycle and the existing-account / new-account branches.
+- Added a detailed evidence map separating locally built, locally tested, not verified, not released, and publication-pending states.
+- Kept the contribution and team attribution explicitly pending owner review.
+- Added sanitized source evidence and review documentation for the S1.3 invitation slice.
+- Left the real product screenshot gallery empty; no owner-approved image was present in the reviewed source.
+
+### Evidence represented
+
+- Source records identify S1.3 patches 1–3 as implemented locally, not released.
+- PostgreSQL 17 migration and Go test evidence, including row-level security on/off and deliberate failure probes.
+- Local browser evidence for invitation creation/listing, already-member refusal, ended-link state, and mobile overflow.
+- Explicit gaps for real-origin passkey creation, actual mailbox placement, manual validator, race detector, production release/runtime and owner acceptance.
+
+### Publication and claim boundary
+
+- The new invitation deep dive remains `draft`, excluded from `PUBLIC_CASE_STUDIES`.
+- Its diagram is an implementation-derived workflow illustration, not a browser screenshot.
+- No product name, private source URL, customer reference, deployment host, credential, or operational topology was added.

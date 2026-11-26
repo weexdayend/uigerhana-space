@@ -54,7 +54,7 @@ Professional facts are maintained in typed modules under `src/data`:
 - `approach.ts` — engineering principles
 - `site.ts` — site-level identity and location metadata
 
-Case-study presentation is composed from reusable components for contribution breakdowns, code-architecture maps, evidence maturity maps, generated visual studies, and technology maps. A private-source-derived IT-services platform case study remains draft-only and is excluded from public routes.
+Case-study presentation is composed from reusable components for contribution breakdowns, code-architecture maps, evidence maturity maps, source-derived workflow maps, generated visual studies, and technology maps. The IT-services platform overview and passwordless team-invitation vertical slice remain draft-only and are excluded from public routes.
 
 Keep the homepage, experience section, and résumé aligned to these shared sources. Do not add unsupported metrics, testimonials, credentials, project status, or client disclosures. The supplied résumé does not include education history or language proficiency, so those sections are intentionally omitted.
 

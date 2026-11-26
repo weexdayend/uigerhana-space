@@ -102,6 +102,10 @@ const hasDraftDeepDive =
   /slug: "professional-services-automation-platform",[\s\S]*?publicationStatus: "draft"/.test(
     caseStudySource
   );
+const hasDraftInvitationDeepDive =
+  /slug: "passwordless-team-invitations",[\s\S]*?publicationStatus: "draft"/.test(
+    caseStudySource
+  );
 
 if (!hasApprovedSelector) {
   fail("public case studies must be filtered by explicit approved status");
@@ -113,6 +117,10 @@ if (!hasPublicLookup) {
 
 if (!hasDraftDeepDive) {
   fail("the reviewed IT-services platform deep dive must remain a draft until owner approval");
+}
+
+if (!hasDraftInvitationDeepDive) {
+  fail("the passwordless invitation vertical-slice deep dive must remain a draft until owner approval");
 }
 
 if (process.exitCode !== 1) {

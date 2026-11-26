@@ -101,3 +101,35 @@ The platform is being developed as a Go modular monolith with a Next.js applicat
 - [ ] Approve the final copy and visual materials.
 
 Until these checks are complete, the case study remains a draft and is excluded from the public work index and detail routes.
+
+
+## 6. Source-backed vertical slice — passwordless team invitations
+
+The reviewed S1.3 tenant authorization and membership lifecycle slice specifies an owner/admin-managed invitation workflow. Its checkpoint records patches 1–3 as implemented locally and **not released**.
+
+### Implemented workflow
+
+1. An owner or admin enters an email and role. Only an owner can invite an admin or owner; elevated-role invitations require fresh passkey evidence.
+2. The invitation, audit entry, and notification outbox intent are committed transactionally.
+3. Opening the email link only reads invitation information; it does not consume the invitation.
+4. An existing account signs in as the matching invited address and accepts the invitation.
+5. A person without an account enters a name and creates a passkey with user verification. The account, confirmed address, passkey, membership, and audit entry are committed in one transaction. Joining does not create an application session; normal sign-in follows.
+
+The implementation records a seven-day invitation lifetime, a maximum of twenty invitations per organization per day, token-digest storage, resend replacement, cancellation, and a shared ended state for expired, cancelled, used, replaced, unknown, or wrong-address links.
+
+### Test and browser evidence recorded
+
+- PostgreSQL 17 migration up/down/up and Goose execution.
+- Fresh-database Go tests.
+- Invitation integration tests with row-level security enabled and disabled.
+- Role authorization, duplicate and already-member cases, resend/cancel/expiry, cross-organization isolation, concurrent acceptance, passkey challenge binding, and token protection.
+- 23 deliberate break cases: 17 caught in the initial pass; two missing test cases were added and caught; four cases were covered by a secondary guard.
+- Local browser review covered invite creation, already-member refusal, invitation list, invite page organization/name fields, an ended/unknown link, and a mobile layout without horizontal overflow.
+
+### Remaining gaps
+
+The record says the real passkey creation ceremony was not tried in a browser because the local host did not match the intended passkey domain. A real recipient mailbox/inbox placement, manual repository validator, race detector, production release/runtime validation, and owner acceptance of this slice are also not recorded as complete. The outbox and mail-server path was exercised once in local testing; that does not prove mailbox placement.
+
+### Portfolio claim boundary
+
+This is evidence of a locally implemented and locally tested vertical slice, not a production release. The public case-study draft must keep its status explicit and must not imply general availability. No real product screenshot was approved in the source review; the workflow illustration is source-derived and labelled accordingly.
