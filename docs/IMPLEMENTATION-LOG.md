@@ -336,3 +336,26 @@ This validates source checks and the production build only; browser-based deskto
 ### Next step
 
 Begin Phase 1 of the brand identity plan: audit the current website experience, content, and section relationships before exploring new visual concepts. No visual implementation should begin until the owner approves a connected style direction.
+
+## 2026-11-27 — Current experience and content audit
+
+**Scope:** source-based audit of the existing website and visitor journey  
+**Status:** repository inspection complete; browser and owner validation remain open
+
+### Delivered
+
+- Added `docs/CURRENT-EXPERIENCE-AUDIT.md` covering routes, homepage order, navigation, hero, narrative, work evidence, capabilities, experience, writing, contact, résumé, responsive rules, motion, accessibility signals, delivery checks, and prioritized opportunities.
+- Recorded that the public work selector currently exposes one approved self-platform case study and keeps three deeper case-study records in draft.
+- Identified the missing direct contact action, the About navigation anchor targeting the hero copy container, and overlap between the four-beat motion narrative and engineering principles.
+- Documented the responsive story behavior: desktop ScrollTrigger pinning, smaller-screen horizontal swipe, and a vertical reduced-motion fallback.
+- Updated the identity roadmap with the Phase 1 source-audit status and remaining browser/owner review gates.
+
+### Validation boundary
+
+- Findings are based on the exact `main` source baseline `b487d0529220eff1e5022fe9a625155e52857f23`.
+- The public site could not be inspected in a rendered browser during this audit. Desktop/mobile screenshots, keyboard-only review, reduced-motion runtime behavior, touch behavior, and zoom testing remain open.
+- No application code, public copy, contact details, project status, disclosure state, or deployment configuration changed.
+
+### Next step
+
+Complete the browser validation matrix and confirm the preferred public contact channel. Then begin creative concept exploration using consistent content and hierarchy across all concept studies.

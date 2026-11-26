@@ -56,6 +56,8 @@ Exit criteria:
 - [x] Existing content-integrity safeguards remain authoritative.
 
 ## Phase 1 — Current experience and content audit
+**Status:** Source audit complete; rendered browser and owner validation remain open. See `docs/CURRENT-EXPERIENCE-AUDIT.md`.
+
 
 **Goal:** understand what already exists before changing the design.
 
