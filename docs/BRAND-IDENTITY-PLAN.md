@@ -82,7 +82,7 @@ Exit criteria:
 - The highest-impact experience problems are prioritized.
 
 ## Phase 2 — Creative concept exploration
-**Exploration brief prepared:** `docs/CREATIVE-CONCEPT-EXPLORATION.md` (v0.2). Four territories are documented for comparison; no direction is selected. The owner-confirmed real-device and assistive-technology checks remove two previously open manual items. Static styleframe exploration may proceed as non-binding design research, but concept selection, token approval, and UI implementation remain gated on the outstanding Phase 1 production, zoom/print, contact-channel, and owner-acceptance items.
+**Owner-selected direction (2026-11-27):** A — The System Atlas. The owner selected Manrope + Plus Jakarta Sans, GSAP as the motion engine, and a `1rem` base gutter with rem-based `--py` / `--px` inset pairs. Palette selection was delegated and is proposed as Basalt / Limestone / Sea Glass / Signal Copper. The focused art-direction package is documented in `docs/design-system/SYSTEM-ATLAS-ART-DIRECTION.md`. The original four territories remain comparative research; selection of A does not approve a final token freeze or authorize production UI. Phase 1 remains open for its outstanding production, zoom/print, contact-channel, and owner-acceptance items.
 
 
 **Goal:** find a distinct visual territory that grows from Gerhana's identity rather than copying a popular style.
@@ -151,6 +151,8 @@ Exit criteria:
 ## Phase 4 — Visual system definition
 
 **Goal:** turn the selected concept into a reusable identity system.
+
+**Status:** initial System Atlas art direction is being refined for owner review. Typography, delegated palette, GSAP choreography, and rem-based spacing guidance are documented; this is not a production token freeze.
 
 Work:
 - Define color roles and contrast behavior.

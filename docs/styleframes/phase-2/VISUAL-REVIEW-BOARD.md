@@ -1,6 +1,8 @@
 # Phase 2 — Visual review board
 
-A single review surface for the non-binding static concepts. Desktop previews use the same 1440 × 900 source frame and are displayed at the same 640 px width. Each image links to its original editable SVG; open the source when you need to inspect detail at native size.
+A single review surface for the non-binding static concepts.
+
+> **Owner decision — 2026-11-27:** A — The System Atlas was selected for focused art-direction refinement. See the [refined System Atlas board](../system-atlas/README.md). The four concepts below remain available as the original comparison archive; they are not competing current directions. Desktop previews use the same 1440 × 900 source frame and are displayed at the same 640 px width. Each image links to its original editable SVG; open the source when you need to inspect detail at native size.
 
 **Review order:** desktop A → B → C → D, then the responsive A/D pairs. Compare the message hierarchy and visual idea, not the amount of decoration. No concept is selected or approved by this page.
 

@@ -204,11 +204,11 @@ Balance four qualities:
 
 ### 6.4 Color and typography
 
-No palette or typeface is mandated by this specification.
+The owner selected **Manrope + Plus Jakarta Sans** for the System Atlas direction: Manrope for display/headings and Plus Jakarta Sans for body/interface. The owner also selected GSAP as the motion engine, with the existing GSAP/ScrollTrigger stack retained.
 
-Obsidian / Stone / Amber, Geist / Geist Mono, Pixelify Sans, and Bayer-dithered assets are existing implementation assets and historical explorations. They may be retained, adapted, or replaced; they are not required brand invariants.
+The palette is delegated to design and proposed as **Basalt / Limestone / Sea Glass / Signal Copper**. The base layout gutter is **1rem**, with rem-based spacing and component-scoped `--py` / `--px` inset pairs. Full roles, contrast checks, spacing tokens, and implementation examples are in `docs/design-system/SYSTEM-ATLAS-ART-DIRECTION.md`.
 
-Any future system must support contrast, reading comfort, hierarchy, responsive use, and consistent application across the homepage, case studies, résumé, and supporting pages.
+These are selected art-direction inputs and a design proposal, not a permanent production token freeze. They still require visual review across the responsive frames and the approval gates in the roadmap. The visual system must support contrast, reading comfort, hierarchy, responsive use, and consistent application across the homepage, case studies, résumé, and supporting pages.
 
 ### 6.5 Imagery and signature elements
 
@@ -235,6 +235,8 @@ Motion is a communication tool, not proof of sophistication.
 - Honor `prefers-reduced-motion` with an intentional static or low-motion state.
 - Keep effects performant and lifecycle-safe.
 - Never make animation the only way to discover information.
+
+For the owner-selected System Atlas direction, GSAP is the motion engine. Use one coherent route-draw timeline and restrained waypoint reveals; the static route and all content remain fully available without JavaScript. Do not introduce pinned/locked scrolling, perpetual background movement, or motion-dependent content. See `docs/design-system/SYSTEM-ATLAS-ART-DIRECTION.md` for the initial choreography and reduced-motion rules.
 
 ## 8. Voice and editorial system
 

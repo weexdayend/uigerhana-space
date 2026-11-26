@@ -1,6 +1,8 @@
 # Phase 2 — Static styleframe exploration
 
-**Status:** non-binding design research. No visual direction, typography, palette, token, illustration system, or motion language is approved. This work does not close Phase 1 or authorize production UI changes.
+**Status:** The owner selected **A — The System Atlas** on 2026-11-27 for focused refinement. Manrope + Plus Jakarta Sans, GSAP, and the rem-based gutter/inset approach are owner-selected inputs; the delegated palette is proposed in the art-direction specification. The original four concepts remain non-binding comparative research. This does not close Phase 1, freeze production tokens, or authorize production UI changes.
+
+[System Atlas refined art direction and responsive previews](../system-atlas/README.md) · [Complete art-direction specification](../../design-system/SYSTEM-ATLAS-ART-DIRECTION.md)
 
 ## Preview index
 
