@@ -38,6 +38,9 @@ jobs:
       - name: Content publication gates
         run: npm run verify:content
 
+      - name: System Atlas static copy and SVG integrity
+        run: npm run verify:styleframes
+
       - name: Lint
         run: npm run lint
 
