@@ -13,7 +13,7 @@ All desktop frames use a 1440 × 900 viewBox and the same approved identity, rol
 | C — Material to Meaning | [Desktop SVG](concept-c-material-to-meaning-desktop.svg) | — |
 | D — The Product Field Notes | [Desktop SVG](concept-d-product-field-notes-desktop.svg) | [390 × 844 SVG](concept-d-product-field-notes-mobile.svg) · [360 × 800 stress test](concept-d-product-field-notes-small-mobile.svg) |
 
-[Case-study extension test](case-study-extension-test.svg) · [Owner review checklist](OWNER-REVIEW-CHECKLIST.md)
+[Visual review board](VISUAL-REVIEW-BOARD.md) · [Case-study extension test](case-study-extension-test.svg) · [Owner review checklist](OWNER-REVIEW-CHECKLIST.md)
 
 ## Shared content and frame
 
@@ -103,18 +103,21 @@ All concepts support the same next-step cue, “How the work connects.” This i
 - **Phase 1:** remains open; static concept research proceeds in parallel without sign-off.
 - **Production boundary:** no `src/`, `app/`, CSS, components, profile data, dependency or publication status was changed.
 
-## Exact-commit CI evidence
+## Runtime CI evidence and scope
 
-**Last complete runtime QA head before this static review addendum:** `155302087888a1cd2390c743a478401d20396ae4`  
-**GitHub Actions PR run:** [Run #140](https://github.com/weexdayend/uigerhana-space/actions/runs/45891191604) — both CI jobs completed successfully.  
-**Browser QA artifact:** `portfolio-browser-qa-b637c28d04abff7bb492d43f6d8ff907fcbe55ea` (Playwright report, responsive screenshots, pinned-story stages, and print-preview PDF). This artifact validates the existing site runtime, not the standalone styleframe SVG renderings. The later 360 px assets and owner checklist are documentation-only additions and are revalidated by the PR workflow.
+**Recorded production-runtime QA baseline before this review-board documentation addendum:** `f2658135d38069aba80276d9805e8d47888ef7c4`.
 
+- [Push CI #143](https://github.com/weexdayend/uigerhana-space/actions/runs/45891749675): success.
+- [Pull request CI #144](https://github.com/weexdayend/uigerhana-space/actions/runs/45891756913): success.
 - Typecheck, publication checks, lint, and production build: passed.
-- Playwright runtime suite: **31 expected / 31 total**, 0 unexpected, 0 flaky, 0 skipped.
-- Axe-core: eight automated accessibility scans completed successfully within the configured route/viewport scope.
-- This CI validates the existing site runtime and does not constitute browser-rendered visual QA of these standalone SVG styleframes, real-device owner review, literal browser zoom/OS text scaling, native print-dialog validation, or production deployment parity.
+- Playwright runtime suite: **31 passed**, 0 failures, 0 flaky tests, 0 skipped.
+- Axe-core: eight route/viewport scans passed with no WCAG A/AA or configured best-practice violations.
+
+The runs above validate the existing production application runtime. They do **not** validate the standalone styleframe SVGs in a browser, and they do not close owner-only Phase 1 checks. This review-board and README update are documentation-only; the PR workflow reruns against the new branch head.
 
 ## Validation notes
+
+The nine SVG files are XML-well-formed, use explicit viewBox dimensions, and have title/description metadata. Text remains native SVG text and all visible artwork consists of vector primitives. The visual review board embeds the original SVG assets at fixed preview widths for side-by-side comparison and links each preview to its native-size source. It is a review aid, not an independent screenshot or a replacement for owner inspection in the target browser/vector environment.
 
 The nine SVG files are XML-well-formed, use explicit viewBox dimensions, and have title/description metadata. Text remains native SVG text and all visible artwork consists of vector primitives. Visual review should still be performed in the owner's target vector/browser environment; this document does not claim a production browser/AT test.
 
