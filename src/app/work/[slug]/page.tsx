@@ -7,6 +7,12 @@ interface CaseStudyPageProps {
   params: Promise<{ slug: string }>;
 }
 
+const STATUS_LABELS = {
+  "in-progress": "In progress",
+  completed: "Completed",
+  maintained: "Maintained",
+} as const;
+
 export function generateStaticParams() {
   return PUBLIC_CASE_STUDIES.map((study) => ({ slug: study.slug }));
 }
@@ -90,7 +96,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         </h1>
         <p className="mt-7 max-w-[64ch] text-lg leading-[1.75] text-[#121518]/75">{study.summary}</p>
 
-        <div className="mt-12 grid gap-5 border-y border-[#121518]/18 py-6 sm:grid-cols-2">
+        <div className="mt-12 grid gap-5 border-y border-[#121518]/18 py-6 sm:grid-cols-3">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#8a5a20]">Context</p>
             <p className="mt-2 text-sm">{study.context}</p>
@@ -98,6 +104,10 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#8a5a20]">Role</p>
             <p className="mt-2 text-sm leading-[1.7]">{study.role}</p>
+          </div>
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#8a5a20]">Status</p>
+            <p className="mt-2 text-sm">{STATUS_LABELS[study.projectStatus]}</p>
           </div>
         </div>
 

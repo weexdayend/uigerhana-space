@@ -1,6 +1,12 @@
 import Link from "next/link";
 import type { CaseStudy } from "@/data/case-studies";
 
+const STATUS_LABELS: Record<CaseStudy["projectStatus"], string> = {
+  "in-progress": "In progress",
+  completed: "Completed",
+  maintained: "Maintained",
+};
+
 export function CaseStudyCard({ study }: { study: CaseStudy }) {
   return (
     <article className="group flex min-h-[280px] flex-col justify-between border border-[#121518]/18 bg-[#f2efe7] p-6 transition-colors hover:bg-[#ebe6db] sm:p-8">
@@ -18,10 +24,15 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
           {study.summary}
         </p>
       </div>
-      <div className="mt-8 flex items-center justify-between gap-4 border-t border-[#121518]/18 pt-4">
-        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#585f5e]">
-          {study.context}
-        </span>
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[#121518]/18 pt-4">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#585f5e]">
+            {study.context}
+          </span>
+          <span className="border border-[#121518]/18 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.08em] text-[#8a5a20]">
+            {STATUS_LABELS[study.projectStatus]}
+          </span>
+        </div>
         <Link
           href={"/work/" + study.slug}
           className="shrink-0 text-sm underline decoration-[#121518]/30 underline-offset-4 transition-colors hover:text-[#8a5a20] hover:decoration-[#8a5a20]"
