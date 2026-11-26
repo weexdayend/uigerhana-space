@@ -27,15 +27,22 @@ No website redesign should be built around an unapproved illustration, animation
 - Visitor experience: introduce the person, prove the work, explain the thinking, show professional depth, and make connection straightforward.
 - Principle: identity is larger than the visual style used to express it.
 
-### Not yet approved
-- Final visual concept or hero art direction.
-- Final hero headline and supporting copy beyond current approved profile content.
-- Permanent palette and typography system.
-- Whether pixel/dither remains a primary signature or becomes a supporting motif.
-- Any particular illustration style, environment, metaphor, or motion language.
-- Full-page composition and section transitions.
+### Selected for refinement
+- **Visual direction:** A — The System Atlas (owner-selected 2026-11-27).
+- **Typography:** Manrope for display/headings + Plus Jakarta Sans for body/interface (owner-selected).
+- **Motion engine:** GSAP (owner-selected; choreography remains subject to review).
+- **Layout:** 1rem base gutter and component-scoped rem-based `--py` / `--px` inset pairs (owner-selected).
+- **Palette:** Basalt / Limestone / Sea Glass / Signal Copper (designer-selected under owner delegation; presented for visual acceptance).
 
-Previous hero explorations are references only, not selected directions.
+### Not yet finalized
+- Palette roles and the complete token system after owner review.
+- Final responsive art direction and typography metrics with real font assets.
+- Motion choreography and its reduced-motion implementation.
+- Full-page composition and connected section transitions.
+- Final hero headline and supporting copy beyond current approved profile content.
+- Whether pixel/dither remains a supporting motif or is removed from the main visual language.
+
+Previous hero explorations remain archived references. The selected System Atlas is a direction for refinement, not a production approval.
 
 ## 3. Phased roadmap
 
@@ -116,12 +123,12 @@ Deliverables:
 - Rationale and trade-off matrix.
 - Recommended direction with rejected alternatives and reasons.
 
-**Owner review gate:** select or combine a concept. No repository implementation during this phase.
+**Owner review gate:** concept selection met on 2026-11-27 when the owner selected A — The System Atlas. The original four concept assets remain in the archive. This selection authorizes focused art-direction refinement only; it does not approve a production redesign or token freeze.
 
 Exit criteria:
-- One concept is explicitly approved.
-- Its idea can be explained without naming the reference style that inspired it.
-- It extends to the whole website, not only the hero.
+- [x] One concept is selected for refinement by the owner.
+- [x] The idea can be explained without naming a reference style: a single route makes complex work legible.
+- [ ] The system is validated across the full site, not only the hero (Phase 5).
 
 ## Phase 3 — Verbal identity and message architecture
 
