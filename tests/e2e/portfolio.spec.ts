@@ -233,11 +233,13 @@ test.describe("keyboard and motion behavior", () => {
   test("mobile navigation is keyboard reachable and Escape restores trigger focus", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const trigger = page.getByRole("button", { name: "Open navigation menu" });
+    const trigger = page.locator('button[aria-controls="mobile-navigation"]');
+    await expect(trigger).toHaveAccessibleName("Open navigation menu");
     await trigger.focus();
     await page.keyboard.press("Enter");
     const navigation = page.getByRole("navigation", { name: "Mobile navigation" });
     await expect(navigation).toBeVisible();
+    await expect(trigger).toHaveAccessibleName("Close navigation menu");
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
 
     await page.keyboard.press("Tab");
@@ -246,6 +248,7 @@ test.describe("keyboard and motion behavior", () => {
     await page.keyboard.press("Escape");
     await expect(navigation).toBeHidden();
     await expect(trigger).toBeFocused();
+    await expect(trigger).toHaveAccessibleName("Open navigation menu");
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
