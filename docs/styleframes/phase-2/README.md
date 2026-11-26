@@ -8,12 +8,12 @@ All desktop frames use a 1440 × 900 viewBox and the same approved identity, rol
 
 | Concept | Desktop | Mobile |
 |---|---|---|
-| A — The System Atlas | [Desktop SVG](concept-a-system-atlas-desktop.svg) | [390 × 844 SVG](concept-a-system-atlas-mobile.svg) |
+| A — The System Atlas | [Desktop SVG](concept-a-system-atlas-desktop.svg) | [390 × 844 SVG](concept-a-system-atlas-mobile.svg) · [360 × 800 stress test](concept-a-system-atlas-small-mobile.svg) |
 | B — The Editorial Instrument | [Desktop SVG](concept-b-editorial-instrument-desktop.svg) | — |
 | C — Material to Meaning | [Desktop SVG](concept-c-material-to-meaning-desktop.svg) | — |
-| D — The Product Field Notes | [Desktop SVG](concept-d-product-field-notes-desktop.svg) | [390 × 844 SVG](concept-d-product-field-notes-mobile.svg) |
+| D — The Product Field Notes | [Desktop SVG](concept-d-product-field-notes-desktop.svg) | [390 × 844 SVG](concept-d-product-field-notes-mobile.svg) · [360 × 800 stress test](concept-d-product-field-notes-small-mobile.svg) |
 
-[Case-study extension test](case-study-extension-test.svg)
+[Case-study extension test](case-study-extension-test.svg) · [Owner review checklist](OWNER-REVIEW-CHECKLIST.md)
 
 ## Shared content and frame
 
@@ -25,7 +25,7 @@ All desktop frames use a 1440 × 900 viewBox and the same approved identity, rol
 - Primary CTA: Explore selected work
 - Secondary CTA: View résumé
 
-Desktop comparison frame: 1440 × 900. Mobile stress test: 390 × 844. The static frames use editable vector shapes and live SVG text; they are design artefacts, not browser-rendered production page captures. Arial/Georgia are SVG fallback families for portable inspection; no font choice is proposed.
+Desktop comparison frame: 1440 × 900. Primary mobile shortlist: 390 × 844. Supplementary small-mobile stress point: 360 × 800 for A and D, with deliberately tightened type and compact visual layouts. The 360 px frames are additional research artefacts, not a new candidate shortlist. The static frames use editable vector shapes and live SVG text; they are design artefacts, not browser-rendered production page captures. Arial/Georgia are SVG fallback families for portable inspection; no font choice is proposed.
 
 ## Concept rationale and visual grammar
 
@@ -98,16 +98,16 @@ All concepts support the same next-step cue, “How the work connects.” This i
 - **Metaphor-first reading:** A and C must never obscure “Irvan Gerhana — Product Engineer.”
 - **Editorial genericness:** B needs a distinct repeatable crop/grid system before full-site adoption.
 - **Artifact density:** D needs provenance and strong spacing, not a wall of annotations.
-- **Responsive constraints:** 390 px is one stress point; test 360 px and real zoom/text scaling later.
+- **Responsive constraints:** 360 px and 390 px now have static shortlist frames; verify 200% browser zoom, OS text scaling, and actual narrow-device rendering separately.
 - **Typography:** SVG font families are portability fallbacks, not recommendations or token decisions.
 - **Phase 1:** remains open; static concept research proceeds in parallel without sign-off.
 - **Production boundary:** no `src/`, `app/`, CSS, components, profile data, dependency or publication status was changed.
 
 ## Exact-commit CI evidence
 
-**Validated PR head:** `c414d4f958d3c2bb24b7388d5f856c799cdbb1d7`  
-**GitHub Actions run:** [Run #120](https://github.com/weexdayend/uigerhana-space/actions/runs/45890536683) — completed successfully.  
-**Browser QA artifact:** `portfolio-browser-qa-7a7df46ba71fb2c4f034a0ad9649c9eb02814820` (Playwright report, screenshots, traces, and print-preview PDF).
+**Last complete runtime QA head before this static review addendum:** `155302087888a1cd2390c743a478401d20396ae4`  
+**GitHub Actions PR run:** [Run #140](https://github.com/weexdayend/uigerhana-space/actions/runs/45891191604) — both CI jobs completed successfully.  
+**Browser QA artifact:** `portfolio-browser-qa-b637c28d04abff7bb492d43f6d8ff907fcbe55ea` (Playwright report, responsive screenshots, pinned-story stages, and print-preview PDF). This artifact validates the existing site runtime, not the standalone styleframe SVG renderings. The later 360 px assets and owner checklist are documentation-only additions and are revalidated by the PR workflow.
 
 - Typecheck, publication checks, lint, and production build: passed.
 - Playwright runtime suite: **31 expected / 31 total**, 0 unexpected, 0 flaky, 0 skipped.
@@ -116,7 +116,7 @@ All concepts support the same next-step cue, “How the work connects.” This i
 
 ## Validation notes
 
-The six SVG files are XML-well-formed, use explicit viewBox dimensions, and have title/description metadata. Text remains native SVG text and all visible artwork consists of vector primitives. Visual review should still be performed in the owner's target vector/browser environment; this document does not claim a production browser/AT test.
+The nine SVG files are XML-well-formed, use explicit viewBox dimensions, and have title/description metadata. Text remains native SVG text and all visible artwork consists of vector primitives. Visual review should still be performed in the owner's target vector/browser environment; this document does not claim a production browser/AT test.
 
 ## Sources read
 
