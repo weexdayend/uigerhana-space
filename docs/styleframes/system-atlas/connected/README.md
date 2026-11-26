@@ -78,7 +78,10 @@ The examples are reusable design contracts, not implemented components. Final to
 - [Desktop interaction-state board](./interaction-states-desktop.svg)
 - [Mobile navigation and component specimen](./interaction-states-mobile.svg)
 - [Surface-specific contrast and responsive review](./STATE-AND-RESPONSIVE-REVIEW.md)
+- [Static SVG copy-integrity review](./COPY-INTEGRITY-REVIEW.md)
+- [Browser font-rendering review](./FONT-RENDERING-REVIEW.md)
 - [Responsive acceptance matrix — viewport samples, behaviors, failure criteria, and test register](./RESPONSIVE-ACCEPTANCE-MATRIX.md)
+- [Manual acceptance runbook — owner visual review, browser zoom, OS text scaling, native print, and deployment parity](./MANUAL-ACCEPTANCE-RUNBOOK.md)
 - [Interaction-state contract](../../../design-system/SYSTEM-ATLAS-INTERACTION-STATES.md)
 
 These boards are static design proposals. Focus, hover, pressed, disabled, and mobile disclosure states still require real-browser validation after a separately approved implementation.
@@ -96,6 +99,8 @@ The static route and every waypoint remain visible without JavaScript. Reduced m
 ## Review notes
 
 - [Design QA and owner review checklist](./DESIGN-QA.md)
+- [Static artboard visual review — corrected layout findings and browser evidence](./VISUAL-REVIEW.md)
+- [Palette and contrast reconciliation — semantic roles and regression coverage](./PALETTE-RECONCILIATION.md)
 - [Content provenance and disclosure boundaries](./CONTENT-PROVENANCE.md)
 - [System Atlas visual-system proposal](../../../design-system/SYSTEM-ATLAS-ART-DIRECTION.md)
 - [Brand identity roadmap](../../../BRAND-IDENTITY-PLAN.md)

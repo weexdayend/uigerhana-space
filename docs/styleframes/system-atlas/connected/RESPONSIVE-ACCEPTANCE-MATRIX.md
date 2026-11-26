@@ -100,45 +100,51 @@ A viewport resize, a 200% browser zoom setting, and OS text scaling are three di
 
 ## 6. Browser, print, and route coverage
 
-| Area | Minimum coverage | Evidence to retain |
-|---|---|---|
-| Chromium | Automated responsive/interactions/accessibility suite plus manual visual inspection | Exact-SHA CI link, screenshots, traces, browser version |
-| Safari / WebKit | Manual inspection of typography, disclosure, focus, scrolling, and print | OS/browser version, viewport, screenshots, defects |
-| Firefox | Manual inspection of typography, focus, grid wrapping, and print | Browser version, viewport, screenshots, defects |
-| Route coverage | Homepage, work index, approved in-progress case study, résumé | Route list and per-route result |
-| Print / Save as PDF | Native browser print dialog on résumé, color and grayscale, page breaks, links, and all content | Browser/OS, paper size, margins, output PDF, page count |
-| Deployment parity | Compare deployed production domain and reported commit with the reviewed release SHA | URL, timestamp, response/commit evidence; never infer from CI |
+The automated runtime suite now has Playwright projects for Chromium, Firefox, and WebKit. It exercises the **current application** (not a future System Atlas production implementation) at all ten viewport samples, on all four public routes. The connected SVG styleframe test independently renders all ten artboards in each engine with Manrope and Plus Jakarta Sans loaded.
 
-Print acceptance: hide only navigation and non-document controls; preserve all résumé content, meaningful links, role/date context, and readable grayscale contrast. Avoid forced page counts or blank trailing pages. The static résumé artboard is not proof of native print behavior.
+| Area | Automated evidence | Manual evidence still required |
+|---|---|---|
+| Chromium | Responsive/keyboard/reduced-motion/axe suite; static artboard font/geometry pass; print-media checks; A4 PDF generation | Literal browser zoom UI, native print dialog, owner screenshot review |
+| Firefox | Same route, viewport, keyboard, reduced-motion, axe, print-media, and static-artboard coverage | Human review in installed desktop Firefox, exact OS/browser version, screenshots |
+| WebKit | Playwright WebKit engine coverage for the same matrix; static-artboard pass | Actual Safari on macOS and Safari on iOS/iPadOS; WebKit automation is not a Safari sign-off |
+| Route coverage | `/`, `/work`, `/work/uigerhana-space`, and `/cv` at all ten viewport samples | Review actual production/preview URL and visual composition |
+| Print / Save as PDF | `@media print` controls/section assertions in all engines; Chromium headless A4 PDF regression | Native print dialog on the target OS/browser, Save as PDF, grayscale, margins, page breaks, links, and pagination |
+| Production parity | No automated production assertion is claimed | Compare approved release SHA with the immutable deployed commit after a separately authorized release |
+
+**Do not treat engine names as product/browser certification:** Playwright WebKit is not the installed Safari application; Linux Firefox is not a substitute for the owner's actual desktop environment. Cross-engine test coverage is a useful regression gate, not a native-platform acceptance statement.
+
+Print acceptance: hide only navigation and non-document controls; preserve all résumé content, meaningful links, role/date context, and readable grayscale contrast. Avoid forced page counts or blank trailing pages. The headless PDF test does not drive the native print dialog.
 
 ## 7. Test-case register
 
-The following register is ready for execution. Initial state is deliberately NOT RUN unless an evidence link is recorded.
+The statuses below distinguish automated execution from owner/manual acceptance. A test can have automated coverage and still remain open as an acceptance decision.
 
-| Test | Coverage | Initial status |
+| Test | Coverage | Current state |
 |---|---|---|
-| RA-01 | VP-01 desktop hierarchy and 12-column composition | NOT RUN |
-| RA-02 | VP-02 laptop density and natural title wrapping | NOT RUN |
-| RA-03 | VP-03 / VP-05 transition collision check | NOT RUN |
-| RA-04 | VP-04 tablet artboard composition | NOT RUN |
-| RA-05 | VP-06 / VP-07 mobile copy-first order and action reachability | NOT RUN |
-| RA-06 | VP-08 / VP-09 narrow mobile wrapping and overflow | NOT RUN |
-| RA-07 | VP-10 short viewport and first-screen action visibility | NOT RUN |
-| RA-08 | Navigation disclosure, Escape, and focus restoration | NOT RUN |
-| RA-09 | Keyboard, focus-visible, pressed, disabled, and no-hover behavior | NOT RUN |
-| RA-10 | Reduced-motion static visibility and route/waypoint availability | NOT RUN |
-| RA-11 | Literal browser 200% zoom | NOT RUN |
-| RA-12 | OS text scaling and font fallback | NOT RUN |
-| RA-13 | Rendered contrast across actual states and surfaces | NOT RUN |
-| RA-14 | Safari/WebKit and Firefox route coverage | NOT RUN |
-| RA-15 | Native print dialog / Save as PDF for résumé | NOT RUN |
-| RA-16 | Production-domain and reviewed-commit parity | NOT RUN |
+| RA-01 | VP-01 desktop hierarchy and 12-column composition | Automated route/viewport smoke executed in three engines; owner visual comparison open |
+| RA-02 | VP-02 laptop density and natural title wrapping | Automated route/viewport smoke executed in three engines; owner visual comparison open |
+| RA-03 | VP-03 / VP-05 transition collision check | Automated route/viewport smoke executed; Firefox 768px overlap heuristic was corrected to account for the intentional transparent art mask; owner review open |
+| RA-04 | VP-04 tablet artboard composition | Automated route/viewport smoke and static tablet artboard geometry executed; owner composition acceptance open |
+| RA-05 | VP-06 / VP-07 mobile copy-first order and action reachability | Automated route/viewport smoke executed in three engines; owner visual comparison open |
+| RA-06 | VP-08 / VP-09 narrow mobile wrapping and overflow | Automated route/viewport smoke executed in three engines; 200% root-font-size stress separately finds ROOT-01; owner review open |
+| RA-07 | VP-10 short viewport and first-screen action visibility | Automated route/viewport smoke executed in three engines; owner visual comparison open |
+| RA-08 | Navigation disclosure, Escape, and focus restoration | Automated keyboard/disclosure regression passed in the three-engine suite; actual-device attestation remains separate |
+| RA-09 | Keyboard, focus-visible, pressed, disabled, and no-hover behavior | Keyboard traversal and axe default-state checks passed; complete pointer/touch and rendered state contrast review remains manual |
+| RA-10 | Reduced-motion static visibility and route/waypoint availability | Automated reduced-motion regression passed in all three engines |
+| RA-11 | Literal browser 200% zoom | Effective-layout-viewport proxy at 720 × 450 passed; literal browser zoom UI is **NOT RUN** |
+| RA-12 | OS text scaling and font fallback | **P1 finding ROOT-01:** 200% CSS root-font-size stress clips the homepage hero and creates 435px document width at a 390px viewport across all three engines. Native OS text scaling and real fallback-font review remain **NOT RUN** |
+| RA-13 | Rendered contrast across actual states and surfaces | Axe checks passed for default route states; actual hover/focus/pressed/disabled contrast and owner semantic-palette acceptance remain open |
+| RA-14 | Safari/WebKit and Firefox route coverage | Firefox and WebKit Playwright engine coverage executed; actual installed Safari and target-OS browser review remain **NOT RUN** |
+| RA-15 | Native print dialog / Save as PDF for résumé | Print-media assertions passed in three engines and Chromium A4 PDF regression passed; native system print dialog remains **NOT RUN** |
+| RA-16 | Production-domain and reviewed-commit parity | **BLOCKED:** production implementation/deployment is not authorized in this PR; parity cannot be asserted |
 
-For each executed case, append:
+For each manual execution, append:
 
 Test ID · PASS/FAIL/BLOCKED · date/time · commit SHA · browser/version · OS/device · viewport/scale · route/component · evidence URL · defect/owner
 
 Do not overwrite a failed result when a fix is made; record the retest as a new dated entry linked to the original finding.
+
+
 
 ## 8. Acceptance and severity
 
@@ -162,10 +168,29 @@ Owner acceptance of the static frames does not authorize implementation. Impleme
 
 ## 9. Evidence and current status
 
-- Latest PR exact-HEAD CI for f7c5bb9ff11951a774552a6cfe135d36043b7f23 completed successfully in both **Typecheck, lint, and build** and **Runtime visual and accessibility QA** jobs.
-- The runtime job installed Chromium and completed its responsive, interaction, and accessibility check step; it uploaded a browser-QA evidence artifact. This is evidence for the repository's existing runtime test target at that SHA—not a browser rendering of these static SVG artboards with Manrope and Plus Jakarta Sans loaded.
-- The owner confirmed real-device and assistive-technology checks on 2026-11-27 at category level. Exact device/OS/browser and AT versions, scenarios, and detailed outcomes were not supplied. Preserve the attestation; do not invent missing specifics or ask for the same category check again without a demonstrated gap.
-- Literal browser 200% zoom, OS text scaling, native print-dialog behavior, deployed production-domain/commit parity, direct contact-channel decision, and owner acceptance of remaining prioritized findings stay separate open gates in the roadmap/audit.
-- Browser-rendered font metrics and final visual acceptance of the proposed System Atlas SVGs remain unverified.
+- Exact-HEAD cross-browser run [#45912275133](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133) executed against `ba5906131fa41ba9204ada50737a3d71eeaeafc7`. The quality job (typecheck, content publication gates, static SVG integrity, lint, production build) passed.
+- The first three-engine runtime execution reported **204 passed, 4 failed, 2 skipped**. The four failures were three instances of the same root-font-size finding (one per engine) and one Firefox 768px test-measurement issue. The latter measured the masked art element's full rectangle rather than its fully visible region; the screenshot shows the visible art starts below the copy, and the assertion is being corrected to respect the 35% transparent top mask.
+- [Cross-browser QA artifact · 15160233789](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133/artifacts/15160233789) contains screenshots, traces, videos, A4 PDF output, and per-engine System Atlas artboard PNGs/geometry reports. The three-engine static-artboard checks each loaded Manrope and Plus Jakarta Sans and reported zero text outside viewBoxes, zero text-node intersections, and zero targeted layout-contract failures across all ten artboards.
+- **ROOT-01 · P1:** the 200% CSS root-font-size diagnostic rendered the homepage hero outside the 390px mobile width in Chromium, Firefox, and WebKit. Chromium reported a document width of **435px** against a **390px** viewport; the captured screenshot shows the hero title clipped at the right edge. This is a real current-application stress finding, not native OS text scaling proof. Production CSS remains unchanged and the finding is not remediated in this design-only PR.
+- The Firefox 768px item is a test-geometry false positive caused by treating a partially transparent art-mask region as fully visible. The follow-up assertion now measures the fully visible region; no production layout correction is made here.
+- The previous 200% effective viewport check (`720 × 450`) remains a viewport-reflow proxy only. It does not simulate browser chrome zoom or OS display/text scaling.
+- Native browser zoom, native OS text scaling, fallback-font behavior in the target environment, actual macOS/iOS Safari, native print dialog, production-domain/deployed-commit parity, and owner visual acceptance remain open/manual gates. Production parity is blocked until a release/deployment is separately authorized.
+- The owner-confirmed real-device and assistive-technology checks from 2026-11-27 remain recorded at category level. Do not invent missing device/OS/browser/AT metadata or claim a repeat test without evidence.
 
-This document is an acceptance contract and test register only. It does not close Phase 1, approve the palette/token freeze, establish browser compatibility, or authorize production implementation.
+This document is an acceptance contract and evidence register only. It does not close Phase 1, approve the palette/token freeze, establish native browser compatibility, or authorize production implementation.
+
+
+### Exact-HEAD three-engine retest
+
+The follow-up push workflow [#45912926554](https://github.com/weexdayend/uigerhana-space/actions/runs/45912926554) passed both jobs on commit `8a6e31fd57cc501efc5663e219cd7b40f0afd3d4`.
+
+- Quality gates: typecheck, content publication gates, SVG/static copy integrity, lint, and production build — all passed.
+- Runtime Visual and Accessibility QA — passed. Playwright executed **210 tests across Chromium, Firefox, and WebKit: 208 passed, 2 skipped**. The three 200% root-font-size diagnostics are intentionally marked as expected failures, one per engine, so ROOT-01 remains visible without masking unrelated regression results. No unexpected failures were reported.
+- All **10 responsive viewport samples** were exercised on all **4 routes** per engine. The Firefox 768px hero overlap false positive is gone after the test began measuring the fully visible portion beneath the 35% transparent art mask.
+- All **10 connected SVG artboards** rendered per engine with Manrope and Plus Jakarta Sans loaded; each geometry report recorded zero text out of the viewBox, zero text-node collisions, and zero targeted artboard contract failures. The JSON now records the actual Playwright browser name and version.
+- Keyboard traversal/disclosure, reduced-motion, axe WCAG A/AA + best-practice checks, print-media checks, and the Chromium A4 two-page PDF test passed. The two non-Chromium PDF-generation cases are intentionally skipped because Playwright's `page.pdf()` is Chromium-only.
+- Browser versions in the run logs: Chromium **159.0.8154.6**, Firefox **159.0**, WebKit **27.2**.
+
+The [exact-HEAD browser QA artifact · 15160708872](https://github.com/weexdayend/uigerhana-space/actions/runs/45912926554/artifacts/15160708872) contains 101 files: responsive screenshots, three-engine static artboard captures and geometry reports, diagnostic JSON, accessibility/test results, and the Chromium PDF. Artifact size: 19,975,526 bytes; digest: `sha256:c5d3be96fddd5fcfe11ecca775e5df7ed92a4ca030b3975e343effadfe0d63fc`.
+
+**ROOT-01 remains P1 and open:** the 200% CSS root-font-size diagnostic still reproduces the clipped hero/document overflow at 390px in all three engines. This retest preserves it as an expected failure with evidence; no production CSS was changed. Native OS scaling is still NOT RUN.
