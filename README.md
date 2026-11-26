@@ -34,6 +34,19 @@ npm run build
 
 The typecheck script runs `next typegen` before `tsc --noEmit` so generated App Router route helpers exist on a clean checkout. The content gate ensures review-only project evidence is never imported into public UI and the public case-study selector requires explicit approval.
 
+### Browser runtime QA
+
+The Playwright suite targets the production build. Install its pinned, ephemeral test dependencies, build, and run:
+
+```bash
+npm install --no-save --no-package-lock @playwright/test@1.65.1 @axe-core/playwright@4.14.1
+npx playwright install chromium
+npm run build
+npm run test:e2e
+```
+
+The suite covers desktop/tablet/mobile viewport behavior, route smoke checks, selected keyboard and reduced-motion flows, and axe-core WCAG A/AA checks. GitHub Actions uploads screenshots and traces as artifacts. These automated checks do not replace manual screenshot review, real-device testing, screen-reader testing, or 200% zoom review. See `docs/RUNTIME-QA-BASELINE.md`.
+
 ## Routes
 
 - `/` — personal homepage

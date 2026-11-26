@@ -388,3 +388,26 @@ Complete the browser validation matrix and confirm the preferred public contact 
 ### Next step
 
 Complete the Phase 1 browser/owner validation, then create comparable static styleframes for the four concept territories using identical copy and viewport dimensions. Obtain owner approval before any implementation.
+
+
+## 2026-11-27 — Runtime visual and accessibility QA foundation
+
+**Branch:** `qa/runtime-visual-accessibility-gates`  
+**Baseline:** `d1cfdce622908c5706a167c8f848bb79e0fe6258`
+
+### Delivered in this change
+
+- Added a production-build Playwright runtime suite covering six desktop/tablet/mobile viewport sizes.
+- Added route smoke coverage for `/`, `/work`, `/work/uigerhana-space`, and `/cv` at desktop and mobile sizes.
+- Added axe-core WCAG A/AA and best-practice scans for the same routes.
+- Added browser interactions for mobile menu Escape/focus return, skip-to-content, keyboard scrolling of the mobile story, and desktop reduced motion.
+- Added screenshot, trace, and HTML-report artifacts to the CI browser job.
+- Added a homepage skip link, explicit main-content focus target, global focus-visible treatment, and keyboard access to the horizontally scrollable story region.
+- Added Escape-to-close behavior to the mobile navigation and restored focus to its trigger.
+- Corrected the audit/roadmap language: prior responsive/accessibility notes were source inspection only, not executed browser or assistive-technology QA.
+
+### Verification boundary
+
+At authoring time, the exact-SHA runtime CI result and manual screenshot review are pending. The live domain was not accessible to the browser retrieval environment in this session. No claim is made that rendered visual QA, screen-reader testing, 200% zoom review, real-device testing, or production verification has passed.
+
+See `docs/RUNTIME-QA-BASELINE.md` for the actual test scope, limitations, and open manual sign-off matrix.

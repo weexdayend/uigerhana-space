@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SITE_META } from "@/data/site";
 import { PixelMark } from "@/components/PixelGraphics";
 
@@ -13,6 +13,7 @@ const NAV_LINKS = [
 export function SiteHeader() {
   const [darkBand, setDarkBand] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const evaluateBand = () => {
@@ -39,6 +40,17 @@ export function SiteHeader() {
       window.removeEventListener("resize", evaluateBand);
     };
   }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
 
   const surfaceClass = darkBand
     ? "border-[#e8e4d8]/10 bg-[#0b0e11] text-[#e8e4d8]"
@@ -92,6 +104,7 @@ export function SiteHeader() {
           </a>
 
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}

@@ -286,7 +286,12 @@ export function MotionNarrativeSection() {
       aria-label="From product thinking to production"
       className="motion-story"
     >
-      <div className="motion-story__viewport">
+      <div
+        className="motion-story__viewport"
+        role="region"
+        aria-label="Product journey"
+        tabIndex={0}
+      >
         <div ref={trackRef} className="motion-story__track">
           {STORY_BEATS.map((beat) => (
             <article

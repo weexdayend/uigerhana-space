@@ -399,7 +399,9 @@ This is a recommendation for concept exploration, not an approved page rewrite.
 
 ## 12. Browser validation plan
 
-Complete this before finalizing concept selection or approving a hero implementation.
+**Correction (2026-11-27):** the matrix below was a plan, not completed QA. The prior audit did not run the site in a browser, inspect rendered screenshots, execute keyboard interactions, run axe, test screen readers, or test 200% zoom. See `docs/RUNTIME-QA-BASELINE.md` for the runtime harness and the still-open manual review gate.
+
+A Playwright + axe-core suite is now wired into CI, but its exact-SHA run and human screenshot review must be recorded before Phase 1 can close.
 
 | Test viewport / mode | What to inspect |
 |---|---|
@@ -421,26 +423,24 @@ Record screenshots, browser/device details, and defects. Do not mark a visual re
 
 ### Completed from repository inspection
 
-- [x] Current routes and homepage section order inventoried.
-- [x] Navigation and anchor targets inspected.
-- [x] Public copy, evidence states, and case-study selector reviewed.
-- [x] Section purposes and overlaps identified.
-- [x] Contact and CTA destinations inventoried.
-- [x] Source-level responsive, motion, reduced-motion, and accessibility behaviors inspected.
+- [x] Static source inventory of routes, page order, navigation, public copy, evidence states, section purposes, and CTA destinations.
+- [x] Static source observations of responsive CSS and motion/reduced-motion branches (inventory only; not runtime validation).
 - [x] Priority opportunities recorded.
 
 ### Still open before Phase 1 can be fully closed
 
-- [ ] Rendered browser review on desktop, tablet, and mobile.
-- [ ] Keyboard-only, reduced-motion, touch, and 200% zoom review.
+- [ ] Execute the Playwright browser suite on the exact proposed SHA.
+- [ ] Open and human-review desktop, tablet, and mobile screenshot artifacts.
+- [ ] Review desktop pinning and tablet/mobile story scrolling in a browser.
+- [ ] Complete keyboard-only, reduced-motion, touch, screen-reader, and 200% zoom checks.
 - [ ] Confirm direct public contact preference.
 - [ ] Owner review of the prioritized findings.
 
-**Phase 1 status:** source audit complete; browser and owner validation pending.
+**Phase 1 status:** static source inventory complete; runtime QA and owner validation remain open. Do not describe the source inventory as visual QA or accessibility sign-off.
 
 ## 14. Immediate next step
 
-Complete the browser validation matrix and resolve the contact-channel decision. Then begin Phase 2 by exploring three or four distinct concept territories against the identity specification. Each territory must be evaluated on the same content and hierarchy and must extend beyond a single hero image.
+Run the browser suite and manually review its screenshot evidence, then complete the remaining accessibility and owner checks. Resolve the contact-channel decision. Only after Phase 1 is genuinely closed should Phase 2 concept review proceed against the identity specification; each territory must extend beyond a single hero image.
 
 No visual implementation is authorized by this audit.
 

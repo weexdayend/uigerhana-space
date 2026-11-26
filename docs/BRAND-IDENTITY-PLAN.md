@@ -56,7 +56,7 @@ Exit criteria:
 - [x] Existing content-integrity safeguards remain authoritative.
 
 ## Phase 1 — Current experience and content audit
-**Status:** Source audit complete; rendered browser and owner validation remain open. See `docs/CURRENT-EXPERIENCE-AUDIT.md`.
+**Status:** Static source inventory complete; Playwright/axe runtime gate has been added, but exact-SHA execution, human screenshot review, and owner validation remain open. See `docs/CURRENT-EXPERIENCE-AUDIT.md` and `docs/RUNTIME-QA-BASELINE.md`.
 
 
 **Goal:** understand what already exists before changing the design.
@@ -322,7 +322,7 @@ A visual effect must not compromise a higher-priority item.
 
 ## 7. Immediate next action
 
-Finish the open Phase 1 browser validation matrix and confirm the preferred public contact-channel decision. Review the prioritized findings with the owner. The concept exploration brief may be used as preparation, but do not select a visual direction until the Phase 1 review is closed.
+Execute the new browser/axe suite on an exact commit, open and review the screenshots for every required viewport, and complete manual keyboard, reduced-motion, screen-reader, touch, and 200% zoom checks. Confirm the preferred public contact-channel decision and review findings with the owner. The concept exploration brief may be used as preparation, but do not select a visual direction until the Phase 1 review is genuinely closed.
 
 Then produce comparable static hero studies for the four territories using the shared copy and frame defined in `docs/CREATIVE-CONCEPT-EXPLORATION.md`. Review the whole experience—not just the hero—before approving an art direction.
 
