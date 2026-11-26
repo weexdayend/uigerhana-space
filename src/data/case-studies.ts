@@ -449,7 +449,6 @@ export const CASE_STUDIES: CaseStudy[] = [
       },
     ],
   },
-,
   {
     slug: "passwordless-team-invitations",
     title: "Inviting a team with passwordless onboarding",
