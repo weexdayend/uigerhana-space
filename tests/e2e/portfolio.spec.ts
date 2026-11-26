@@ -378,6 +378,8 @@ test.describe("keyboard and motion behavior", () => {
     const pdf = await page.pdf({ path: pdfPath, format: "A4", printBackground: true });
     expect(pdf.byteLength).toBeGreaterThan(5_000);
     expect(pdf.subarray(0, 5).toString()).toBe("%PDF-");
+    const pdfPageCount = (pdf.toString("latin1").match(/\/Type\s*\/Page\b/g) ?? []).length;
+    expect(pdfPageCount, "CV print output must not append a mostly empty trailing page").toBe(2);
   });
 });
 
