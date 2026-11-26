@@ -310,3 +310,29 @@ This validates source checks and the production build only; browser-based deskto
 - Exact-SHA GitHub Actions run for `c8316af8641e5126ccc066b0e4ef8bec2290b5e8` passed dependency installation, typecheck, content publication gates, ESLint, and Next.js production build.
 - Browser-based visual QA and direct desktop/mobile runtime inspection remain to be completed.
 - No PR or deployment was performed as part of this implementation commit.
+
+## 2026-11-27 — Gerhana brand identity foundation
+
+**Scope:** identity, perception, experience, visual governance, and roadmap documentation  
+**Status:** strategic foundation approved; creative concept and visual implementation remain open
+
+### Delivered
+
+- Added `docs/BRAND-IDENTITY-SPEC.md` as the source of truth for durable Gerhana identity, positioning, audience perception, visitor experience, verbal identity, visual principles, motion, accessibility, and evidence guardrails.
+- Defined the identity around Irvan Gerhana as a Product Engineer and product-minded systems builder, connecting product thinking, interface craft, software engineering, and production-minded systems work.
+- Kept “From pixel to production.” as the approved brand line while separating it from any mandatory pixel-art treatment.
+- Explicitly separated brand identity from visual styles such as anime, cyberpunk, urban environments, literal studios, pixel/dither graphics, and 3D illustration.
+- Added `docs/BRAND-IDENTITY-PLAN.md` with phased work from current-state audit and concept exploration through verbal identity, visual system, connected styleframes, hero vertical slice, site-wide integration, and production QA.
+- Updated the README and Master Implementation Brief so older visual assumptions are historical implementation direction, not permanent brand requirements.
+
+### Decisions and boundaries
+
+- Public positioning remains Product Engineer.
+- Current shared-profile content and the existing source-of-truth hierarchy remain authoritative until new public copy is explicitly approved.
+- The proposed headline “I build digital products that make complex work feel clear.” remains a candidate, not an approved content change.
+- Previous hero experiments and visual references are exploration material only; none is selected automatically.
+- No website UI, code behavior, portfolio claim, project status, client attribution, or deployment configuration was changed.
+
+### Next step
+
+Begin Phase 1 of the brand identity plan: audit the current website experience, content, and section relationships before exploring new visual concepts. No visual implementation should begin until the owner approves a connected style direction.
