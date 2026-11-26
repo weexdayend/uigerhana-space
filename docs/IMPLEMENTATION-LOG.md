@@ -23,8 +23,7 @@
 
 ## 2026-11-26 — Visual storytelling and CI repair
 
-**Branch:** work/uigerhana-personal-identity-v1  
-**Current implementation:** visual-storytelling pass committed; CI result pending.
+**Branch:** work/uigerhana-personal-identity-v1
 
 ### Delivered
 
@@ -39,11 +38,19 @@
 
 - The earlier CI run stopped at typecheck because Next.js route-aware helper types were not generated before `tsc --noEmit`.
 - Updated the typecheck script to run `next typegen` before TypeScript checking.
-- The next GitHub Actions run must confirm typecheck, lint, and production build.
 
-### Remaining verification
+### Verification
 
-- Confirm the newest GitHub Actions run completes successfully.
+The GitHub Actions run for commit `648e3d7ce148b0b651c09a8359d54aa5034435e5` completed successfully:
+
+- Dependency installation: passed.
+- Next.js route type generation and TypeScript typecheck: passed.
+- ESLint: passed.
+- Next.js production build: passed.
+- Static routes included /, /cv, /work, and /work/uigerhana-space.
+
+### Remaining review
+
 - Inspect /, /work, /work/uigerhana-space, and /cv at desktop and mobile sizes.
 - Verify an unapproved or unknown case-study slug returns not found.
 - Review print pagination and save-to-PDF output in a browser.
