@@ -6,13 +6,37 @@ export type CaseStudyEvidenceStatus =
   | "source-backed"
   | "target-only"
   | "acceptance-open"
-  | "publication-pending";
+  | "publication-pending"
+  | "built-local"
+  | "tested-local"
+  | "not-verified"
+  | "not-released";
 
 export interface CaseStudyEvidenceItem {
   id: string;
   claim: string;
   status: CaseStudyEvidenceStatus;
   explanation: string;
+}
+
+export interface CaseStudyWorkflowStage {
+  title: string;
+  description: string;
+}
+
+export interface CaseStudyWorkflowBranch {
+  title: string;
+  description: string;
+  steps: string[];
+  outcome: string;
+}
+
+export interface CaseStudyWorkflowDiagram {
+  title: string;
+  description: string;
+  stages: CaseStudyWorkflowStage[];
+  branches: CaseStudyWorkflowBranch[];
+  safeguards: string[];
 }
 
 export interface CaseStudySection {
@@ -66,6 +90,7 @@ export interface CaseStudy {
     stages: CaseStudyArchitectureStage[];
   };
   evidenceMap?: CaseStudyEvidenceItem[];
+  workflowDiagram?: CaseStudyWorkflowDiagram;
   visualStudies: CaseStudyVisualStudy[];
   technologyGroups: CaseStudyTechnologyGroup[];
 }
@@ -421,6 +446,262 @@ export const CASE_STUDIES: CaseStudy[] = [
         category: "Engineering workflow",
         purpose: "Source validation and controlled delivery",
         technologies: ["Generated API clients", "Docker Compose", "Release runbooks"],
+      },
+    ],
+  },
+,
+  {
+    slug: "passwordless-team-invitations",
+    title: "Inviting a team with passwordless onboarding",
+    eyebrow: "Platform foundation · Built locally · Draft",
+    summary:
+      "A role-aware invitation flow that lets an existing account join an organization or lets a new person create a passkey-first account as part of accepting an invitation.",
+    publicationStatus: "draft",
+    projectStatus: "in-progress",
+    context: "Independent product initiative · S1.3 tenant authorization and membership lifecycle",
+    role:
+      "Product and engineering contribution in an owner-controlled codebase. Exact personal and team contribution boundaries remain to be confirmed before public attribution.",
+    challenge: {
+      heading: "The onboarding problem",
+      paragraphs: [
+        "An organization needs to add people without turning invitation links into open registration, weakening role boundaries, or activating membership for the wrong identity.",
+        "The flow must support both people who already have an account and people who do not, while preserving a verifiable link between the invited address, the new authenticator, and the resulting organization membership.",
+      ],
+    },
+    approach: {
+      heading: "A controlled invitation model",
+      paragraphs: [
+        "Treat the invitation as a short-lived, single-use authorization to join one organization with one assigned role. Looking at the link is read-only; accepting it requires proof that the person controls the invited address.",
+        "Keep existing-account acceptance separate from first-time account creation. New people create a passkey with user verification, and the account, confirmed address, credential, membership, and audit record are committed together.",
+      ],
+      bullets: [
+        "Owners and admins can invite members; only owners can invite admins or owners.",
+        "Inviting an elevated role requires fresh passkey evidence.",
+        "The invitation token is represented by a stored digest, not a readable token.",
+        "Resend replaces the previous invitation; cancel, expiry, and use end the link.",
+      ],
+    },
+    implementation: {
+      heading: "Implementation",
+      paragraphs: [
+        "The reviewed source contains a Go tenant invitation domain, server-side BFF handlers, a PostgreSQL migration, a team-management UI, and a dedicated invitation acceptance page.",
+        "The new-person path verifies a passkey ceremony with user verification and then writes account, confirmed email, passkey, membership, and audit evidence in one database transaction. It does not create an application session; the person signs in after joining.",
+      ],
+      bullets: [
+        "Go tenant and identity/BFF handlers.",
+        "PostgreSQL invitation persistence and transaction boundaries.",
+        "Next.js, React, and TypeScript team and invitation pages.",
+        "Transactional notification outbox integration.",
+        "Seven-day invitation lifetime and a limit of twenty invitations per organization per day.",
+      ],
+    },
+    currentState: {
+      heading: "Verification and current limits",
+      paragraphs: [
+        "The S1.3 source record classifies patches 1–3 as implemented locally and not released. The invitation slice is present in the reviewed source and has local database and browser evidence; this is not a production-release claim.",
+        "The recorded database validation used PostgreSQL 17. Invitation rules were tested with row-level security both enabled and disabled, including authorization, duplicate and already-member cases, resend/cancel/expiry, cross-organization isolation, concurrent acceptance, and protection against token reuse. The record describes twenty-three deliberate break cases: seventeen were caught in the first pass, two additional missing test cases were added and caught, and four conditions were covered by a second guard.",
+        "The local browser review covered sending an invitation, the already-a-member refusal, the invitation list, the invitation page with organization and name fields, an ended/unknown link, and a mobile layout without horizontal overflow.",
+        "Still unverified: real passkey creation in a browser on the intended authenticator origin, delivery to an actual recipient mailbox, the manual repository validator, the race detector, and production release/runtime acceptance. The mail path was exercised through the outbox and mail server once in the recorded local test, but mailbox placement was not verified.",
+      ],
+    },
+    contributions: [
+      {
+        area: "Invitation policy",
+        description:
+          "Defined a role-aware invitation contract with separate permissions for member invitations and elevated-role invitations, plus passkey step-up for privileged actions.",
+      },
+      {
+        area: "Identity onboarding",
+        description:
+          "Connected existing-account acceptance to a matching signed-in identity and created a distinct first-time path based on passkey registration and invitation acceptance.",
+      },
+      {
+        area: "Transactional integrity",
+        description:
+          "Kept new account creation, confirmed address, passkey credential, membership activation, and audit evidence inside one transaction.",
+      },
+      {
+        area: "Application workflow",
+        description:
+          "Implemented team invitation management and a dedicated invitation page with resend, cancel, accept, and ended-link states in the reviewed source.",
+      },
+      {
+        area: "Validation design",
+        description:
+          "Recorded database, negative-case, concurrency, migration, and local browser checks separately from release and production acceptance.",
+      },
+    ],
+    architectureDiagram: {
+      title: "Where the invitation flow lives",
+      description:
+        "A source-derived component view of the local implementation: the web application calls the server-side BFF, which coordinates identity, tenant policy, PostgreSQL, and the transactional notification outbox.",
+      stages: [
+        {
+          label: "Web experience",
+          description: "Next.js application",
+          items: [
+            "Team management",
+            "Invitation form and list",
+            "Dedicated accept page",
+          ],
+        },
+        {
+          label: "Application boundary",
+          description: "Identity BFF and tenant module",
+          items: [
+            "Session and organization context",
+            "Role and step-up checks",
+            "Invitation lifecycle",
+          ],
+        },
+        {
+          label: "Transactional records",
+          description: "PostgreSQL",
+          items: [
+            "Invitation digest and expiry",
+            "Membership and audit event",
+            "Notification outbox intent",
+          ],
+        },
+      ],
+    },
+    workflowDiagram: {
+      title: "From invite to active membership",
+      description:
+        "Implementation-derived workflow map based on the reviewed source and S1.3 patch record. It is a technical flow illustration, not a screenshot of the application.",
+      stages: [
+        {
+          title: "Create invitation",
+          description:
+            "An owner or admin enters an email and role. Elevated-role invitations require fresh passkey evidence.",
+        },
+        {
+          title: "Persist and notify",
+          description:
+            "The invitation, audit entry, and notification outbox intent are committed together. The link can be inspected without consuming it.",
+        },
+        {
+          title: "Prove the invitee",
+          description:
+            "The flow branches according to whether the invited email already belongs to an account.",
+        },
+        {
+          title: "Activate membership",
+          description:
+            "The invitation is accepted only for the matching address; the membership and audit record are committed atomically.",
+        },
+      ],
+      branches: [
+        {
+          title: "Existing account",
+          description:
+            "The invitee signs in as the invited, confirmed email address and reopens the invitation.",
+          steps: [
+            "Authenticate the existing account",
+            "Match the signed-in email to the invitation",
+            "Accept the invitation",
+          ],
+          outcome: "The existing identity becomes an active organization member.",
+        },
+        {
+          title: "New account",
+          description:
+            "A person without an account supplies a display name and registers a passkey with user verification.",
+          steps: [
+            "Begin a challenge bound to this invitation",
+            "Verify the passkey ceremony",
+            "Create account, confirmed email, credential, membership, and audit in one transaction",
+          ],
+          outcome: "The person is asked to sign in normally; joining does not silently open a session.",
+        },
+      ],
+      safeguards: [
+        "Seven-day lifetime and twenty invitations per organization per day.",
+        "Only a digest of the invitation token is stored.",
+        "Resending supersedes the old link; cancellation ends an open invitation.",
+        "Expired, cancelled, used, replaced, unknown, or wrong-address links resolve to one ended state.",
+        "Opening the link does not consume it; duplicate membership and concurrent acceptance are guarded.",
+      ],
+    },
+    evidenceMap: [
+      {
+        id: "invitation-implementation",
+        claim: "Invitation UI, BFF, domain logic, and persistence",
+        status: "built-local",
+        explanation:
+          "Present in the reviewed source tree and recorded as implemented locally in S1.3 patch 3. It has not been released to production.",
+      },
+      {
+        id: "database-validation",
+        claim: "PostgreSQL 17 migration and invitation rule tests",
+        status: "tested-local",
+        explanation:
+          "The checkpoint records migration up/down/up and Goose execution, a fresh-database Go test run, and invitation tests with row-level security enabled and disabled.",
+      },
+      {
+        id: "failure-probes",
+        claim: "Deliberate negative-case and guard testing",
+        status: "tested-local",
+        explanation:
+          "Twenty-three deliberate break cases were recorded: seventeen caught in the first pass, two missing test cases then added and caught, and four covered by a second guard.",
+      },
+      {
+        id: "browser-checks",
+        claim: "Local browser workflow and mobile layout",
+        status: "tested-local",
+        explanation:
+          "The recorded browser checks covered invitation creation and listing, already-member refusal, the accept page, an ended link, and no horizontal overflow on a phone.",
+      },
+      {
+        id: "passkey-browser",
+        claim: "Real passkey registration on the intended origin",
+        status: "not-verified",
+        explanation:
+          "The passkey prompt/creation ceremony was not tried in a real browser because the local host did not match the intended passkey domain.",
+      },
+      {
+        id: "mailbox-delivery",
+        claim: "Actual recipient mailbox delivery",
+        status: "not-verified",
+        explanation:
+          "The outbox and mail-server path was exercised once in local testing, but a real recipient mailbox and inbox placement were not verified.",
+      },
+      {
+        id: "release-acceptance",
+        claim: "Manual validator, race detector, and production release",
+        status: "not-released",
+        explanation:
+          "The checkpoint explicitly records these checks and production release/runtime acceptance as not completed for this slice.",
+      },
+      {
+        id: "public-disclosure",
+        claim: "Public project identity, screenshots, and personal attribution",
+        status: "publication-pending",
+        explanation:
+          "The source repository is private. The public product label, approved real UI screenshots, and precise personal/team contribution boundaries are not cleared.",
+      },
+    ],
+    visualStudies: [],
+    technologyGroups: [
+      {
+        category: "Backend and domain",
+        purpose: "Invitation policy and application workflows",
+        technologies: ["Go", "PostgreSQL", "pgx"],
+      },
+      {
+        category: "Web application",
+        purpose: "Team management and invitation acceptance",
+        technologies: ["Next.js", "React", "TypeScript"],
+      },
+      {
+        category: "Authentication",
+        purpose: "Passwordless first-time account creation",
+        technologies: ["WebAuthn passkeys", "User verification"],
+      },
+      {
+        category: "Messaging",
+        purpose: "Transactional invitation notification",
+        technologies: ["Transactional outbox", "Email adapter"],
       },
     ],
   },
