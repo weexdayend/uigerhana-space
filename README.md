@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UI Gerhana
 
-## Getting Started
+Personal professional website and résumé for **Irvan Gerhana — Product Engineer**.
 
-First, run the development server:
+The site brings together product thinking, interface design, software engineering, enterprise systems, and production-minded engineering under one personal identity.
+
+## Stack
+
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- Geist and Pixelify Sans
+- Custom Bayer-dithered canvas artwork
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Quality checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run typecheck
+npm run verify:content
+npm run lint
+npm run build
+```
 
-## Learn More
+The typecheck script runs `next typegen` before `tsc --noEmit` so generated App Router route helpers exist on a clean checkout. The content gate ensures review-only project evidence is never imported into public UI and the public case-study selector requires explicit approval.
 
-To learn more about Next.js, take a look at the following resources:
+## Routes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/` — personal homepage
+- `/work` — selected work and generalized work domains
+- `/work/[slug]` — approved case-study details only
+- `/cv` — online résumé with browser print / Save PDF support
+- `/sitemap.xml` and `/robots.txt` — crawler discovery and indexing rules
+- `/opengraph-image` — generated social preview image
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Content architecture
 
-## Deploy on Vercel
+Professional facts are maintained in typed modules under `src/data`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `profile.ts` — public display identity and professional summary
+- `experience.ts` — résumé-backed roles and responsibilities
+- `skills.ts` — skills, certification, and publication profile handles
+- `projects.ts` — generalized work domains for the public homepage
+- `case-studies.ts` — evidence-led case studies with an explicit publication approval gate
+- `project-evidence.ts` — résumé-derived, generalized review records; not imported by public routes
+- `project-source-evidence.ts` — generalized private-source review records; not imported by public routes
+- `approach.ts` — engineering principles
+- `site.ts` — site-level identity and location metadata
+- `writing.ts` — verified public profiles and selected owner-authored articles
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Case-study presentation is composed from reusable components for contribution breakdowns, code-architecture maps, evidence maturity maps, source-derived workflow maps, generated visual studies, and technology maps. The homepage includes a curated Writing section with links to verified public articles and author profiles. The IT-services platform overview, passwordless team-invitation slice, and backup/recovery operations case study remain draft-only and are excluded from public routes.
+
+Keep the homepage, experience section, and résumé aligned to these shared sources. Do not add unsupported metrics, testimonials, credentials, project status, or client disclosures. The supplied résumé does not include education history or language proficiency, so those sections are intentionally omitted.
+
+## Content integrity
+
+- Public display name: **Irvan Gerhana**.
+- Professional positioning: **Product Engineer**.
+- Named client, product, and institution attributions require explicit disclosure approval; the source-derived project evidence register is generalized and excluded from public rendering.
+- Personal phone and email details are not published by default.
+- Use verified, individual URLs for repositories, articles, and social profiles.
+- Distinguish production work, prototypes, experiments, and work in progress.
+- Generated visual studies must not be presented as product screenshots.
+
+## Design direction
+
+The visual identity retains the existing Obsidian / Stone / Amber palette, Geist typography, Pixelify Sans accents, editorial grids, pixel geometry, and Bayer dithering.
+
+See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the full implementation contract, `docs/CASE-STUDY-REVIEW.md` for the project disclosure checklist, `docs/PROJECT-SOURCE-REVIEW.md` for the sanitized private-source review, and `docs/IMPLEMENTATION-LOG.md` for delivered work.

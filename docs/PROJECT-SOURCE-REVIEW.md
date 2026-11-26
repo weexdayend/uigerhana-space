@@ -1,0 +1,168 @@
+# Independent Product Source Review
+
+**Review date:** 26 November 2026  
+**Source class:** owner-controlled private repository, inspected read-only  
+**Portfolio state:** draft; not approved for public rendering  
+**Public repository policy:** no product name, private source URL, customer names, partner references, deployment hosts, or sensitive operational topology are reproduced here.
+
+## 1. Source material reviewed
+
+The read-only review covered:
+
+- Owner-approved product strategy.
+- Domain and module architecture.
+- Production-grade delivery roadmap.
+- Repository README and engineering agreements.
+- Current API and web application source tree.
+- Validation, release, backup, recovery, and operating documentation.
+
+The source repository itself remains private. This portfolio review intentionally does not link to it.
+
+## 2. Source-backed facts
+
+### Product direction
+
+The product strategy defines a Professional Services Automation platform for IT services providers. Its intended scope connects commercial work, project delivery, finance, and ongoing service operations through one operating model.
+
+The product direction is full-lifecycle and production-grade, delivered through incremental vertical slices. This is a statement of product mandate, not proof that the entire lifecycle has shipped.
+
+### Architecture
+
+The reviewed architecture specifies:
+
+- Go modular monolith.
+- Next.js, React, and TypeScript web application.
+- PostgreSQL as the authoritative transactional data store.
+- Contract-first HTTP API using OpenAPI.
+- PgBouncer for API transaction pooling.
+
+The architecture explicitly avoids treating every business module as an independently deployed microservice by default.
+
+### Current implementation evidence
+
+The reviewed source tree contains:
+
+- Identity and account/session foundations.
+- Passkey enrollment/authentication and recovery-related application flows.
+- Tenant and organization access foundations, including invitation-related source.
+- A server-side browser handoff/BFF boundary.
+- An authenticated web application shell with account, organization, and security areas.
+- API, migration, worker, and notification-related source areas.
+
+This inventory establishes source presence. It does not independently prove that every path is enabled in production, generally available, or accepted as a complete business workflow.
+
+### Target versus implementation
+
+The product strategy and roadmap define a broader commercial-to-service lifecycle. The domain architecture distinguishes that target module map from the current platform and identity foundations.
+
+The portfolio must not claim that the complete CRM, estimation, quotation, contract, project delivery, acceptance, finance, project profitability, and IT service-management lifecycle is shipped as one end-to-end product.
+
+### Operational evidence boundary
+
+The source repository contains validation and release tooling plus backup, recovery, and operating records. These must be reported as separate evidence types:
+
+- Source/configuration presence.
+- Manual repository validation.
+- Exact-SHA CI evidence, where enabled.
+- Release-image evidence.
+- Runtime validation.
+- Backup and external recovery evidence.
+- Owner acceptance.
+
+The source records retain open recovery/acceptance follow-ups. The presence of runbooks or deployment files must not be represented as complete disaster-recovery acceptance.
+
+## 3. Safe draft narrative
+
+A connected operating platform for IT services, designed to bring commercial work, delivery, finance, and ongoing service operations into one coherent system.
+
+The platform is being developed as a Go modular monolith with a Next.js application and PostgreSQL foundation. Current source evidence centers on platform, identity, and tenant-access foundations. Business-domain capabilities are delivered incrementally and remain separately governed by their roadmap and acceptance gates.
+
+## 4. Evidence classification
+
+| Claim | State | Meaning |
+|---|---|---|
+| Product direction | Source-backed | Present in the owner-approved product strategy |
+| High-level architecture | Source-backed | Present in architecture documentation and current source configuration |
+| Identity and tenant foundation | Source-backed | Relevant code and route areas exist in the reviewed tree |
+| Full business lifecycle | Target-only | Defined in strategy/roadmap; not established as shipped end-to-end |
+| Complete operational recovery | Acceptance open | Some procedures/evidence exist; remaining recovery and owner gates are not closed |
+| Public project identity and screenshots | Publication pending | Private source; no public product attribution or visual package approved in this review |
+| Measured customer/business outcomes | Not evidenced | No attributable outcomes or metrics were approved in the reviewed source material |
+
+## 5. Required publication review
+
+- [ ] Clear the public product name and public URL, or retain a generalized title.
+- [ ] Confirm exact personal contribution and team boundaries.
+- [ ] Choose one implemented vertical slice for the first public deep dive.
+- [ ] Reconcile every shown capability with current code and acceptance evidence.
+- [ ] Capture owner-approved screenshots or a reproducible sanitized demo.
+- [ ] Remove tenant, customer, partner, financial, identity, and infrastructure details.
+- [ ] Keep source, tests, CI, runtime, recovery, and owner-acceptance claims separate.
+- [ ] Approve the final copy and visual materials.
+
+Until these checks are complete, the case study remains a draft and is excluded from the public work index and detail routes.
+
+
+## 6. Source-backed vertical slice — passwordless team invitations
+
+The reviewed S1.3 tenant authorization and membership lifecycle slice specifies an owner/admin-managed invitation workflow. Its checkpoint records patches 1–3 as implemented locally and **not released**.
+
+### Implemented workflow
+
+1. An owner or admin enters an email and role. Only an owner can invite an admin or owner; elevated-role invitations require fresh passkey evidence.
+2. The invitation, audit entry, and notification outbox intent are committed transactionally.
+3. Opening the email link only reads invitation information; it does not consume the invitation.
+4. An existing account signs in as the matching invited address and accepts the invitation.
+5. A person without an account enters a name and creates a passkey with user verification. The account, confirmed address, passkey, membership, and audit entry are committed in one transaction. Joining does not create an application session; normal sign-in follows.
+
+The implementation records a seven-day invitation lifetime, a maximum of twenty invitations per organization per day, token-digest storage, resend replacement, cancellation, and a shared ended state for expired, cancelled, used, replaced, unknown, or wrong-address links.
+
+### Test and browser evidence recorded
+
+- PostgreSQL 17 migration up/down/up and Goose execution.
+- Fresh-database Go tests.
+- Invitation integration tests with row-level security enabled and disabled.
+- Role authorization, duplicate and already-member cases, resend/cancel/expiry, cross-organization isolation, concurrent acceptance, passkey challenge binding, and token protection.
+- 23 deliberate break cases: 17 caught in the initial pass; two missing test cases were added and caught; four cases were covered by a secondary guard.
+- Local browser review covered invite creation, already-member refusal, invitation list, invite page organization/name fields, an ended/unknown link, and a mobile layout without horizontal overflow.
+
+### Remaining gaps
+
+The record says the real passkey creation ceremony was not tried in a browser because the local host did not match the intended passkey domain. A real recipient mailbox/inbox placement, manual repository validator, race detector, production release/runtime validation, and owner acceptance of this slice are also not recorded as complete. The outbox and mail-server path was exercised once in local testing; that does not prove mailbox placement.
+
+### Portfolio claim boundary
+
+This is evidence of a locally implemented and locally tested vertical slice, not a production release. The public case-study draft must keep its status explicit and must not imply general availability. No real product screenshot was approved in the source review; the workflow illustration is source-derived and labelled accordingly.
+
+
+## 7. Source-backed operational case study — backup and recovery
+
+### S0.10: accepted isolated restore
+
+The S0.10 acceptance record states that the owner accepted and closed the checkpoint on 12 November 2026. The recorded PostgreSQL 17.11 archive was readable, its off-host workstation copy matched the source checksum, and an isolated disposable database restore completed successfully with 2/2 user schemas and 9/9 user relations, including the platform schema.
+
+The restore container had networking disabled, no published ports, bounded CPU/memory, swap disabled, and an anonymous ephemeral data volume. Production was not the restore target. Post-drill application health and workload-isolation checks passed. The workstation copy was off-host from the VPS but was not geographic/cloud off-site storage.
+
+### S0.11: scheduled off-site operations
+
+The 14 November 2026 current-runtime addendum records:
+
+- the timer active and enabled, with a natural timer-originated backup invocation completing successfully;
+- successful remote snapshot listing and archive/checksum-sidecar read-back with matching integrity evidence;
+- a delivered operational success notification;
+- one local retention apply that deleted one eligible older artifact group only after final remote read-back, preserving the two newest local groups;
+- no remote snapshot pruning.
+
+This runtime evidence is distinct from the S0.10 restore acceptance and does not imply that the S0.11 checkpoint is closed.
+
+### Remaining S0.11 acceptance boundary
+
+The current checkpoint continues to identify S0.11 as open. The dedicated external disposable recovery environment was not provisioned, no external PostgreSQL restore drill was completed, and the approved 24-hour RPO and 24-hour RTO objectives were not measured. Explicit S0.11 owner acceptance remains outstanding.
+
+### Safe draft narrative
+
+A verifiable backup and recovery workflow for a PostgreSQL-backed production platform: archive integrity checks, isolated restore rehearsal, scheduled off-site object copies, remote byte read-back, guarded local retention, and operational success notification. The restore drill is accepted at S0.10 scope; S0.11 has scheduled/off-site runtime evidence but retains external recovery and owner-acceptance gates.
+
+### Public disclosure boundary
+
+The private product identity, source repository URL, hostnames, bucket/account identifiers, artifact filenames, checksums, message IDs, customer/partner references, credentials, and infrastructure topology are intentionally omitted. No application screenshot or public outcome metric was approved in this review.
