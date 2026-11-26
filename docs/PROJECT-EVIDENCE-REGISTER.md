@@ -57,3 +57,12 @@ General résumé skills are not automatically project stacks. Do not copy all li
 The machine-readable register is in `src/data/project-evidence.ts`. It is intentionally not imported by public routes. Its entries use the fixed state `review-required`; the public case-study system remains separate. Never auto-generate an approved case study from this register.
 
 The existing public work page may continue to show generalized work domains. It must not render this evidence register or expose draft records.
+
+
+## Additional independent product source review
+
+| ID | Generalized workstream | Source | Evidence established | Publication state |
+|---|---|---|---|---|
+| `independent-it-services-platform` | Connected operating platform for IT services | Owner-controlled private repository; product strategy, domain architecture, roadmap, source tree, and operating documentation reviewed read-only | Product direction, documented Go modular-monolith / Next.js / PostgreSQL architecture, and identity/tenant platform foundations; full PSA business lifecycle remains target-only | `review-required`; project in progress; attribution and public visuals not cleared |
+
+The private product name, source repository URL, deployment hosts, and customer/partner references are intentionally omitted from this public repository. See `docs/PROJECT-SOURCE-REVIEW.md` for the sanitized source review and publication boundary.

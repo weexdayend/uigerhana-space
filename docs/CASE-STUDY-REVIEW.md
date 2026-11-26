@@ -63,3 +63,43 @@ Before changing a candidate to approved, complete and review:
 - Unknown or missing slugs: return not found.
 - Never generate a case-study page from résumé bullet points alone.
 - Do not use anonymous client-quote cards or invented testimonials as substitutes for evidence.
+
+
+## Independent product candidate — connected IT services platform
+
+- **Publication state:** Draft only; not included in the public work index or public detail routes.
+- **Project state:** In progress, based on the reviewed source tree and product roadmap.
+- **Source class:** Owner-controlled private repository reviewed read-only on 26 November 2026. The product name, repository URL, deployment hosts, and external references are intentionally not reproduced here.
+- **Source-backed product direction:** A Professional Services Automation platform for IT services providers, intended to connect commercial work, project delivery, finance, and ongoing service operations.
+- **Source-backed architecture:** Go modular monolith, Next.js/React/TypeScript web application, PostgreSQL data foundation, contract-first OpenAPI API, and PgBouncer.
+- **Current source evidence:** Identity, account/session, passkey, tenant-access, invitation, browser handoff, and authenticated web application foundations are present in the reviewed source tree.
+- **Target-only capability:** The complete commercial-to-service lifecycle and its business-domain modules remain a product/roadmap target. The source architecture explicitly distinguishes that target module map from the current platform and identity foundations.
+- **Operational boundary:** Validation/release and backup/operating documentation exist. Repository checks, runtime validation, external recovery, and owner acceptance are separate evidence states; do not collapse them into a single production-readiness claim.
+- **Public visual evidence:** None approved in this review. Do not create substitute product screenshots or expose private UI/customer information.
+
+### Claims permitted in a future approved case study
+
+- The product strategy defines a connected IT-services PSA lifecycle.
+- The reviewed architecture specifies a Go modular monolith with a Next.js application and PostgreSQL.
+- The current source tree contains identity and tenant-access foundations.
+- Business-domain delivery is incremental and slice-gated.
+
+### Claims not permitted without additional evidence
+
+- The entire PSA lifecycle is implemented or generally available.
+- All target business modules have production data, APIs, or customer-facing workflows.
+- Measured customer adoption, revenue, time savings, conversion, performance, or service-level outcomes.
+- Named product, customer, vendor, or partner attribution.
+- Exact personal/team contribution boundaries beyond what the owner confirms.
+- Production disaster-recovery or service-level acceptance beyond the source acceptance records.
+
+### Required before publication
+
+- [ ] Owner clears the public product name and URL, or explicitly chooses a generalized title.
+- [ ] Owner confirms role, personal contribution, and team boundaries.
+- [ ] Select one implemented vertical slice and map it to exact source evidence.
+- [ ] Confirm current shipped/preview/roadmap status for each capability shown.
+- [ ] Capture owner-approved screenshots or a reproducible sanitized demo.
+- [ ] Redact tenant, customer, partner, financial, identity, and infrastructure details.
+- [ ] Reconcile source, test, manual-validation, CI, runtime, and acceptance evidence independently.
+- [ ] Owner approves the final public copy and visual materials.
