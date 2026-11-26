@@ -80,6 +80,7 @@ test("renders all System Atlas artboards with the selected fonts and no text col
     width: number;
     height: number;
     textNodes: number;
+    visualContractFailures: string[];
     outOfBounds: Array<{ text: string; x: number; y: number; right: number; bottom: number }>;
     overlaps: Array<{ first: string; second: string; area: number }>;
   }> = [];
@@ -94,7 +95,7 @@ test("renders all System Atlas artboards with the selected fonts and no text col
     }, markup);
     await page.evaluate(() => document.fonts.ready);
 
-    const layout = await page.locator("svg").evaluate((element) => {
+    const layout = await page.locator("svg").evaluate((element, artboardName) => {
       const svg = element as SVGSVGElement;
       const viewBox = svg.viewBox.baseVal;
       const textNodes = Array.from(svg.querySelectorAll<SVGTextElement>("text"));
@@ -139,14 +140,74 @@ test("renders all System Atlas artboards with the selected fonts and no text col
         }
       }
 
+      const visualContractFailures: string[] = [];
+
+      if (artboardName === "interaction-states-desktop") {
+        const introduction = textNodes.find((node) =>
+          (node.textContent || "").includes("Hover is enhancement.")
+        );
+        const darkSurface = Array.from(svg.querySelectorAll<SVGRectElement>("rect")).find(
+          (node) =>
+            node.getAttribute("x") === "80" &&
+            node.getAttribute("y") === "420" &&
+            node.getAttribute("width") === "1280" &&
+            node.getAttribute("height") === "500"
+        );
+
+        if (!introduction || !darkSurface) {
+          visualContractFailures.push("The introductory copy or first dark-surface panel is missing.");
+        } else {
+          const copyBox = introduction.getBBox();
+          const panelBox = darkSurface.getBBox();
+          const clearance = panelBox.y - (copyBox.y + copyBox.height);
+          if (clearance < 16) {
+            visualContractFailures.push(
+              `Introductory copy must keep at least 16px clearance above the first panel (found ${Math.round(clearance * 100) / 100}px).`
+            );
+          }
+        }
+      }
+
+      if (artboardName === "component-library") {
+        const actionLabel = textNodes.find((node) =>
+          (node.textContent || "").includes("READ CASE STUDY")
+        );
+        const contentCard = Array.from(svg.querySelectorAll<SVGRectElement>("rect")).find(
+          (node) =>
+            node.getAttribute("x") === "100" &&
+            node.getAttribute("y") === "1650" &&
+            node.getAttribute("width") === "760" &&
+            node.getAttribute("height") === "390"
+        );
+
+        if (!actionLabel || !contentCard) {
+          visualContractFailures.push("The content-card action label or card surface is missing.");
+        } else {
+          const labelBox = actionLabel.getBBox();
+          const cardBox = contentCard.getBBox();
+          const inset = 32;
+          if (
+            labelBox.x < cardBox.x + inset ||
+            labelBox.y < cardBox.y + inset ||
+            labelBox.x + labelBox.width > cardBox.x + cardBox.width - inset ||
+            labelBox.y + labelBox.height > cardBox.y + cardBox.height - inset
+          ) {
+            visualContractFailures.push(
+              "The content-card action label must remain inside the card's 32px content inset."
+            );
+          }
+        }
+      }
+
       return {
         width: viewBox.width,
         height: viewBox.height,
         textNodes: boxes.length,
+        visualContractFailures,
         outOfBounds,
         overlaps,
       };
-    });
+    }, artboard.name);
 
     reports.push({ name: artboard.name, ...layout });
 
@@ -175,6 +236,14 @@ test("renders all System Atlas artboards with the selected fonts and no text col
   );
 
   expect(pageErrors, "No browser runtime errors while rendering the artboards").toEqual([]);
+  expect(
+    reports.filter((report) => report.visualContractFailures.length > 0).map((report) => ({
+      artboard: report.name,
+      failures: report.visualContractFailures,
+    })),
+    "Critical copy-to-panel and card-inset layout contracts must remain intact"
+  ).toEqual([]);
+
   expect(
     reports.filter((report) => report.outOfBounds.length > 0).map((report) => ({
       artboard: report.name,
