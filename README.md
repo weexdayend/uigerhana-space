@@ -41,6 +41,7 @@ The Playwright suite targets the production build. Install its pinned, ephemeral
 ```bash
 npm install --no-save --no-package-lock @playwright/test@1.65.1 @axe-core/playwright@4.14.1
 npx playwright install chromium
+npm run typecheck:e2e
 npm run build
 npm run test:e2e
 ```

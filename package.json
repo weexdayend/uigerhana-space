@@ -10,7 +10,8 @@
     "typegen": "next typegen",
     "typecheck": "npm run typegen && tsc --noEmit",
     "verify:content": "node scripts/check-publication-gates.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json"
   },
   "dependencies": {
     "next": "16.4.6",
