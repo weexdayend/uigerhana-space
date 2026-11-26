@@ -50,10 +50,11 @@ Professional facts are maintained in typed modules under `src/data`:
 - `projects.ts` — generalized work domains for the public homepage
 - `case-studies.ts` — evidence-led case studies with an explicit publication approval gate
 - `project-evidence.ts` — résumé-derived, generalized review records; not imported by public routes
+- `project-source-evidence.ts` — generalized private-source review records; not imported by public routes
 - `approach.ts` — engineering principles
 - `site.ts` — site-level identity and location metadata
 
-Case-study presentation is composed from reusable components for contribution breakdowns, code-architecture maps, generated visual studies, and technology maps.
+Case-study presentation is composed from reusable components for contribution breakdowns, code-architecture maps, evidence maturity maps, generated visual studies, and technology maps. A private-source-derived IT-services platform case study remains draft-only and is excluded from public routes.
 
 Keep the homepage, experience section, and résumé aligned to these shared sources. Do not add unsupported metrics, testimonials, credentials, project status, or client disclosures. The supplied résumé does not include education history or language proficiency, so those sections are intentionally omitted.
 
@@ -71,4 +72,4 @@ Keep the homepage, experience section, and résumé aligned to these shared sour
 
 The visual identity retains the existing Obsidian / Stone / Amber palette, Geist typography, Pixelify Sans accents, editorial grids, pixel geometry, and Bayer dithering.
 
-See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the full implementation contract, `docs/CASE-STUDY-REVIEW.md` for the project disclosure and evidence checklist, and `docs/IMPLEMENTATION-LOG.md` for delivered work.
+See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the full implementation contract, `docs/CASE-STUDY-REVIEW.md` for the project disclosure checklist, `docs/PROJECT-SOURCE-REVIEW.md` for the sanitized private-source review, and `docs/IMPLEMENTATION-LOG.md` for delivered work.

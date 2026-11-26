@@ -124,3 +124,32 @@ The evidence register contains 15 résumé-derived workstreams. All 15 remain re
 The public repository's brief, experience copy, and review documentation use generalized project labels until the owner clears attribution. No personal phone/email, client screenshots, client names from draft workstreams, or unsupported project outcomes were added in this pass.
 
 This validates source checks and the production build only; browser-based desktop/mobile inspection and résumé print-output review remain open.
+
+
+## 2026-11-26 — First repository-backed project deep dive
+
+### Delivered
+
+- Reviewed one owner-controlled private product repository in read-only mode.
+- Added a generalized, draft-only case study for an IT-services professional services automation platform; omitted product name, private repository URL, deployment hosts, and external references.
+- Added an evidence maturity map that distinguishes source-backed architecture/foundations from roadmap targets, open operational acceptance, and publication-pending material.
+- Added a contribution breakdown that describes source-backed workstreams without invented percentages or claims that every target module is implemented.
+- Added a high-level architecture map that separates the product model, platform foundation, and incremental vertical delivery.
+- Added a technology map limited to technologies explicitly present in the reviewed architecture source.
+- Left the private-project visual gallery empty because no owner-approved product screenshots or demo assets were part of this review.
+- Added a sanitized source-review document with explicit claim boundaries.
+- Added a machine-readable private-source evidence record; it remains review-required and is not imported by public routes.
+- Extended the content publication gate to protect the new source evidence and require the new deep dive to remain draft-only.
+
+### Source-backed versus target-only
+
+- Source-backed: product mandate, documented high-level architecture, and identity/tenant application foundations.
+- Target-only: the complete commercial-to-service business lifecycle and its future domain modules.
+- Acceptance open: complete external recovery and operational/owner acceptance follow-ups.
+- Publication pending: product identity, private source link, approved screenshots, precise contribution/team boundaries, and measurable outcomes.
+
+### Verification boundary
+
+- The new case study is not included in `PUBLIC_CASE_STUDIES`; public index and detail routes continue to show approved records only.
+- No private product name, source URL, customer/partner name, host, topology, secret, or customer data was added.
+- The next GitHub Actions run must validate typecheck, publication gates, lint, and production build on the resulting exact SHA.

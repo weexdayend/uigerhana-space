@@ -3,6 +3,7 @@ import { join } from "node:path";
 
 const SOURCE_ROOTS = ["src/app", "src/components"];
 const EVIDENCE_PATH = "src/data/project-evidence.ts";
+const SOURCE_EVIDENCE_PATH = "src/data/project-source-evidence.ts";
 const CASE_STUDY_PATH = "src/data/case-studies.ts";
 
 async function collectSourceFiles(directory) {
@@ -36,7 +37,7 @@ const uiSources = await Promise.all(
 
 const forbiddenReferences = uiSources.filter(
   ({ content }) =>
-    /project-evidence|PROJECT_EVIDENCE_REGISTER|ProjectEvidenceRecord/.test(content)
+    /project-evidence|project-source-evidence|PROJECT_EVIDENCE_REGISTER|PROJECT_SOURCE_EVIDENCE|ProjectEvidenceRecord/.test(content)
 );
 
 if (forbiddenReferences.length > 0) {
@@ -47,6 +48,7 @@ if (forbiddenReferences.length > 0) {
 }
 
 const evidenceSource = await readFile(EVIDENCE_PATH, "utf8");
+const sourceEvidence = await readFile(SOURCE_EVIDENCE_PATH, "utf8");
 const evidenceRecordCount = (evidenceSource.match(/^\s+id: "/gm) ?? []).length;
 const reviewRequiredCount = (
   evidenceSource.match(/^    publicationState: "review-required",$/gm) ?? []
@@ -57,9 +59,24 @@ const unconfirmedStatusCount = (
 const unclearedAttributionCount = (
   evidenceSource.match(/^    attributionDisclosure: "not-cleared",$/gm) ?? []
 ).length;
+const sourceEvidenceRecordCount = (sourceEvidence.match(/^    id: "/gm) ?? []).length;
+const sourceEvidenceReviewRequiredCount = (
+  sourceEvidence.match(/publicationState: "review-required"/g) ?? []
+).length;
+const sourceEvidenceAttributionNotClearedCount = (
+  sourceEvidence.match(/attributionDisclosure: "not-cleared"/g) ?? []
+).length;
 
 if (evidenceRecordCount === 0) {
-  fail("no project evidence records were found");
+  fail("no résumé-backed project evidence records were found");
+}
+
+if (
+  sourceEvidenceRecordCount === 0 ||
+  sourceEvidenceReviewRequiredCount !== sourceEvidenceRecordCount ||
+  sourceEvidenceAttributionNotClearedCount !== sourceEvidenceRecordCount
+) {
+  fail("private-source evidence records must remain review-required and attribution-not-cleared");
 }
 
 if (
@@ -94,6 +111,8 @@ if (process.exitCode !== 1) {
   console.log(
     "Content publication gates passed: " +
       evidenceRecordCount +
-      " review-only project records; no public UI imports; approved-only case-study selector."
+      " résumé-derived records and " +
+      sourceEvidenceRecordCount +
+      " private-source records remain review-only; no public UI imports; approved-only case-study selector."
   );
 }
