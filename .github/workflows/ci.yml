@@ -43,3 +43,47 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+  browser-qa:
+    name: Runtime visual and accessibility QA
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install application dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Install pinned browser-test dependencies
+        run: npm install --no-save --no-package-lock @playwright/test@1.65.1 @axe-core/playwright@4.14.1
+
+      - name: Typecheck browser tests
+        run: npm run typecheck:e2e
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build production application
+        run: npm run build
+
+      - name: Run responsive, interaction, and accessibility checks
+        run: npm run test:e2e
+
+      - name: Upload browser QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-browser-qa-${{ github.sha }}
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14

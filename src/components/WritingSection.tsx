@@ -10,7 +10,7 @@ export function WritingSection() {
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
         <div className="grid items-end gap-6 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#b8680c]">
+            <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">
               Writing / Notes in public
             </p>
             <h2 className="mt-4 max-w-[15ch] text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
@@ -33,7 +33,7 @@ export function WritingSection() {
                 <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-[#8a5a20]">
                   {article.category}
                 </span>
-                <span className="font-pixel text-xl text-[#121518]/25">
+                <span className="font-pixel text-xl text-[#686863]">
                   0{index + 1}
                 </span>
               </div>

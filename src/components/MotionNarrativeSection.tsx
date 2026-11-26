@@ -35,7 +35,7 @@ const STORY_BEATS: StoryBeat[] = [
       "Research, information architecture, and interaction design connect complex rules to interfaces people can understand, navigate, and use with confidence.",
     focus: "Research · Information architecture · Interaction design",
     visual: "interface",
-    visualLabel: "Conceptual interface study · not a product screenshot",
+    visualLabel: "Conceptual UI · not a product screenshot",
   },
   {
     index: "03",
@@ -247,9 +247,8 @@ export function MotionNarrativeSection() {
 
         timeline.fromTo(
           elements,
-          { opacity: 0.62, y: 28 },
+          { y: 28 },
           {
-            opacity: 1,
             y: 0,
             duration: 0.42,
             stagger: 0.05,
@@ -262,7 +261,6 @@ export function MotionNarrativeSection() {
           timeline.to(
             elements,
             {
-              opacity: 0.72,
               y: -18,
               duration: 0.22,
               ease: "power1.in",
@@ -286,7 +284,12 @@ export function MotionNarrativeSection() {
       aria-label="From product thinking to production"
       className="motion-story"
     >
-      <div className="motion-story__viewport">
+      <div
+        className="motion-story__viewport"
+        role="region"
+        aria-label="Product journey"
+        tabIndex={0}
+      >
         <div ref={trackRef} className="motion-story__track">
           {STORY_BEATS.map((beat) => (
             <article

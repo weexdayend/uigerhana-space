@@ -44,18 +44,21 @@ This is a source-based audit. It is not a claim that every visual or interaction
 - SEO metadata, sitemap, publication gate, package scripts, and CI workflow.
 - Brand Identity Specification and Roadmap.
 
-### Not verified in a rendered browser
+### Original source-audit limitations and follow-up runtime validation
 
-The public site at `https://uigerhana.space` was not accessible from the audit environment. The owner’s local browser was also not available to this audit. Therefore the following remain open:
+At the time of the original source audit, the public site at `https://uigerhana.space` was not accessible from the audit environment and no owner browser was available. Those original responsive/accessibility notes were source observations only; they were not runtime QA.
 
-- Actual desktop, tablet, and mobile composition after the latest hero CSS correction.
-- Font loading, image/canvas rendering, clipping, overflow, and exact visual hierarchy.
-- Actual scroll feel, ScrollTrigger pin duration, swipe discoverability, and anchor positioning.
-- Keyboard-only traversal, screen-reader announcement quality, zoom, and text scaling.
-- Runtime performance on representative devices and network conditions.
-- Current live deployment version and whether it matches `main`.
+A follow-up production-build browser suite has since run in Chromium on exact commit `d7c130d87c44162c4aef82d227cfb3edbdfa7f48` ([GitHub Actions run 45882720414](https://github.com/weexdayend/uigerhana-space/actions/runs/45882720414)): 28 tests passed, including six homepage viewports, four route smoke checks at desktop/mobile, keyboard/reduced-motion flows, and eight axe scans with no violations in their declared scope. Human review of the six homepage viewport screenshots and story-stage captures identified and drove fixes for mobile story collisions and a tablet-portrait hero overlap; the final screenshots were rechecked.
 
-Where the repository describes responsive behavior, this audit records the implementation rule—not a verified visual result.
+Still not verified by that CI or screenshot review:
+
+- Live deployment version and whether production serves the validated commit.
+- Physical-device touch behavior and real Safari/WebKit or Firefox behavior.
+- Full manual keyboard traversal and screen-reader announcement quality.
+- 200% zoom/text scaling, CV print output, and representative-device performance/network behavior.
+- Full visual polish against an approved design reference (no visual reference or pixel-diff baseline exists).
+
+See `docs/RUNTIME-QA-BASELINE.md` for the exact runtime scope, results, and open manual sign-off matrix.
 
 ---
 
@@ -399,7 +402,9 @@ This is a recommendation for concept exploration, not an approved page rewrite.
 
 ## 12. Browser validation plan
 
-Complete this before finalizing concept selection or approving a hero implementation.
+**Correction (2026-11-27):** the matrix below was a plan, not completed QA. The prior audit did not run the site in a browser, inspect rendered screenshots, execute keyboard interactions, run axe, test screen readers, or test 200% zoom. See `docs/RUNTIME-QA-BASELINE.md` for the runtime harness and the still-open manual review gate.
+
+A Playwright + axe-core suite is now wired into CI, but its exact-SHA run and human screenshot review must be recorded before Phase 1 can close.
 
 | Test viewport / mode | What to inspect |
 |---|---|
@@ -421,26 +426,25 @@ Record screenshots, browser/device details, and defects. Do not mark a visual re
 
 ### Completed from repository inspection
 
-- [x] Current routes and homepage section order inventoried.
-- [x] Navigation and anchor targets inspected.
-- [x] Public copy, evidence states, and case-study selector reviewed.
-- [x] Section purposes and overlaps identified.
-- [x] Contact and CTA destinations inventoried.
-- [x] Source-level responsive, motion, reduced-motion, and accessibility behaviors inspected.
+- [x] Static source inventory of routes, page order, navigation, public copy, evidence states, section purposes, and CTA destinations.
+- [x] Static source observations of responsive CSS and motion/reduced-motion branches (inventory only; not runtime validation).
 - [x] Priority opportunities recorded.
 
 ### Still open before Phase 1 can be fully closed
 
-- [ ] Rendered browser review on desktop, tablet, and mobile.
-- [ ] Keyboard-only, reduced-motion, touch, and 200% zoom review.
+- [x] Execute the Playwright/axe suite on an exact proposed SHA: 28 passed on `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`.
+- [x] Review six homepage viewport captures and desktop/mobile story-stage screenshots; fix the visual collisions found and recheck the final screenshots.
+- [ ] Manually operate desktop pinning and tablet/mobile story scrolling on an interactive browser/device.
+- [ ] Complete full keyboard, reduced-motion, physical touch, screen-reader, and 200% zoom checks.
+- [ ] Verify the deployed production domain and commit parity.
 - [ ] Confirm direct public contact preference.
 - [ ] Owner review of the prioritized findings.
 
-**Phase 1 status:** source audit complete; browser and owner validation pending.
+**Phase 1 status:** source inventory and automated Chromium/axe runtime validation complete; screenshot review complete for the stated captures; manual accessibility, real-device, production, and owner validation remain open. Do not describe this as full accessibility sign-off.
 
 ## 14. Immediate next step
 
-Complete the browser validation matrix and resolve the contact-channel decision. Then begin Phase 2 by exploring three or four distinct concept territories against the identity specification. Each territory must be evaluated on the same content and hierarchy and must extend beyond a single hero image.
+Complete the remaining manual accessibility, real-device, production-domain, and owner checks. Resolve the contact-channel decision. Only after Phase 1 is genuinely closed should Phase 2 concept review proceed against the identity specification; each territory must extend beyond a single hero image.
 
 No visual implementation is authorized by this audit.
 

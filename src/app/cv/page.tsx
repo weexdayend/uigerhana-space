@@ -81,7 +81,7 @@ export default function CvPage() {
             ))}
           </div>
         </section>
-        <footer className="mt-10 border-t border-[#121518]/20 pt-4 text-xs text-[#121518]/55">{PROFILE.displayName} · {PROFILE.positioning} · {SITE_META.timezone}</footer>
+        <footer className="mt-10 border-t border-[#121518]/20 pt-4 text-xs text-[#585f5e]">{PROFILE.displayName} · {PROFILE.positioning} · {SITE_META.timezone}</footer>
       </article>
     </main>
   );

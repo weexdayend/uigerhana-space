@@ -388,3 +388,81 @@ Complete the browser validation matrix and confirm the preferred public contact 
 ### Next step
 
 Complete the Phase 1 browser/owner validation, then create comparable static styleframes for the four concept territories using identical copy and viewport dimensions. Obtain owner approval before any implementation.
+
+
+## 2026-11-27 — Runtime visual and accessibility QA foundation
+
+**Branch:** `qa/runtime-visual-accessibility-gates`  
+**Baseline:** `d1cfdce622908c5706a167c8f848bb79e0fe6258`
+
+### Delivered in this change
+
+- Added a production-build Playwright runtime suite covering six desktop/tablet/mobile viewport sizes.
+- Added route smoke coverage for `/`, `/work`, `/work/uigerhana-space`, and `/cv` at desktop and mobile sizes.
+- Added axe-core WCAG A/AA and best-practice scans for the same routes.
+- Added browser interactions for mobile menu Escape/focus return, skip-to-content, keyboard scrolling of the mobile story, and desktop reduced motion.
+- Added screenshot, trace, and HTML-report artifacts to the CI browser job.
+- Added a homepage skip link, explicit main-content focus target, global focus-visible treatment, and keyboard access to the horizontally scrollable story region.
+- Added Escape-to-close behavior to the mobile navigation and restored focus to its trigger.
+- Corrected the audit/roadmap language: prior responsive/accessibility notes were source inspection only, not executed browser or assistive-technology QA.
+
+### Verification boundary
+
+At authoring time, the exact-SHA runtime CI result and manual screenshot review are pending. The live domain was not accessible to the browser retrieval environment in this session. No claim is made that rendered visual QA, screen-reader testing, 200% zoom review, real-device testing, or production verification has passed.
+
+See `docs/RUNTIME-QA-BASELINE.md` for the actual test scope, limitations, and open manual sign-off matrix.
+
+
+## 2026-11-27 — First production-browser QA findings and correction
+
+**Branch:** `qa/runtime-visual-accessibility-gates`  
+**First browser-test SHA:** `fed623273efcf7536abf7c06aeaec66b94c6af6b`  
+**GitHub Actions:** [run 45880651981](https://github.com/weexdayend/uigerhana-space/actions/runs/45880651981)
+
+### Actual runtime findings
+
+- The first production-build Playwright run executed in Chromium and produced 15 passing, 9 failing, and 1 flaky result.
+- axe-core flagged text contrast in the story sequence, light-surface section labels and decorative indices, footer metadata, and descriptions inside case-study diagrams.
+- axe-core found a heading-order issue on `/work`: the case-study card headings started at H3 without a preceding H2.
+- The responsive test locator matched both the hero and story CTAs, so its strict-mode failure was a test-selector defect rather than a confirmed layout defect.
+- Initial full-page screenshots were not adequate evidence for the pinned desktop story: a browser full-page capture does not naturally represent the story's different ScrollTrigger scroll states. Some captures were also taken before the hero's GSAP intro completed.
+
+### Corrective changes
+
+- Increased text contrast for every reported source class rather than excluding axe rules.
+- Removed opacity modulation from story reveal text, preserving positional movement without lowering text contrast during the pinned transition.
+- Added an H2 label for the selected case-study group on the standalone `/work` page.
+- Made the hero CTA selector unique and wait for the intro state before capturing.
+- Split screenshot evidence into regular viewport frames, full-page reduced-motion pages, four desktop pinned-story states, and four mobile horizontal-story states.
+
+### Verification boundary
+
+The repair run is pending. The initial runtime run is a failed run and must remain recorded as such. No visual sign-off, screen-reader sign-off, 200% zoom sign-off, real-device approval, or production-domain verification is claimed. See `docs/RUNTIME-QA-BASELINE.md` for the remaining manual checklist.
+
+
+## 2026-11-27 — Exact-SHA runtime QA and visual review
+
+**Branch:** `qa/runtime-visual-accessibility-gates`  
+**Validated commit:** `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`  
+**GitHub Actions:** [run 45882720414](https://github.com/weexdayend/uigerhana-space/actions/runs/45882720414)
+
+### Automated result
+
+- Application quality job passed typecheck, content publication gates, lint, and production build.
+- Browser job passed e2e TypeScript checking, Chromium installation, production build, and the runtime suite.
+- Playwright: **28 passed (28.7s), 0 failed, 0 flaky**.
+- axe-core: no violations across the declared eight route/viewport scans (four routes × desktop/mobile) for WCAG 2.0 A/AA, WCAG 2.1 A/AA, WCAG 2.2 AA, and best-practice tags.
+- Homepage layout checks cover six viewport sizes; route smoke checks cover `/`, `/work`, `/work/uigerhana-space`, and `/cv`.
+
+### Human screenshot review and fixes discovered
+
+- Reviewed the six homepage viewport screenshots, four desktop pinned-story stage captures, and mobile story panel captures.
+- Found and fixed a mobile story metadata/art collision and a mobile architecture diagram with overlapping nodes. Added test assertions so both defects fail the suite if reintroduced.
+- Found and fixed a cramped two-column hero at 768px tablet portrait by switching to a stacked copy/art layout for 768–820px; added a geometry assertion that checks the two regions do not overlap.
+- Reopened the final tablet-portrait and mobile story-stage screenshots after the fixes; no copy/art or diagram-node collisions remained in those reviewed states.
+
+### Remaining validation boundary
+
+This exact-SHA pass establishes the declared Chromium automated scope, not full design or accessibility approval. Manual full-keyboard testing, VoiceOver/NVDA, physical touch devices, real Safari/WebKit/Firefox, 200% zoom, CV print output, production-domain verification, and owner acceptance remain open. The live domain was not accessible from this inspection environment, so no production deployment claim is made.
+
+See `docs/RUNTIME-QA-BASELINE.md` for the full viewport matrix, automated scope, first-run failures, final result, artifact details, and manual sign-off checklist.

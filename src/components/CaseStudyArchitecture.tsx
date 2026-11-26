@@ -40,7 +40,7 @@ export function CaseStudyArchitecture({
                 <h3 className="mt-3 text-lg font-normal tracking-tight">
                   {stage.label}
                 </h3>
-                <p className="mt-1 text-xs leading-relaxed text-[#121518]/55">
+                <p className="mt-1 text-xs leading-relaxed text-[#121518]/70">
                   {stage.description}
                 </p>
                 <ul className="mt-5 space-y-2 border-t border-[#121518]/15 pt-4">
