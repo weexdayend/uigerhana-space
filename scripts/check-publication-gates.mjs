@@ -98,6 +98,10 @@ const hasPublicLookup =
   /getPublicCaseStudy\(slug: string\)[\s\S]*?PUBLIC_CASE_STUDIES\.find/.test(
     caseStudySource
   );
+const hasDraftDeepDive =
+  /slug: "professional-services-automation-platform",[\s\S]*?publicationStatus: "draft"/.test(
+    caseStudySource
+  );
 
 if (!hasApprovedSelector) {
   fail("public case studies must be filtered by explicit approved status");
@@ -105,6 +109,10 @@ if (!hasApprovedSelector) {
 
 if (!hasPublicLookup) {
   fail("public case-study lookup must resolve only from the approved selector");
+}
+
+if (!hasDraftDeepDive) {
+  fail("the reviewed IT-services platform deep dive must remain a draft until owner approval");
 }
 
 if (process.exitCode !== 1) {

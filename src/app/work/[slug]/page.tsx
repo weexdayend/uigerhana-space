@@ -120,7 +120,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         <CaseStudyContributionBreakdown contributions={study.contributions} />
         <CaseStudyArchitecture diagram={study.architectureDiagram} />
         {study.evidenceMap && <CaseStudyEvidenceMap evidence={study.evidenceMap} />}
-        {study.visualStudies.length > 0 && <CaseStudyVisualGallery visuals={study.visualStudies} />
+        {study.visualStudies.length > 0 && <CaseStudyVisualGallery visuals={study.visualStudies} />}
 
         <div className="mt-2">
           <ContentSection {...study.challenge} />

@@ -153,3 +153,6 @@ This validates source checks and the production build only; browser-based deskto
 - The new case study is not included in `PUBLIC_CASE_STUDIES`; public index and detail routes continue to show approved records only.
 - No private product name, source URL, customer/partner name, host, topology, secret, or customer data was added.
 - The next GitHub Actions run must validate typecheck, publication gates, lint, and production build on the resulting exact SHA.
+
+- Corrected a missing JSX brace in the conditional visual-gallery render discovered by exact-SHA typecheck.
+- Added an explicit publication-gate assertion that the private-source IT-services deep dive remains draft-only until owner approval.
