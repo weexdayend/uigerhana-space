@@ -1000,7 +1000,7 @@ body {
 
 .atlas-header.is-light .atlas-header__link:hover,
 .atlas-header.is-light .atlas-header__resume:hover {
-  color: var(--signal-copper);
+  color: var(--atlas-ink);
 }
 
 .atlas-header__resume {
@@ -1179,7 +1179,7 @@ body {
 .hero-atlas__eyebrow {
   margin: 0;
   color: var(--signal-copper);
-  font-family: var(--font-geist-mono), monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.625rem;
   font-weight: 500;
   line-height: 1.5;
@@ -1309,7 +1309,7 @@ body {
 
 .hero-atlas__route-labels {
   fill: var(--fog);
-  font-family: var(--font-geist-mono), monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.625rem;
   font-weight: 500;
   letter-spacing: 0.1em;
