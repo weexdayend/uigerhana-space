@@ -1,6 +1,6 @@
 # Gerhana — Creative Concept Exploration
 
-**Version:** 0.1  
+**Version:** 0.2  
 **Status:** Exploration draft — no visual direction selected or approved  
 **Prepared:** 2026-11-27  
 **Parent documents:** `docs/BRAND-IDENTITY-SPEC.md`, `docs/BRAND-IDENTITY-PLAN.md`, `docs/CURRENT-EXPERIENCE-AUDIT.md`
@@ -332,13 +332,18 @@ Every concept must respect these identity requirements:
 
 ### Phase 1 validation still open
 
-The source audit is complete, but these items remain:
-- Rendered browser review on desktop, tablet, and mobile.
-- Keyboard-only, reduced-motion, touch, and 200% zoom review.
-- Owner decision on the preferred public contact channel.
-- Owner review of the prioritized audit findings.
+**Owner confirmation (2026-11-27):** real-device checks and assistive-technology checks are complete. This is a category-level owner attestation only; device models, OS/browser/AT versions, routes/workflows, and detailed results were not supplied, so no specific platform coverage is inferred.
 
-The public website was not accessible to the audit browser, so the live rendering cannot be marked verified from this document.
+The remaining Phase 1 items are:
+- Manual desktop pinned-story interaction and final-panel reachability in the owner's browser.
+- Literal browser 200% zoom and OS-level text scaling.
+- Native browser print/Save as PDF dialog behavior.
+- Production-domain health and commit parity.
+- Preferred public contact-channel decision.
+- Owner review of the prioritized audit findings.
+- Any required cross-browser checks not covered by the owner's unspecified real-device review.
+
+The public website was not accessible to the audit browser, so live-domain rendering and deployment parity cannot be marked verified from this document.
 
 ### Evidence dependency
 

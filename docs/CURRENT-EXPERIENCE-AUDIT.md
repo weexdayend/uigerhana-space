@@ -57,8 +57,8 @@ The earlier screenshot review also identified and led to fixes for mobile story 
 Still not verified by CI or this screenshot/PDF review:
 
 - Live deployment version and whether production serves the validated commit (the domain was not accessible through this inspection path).
-- Physical-device touch behavior and real Safari/WebKit or Firefox behavior.
-- Manual testing with a real keyboard in the owner's browser and screen-reader announcement quality.
+- Cross-browser Safari/WebKit or Firefox behavior beyond the owner's unspecified real-device checks; no browser matrix is recorded.
+- Manual keyboard/desktop ScrollTrigger behavior in the owner's day-to-day browser, including final-panel reachability.
 - Literal browser 200% zoom, OS-level text scaling, and native print/Save as PDF dialog behavior.
 - Representative-device performance/network behavior and owner acceptance.
 
@@ -442,18 +442,21 @@ Record screenshots, browser/device details, and defects. Do not mark a visual re
 - [x] Automate route-wide Chromium keyboard traversal, focus visibility, mobile-menu Escape/focus return, and reduced-motion desktop/mobile behavior.
 - [x] Run axe across 12 route/viewport combinations and the 720 × 450 CSS effective 200%-reflow viewport for all four routes.
 - [x] Generate and visually review the final two-page A4 CV print PDF; confirm the blank trailing page is removed.
-- [ ] Manually operate desktop pinning and tablet/mobile story scrolling in the owner's browser/device.
-- [ ] Complete real-device touch, screen-reader, literal browser 200% zoom/text scaling, and native print-dialog checks.
+- [ ] Manually operate desktop pinning and tablet/mobile story scrolling in the owner's browser; verify progress feedback and final-panel reachability.
+- [x] Complete real-device/touch checks (owner-confirmed 2026-11-27; device/browser details and findings were not supplied).
+- [x] Complete assistive-technology checks (owner-confirmed 2026-11-27; exact AT product/version, workflows, and findings were not supplied).
+- [ ] Test literal browser 200% zoom and OS-level text scaling.
+- [ ] Review native browser print/Save as PDF dialog behavior.
 - [ ] Verify the deployed production domain and commit parity.
 - [ ] Confirm direct public contact preference.
 - [ ] Owner review of the prioritized findings.
 
-**Phase 1 status:** source inventory, automated Chromium/axe runtime checks, route-wide scripted keyboard traversal, effective-width reflow, and screenshot/PDF review are complete. Manual assistive-technology, physical-device, literal browser zoom, production, and owner validation remain open. This is not full accessibility or production sign-off.
+**Phase 1 status:** source inventory, automated Chromium/axe runtime checks, route-wide scripted keyboard traversal, effective-width reflow, screenshot/PDF review, and owner-confirmed real-device and assistive-technology checks are complete. Literal zoom/text scaling, native print-dialog behavior, production deployment parity, direct contact preference, desktop interaction review, and owner acceptance remain open. This is not full accessibility or production sign-off.
 
 ## 14. Immediate next step
 
-Complete the remaining manual accessibility, real-device, production-domain, and owner checks. Resolve the contact-channel decision. Only after Phase 1 is genuinely closed should Phase 2 concept review proceed against the identity specification; each territory must extend beyond a single hero image.
+Finish the open Phase 1 zoom, native print, production, contact-channel, and owner-acceptance checks. The owner-confirmed real-device and assistive-technology categories do not need to be repeated. Four static concept styleframes may be prepared as non-binding exploration in parallel, but concept selection and UI implementation remain blocked until Phase 1 is genuinely closed.
 
 No visual implementation is authorized by this audit.
 
-**End of audit — v1.0**
+**End of audit — v1.1**
