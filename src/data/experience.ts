@@ -20,7 +20,7 @@ export const EXPERIENCE: ExperienceRole[] = [
     highlights: [
       "Designed automated data-extraction and reporting workflows for hydropower operations.",
       "Developed monitoring and data-visualization systems for distribution and logistics workflows.",
-      "Led software architecture and delivery for digital operational applications, including waste-management and F&B point-of-sale systems.",
+      "Led architecture and end-to-end delivery for a municipal waste-management application, and architected the core system for an F&B point-of-sale platform.",
       "Engineered business platforms spanning HRM, CRM, accounting journals, ERP, and analytics middleware.",
       "Designed modular ERP architecture with distinct business domains, services, and databases.",
       "Built an AI-assisted UI/UX auditing framework on Bun, orchestrating 14 parallel agents for layout analysis and heuristic reasoning.",
