@@ -95,7 +95,7 @@ test.describe("visual state captures", () => {
       const spacer = element.parentElement as HTMLElement;
       return {
         start: spacer.getBoundingClientRect().top + window.scrollY - 49,
-        travel: Math.max(0, spacer.offsetHeight - element.offsetHeight),
+        travel: Math.max(0, spacer.offsetHeight - (element as HTMLElement).offsetHeight),
       };
     });
     expect(dimensions.travel).toBeGreaterThan(0);
