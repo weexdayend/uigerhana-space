@@ -2,30 +2,37 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { OrganicModularCanvas, type OrganicMorphControl } from "@/components/OrganicModularCanvas";
+import {
+  OrganicModularCanvas,
+  type OrganicModularCanvasHandle,
+  type OrganicMorphControl,
+} from "@/components/OrganicModularCanvas";
 import { PROFILE } from "@/data/profile";
 import styles from "./IntroductionSection.module.css";
 
 export function IntroductionSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const canvasRef = useRef<OrganicModularCanvasHandle | null>(null);
   const morphControl = useRef<OrganicMorphControl>({ value: 0.72 });
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
+    const morph = morphControl.current;
+    const invalidate = () => canvasRef.current?.invalidate();
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
     if (reducedMotion) {
-      morphControl.current.value = 0.72;
-      morphControl.current.invalidate?.();
+      morph.value = 0.72;
+      invalidate();
       return;
     }
 
-    morphControl.current.value = 0;
-    morphControl.current.invalidate?.();
+    morph.value = 0;
+    invalidate();
 
     const context = gsap.context(() => {
       const intro = gsap.timeline({
@@ -64,22 +71,22 @@ export function IntroductionSection() {
           0.76
         )
         .to(
-          morphControl.current,
+          morph,
           {
             value: 1,
             duration: 2.15,
             ease: "power2.inOut",
-            onUpdate: () => morphControl.current.invalidate?.(),
+            onUpdate: invalidate,
           },
           0.12
         )
         .to(
-          morphControl.current,
+          morph,
           {
             value: 0.72,
             duration: 0.82,
             ease: "power2.out",
-            onUpdate: () => morphControl.current.invalidate?.(),
+            onUpdate: invalidate,
           },
           2.18
         );
@@ -87,8 +94,8 @@ export function IntroductionSection() {
 
     return () => {
       context.revert();
-      morphControl.current.value = 0.72;
-      morphControl.current.invalidate?.();
+      morph.value = 0.72;
+      invalidate();
     };
   }, []);
 
@@ -132,7 +139,7 @@ export function IntroductionSection() {
         </div>
 
         <div data-hero-art className={styles.art}>
-          <OrganicModularCanvas control={morphControl} />
+          <OrganicModularCanvas ref={canvasRef} control={morphControl} />
         </div>
       </div>
     </section>

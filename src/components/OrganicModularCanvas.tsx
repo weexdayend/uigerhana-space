@@ -1,10 +1,19 @@
 "use client";
 
-import { useEffect, useRef, type PointerEvent } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  type PointerEvent,
+} from "react";
 
 export type OrganicMorphControl = {
   value: number;
-  invalidate?: () => void;
+};
+
+export type OrganicModularCanvasHandle = {
+  invalidate: () => void;
 };
 
 type OrganicModularCanvasProps = {
@@ -48,9 +57,13 @@ function fract(value: number) {
   return value - Math.floor(value);
 }
 
-export function OrganicModularCanvas({ control }: OrganicModularCanvasProps) {
+export const OrganicModularCanvas = forwardRef<
+  OrganicModularCanvasHandle,
+  OrganicModularCanvasProps
+>(function OrganicModularCanvas({ control }, ref) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const invalidateRef = useRef<() => void>(() => {});
   const stateRef = useRef<CanvasState>({
     width: 0,
     height: 0,
@@ -60,6 +73,14 @@ export function OrganicModularCanvas({ control }: OrganicModularCanvasProps) {
     hasPointer: false,
     reducedMotion: false,
   });
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      invalidate: () => invalidateRef.current(),
+    }),
+    []
+  );
 
   useEffect(() => {
     const container = containerRef.current;
@@ -194,6 +215,8 @@ export function OrganicModularCanvas({ control }: OrganicModularCanvasProps) {
       });
     };
 
+    invalidateRef.current = invalidate;
+
     const rebuild = () => {
       const rect = container.getBoundingClientRect();
       if (rect.width < 8 || rect.height < 8) return;
@@ -210,19 +233,14 @@ export function OrganicModularCanvas({ control }: OrganicModularCanvasProps) {
       invalidate();
     };
 
-    control.current.invalidate = invalidate;
-
     const resizeObserver = new ResizeObserver(rebuild);
     resizeObserver.observe(container);
     rebuild();
 
     return () => {
       resizeObserver.disconnect();
-      window.removeEventListener("resize", rebuild);
       if (frameId !== 0) window.cancelAnimationFrame(frameId);
-      if (control.current.invalidate === invalidate) {
-        delete control.current.invalidate;
-      }
+      invalidateRef.current = () => {};
     };
   }, [control]);
 
@@ -234,12 +252,12 @@ export function OrganicModularCanvas({ control }: OrganicModularCanvasProps) {
     state.pointerX = clamp((event.clientX - rect.left) / rect.width, 0, 1);
     state.pointerY = clamp((event.clientY - rect.top) / rect.height, 0, 1);
     state.hasPointer = true;
-    control.current.invalidate?.();
+    invalidateRef.current();
   };
 
   const handlePointerLeave = () => {
     stateRef.current.hasPointer = false;
-    control.current.invalidate?.();
+    invalidateRef.current();
   };
 
   return (
@@ -257,4 +275,4 @@ export function OrganicModularCanvas({ control }: OrganicModularCanvasProps) {
       />
     </div>
   );
-}
+});
