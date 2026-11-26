@@ -44,18 +44,21 @@ This is a source-based audit. It is not a claim that every visual or interaction
 - SEO metadata, sitemap, publication gate, package scripts, and CI workflow.
 - Brand Identity Specification and Roadmap.
 
-### Not verified in a rendered browser
+### Original source-audit limitations and follow-up runtime validation
 
-The public site at `https://uigerhana.space` was not accessible from the audit environment. The owner’s local browser was also not available to this audit. Therefore the following remain open:
+At the time of the original source audit, the public site at `https://uigerhana.space` was not accessible from the audit environment and no owner browser was available. Those original responsive/accessibility notes were source observations only; they were not runtime QA.
 
-- Actual desktop, tablet, and mobile composition after the latest hero CSS correction.
-- Font loading, image/canvas rendering, clipping, overflow, and exact visual hierarchy.
-- Actual scroll feel, ScrollTrigger pin duration, swipe discoverability, and anchor positioning.
-- Keyboard-only traversal, screen-reader announcement quality, zoom, and text scaling.
-- Runtime performance on representative devices and network conditions.
-- Current live deployment version and whether it matches `main`.
+A follow-up production-build browser suite has since run in Chromium on exact commit `d7c130d87c44162c4aef82d227cfb3edbdfa7f48` ([GitHub Actions run 45882720414](https://github.com/weexdayend/uigerhana-space/actions/runs/45882720414)): 28 tests passed, including six homepage viewports, four route smoke checks at desktop/mobile, keyboard/reduced-motion flows, and eight axe scans with no violations in their declared scope. Human review of the six homepage viewport screenshots and story-stage captures identified and drove fixes for mobile story collisions and a tablet-portrait hero overlap; the final screenshots were rechecked.
 
-Where the repository describes responsive behavior, this audit records the implementation rule—not a verified visual result.
+Still not verified by that CI or screenshot review:
+
+- Live deployment version and whether production serves the validated commit.
+- Physical-device touch behavior and real Safari/WebKit or Firefox behavior.
+- Full manual keyboard traversal and screen-reader announcement quality.
+- 200% zoom/text scaling, CV print output, and representative-device performance/network behavior.
+- Full visual polish against an approved design reference (no visual reference or pixel-diff baseline exists).
+
+See `docs/RUNTIME-QA-BASELINE.md` for the exact runtime scope, results, and open manual sign-off matrix.
 
 ---
 
@@ -429,18 +432,19 @@ Record screenshots, browser/device details, and defects. Do not mark a visual re
 
 ### Still open before Phase 1 can be fully closed
 
-- [ ] Execute the Playwright browser suite on the exact proposed SHA.
-- [ ] Open and human-review desktop, tablet, and mobile screenshot artifacts.
-- [ ] Review desktop pinning and tablet/mobile story scrolling in a browser.
-- [ ] Complete keyboard-only, reduced-motion, touch, screen-reader, and 200% zoom checks.
+- [x] Execute the Playwright/axe suite on an exact proposed SHA: 28 passed on `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`.
+- [x] Review six homepage viewport captures and desktop/mobile story-stage screenshots; fix the visual collisions found and recheck the final screenshots.
+- [ ] Manually operate desktop pinning and tablet/mobile story scrolling on an interactive browser/device.
+- [ ] Complete full keyboard, reduced-motion, physical touch, screen-reader, and 200% zoom checks.
+- [ ] Verify the deployed production domain and commit parity.
 - [ ] Confirm direct public contact preference.
 - [ ] Owner review of the prioritized findings.
 
-**Phase 1 status:** static source inventory complete; runtime QA and owner validation remain open. Do not describe the source inventory as visual QA or accessibility sign-off.
+**Phase 1 status:** source inventory and automated Chromium/axe runtime validation complete; screenshot review complete for the stated captures; manual accessibility, real-device, production, and owner validation remain open. Do not describe this as full accessibility sign-off.
 
 ## 14. Immediate next step
 
-Run the browser suite and manually review its screenshot evidence, then complete the remaining accessibility and owner checks. Resolve the contact-channel decision. Only after Phase 1 is genuinely closed should Phase 2 concept review proceed against the identity specification; each territory must extend beyond a single hero image.
+Complete the remaining manual accessibility, real-device, production-domain, and owner checks. Resolve the contact-channel decision. Only after Phase 1 is genuinely closed should Phase 2 concept review proceed against the identity specification; each territory must extend beyond a single hero image.
 
 No visual implementation is authorized by this audit.
 

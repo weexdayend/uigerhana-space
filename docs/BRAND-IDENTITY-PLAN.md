@@ -56,7 +56,7 @@ Exit criteria:
 - [x] Existing content-integrity safeguards remain authoritative.
 
 ## Phase 1 — Current experience and content audit
-**Status:** Static source inventory complete; Playwright/axe runtime gate has been added, but exact-SHA execution, human screenshot review, and owner validation remain open. See `docs/CURRENT-EXPERIENCE-AUDIT.md` and `docs/RUNTIME-QA-BASELINE.md`.
+**Status:** Static source inventory, exact-SHA Chromium/axe runtime suite, and six-viewport/story screenshot review are complete. Manual accessibility, physical-device, production-domain, and owner validation remain open. The validated automated run is [45882720414](https://github.com/weexdayend/uigerhana-space/actions/runs/45882720414) on `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`. See `docs/CURRENT-EXPERIENCE-AUDIT.md` and `docs/RUNTIME-QA-BASELINE.md`.
 
 
 **Goal:** understand what already exists before changing the design.
@@ -82,7 +82,7 @@ Exit criteria:
 - The highest-impact experience problems are prioritized.
 
 ## Phase 2 — Creative concept exploration
-**Exploration brief prepared:** `docs/CREATIVE-CONCEPT-EXPLORATION.md` (v0.1). Four territories are documented for comparison; no direction is selected. Formal concept review remains subject to the open Phase 1 browser and owner-validation items.
+**Exploration brief prepared:** `docs/CREATIVE-CONCEPT-EXPLORATION.md` (v0.1). Four territories are documented for comparison; no direction is selected. Formal concept review remains subject to the open Phase 1 manual accessibility, production, and owner-validation items; the automated runtime and screenshot-review work has been completed.
 
 
 **Goal:** find a distinct visual territory that grows from Gerhana's identity rather than copying a popular style.
@@ -322,7 +322,7 @@ A visual effect must not compromise a higher-priority item.
 
 ## 7. Immediate next action
 
-Execute the new browser/axe suite on an exact commit, open and review the screenshots for every required viewport, and complete manual keyboard, reduced-motion, screen-reader, touch, and 200% zoom checks. Confirm the preferred public contact-channel decision and review findings with the owner. The concept exploration brief may be used as preparation, but do not select a visual direction until the Phase 1 review is genuinely closed.
+Complete the remaining manual keyboard, reduced-motion, screen-reader, physical touch, and 200% zoom checks. Verify the production domain and commit parity, confirm the preferred public contact-channel decision, and review findings with the owner. The concept exploration brief may be used as preparation, but do not select a visual direction until the Phase 1 review is genuinely closed.
 
 Then produce comparable static hero studies for the four territories using the shared copy and frame defined in `docs/CREATIVE-CONCEPT-EXPLORATION.md`. Review the whole experience—not just the hero—before approving an art direction.
 

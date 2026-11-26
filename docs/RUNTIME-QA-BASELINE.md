@@ -1,27 +1,28 @@
 # Runtime QA Baseline — UI Gerhana
 
 **Date:** 2026-11-27  
-**Baseline commit:** `d1cfdce622908c5706a167c8f848bb79e0fe6258`  
-**Status:** Runtime QA harness is executing against the production build. The first run found real contrast and heading-order defects; corrective changes and a repeat exact-SHA run are in progress. Human screenshot and manual assistive-technology review remain open.
+**Validated commit:** `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`  
+**Automated status:** <badge>passed</badge> 28 Playwright tests passed in Chromium; axe reported no violations in its declared scan scope.  
+**Human review status:** Six homepage viewport captures and the final mobile story collision fixes have been reviewed. Full manual accessibility and production sign-off remain open.
 
 ## 1. Correction to the previous audit status
 
-The previous experience audit was based on repository/source inspection. It inventoried responsive CSS, motion branches, navigation, and semantic markup, but it did **not** execute the rendered site in a browser. It did not run axe, keyboard-only interaction, screen-reader checks, or a 200% zoom review.
+The original experience audit was based on repository/source inspection only. It did **not** execute the rendered website in a browser, run axe, exercise keyboard interactions, test screen readers, or test 200% zoom. Its responsive and accessibility notes were implementation observations, not completed QA.
 
-Those source observations must not be described as completed desktop/mobile visual QA or accessibility runtime QA. The live site was not accessible to the browser retrieval environment during this work. No visual sign-off is claimed here.
+A follow-up runtime suite now executes the production Next.js build in Chromium in GitHub Actions. This is real browser validation of the branch build—not verification of the live production domain. The live domain was not accessible from the inspection environment in this session, so deployment parity remains unverified.
 
-The source audit remains useful as an inventory, but its browser/accessibility exit gate is still open.
+Keep the original source audit as a historical inventory; use this document for the current runtime QA status.
 
 ## 2. Runtime harness
 
-This branch adds a production-build browser suite using:
+The branch adds a production-build browser suite using:
 
 - Playwright Test `1.65.1`
 - `@axe-core/playwright` `4.14.1`
 - Chromium in GitHub Actions
-- A production Next.js server started by Playwright's `webServer` configuration
+- A production Next.js server started through Playwright's `webServer` configuration
 
-Test dependencies are installed ephemerally in CI with exact versions; the application's runtime dependencies and lockfile are not changed.
+Test dependencies are installed ephemerally at pinned versions; application runtime dependencies and the npm lockfile are not changed.
 
 ### Viewport matrix
 
@@ -34,81 +35,104 @@ Test dependencies are installed ephemerally in CI with exact versions; the appli
 | Mobile | 390 × 844 |
 | Small mobile | 360 × 800 |
 
-### Runtime coverage
+### Automated runtime coverage
 
-- Homepage H1 and primary action visibility at all six viewports.
+- Homepage H1 and primary-action visibility at all six viewport sizes.
 - Document/body horizontal overflow and hero title-line overflow.
+- Hero copy/art non-overlap at the tablet-portrait breakpoint (768–820px).
 - Route response, main landmark, H1, and horizontal overflow for `/`, `/work`, `/work/uigerhana-space`, and `/cv` at desktop and mobile sizes.
-- Mobile navigation open/close behavior, Escape handling, and focus return.
+- Mobile navigation open/close, Escape handling, and focus return.
 - Skip-to-content behavior and keyboard scrolling of the horizontal story region.
-- Reduced-motion desktop layout: all four story chapters remain in normal document flow and the animated progress indicator is removed.
-- axe-core checks tagged for WCAG 2.0 A/AA, WCAG 2.1 A/AA, WCAG 2.2 AA, and axe best practices across the four routes at desktop and mobile sizes.
-- Per-viewport homepage screenshots wait for the hero entrance to settle; complete desktop/mobile page captures use the reduced-motion layout so the pinned desktop story does not create a misleading blank region.
-- Separate captures record all four desktop pinned-story progress states and all four mobile horizontal-story panels.
+- Desktop reduced-motion layout: all four story chapters remain in document flow and the animated progress indicator is removed.
+- axe-core scans tagged for WCAG 2.0 A/AA, WCAG 2.1 A/AA, WCAG 2.2 AA, and axe best practices across four routes × two viewports (eight scans).
+- Hero viewport screenshots wait for the entrance animation to settle.
+- Full-page desktop/mobile captures use reduced-motion layout so the pinned desktop story does not create a misleading blank region.
+- Separate captures cover all four desktop pinned-story states and all four mobile horizontal-story panels.
 - Playwright traces, failure screenshots, and HTML reports are uploaded as GitHub Actions artifacts.
 
-## 3. First runtime findings and corrective work
+## 3. Runtime findings and corrections
 
-The first browser run on commit `fed623273efcf7536abf7c06aeaec66b94c6af6b` (GitHub Actions run [45880651981](https://github.com/weexdayend/uigerhana-space/actions/runs/45880651981)) executed the real production build and reported 15 passing, 9 failing, and 1 flaky test result. The failures were not hidden or waived.
+The first browser run on `fed623273efcf7536abf7c06aeaec66b94c6af6b` (run [45880651981](https://github.com/weexdayend/uigerhana-space/actions/runs/45880651981)) returned 15 passing, 9 failing, and 1 flaky result. The failures were retained and investigated rather than suppressed.
 
-The axe findings included low-contrast story labels and hints, light-theme section eyebrows and decorative numbers, footer metadata, and case-study diagram descriptions. The `/work` index also jumped from its H1 directly to case-study card H3 headings. The responsive test's hero CTA locator was ambiguous because the same accessible name exists in the hero and story.
+Axe identified low-contrast labels in the story, section eyebrows, decorative indices, footer metadata, and case-study diagrams. It also found a heading-order issue on `/work`. The initial responsive test also used an ambiguous hero CTA locator.
 
-The corrective changes in this branch:
-- Increase contrast for the affected story labels, light-surface eyebrows/numbers, case-study descriptions, and footer metadata.
-- Remove opacity fades from story reveal text so the animation does not temporarily reduce text contrast.
-- Add a screen-reader-visible section heading before the selected case-study cards on `/work`.
-- Target the hero CTA by its component class and wait for the hero intro to finish before capturing screenshots.
-- Separate full-page reduced-motion captures from actual desktop pinned-story and mobile swipe-panel captures.
+A subsequent passing run exposed further issues during human review of its screenshots:
 
-The repeat run must confirm that the changes remove the reported violations; no pass is claimed yet.
+- On mobile, the story's conceptual-UI metadata collided visually with the interface artwork.
+- On mobile, the software-architecture diagram's absolute-positioned nodes overlapped.
+- At 768px tablet portrait, the hero still used a cramped two-column desktop layout; the artwork entered the copy/CTA area.
 
-## 4. Accessibility corrections included
+The corrective changes now in the branch:
 
-Source inspection exposed three gaps worth fixing before accepting the baseline:
+- Increased contrast for the specific reported text classes and removed opacity modulation from story reveal text.
+- Added a screen-reader-visible H2 before the selected case-study cards on `/work`.
+- Made the hero CTA test selector unique and wait for the hero entrance to settle.
+- Separated viewport screenshots, reduced-motion full-page screenshots, desktop pinned-story stage captures, and mobile swipe-panel captures.
+- Shortened and repositioned mobile story metadata.
+- Rebuilt the mobile architecture diagram into a responsive grid and added a Playwright geometry assertion for node collisions.
+- Added a stacked tablet-portrait hero layout for 768–820px and a Playwright geometry assertion for copy/art overlap.
+
+## 4. Exact-SHA automated result
+
+Final validated commit: `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`
+
+GitHub Actions run: [45882720414](https://github.com/weexdayend/uigerhana-space/actions/runs/45882720414)
+
+- Application quality job: typecheck, content publication gates, lint, and production build passed.
+- Browser QA job: e2e TypeScript check, Chromium install, production build, and runtime suite passed.
+- Playwright result: **28 passed (28.7s), 0 failed, 0 flaky**.
+- axe-core result: no violations across the eight declared route/viewport scans.
+- Responsive geometry assertions passed for the tablet portrait hero, mobile visual metadata, and mobile architecture nodes.
+
+### Human screenshot review
+
+The final run's artifact was opened and reviewed for all six homepage viewport captures. Four desktop pinned-story states and the mobile story-panel captures were also reviewed; the final mobile interface-label and architecture screenshots were re-opened after their fixes.
+
+That review drove and then rechecked the mobile collision repairs and tablet-portrait layout change. This is a human review of the supplied Chromium screenshots, not a full design approval or a substitute for interactive device testing.
+
+Artifacts: `portfolio-browser-qa-d7c130d87c44162c4aef82d227cfb3edbdfa7f48` (GitHub Actions run 45882720414).
+
+## 5. Accessibility corrections included
 
 1. Added a visible-on-focus skip link to the homepage and a focus target on the main landmark.
-2. Made the horizontal product-journey region programmatically focusable, named, and keyboard-scrollable on touch layouts. Added a dedicated focus-visible indicator.
-3. Added Escape-to-close behavior to the mobile navigation and returns focus to its trigger.
+2. Made the horizontal product-journey region programmatically focusable, named, and keyboard-scrollable on touch layouts; added a dedicated focus-visible indicator.
+3. Added Escape-to-close behavior to the mobile navigation and returned focus to its trigger.
+4. Increased contrast for the nodes flagged by axe and removed animated text opacity reduction.
+5. Added a semantic H2 to restore heading order on `/work`.
 
-These are targeted interaction/accessibility repairs, not a visual redesign or brand concept selection.
+These are targeted usability/accessibility repairs, not a visual redesign or brand concept selection.
 
-## 5. What automated tests do not prove
+## 6. What automated tests and screenshot review do not prove
 
-Even when the CI job passes, it does not establish:
-
-- Whether the visual composition feels balanced, intentional, or polished.
-- Whether screenshots match an approved design reference; no pixel-diff baseline exists.
+- Whether the entire visual composition is polished against an approved design reference; no pixel-diff reference exists.
 - Real-device Safari/WebKit or Firefox behavior.
-- A physical touch-device review.
-- A manual keyboard audit beyond the specific covered flows.
+- Physical touch-device interaction.
+- A complete manual keyboard audit beyond the covered flows.
 - Screen-reader usability with VoiceOver, NVDA, or TalkBack.
 - A genuine browser 200% zoom/text-scaling review.
-- Résumé print pagination or the saved-PDF output.
-- Production deployment health or production-domain rendering.
+- Résumé print pagination or saved-PDF output.
+- Production deployment health or whether the live domain serves this validated commit.
 
 Axe is an automated detector, not a substitute for assistive-technology testing or manual review.
 
-## 6. Manual sign-off matrix — still open
+## 7. Remaining manual sign-off matrix
 
-- [ ] Inspect all six viewport screenshots; record visual defects and review date.
-- [ ] Review desktop ScrollTrigger pinning, progress feedback, and final-panel reachability.
-- [ ] Review tablet/mobile horizontal story behavior with touch and keyboard.
-- [ ] Complete a full keyboard pass: focus order, visible focus, escape behavior, no traps, and route navigation.
-- [ ] Review reduced motion at desktop and mobile sizes.
-- [ ] Test at 200% browser zoom / text scaling without loss of content or function.
+- [x] Inspect all six final homepage viewport screenshots (desktop, laptop, tablet landscape, tablet portrait, mobile, and small mobile).
+- [x] Review all four desktop pinned-story stage captures and mobile story-panel captures; recheck the final mobile collision fixes.
+- [ ] Manually operate desktop ScrollTrigger pinning, progress feedback, and final-panel reachability in a browser.
+- [ ] Complete a full keyboard pass: focus order, visible focus, Escape behavior, no traps, and route navigation.
+- [ ] Manually review reduced motion at desktop and mobile sizes.
+- [ ] Test on a physical touch device.
+- [ ] Test at 200% browser zoom/text scaling without loss of content or function.
 - [ ] Test at least one screen reader (VoiceOver or NVDA) for landmarks, headings, navigation, story region, and CV controls.
 - [ ] Review CV print preview and saved PDF.
-- [ ] Record the browser/OS/device and attach annotated screenshots for each defect.
-- [ ] Owner accepts the rendered result.
+- [ ] Verify the deployed production domain and its commit.
+- [ ] Confirm the preferred direct public contact channel and complete owner acceptance.
 
-## 7. Pass criteria
+## 8. Pass criteria
 
-The runtime QA gate is not complete until:
+The **automated runtime gate** is complete for commit `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`: its exact-SHA CI run is green, its declared axe scans report no violations, and the screenshot captures have been reviewed.
 
-1. The browser test job passes on the exact proposed commit SHA.
-2. The axe audit reports no unresolved violations in its declared scope.
-3. Screenshot artifacts have been opened and reviewed by a human at all required viewport sizes.
-4. Manual accessibility checks are recorded rather than inferred from source or CI.
-5. Any discovered defects are fixed and re-tested on the resulting exact SHA.
+The broader **Phase 1 experience and accessibility sign-off remains open** until the outstanding manual checks, production verification, and owner decisions above are recorded.
 
-**Build success is not runtime QA. Runtime test success is not visual sign-off.** Keep Phase 1 open until the manual review items are genuinely completed.
+**Build success is not runtime QA. Automated runtime success is not full accessibility or design sign-off.**

@@ -438,3 +438,31 @@ See `docs/RUNTIME-QA-BASELINE.md` for the actual test scope, limitations, and op
 ### Verification boundary
 
 The repair run is pending. The initial runtime run is a failed run and must remain recorded as such. No visual sign-off, screen-reader sign-off, 200% zoom sign-off, real-device approval, or production-domain verification is claimed. See `docs/RUNTIME-QA-BASELINE.md` for the remaining manual checklist.
+
+
+## 2026-11-27 — Exact-SHA runtime QA and visual review
+
+**Branch:** `qa/runtime-visual-accessibility-gates`  
+**Validated commit:** `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`  
+**GitHub Actions:** [run 45882720414](https://github.com/weexdayend/uigerhana-space/actions/runs/45882720414)
+
+### Automated result
+
+- Application quality job passed typecheck, content publication gates, lint, and production build.
+- Browser job passed e2e TypeScript checking, Chromium installation, production build, and the runtime suite.
+- Playwright: **28 passed (28.7s), 0 failed, 0 flaky**.
+- axe-core: no violations across the declared eight route/viewport scans (four routes × desktop/mobile) for WCAG 2.0 A/AA, WCAG 2.1 A/AA, WCAG 2.2 AA, and best-practice tags.
+- Homepage layout checks cover six viewport sizes; route smoke checks cover `/`, `/work`, `/work/uigerhana-space`, and `/cv`.
+
+### Human screenshot review and fixes discovered
+
+- Reviewed the six homepage viewport screenshots, four desktop pinned-story stage captures, and mobile story panel captures.
+- Found and fixed a mobile story metadata/art collision and a mobile architecture diagram with overlapping nodes. Added test assertions so both defects fail the suite if reintroduced.
+- Found and fixed a cramped two-column hero at 768px tablet portrait by switching to a stacked copy/art layout for 768–820px; added a geometry assertion that checks the two regions do not overlap.
+- Reopened the final tablet-portrait and mobile story-stage screenshots after the fixes; no copy/art or diagram-node collisions remained in those reviewed states.
+
+### Remaining validation boundary
+
+This exact-SHA pass establishes the declared Chromium automated scope, not full design or accessibility approval. Manual full-keyboard testing, VoiceOver/NVDA, physical touch devices, real Safari/WebKit/Firefox, 200% zoom, CV print output, production-domain verification, and owner acceptance remain open. The live domain was not accessible from this inspection environment, so no production deployment claim is made.
+
+See `docs/RUNTIME-QA-BASELINE.md` for the full viewport matrix, automated scope, first-run failures, final result, artifact details, and manual sign-off checklist.
