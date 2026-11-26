@@ -1,6 +1,6 @@
 # System Atlas — browser font-rendering review
 
-**Status:** Automated browser-rendering check added · CI execution pending  
+**Status:** Browser font-rendering check passed on exact SHA `9c1eaf9490ddee57395e6ad313b031dad15d7be7` · 2026-11-27  
 **Scope:** Static SVG artboards only  
 **Application typography:** Unchanged — the portfolio application still uses its existing Geist setup  
 **Production implementation:** Not authorized
@@ -21,6 +21,17 @@ For every artboard it:
 - captures a full-page PNG and a JSON geometry report in the Playwright test artifact directory.
 
 The existing CI browser job uploads `test-results/` and `playwright-report/`, so these captures and diagnostics are retained with the workflow run.
+
+
+## Latest execution result
+
+On exact SHA `9c1eaf9490ddee57395e6ad313b031dad15d7be7`, both GitHub Actions workflows passed:
+- Push CI: [45901195451](https://github.com/weexdayend/uigerhana-space/actions/runs/45901195451)
+- Pull request CI: [45901204427](https://github.com/weexdayend/uigerhana-space/actions/runs/45901204427)
+
+The Playwright suite completed **32 tests passed, 0 failed**, including the System Atlas font-rendering test for all ten artboards. The test confirmed both font families loaded, all measured text stayed within its SVG viewBox, and no intersecting text-node bounding boxes remained. The [browser QA artifact](https://github.com/weexdayend/uigerhana-space/actions/runs/45901195451/artifacts/15155159133) contains the ten PNG specimens and JSON geometry report.
+
+This is an automated Chromium geometry/render pass—not owner visual acceptance, a full aesthetic review, an accessibility audit of the static SVGs, or validation of the live site's font setup. Manual zoom/OS text scaling, native print-dialog behavior, cross-browser review, production parity, and owner acceptance remain separate gates.
 
 ## Determinism and limits
 
