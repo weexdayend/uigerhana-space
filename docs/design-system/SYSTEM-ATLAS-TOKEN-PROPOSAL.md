@@ -22,15 +22,38 @@ This proposal translates the selected visual direction into semantic roles. Prev
 | `--contour-line` | `#3C4A49` | Hairline boundaries on dark |
 | `--light-secondary-text` | `#53645E` | Supporting text on Limestone |
 
-### Additional surface candidates
+### Additional surface and state candidates
 
-The connected styleframes use two extra neutral samples for inset content:
-- `#E8E6DC` — inset light surface candidate;
-- `#C6C8BE` — light-surface boundary candidate.
+The connected specimens use supporting neutrals and interaction-only tones beyond the selected base palette. These are scoped study roles, not new global palette colors:
 
-These are not part of the selected base palette. Review them for inclusion or replace them with Limestone/Atlas Ink at component level. Do not silently treat them as approved tokens.
+| Semantic role candidate | Value | Current specimen usage | Scope |
+|---|---|---|---|
+| `--inset-light` | `#E8E6DC` | Inset light content surface | Connected page/card studies |
+| `--light-inset-border` | `#C6C8BE` | Hairline page/card separators | Decorative boundaries only |
+| `--resume-preview-canvas` | `#DFDED5` | Outer canvas around the document sheet | `resume.svg` only |
+| `--resume-paper` | `#F8F6F0` | Résumé document surface | `resume.svg` only |
+| `--signal-copper-pressed` | `#C98B5D` | Pressed primary-action fill | Desktop state specimen only |
+| `--light-disabled-surface` | `#E2E1D8` | Disabled action fill on light surface | Desktop state specimen only |
+
+The résumé canvas/paper pair is local to the document study; it does not redefine the general light page surface. Pressed and disabled tones are state-only variants and must not become decorative palette accents. The static verifier restricts these scoped values to their intended SVGs.
+
+All values remain candidates pending owner review. Do not treat this table as a global token freeze.
 
 ## 2. Contrast and semantic restrictions
+
+The palette pass found small Signal Copper labels on light surfaces in the work index, case-study status, and résumé date metadata. They were changed to Light Secondary Text. Copper remains available for dark-surface labels, CTA fills, waypoint accents, and non-text emphasis.
+
+| Foreground | Background | Calculated ratio | Intended specimen use |
+|---|---|---:|---|
+| Light Secondary Text `#53645E` | Limestone `#F1F0E8` | 5.48:1 | Small labels and secondary text |
+| Light Secondary Text `#53645E` | Inset light `#E8E6DC` | 5.01:1 | Section labels and card indices |
+| Light Secondary Text `#53645E` | Résumé paper `#F8F6F0` | 5.80:1 | Date metadata and supporting copy |
+| Atlas Ink `#10191B` | Pressed Copper `#C98B5D` | 6.23:1 | Pressed primary-action label |
+| Light Secondary Text `#53645E` | Disabled light `#E2E1D8` | 4.77:1 | Disabled action label |
+| Light inset border `#C6C8BE` | Résumé paper `#F8F6F0` | 1.57:1 | Decorative page boundary only |
+
+These are static WCAG relative-luminance calculations using authored hex values. They do not validate opacity, overlays, anti-aliasing, font weight, or final browser states. `#C6C8BE` remains decorative and must never be the sole boundary of an interactive control.
+
 
 Static pair calculations already recorded in the art-direction specification are retained as reference only. They do not validate opacity, overlays, focus indicators, interaction states, or final browser rendering.
 

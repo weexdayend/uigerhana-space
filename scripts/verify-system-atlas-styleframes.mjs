@@ -144,6 +144,65 @@ const allSvgFiles = [
   "motion-storyboard.svg",
 ];
 
+const documentedSvgColors = new Set([
+  "#10191B", "#172426", "#1E2D30", "#F1F0E8", "#B4BFB8",
+  "#81908A", "#86A89B", "#D99B68", "#3C4A49", "#53645E",
+  "#E8E6DC", "#C6C8BE", "#DFDED5", "#F8F6F0", "#C98B5D", "#E2E1D8",
+]);
+
+const scopedSvgColors = new Map([
+  ["#DFDED5", new Set(["resume.svg"])],
+  ["#F8F6F0", new Set(["resume.svg"])],
+  ["#C98B5D", new Set(["interaction-states-desktop.svg"])],
+  ["#E2E1D8", new Set(["interaction-states-desktop.svg"])],
+]);
+
+const paletteTextContracts = {
+  "work-index.svg": [
+    { text: "02 / WORK DOMAINS", fill: "#53645E", background: "#E8E6DC" },
+    { text: "01", fill: "#53645E", background: "#F1F0E8" },
+    { text: "02", fill: "#53645E", background: "#F1F0E8" },
+    { text: "03", fill: "#53645E", background: "#F1F0E8" },
+    { text: "04", fill: "#53645E", background: "#F1F0E8" },
+  ],
+  "case-study.svg": [
+    { text: "STATUS · IN PROGRESS", fill: "#53645E", background: "#F1F0E8" },
+  ],
+  "resume.svg": [
+    { text: "2021 — PRESENT", fill: "#53645E", background: "#F8F6F0" },
+    { text: "2017 — PRESENT", fill: "#53645E", background: "#F8F6F0" },
+  ],
+};
+
+function textElements(source) {
+  return [...source.matchAll(/<text\b([^>]*)>([\s\S]*?)<\/text>/g)].map(function (match) {
+    const text = match[2]
+      .replace(/<tspan\b[^>]*>/g, " ")
+      .replace(/<\/tspan>/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/\s+/g, " ")
+      .trim();
+    const fill = match[1].match(/\bfill="(#[0-9a-fA-F]{6})"/);
+    return { text, fill: fill ? fill[1].toUpperCase() : null };
+  });
+}
+
+function relativeLuminance(hex) {
+  const channels = [1, 3, 5].map(function (offset) {
+    const value = parseInt(hex.slice(offset, offset + 2), 16) / 255;
+    return value <= 0.04045 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+function contrastRatio(foreground, background) {
+  const values = [
+    relativeLuminance(foreground),
+    relativeLuminance(background),
+  ].sort(function (a, b) { return b - a; });
+  return (values[0] + 0.05) / (values[1] + 0.05);
+}
+
 let checks = 0;
 for (const filename of allSvgFiles) {
   const source = await readFile(path.join(root, filename), "utf8");
@@ -153,6 +212,34 @@ for (const filename of allSvgFiles) {
   assert.match(source, /<\/svg>\s*$/, filename + ": missing SVG closing tag");
   assertBalancedSvgTags(source, filename);
   checks += 5;
+
+  const usedColors = new Set(
+    [...source.matchAll(/(?:fill|stroke)="(#[0-9a-fA-F]{6})"/g)].map(function (match) {
+      return match[1].toUpperCase();
+    })
+  );
+  for (const color of usedColors) {
+    assert.ok(documentedSvgColors.has(color), filename + ": undocumented authored color " + color);
+    const allowedFiles = scopedSvgColors.get(color);
+    if (allowedFiles) {
+      assert.ok(
+        allowedFiles.has(filename),
+        filename + ": " + color + " is restricted to " + [...allowedFiles].join(", ")
+      );
+    }
+    checks += 1;
+  }
+
+  for (const contract of paletteTextContracts[filename] || []) {
+    const node = textElements(source).find(function (element) {
+      return element.text === contract.text;
+    });
+    assert.ok(node, filename + ": missing palette-governed text node: " + contract.text);
+    assert.equal(node.fill, contract.fill, filename + ": incorrect foreground for " + contract.text);
+    const ratio = contrastRatio(contract.fill, contract.background);
+    assert.ok(ratio >= 4.5, filename + ": " + contract.text + " contrast is " + ratio.toFixed(2) + ":1");
+    checks += 3;
+  }
 }
 
 for (const [filename, required] of Object.entries(requiredText)) {
