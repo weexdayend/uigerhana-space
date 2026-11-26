@@ -82,6 +82,8 @@ Exit criteria:
 - The highest-impact experience problems are prioritized.
 
 ## Phase 2 — Creative concept exploration
+**Exploration brief prepared:** `docs/CREATIVE-CONCEPT-EXPLORATION.md` (v0.1). Four territories are documented for comparison; no direction is selected. Formal concept review remains subject to the open Phase 1 browser and owner-validation items.
+
 
 **Goal:** find a distinct visual territory that grows from Gerhana's identity rather than copying a popular style.
 
@@ -320,8 +322,10 @@ A visual effect must not compromise a higher-priority item.
 
 ## 7. Immediate next action
 
-Finish the open Phase 1 browser validation matrix and confirm the preferred public contact-channel decision. Review the prioritized findings with the owner. Once those checks are complete, enter **Phase 2 — Creative concept exploration** with three or four distinct territories evaluated against the identity specification.
+Finish the open Phase 1 browser validation matrix and confirm the preferred public contact-channel decision. Review the prioritized findings with the owner. The concept exploration brief may be used as preparation, but do not select a visual direction until the Phase 1 review is closed.
 
-Do not create another hero illustration immediately. Concept exploration should use consistent copy, viewport, and information hierarchy so the visual direction—not changing content or layout—is what gets evaluated.
+Then produce comparable static hero studies for the four territories using the shared copy and frame defined in `docs/CREATIVE-CONCEPT-EXPLORATION.md`. Review the whole experience—not just the hero—before approving an art direction.
+
+Do not create another hero implementation yet. Concept exploration should use consistent copy, viewport, and information hierarchy so the visual direction—not changing content or layout—is what gets evaluated.
 
 **End of roadmap — v1.0**

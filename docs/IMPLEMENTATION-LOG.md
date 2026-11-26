@@ -359,3 +359,32 @@ Begin Phase 1 of the brand identity plan: audit the current website experience, 
 ### Next step
 
 Complete the browser validation matrix and confirm the preferred public contact channel. Then begin creative concept exploration using consistent content and hierarchy across all concept studies.
+
+## 2026-11-27 — Creative concept exploration brief
+
+**Scope:** preparatory Phase 2 strategy documentation  
+**Status:** four territories prepared; no concept selected and no implementation authorized
+
+### Delivered
+
+- Added `docs/CREATIVE-CONCEPT-EXPLORATION.md` with four distinct concept territories:
+  - The System Atlas
+  - The Editorial Instrument
+  - Material to Meaning
+  - The Product Field Notes
+- Established one shared copy baseline from the current approved `PROFILE` record and current hero actions.
+- Defined consistent desktop, laptop, mobile, and small-mobile frames for fair comparison.
+- Documented visual grammar, hero composition, motion potential, site-wide extension, risks, and proof tests for each territory.
+- Recommended studying A, B, and D first, while retaining C as an expressive challenger—not as a selected direction.
+- Updated the roadmap and README with the new exploration brief.
+
+### Boundaries
+
+- No visual direction, palette, typography, motif, or animation system was selected.
+- No profile copy, public case-study status, contact information, application code, or UI was changed.
+- Phase 1 remains source-audit complete with browser and owner validation pending.
+- The live website could not be inspected through the available browser path; rendered desktop/mobile QA is not claimed complete.
+
+### Next step
+
+Complete the Phase 1 browser/owner validation, then create comparable static styleframes for the four concept territories using identical copy and viewport dimensions. Obtain owner approval before any implementation.
