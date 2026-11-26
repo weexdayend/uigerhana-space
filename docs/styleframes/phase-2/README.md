@@ -119,8 +119,6 @@ The runs above validate the existing production application runtime. They do **n
 
 The nine SVG files are XML-well-formed, use explicit viewBox dimensions, and have title/description metadata. Text remains native SVG text and all visible artwork consists of vector primitives. The visual review board embeds the original SVG assets at fixed preview widths for side-by-side comparison and links each preview to its native-size source. It is a review aid, not an independent screenshot or a replacement for owner inspection in the target browser/vector environment.
 
-The nine SVG files are XML-well-formed, use explicit viewBox dimensions, and have title/description metadata. Text remains native SVG text and all visible artwork consists of vector primitives. Visual review should still be performed in the owner's target vector/browser environment; this document does not claim a production browser/AT test.
-
 ## Sources read
 
 - `docs/BRAND-IDENTITY-SPEC.md`

@@ -2,7 +2,9 @@
 
 **Purpose:** capture visual direction feedback on the static concepts without converting a research preference into production approval. Review this separately from Phase 1 completion.
 
-**Review target:** PR #12 · branch `design/phase2-static-styleframes`  
+**Review target:** PR #12 · branch `design/phase2-static-styleframes`
+
+**Visual entry point:** [Open the side-by-side visual review board](VISUAL-REVIEW-BOARD.md) before recording concept feedback.  
 **Status:** no concept selected or approved.
 
 ## 1. Review the shared identity first
