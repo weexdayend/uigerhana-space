@@ -55,3 +55,30 @@ The GitHub Actions run for commit `648e3d7ce148b0b651c09a8359d54aa5034435e5` com
 - Verify an unapproved or unknown case-study slug returns not found.
 - Review print pagination and save-to-PDF output in a browser.
 - Continue collecting evidence and disclosure decisions for the résumé-backed case-study candidates.
+
+## 2026-11-26 — Résumé-backed project evidence register
+
+### Delivered
+
+- Reopened and reviewed the complete owner-provided five-page résumé, including page-level source references.
+- Added a machine-readable evidence register for 15 workstreams described in the résumé.
+- Generalized client, institution, product, and brand labels in the public repository pending disclosure approval.
+- Preserved the résumé's stated contribution verbs and did not upgrade "contributed" to ownership or end-to-end delivery.
+- Recorded only project-specific technologies that the résumé explicitly associates with a workstream.
+- Marked every item `review-required`, with project status unconfirmed and attribution not cleared.
+- Added a human-readable review table with source pages, contribution language, and publication gates.
+- Kept the register out of public rendering and separate from approved case studies.
+
+### Source integrity
+
+- The résumé's overall skills list is not treated as a per-project technology stack.
+- No client screenshots, production URLs, testimonials, outcome metrics, dates, or project statuses were invented.
+- Infrastructure and security workstreams include additional sanitization/security-review requirements.
+- The PDF's personal contact details are not copied into the repository.
+
+### Remaining work
+
+- Gather owner-approved project labels and disclosure permission.
+- Collect real screenshots or sanitized artifacts for selected workstreams.
+- Confirm status, timeframes, individual contribution, and team context.
+- Promote projects individually only after evidence and owner approval.
