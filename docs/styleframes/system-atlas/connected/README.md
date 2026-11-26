@@ -78,6 +78,7 @@ The examples are reusable design contracts, not implemented components. Final to
 - [Desktop interaction-state board](./interaction-states-desktop.svg)
 - [Mobile navigation and component specimen](./interaction-states-mobile.svg)
 - [Surface-specific contrast and responsive review](./STATE-AND-RESPONSIVE-REVIEW.md)
+- [Static SVG copy-integrity review](./COPY-INTEGRITY-REVIEW.md)
 - [Responsive acceptance matrix — viewport samples, behaviors, failure criteria, and test register](./RESPONSIVE-ACCEPTANCE-MATRIX.md)
 - [Interaction-state contract](../../../design-system/SYSTEM-ATLAS-INTERACTION-STATES.md)
 

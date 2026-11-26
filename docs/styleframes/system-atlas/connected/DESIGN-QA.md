@@ -17,6 +17,10 @@
 
 The artboards are vector studies, not responsive browser implementations. Their declared dimensions do not validate reflow, text zoom, keyboard behavior, assistive technology, or production performance.
 
+## Static copy-integrity review
+
+A follow-up static QA pass found missing leading text in several editorial SVGs: engineering-principle labels/descriptions, article titles/summaries, work-domain descriptions, role labels/highlights, skill prefixes, and motion-storyboard captions. These were restored or reflowed against the existing typed source records. See [Static SVG copy-integrity review](./COPY-INTEGRITY-REVIEW.md). This was source/text validation only; browser font metrics, visual overflow, and owner acceptance remain open.
+
 ## Owner review checklist
 
 ### Identity and hierarchy
