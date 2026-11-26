@@ -56,6 +56,8 @@ Exit criteria:
 - [x] Existing content-integrity safeguards remain authoritative.
 
 ## Phase 1 — Current experience and content audit
+**Status:** Source audit complete; rendered browser and owner validation remain open. See `docs/CURRENT-EXPERIENCE-AUDIT.md`.
+
 
 **Goal:** understand what already exists before changing the design.
 
@@ -318,8 +320,8 @@ A visual effect must not compromise a higher-priority item.
 
 ## 7. Immediate next action
 
-Begin **Phase 1 — Current experience and content audit**.
+Finish the open Phase 1 browser validation matrix and confirm the preferred public contact-channel decision. Review the prioritized findings with the owner. Once those checks are complete, enter **Phase 2 — Creative concept exploration** with three or four distinct territories evaluated against the identity specification.
 
-Do not generate another hero illustration immediately. First map the current site, review its section order and narrative, and identify the problems worth solving. Then enter concept exploration with a precise creative brief.
+Do not create another hero illustration immediately. Concept exploration should use consistent copy, viewport, and information hierarchy so the visual direction—not changing content or layout—is what gets evaluated.
 
 **End of roadmap — v1.0**
