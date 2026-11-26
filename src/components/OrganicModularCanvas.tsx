@@ -37,8 +37,8 @@ const BAYER_4X4 = [
   15, 7, 13, 5,
 ].map((value) => (value + 0.5) / 16);
 
-const MODULE_CENTERS = [0.69, 0.57, 0.39, 0.5, 0.29, 0.43, 0.22, 0.32];
-const MODULE_WIDTHS = [0.105, 0.09, 0.12, 0.1, 0.115, 0.085, 0.12, 0.095];
+const MODULE_CENTERS = [0.66, 0.44, 0.3, 0.48];
+const MODULE_WIDTHS = [0.14, 0.115, 0.13, 0.105];
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
@@ -111,39 +111,37 @@ export const OrganicModularCanvas = forwardRef<
 
         for (let x = 0; x < width; x++) {
           const u = (x + 0.5) / width;
-          const segment = Math.min(7, Math.floor(u * 8));
-          const localMorph = smoothstep(0.16, 0.98, u) * progress;
-          const moduleU = (segment + 0.5) / 8;
-          const sampleU = lerp(u, moduleU, localMorph);
+          const segment = Math.min(
+            3,
+            Math.max(0, Math.floor((u - 0.57) / 0.108))
+          );
+          const segmentProgress = smoothstep(0.52, 0.99, u);
+          const localMorph = progress * segmentProgress;
 
           const organicCenter =
-            0.5 +
-            0.19 * Math.sin(sampleU * 6 - 1.05) +
-            0.05 * Math.sin(sampleU * 15.2 + 0.4);
-
-          let center = lerp(
-            organicCenter,
-            MODULE_CENTERS[segment],
-            localMorph
-          );
+            0.54 -
+            0.2 * Math.sin(u * 3.95 - 0.55) +
+            0.035 * Math.sin(u * 9.2 + 0.6);
+          const modularCenter = MODULE_CENTERS[segment];
+          let center = lerp(organicCenter, modularCenter, localMorph);
 
           if (state.hasPointer && !state.reducedMotion) {
             const dx = u - state.pointerX;
             const dy = v - state.pointerY;
             const influence = Math.exp(
-              -((dx * dx) / 0.035 + (dy * dy) / 0.055)
+              -((dx * dx) / 0.045 + (dy * dy) / 0.07)
             );
-            center += Math.sign(center - state.pointerY) * 0.026 * influence;
+            center += Math.sign(center - state.pointerY) * 0.035 * influence;
           }
 
-          const organicWidth = 0.092 + 0.024 * Math.sin(sampleU * 8.5 + 0.7);
+          const organicWidth = 0.145 + 0.025 * Math.sin(u * 5.4 + 0.9);
           const halfWidth = lerp(
             organicWidth,
             MODULE_WIDTHS[segment],
             localMorph
           );
           const distance = Math.abs(v - center);
-          const feather = lerp(0.07, 0.012, localMorph);
+          const feather = lerp(0.052, 0.018, localMorph);
 
           let density =
             1 -
@@ -153,42 +151,63 @@ export const OrganicModularCanvas = forwardRef<
               distance
             );
 
-          const startFade = smoothstep(0.005, 0.12, u);
-          const endFade = 1 - smoothstep(0.9, 1.02, u);
-          const materialVariation =
-            0.91 + 0.09 * Math.sin(u * 19 + v * 5);
+          // A second, softer current gives the material a fuller silhouette.
+          const lowerCurrentCenter = center + 0.12 + 0.025 * Math.sin(u * 8);
+          const lowerCurrent =
+            0.34 *
+            (1 -
+              smoothstep(
+                0.075,
+                0.17,
+                Math.abs(v - lowerCurrentCenter)
+              ));
+          density = Math.max(density, lowerCurrent);
 
-          density *= startFade * endFade * materialVariation;
+          const leftFade = smoothstep(0.005, 0.16, u);
+          const rightFade = 1 - smoothstep(0.94, 1.015, u);
+          density *= leftFade * rightFade;
+
+          // The first half remains fluid; the last half resolves into four large steps.
+          const modularEdge = smoothstep(0.56, 0.66, u);
+          const edgeNoise =
+            0.025 * Math.sin(v * 54 + u * 12) * (1 - modularEdge);
+          density = clamp(density + edgeNoise, 0, 1);
 
           const bayerIndex = ((y & 3) << 2) | (x & 3);
           const threshold = BAYER_4X4[bayerIndex];
           let visible = density > threshold;
           let alpha = visible ? 255 : 0;
 
-          // A restrained fragment trail gives the organic side a sense of emergence.
-          if (
-            !visible &&
-            u < 0.32 &&
-            distance > halfWidth &&
-            distance < halfWidth + 0.095
-          ) {
+          // Scattered fragments break away from the organic edge.
+          if (!visible && u < 0.42 && distance < halfWidth + 0.18) {
             const noise = fract(
               Math.sin((x + 11) * 127.1 + (y + 3) * 311.7) * 43758.5453
             );
-            if (noise > 0.992 + progress * 0.002) {
+            const fragmentThreshold = 0.989 + smoothstep(0.25, 0.45, u) * 0.008;
+            if (noise > fragmentThreshold) {
               visible = true;
-              alpha = 150;
+              alpha = 175;
             }
           }
 
           if (!visible) continue;
 
-          const accentField =
-            smoothstep(0.34, 0.76, u) *
-            (0.78 + 0.22 * Math.sin(v * 22 + u * 6));
+          const amberCore =
+            smoothstep(0.2, 0.5, u) *
+            (1 -
+              smoothstep(
+                0.09,
+                0.22,
+                Math.abs(v - center)
+              ));
+          const moduleAccent =
+            localMorph > 0.38 && segment % 2 === 0 && v < center
+              ? 0.94
+              : 0;
+          const amberWeight = Math.max(amberCore, moduleAccent);
           const accentThreshold =
             BAYER_4X4[(((y + 1) & 3) << 2) | ((x + 2) & 3)];
-          const isAmber = accentField > accentThreshold;
+          const isAmber = amberWeight > accentThreshold;
 
           const index = (row + x) * 4;
           if (isAmber) {
@@ -221,7 +240,7 @@ export const OrganicModularCanvas = forwardRef<
       const rect = container.getBoundingClientRect();
       if (rect.width < 8 || rect.height < 8) return;
 
-      const pixelSize = window.innerWidth < 640 ? 3.6 : 4.6;
+      const pixelSize = window.innerWidth < 640 ? 3.6 : 4.8;
       const width = Math.max(64, Math.ceil(rect.width / pixelSize));
       const height = Math.max(64, Math.ceil(rect.height / pixelSize));
 
@@ -263,14 +282,14 @@ export const OrganicModularCanvas = forwardRef<
   return (
     <div
       ref={containerRef}
-      className="h-full w-full"
+      className="hero-organic__canvas-wrap"
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       aria-hidden="true"
     >
       <canvas
         ref={canvasRef}
-        className="block h-full w-full"
+        className="hero-organic__canvas"
         style={{ imageRendering: "pixelated" }}
       />
     </div>

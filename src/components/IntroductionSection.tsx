@@ -8,7 +8,6 @@ import {
   type OrganicMorphControl,
 } from "@/components/OrganicModularCanvas";
 import { PROFILE } from "@/data/profile";
-import styles from "./IntroductionSection.module.css";
 
 export function IntroductionSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -41,40 +40,40 @@ export function IntroductionSection() {
 
       intro
         .fromTo(
-          "[data-hero-art]",
-          { autoAlpha: 0, x: 34, scale: 0.985 },
-          { autoAlpha: 1, x: 0, scale: 1, duration: 1.25 },
-          0
-        )
-        .fromTo(
           "[data-hero-title]",
-          { autoAlpha: 0, y: 28 },
+          { autoAlpha: 0, y: 34 },
           { autoAlpha: 1, y: 0, duration: 0.95 },
-          0.18
+          0.12
         )
         .fromTo(
           "[data-hero-byline]",
-          { autoAlpha: 0, y: 18 },
+          { autoAlpha: 0, y: 20 },
           { autoAlpha: 1, y: 0, duration: 0.72 },
-          0.42
+          0.36
         )
         .fromTo(
           "[data-hero-copy]",
           { autoAlpha: 0, y: 18 },
           { autoAlpha: 1, y: 0, duration: 0.72 },
-          0.56
+          0.5
         )
         .fromTo(
           "[data-hero-actions]",
           { autoAlpha: 0, y: 14 },
           { autoAlpha: 1, y: 0, duration: 0.65 },
-          0.76
+          0.7
+        )
+        .fromTo(
+          "[data-hero-art]",
+          { autoAlpha: 0, x: 48, scale: 0.97 },
+          { autoAlpha: 1, x: 0, scale: 1, duration: 1.3 },
+          0
         )
         .to(
           morph,
           {
             value: 1,
-            duration: 2.15,
+            duration: 2.35,
             ease: "power2.inOut",
             onUpdate: invalidate,
           },
@@ -83,18 +82,18 @@ export function IntroductionSection() {
         .to(
           morph,
           {
-            value: 0.72,
-            duration: 0.82,
+            value: 0.78,
+            duration: 0.9,
             ease: "power2.out",
             onUpdate: invalidate,
           },
-          2.18
+          2.28
         );
     }, section);
 
     return () => {
       context.revert();
-      morph.value = 0.72;
+      morph.value = 0.78;
       invalidate();
     };
   }, []);
@@ -104,41 +103,41 @@ export function IntroductionSection() {
       ref={sectionRef}
       id="top"
       data-band="dark"
-      className={styles.root}
+      className="hero-organic"
     >
-      <div className={styles.inner}>
-        <div id="about" className={styles.copy}>
-          <h1 data-hero-title className={styles.title}>
-            <span className={styles.titleLine}>From pixel</span>
-            <span className={styles.titleSecond}>
+      <div className="hero-organic__inner">
+        <div id="about" className="hero-organic__copy">
+          <h1 data-hero-title className="hero-organic__title">
+            <span className="hero-organic__title-line">From pixel</span>
+            <span className="hero-organic__title-second">
               <span>to </span>
-              <span className={styles.titleAccent}>production.</span>
+              <span className="hero-organic__title-accent">production.</span>
             </span>
           </h1>
 
-          <p data-hero-byline className={styles.byline}>
+          <p data-hero-byline className="hero-organic__byline">
             {PROFILE.displayName}
-            <span className={styles.bylineDivider}>—</span>
+            <span className="hero-organic__byline-divider" aria-hidden="true">—</span>
             {PROFILE.positioning}
           </p>
 
-          <p data-hero-copy className={styles.description}>
+          <p data-hero-copy className="hero-organic__description">
             {PROFILE.introduction}
           </p>
 
-          <div data-hero-actions className={styles.actions}>
-            <a href="#work" className={styles.primaryLink}>
+          <div data-hero-actions className="hero-organic__actions">
+            <a href="#work" className="hero-organic__primary-link">
               Explore selected work
               <span aria-hidden="true">↗</span>
             </a>
-            <a href="/cv" className={styles.secondaryLink}>
+            <a href="/cv" className="hero-organic__secondary-link">
               View résumé
               <span aria-hidden="true">↗</span>
             </a>
           </div>
         </div>
 
-        <div data-hero-art className={styles.art}>
+        <div data-hero-art className="hero-organic__art">
           <OrganicModularCanvas ref={canvasRef} control={morphControl} />
         </div>
       </div>
