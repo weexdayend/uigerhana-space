@@ -2,7 +2,7 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: calc(100svh - 64px);
+  min-height: calc(100svh - 49px);
   background: #0b0e11;
   color: #e8e4d8;
 }
@@ -24,7 +24,7 @@
   position: relative;
   display: flex;
   width: min(100%, 1680px);
-  min-height: calc(100svh - 64px);
+  min-height: calc(100svh - 49px);
   align-items: center;
   margin: 0 auto;
   padding: clamp(3rem, 7.5vh, 6.5rem) clamp(1.5rem, 5.6vw, 5.75rem);

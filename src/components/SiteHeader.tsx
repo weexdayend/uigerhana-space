@@ -17,7 +17,7 @@ export function SiteHeader() {
   useEffect(() => {
     const evaluateBand = () => {
       const bands = Array.from(document.querySelectorAll<HTMLElement>("[data-band]"));
-      const probeY = 64;
+      const probeY = 49;
 
       for (let index = bands.length - 1; index >= 0; index--) {
         const band = bands[index];
@@ -59,7 +59,7 @@ export function SiteHeader() {
     <header
       className={`sticky top-0 z-40 border-b transition-colors duration-300 ${surfaceClass}`}
     >
-      <div className="mx-auto flex h-16 w-full max-w-[1680px] items-center justify-between px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto flex h-[49px] w-full max-w-[1680px] items-center justify-between px-5 sm:px-8 lg:px-12">
         <a
           href="#top"
           aria-label={`${SITE_META.brand} home`}
