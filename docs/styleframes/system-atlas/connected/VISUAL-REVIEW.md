@@ -1,7 +1,7 @@
 # System Atlas — static artboard visual review
 
 **Review state:** Post-fix Chromium render and visual inspection passed · 2026-11-27  
-**Validated code SHA:** a615ad41286dc85381d063823f7a56bac8f3c500  
+**Validated code SHA:** 7c2b7008271c597ad48ac9f6363766c0950d7cc2  
 **Owner acceptance:** Still open  
 **Scope:** Static SVG studies only; production application is unchanged
 
@@ -19,15 +19,17 @@ These cases were not caught by the earlier text-only checks: one involved a text
 
 ## Post-fix browser result
 
-GitHub Actions run [#190 · 45902670980](https://github.com/weexdayend/uigerhana-space/actions/runs/45902670980) completed successfully on the validated code SHA.
+GitHub Actions [PR run #198 · 45904594136](https://github.com/weexdayend/uigerhana-space/actions/runs/45904594136) completed successfully on the exact PR head shown above.
 
-- Typecheck, lint, static copy/SVG integrity, and production build: passed.
+- Typecheck, lint, content publication gates, static copy/SVG integrity, and production build: passed.
 - Runtime visual and accessibility QA job: passed.
 - Playwright: **32 passed, 0 failed**.
-- Chromium loaded both selected font families before measuring the SVG text.
-- All ten artboards reported zero text boxes outside their viewBox, zero text-node intersections, and zero failures in the targeted layout contracts.
+- The CI runner used Playwright Chromium / Chrome for Testing **159.0.8154.6**.
+- The styleframe test rendered all ten connected artboards with Manrope and Plus Jakarta Sans loaded; all ten reported zero text boxes outside their viewBox, zero text-node intersections, and zero failures in the targeted layout contracts.
 
-[Open the post-fix browser QA artifact](https://github.com/weexdayend/uigerhana-space/actions/runs/45902670980/artifacts/15155194933) — ten System Atlas PNG captures, geometry/font JSON report, and the broader portfolio browser QA evidence.
+[Open the exact-HEAD browser QA artifact](https://github.com/weexdayend/uigerhana-space/actions/runs/45904594136/artifacts/15158165064) — the 29-file Playwright report and test-results bundle, including the ten System Atlas PNG captures and geometry/font report. The artifact is 6,326,849 bytes (SHA-256: `1e71347429965b017e8518580ad23ddbf23a32afb4cdbcebcbec3c06205fd094`). Its generated name includes the PR merge-checkout SHA; the validated PR branch HEAD is `7c2b7008271c597ad48ac9f6363766c0950d7cc2`.
+
+This evidence closes the listed Chromium static-artboard regression check at that SHA only. It does not close owner acceptance, the separate viewport/zoom/OS-scaling/print/browser matrix, or production parity.
 
 ## Artboard inspection notes
 

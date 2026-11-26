@@ -162,10 +162,14 @@ Owner acceptance of the static frames does not authorize implementation. Impleme
 
 ## 9. Evidence and current status
 
-- Latest PR exact-HEAD CI for f7c5bb9ff11951a774552a6cfe135d36043b7f23 completed successfully in both **Typecheck, lint, and build** and **Runtime visual and accessibility QA** jobs.
-- The runtime job installed Chromium and completed its responsive, interaction, and accessibility check step; it uploaded a browser-QA evidence artifact. This is evidence for the repository's existing runtime test target at that SHA—not a browser rendering of these static SVG artboards with Manrope and Plus Jakarta Sans loaded.
+- PR #15 exact-head check [run #198 · 45904594136](https://github.com/weexdayend/uigerhana-space/actions/runs/45904594136) completed successfully for branch `brand/system-atlas-artboard-copy-integrity`, head SHA `7c2b7008271c597ad48ac9f6363766c0950d7cc2`.
+- The **Typecheck, lint, and build** job passed typecheck, content-publication gates, static copy/SVG integrity, lint, and production build.
+- The **Runtime visual and accessibility QA** job passed. Playwright reported **32 passed, 0 failed** using Chromium / Chrome for Testing **159.0.8154.6** on the GitHub Actions Linux runner.
+- One of those tests rendered all ten connected System Atlas SVG artboards after loading Manrope and Plus Jakarta Sans. It reported zero text nodes outside their viewBoxes, zero text-node intersections, and zero failures in the three targeted visual layout contracts.
+- [Exact-HEAD QA artifact · 15158165064](https://github.com/weexdayend/uigerhana-space/actions/runs/45904594136/artifacts/15158165064) contains the 29-file Playwright report and test-results bundle, including the artboard PNGs and geometry/font report. Artifact digest: `sha256:1e71347429965b017e8518580ad23ddbf23a32afb4cdbcebcbec3c06205fd094`. The artifact's generated name uses the PR merge-checkout SHA; the reviewed branch HEAD is the SHA recorded above.
+- These automated results are regression evidence for the tested Chromium targets. They do **not** mark RA-01–RA-16 as passed: each matrix row remains **NOT RUN** until its stated viewport/device/browser/scale/route condition is executed and its own evidence is recorded. In particular, a static SVG artboard rendered in Chromium is not proof of CSS reflow in a responsive application.
 - The owner confirmed real-device and assistive-technology checks on 2026-11-27 at category level. Exact device/OS/browser and AT versions, scenarios, and detailed outcomes were not supplied. Preserve the attestation; do not invent missing specifics or ask for the same category check again without a demonstrated gap.
-- Literal browser 200% zoom, OS text scaling, native print-dialog behavior, deployed production-domain/commit parity, direct contact-channel decision, and owner acceptance of remaining prioritized findings stay separate open gates in the roadmap/audit.
-- Browser-rendered font metrics and final visual acceptance of the proposed System Atlas SVGs remain unverified.
+- Literal browser 200% zoom, OS text scaling, native print-dialog behavior, Safari/WebKit and Firefox review, deployed production-domain/commit parity, direct contact-channel decision, and owner acceptance of remaining prioritized findings stay separate open gates.
+- Browser-rendered font metrics and final visual acceptance of the proposed System Atlas SVGs remain unverified. The selected fonts were loaded for the static-artboard Chromium regression only; production continues to use its existing Geist setup.
 
 This document is an acceptance contract and test register only. It does not close Phase 1, approve the palette/token freeze, establish browser compatibility, or authorize production implementation.

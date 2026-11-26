@@ -26,10 +26,10 @@ A follow-up static QA pass found missing leading text in several editorial SVGs:
 - [x] All ten connected SVG artboards rendered in Chromium with Manrope and Plus Jakarta Sans loaded.
 - [x] Text stays inside each SVG viewBox; no text-node bounding-box intersections remain.
 - [x] Tablet hero route/headline clearance, desktop introduction/panel clearance, and component-card action inset have explicit regression assertions.
-- [x] Post-fix run 45902670980 passed: 32 Playwright tests, typecheck, lint, static copy/SVG integrity, and production build.
+- [x] Exact-HEAD PR run [45904594136](https://github.com/weexdayend/uigerhana-space/actions/runs/45904594136) passed: 32 Playwright tests, typecheck, lint, content publication gates, static copy/SVG integrity, and production build. The styleframe test rendered all ten connected artboards with both selected fonts loaded; see the [29-file QA artifact](https://github.com/weexdayend/uigerhana-space/actions/runs/45904594136/artifacts/15158165064).
 - [ ] Owner visual acceptance of the connected direction remains open.
 
-See [Static artboard visual review](./VISUAL-REVIEW.md) for the three corrected defects, artboard-by-artboard notes, evidence, and remaining gates. The Chromium checks cover static SVG rendering; they do not prove production CSS reflow, zoom behavior, native print output, or live interactive semantics.
+See [Static artboard visual review](./VISUAL-REVIEW.md) for the three corrected defects, exact-HEAD CI evidence, artboard-by-artboard notes, and remaining gates. The Chromium checks cover static SVG rendering; they do not prove production CSS reflow, zoom behavior, native print output, or live interactive semantics.
 
 ## Palette contrast reconciliation
 
