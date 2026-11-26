@@ -132,6 +132,8 @@ test("renders all System Atlas artboards with the selected fonts and no text col
               first: first.text,
               second: second.text,
               area: Math.round(area * 100) / 100,
+              intersectionWidth: Math.round(width * 100) / 100,
+              intersectionHeight: Math.round(height * 100) / 100,
             });
           }
         }
