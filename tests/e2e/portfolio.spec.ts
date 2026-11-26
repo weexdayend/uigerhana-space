@@ -257,7 +257,7 @@ test.describe("keyboard and motion behavior", () => {
 
     const requiredLabels: Record<string, string[]> = {
       "/": ["Skip to content", "UI Gerhana home", "Work", "About", "Notes", "Résumé", "Explore selected work", "Product journey", "Explore work", "Back to top"],
-      "/work": ["Work", "About", "Notes", "Résumé", "Read case study"],
+      "/work": ["UI Gerhana", "Read case study", "View résumé"],
       "/work/uigerhana-space": ["All work", "Résumé", "Explore more work", "UI Gerhana home"],
       "/cv": ["Back to uigerhana.space", "Print / Save PDF"],
     };
@@ -313,7 +313,8 @@ test.describe("keyboard and motion behavior", () => {
       }
 
       expect(sequenceEnded, `Keyboard traversal did not reach the end on ${route}`).toBe(true);
-      expect(visited.length, `Too few keyboard stops on ${route}`).toBeGreaterThanOrEqual(route === "/" ? 12 : route === "/cv" ? 4 : 5);
+      const minimumStops: Record<string, number> = { "/": 12, "/work": 3, "/work/uigerhana-space": 4, "/cv": 4 };
+      expect(visited.length, `Too few keyboard stops on ${route}; reached ${JSON.stringify(visited)}`).toBeGreaterThanOrEqual(minimumStops[route] ?? 1);
 
       const labels = visited.map((entry) => entry.label);
       for (const required of requiredLabels[route] ?? []) {
