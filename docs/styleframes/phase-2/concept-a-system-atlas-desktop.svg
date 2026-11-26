@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+<title id="title">The System Atlas — Irvan Gerhana</title><desc id="desc">Static desktop hero styleframe at 1440 by 900. Shared approved profile copy, conceptual visual treatment only.</desc>
+<defs>
+<linearGradient id="fade" x1="0" x2="1"><stop offset="0" stop-color="#10171a"/><stop offset="1" stop-color="#10171a" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="1440" height="900" fill="#10171a"/>
+
+<g font-family="Arial, Helvetica, sans-serif" fill="#edf0e9">
+  <g transform="translate(88 0)">
+    <path d="M0 25h18v18H0z" fill="#e7a84f"/><path d="M6 31h6v6H6z" fill="#10171a"/>
+    <text x="30" y="39" font-size="13" font-weight="700" letter-spacing="4">GERHANA</text>
+    <text x="790" y="39" font-size="13" fill="#a6b2ac">Work</text><text x="866" y="39" font-size="13" fill="#a6b2ac">About</text><text x="947" y="39" font-size="13" fill="#a6b2ac">Notes</text>
+    <text x="1195" y="39" font-size="13" fill="#e7a84f">Résumé ↗</text>
+  </g>
+  <path d="M88 62H1352" stroke="#a6b2ac" stroke-opacity=".22"/>
+  <g transform="translate(92 0)">
+    <text x="0" y="128" font-size="14" fill="#e7a84f" letter-spacing="1.6">IRVAN GERHANA</text>
+    <text x="0" y="160" font-size="13" fill="#a6b2ac">Product Engineer</text>
+    <text x="0" y="254" font-size="58" font-weight="600" letter-spacing="-2.5">I build digital products</text>
+    <text x="0" y="321" font-size="58" font-weight="600" letter-spacing="-2.5">from product logic</text>
+    <text x="0" y="388" font-size="58" font-weight="600" letter-spacing="-2.5">to production.</text>
+    <text x="0" y="448" font-size="18" fill="#a6b2ac">I work across product thinking, interface design, and software engineering—</text>
+    <text x="0" y="476" font-size="18" fill="#a6b2ac">bringing complex workflows into software that is clear to use and practical to operate.</text>
+    <rect x="0" y="524" width="198" height="50" rx="3" fill="#e7a84f"/>
+    <text x="22" y="555" font-size="14" fill="#10171a" font-weight="700">Explore selected work ↗</text>
+    <rect x="210" y="524" width="142" height="50" rx="3" fill="none" stroke="#a6b2ac" stroke-opacity=".55"/>
+    <text x="232" y="555" font-size="14">View résumé ↗</text>
+    <text x="0" y="635" font-size="13" fill="#a6b2ac" letter-spacing="1.5">FROM PIXEL TO PRODUCTION.</text>
+  </g>
+  <path d="M88 750H1352" stroke="#a6b2ac" stroke-opacity=".22"/>
+  <text x="92" y="790" font-size="12" fill="#a6b2ac" letter-spacing="2">HOW THE WORK CONNECTS</text>
+</g>
+
+<g transform="translate(835 115)" fill="none" stroke-linecap="round">
+  <path d="M-35 115 C100 5 270 50 350 148 S520 255 545 160" stroke="#e7a84f" stroke-width="5"/>
+  <path d="M-35 145 C100 35 270 80 350 178 S520 285 545 190" stroke="#edf0e9" stroke-opacity=".23" stroke-width="1.5"/>
+  <path d="M-35 175 C100 65 270 110 350 208 S520 315 545 220" stroke="#edf0e9" stroke-opacity=".15" stroke-width="1"/>
+  <path d="M40 20V510M155 0V510M270 0V510M385 0V510M500 0V510" stroke="#edf0e9" stroke-opacity=".08" stroke-dasharray="2 8"/>
+  <path d="M0 250 C120 150 220 185 315 270 S470 375 540 280" stroke="#e7a84f" stroke-opacity=".32" stroke-width="1.5"/>
+  <path d="M0 325 C125 225 225 260 320 345 S470 450 540 355" stroke="#edf0e9" stroke-opacity=".14"/>
+  <path d="M20 70L130 140L260 95L365 190L490 140" stroke="#edf0e9" stroke-opacity=".24"/>
+  <path d="M30 425L150 350L275 410L390 330L520 390" stroke="#edf0e9" stroke-opacity=".2"/>
+  <g fill="#10171a" stroke="#e7a84f" stroke-width="2"><circle cx="130" cy="140" r="7"/><circle cx="365" cy="190" r="7"/><circle cx="275" cy="410" r="7"/></g>
+  <path d="M365 190L425 130L515 130" stroke="#e7a84f" stroke-width="2"/>
+  <path d="M425 130l-8 -8m8 8l-8 8" stroke="#e7a84f" stroke-width="2"/>
+  <path d="M80 60C-5 130 5 215 95 270M150 25C75 115 88 240 180 290M430 35C525 110 500 235 420 300" stroke="#edf0e9" stroke-opacity=".11"/>
+  <path d="M-5 470C100 420 170 480 270 460S450 410 560 470" stroke="#e7a84f" stroke-opacity=".6" stroke-width="2"/>
+  <circle cx="365" cy="190" r="42" stroke="#e7a84f" stroke-opacity=".16"/>
+  <circle cx="365" cy="190" r="65" stroke="#e7a84f" stroke-opacity=".08"/>
+</g>
+
+
+
+</g>
+<g font-family="Arial, Helvetica, sans-serif" fill="#edf0e9">
+  <text x="92" y="850" font-size="11" fill="#a6b2ac">STATIC CONCEPT STUDY · THE SYSTEM ATLAS · 1440 × 900</text>
+</g>
+</svg>

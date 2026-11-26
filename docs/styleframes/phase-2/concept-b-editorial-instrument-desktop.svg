@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+<title id="title">The Editorial Instrument — Irvan Gerhana</title><desc id="desc">Static desktop hero styleframe at 1440 by 900. Shared approved profile copy, conceptual visual treatment only.</desc>
+<defs>
+<linearGradient id="fade" x1="0" x2="1"><stop offset="0" stop-color="#f0ede4"/><stop offset="1" stop-color="#f0ede4" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="1440" height="900" fill="#f0ede4"/>
+
+<g font-family="Arial, Helvetica, sans-serif" fill="#202523">
+  <g transform="translate(88 0)">
+    <path d="M0 25h18v18H0z" fill="#a65e32"/><path d="M6 31h6v6H6z" fill="#f0ede4"/>
+    <text x="30" y="39" font-size="13" font-weight="700" letter-spacing="4">GERHANA</text>
+    <text x="790" y="39" font-size="13" fill="#707873">Work</text><text x="866" y="39" font-size="13" fill="#707873">About</text><text x="947" y="39" font-size="13" fill="#707873">Notes</text>
+    <text x="1195" y="39" font-size="13" fill="#a65e32">Résumé ↗</text>
+  </g>
+  <path d="M88 62H1352" stroke="#707873" stroke-opacity=".22"/>
+  <g transform="translate(92 0)">
+    <text x="0" y="128" font-size="14" fill="#a65e32" letter-spacing="1.6">IRVAN GERHANA</text>
+    <text x="0" y="160" font-size="13" fill="#707873">Product Engineer</text>
+    <text x="0" y="254" font-size="58" font-weight="600" letter-spacing="-2.5">I build digital products</text>
+    <text x="0" y="321" font-size="58" font-weight="600" letter-spacing="-2.5">from product logic</text>
+    <text x="0" y="388" font-size="58" font-weight="600" letter-spacing="-2.5">to production.</text>
+    <text x="0" y="448" font-size="18" fill="#707873">I work across product thinking, interface design, and software engineering—</text>
+    <text x="0" y="476" font-size="18" fill="#707873">bringing complex workflows into software that is clear to use and practical to operate.</text>
+    <rect x="0" y="524" width="198" height="50" rx="3" fill="#a65e32"/>
+    <text x="22" y="555" font-size="14" fill="#f0ede4" font-weight="700">Explore selected work ↗</text>
+    <rect x="210" y="524" width="142" height="50" rx="3" fill="none" stroke="#707873" stroke-opacity=".55"/>
+    <text x="232" y="555" font-size="14">View résumé ↗</text>
+    <text x="0" y="635" font-size="13" fill="#707873" letter-spacing="1.5">FROM PIXEL TO PRODUCTION.</text>
+  </g>
+  <path d="M88 750H1352" stroke="#707873" stroke-opacity=".22"/>
+  <text x="92" y="790" font-size="12" fill="#707873" letter-spacing="2">HOW THE WORK CONNECTS</text>
+</g>
+
+
+<g transform="translate(860 126)">
+  <rect x="0" y="0" width="430" height="490" fill="#202523" opacity=".045"/>
+  <path d="M0 0V490M215 0V490M430 0V490M0 245H430" stroke="#707873" stroke-opacity=".28"/>
+  <text x="26" y="78" font-family="Georgia,serif" font-size="17" fill="#a65e32">A practice of making</text>
+  <text x="22" y="190" font-family="Georgia,serif" font-size="102" fill="#202523" letter-spacing="-7">clear.</text>
+  <path d="M24 218H405" stroke="#a65e32" stroke-width="2"/>
+  <text x="25" y="258" font-size="12" fill="#707873" letter-spacing="2">PRODUCT / INTERFACE / SYSTEMS</text>
+  <text x="25" y="333" font-family="Georgia,serif" font-size="32" fill="#202523">Form follows</text>
+  <text x="25" y="371" font-family="Georgia,serif" font-size="32" fill="#202523">understanding.</text>
+  <path d="M25 408H405" stroke="#707873" stroke-opacity=".5"/>
+  <text x="25" y="443" font-size="12" fill="#707873">A considered structure, not a template.</text>
+  <text x="25" y="463" font-size="12" fill="#707873">One idea at a time.</text>
+  <text x="452" y="16" font-size="11" fill="#a65e32" letter-spacing="2">FIG. 01</text>
+</g>
+
+
+</g>
+<g font-family="Arial, Helvetica, sans-serif" fill="#202523">
+  <text x="92" y="850" font-size="11" fill="#707873">STATIC CONCEPT STUDY · THE EDITORIAL INSTRUMENT · 1440 × 900</text>
+</g>
+</svg>

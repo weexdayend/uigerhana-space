@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+<title id="title">The Product Field Notes — Irvan Gerhana</title><desc id="desc">Static desktop hero styleframe at 1440 by 900. Shared approved profile copy, conceptual visual treatment only.</desc>
+<defs>
+<linearGradient id="fade" x1="0" x2="1"><stop offset="0" stop-color="#e9e5da"/><stop offset="1" stop-color="#e9e5da" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="1440" height="900" fill="#e9e5da"/>
+
+<g font-family="Arial, Helvetica, sans-serif" fill="#202523">
+  <g transform="translate(88 0)">
+    <path d="M0 25h18v18H0z" fill="#a15e36"/><path d="M6 31h6v6H6z" fill="#e9e5da"/>
+    <text x="30" y="39" font-size="13" font-weight="700" letter-spacing="4">GERHANA</text>
+    <text x="790" y="39" font-size="13" fill="#727a73">Work</text><text x="866" y="39" font-size="13" fill="#727a73">About</text><text x="947" y="39" font-size="13" fill="#727a73">Notes</text>
+    <text x="1195" y="39" font-size="13" fill="#a15e36">Résumé ↗</text>
+  </g>
+  <path d="M88 62H1352" stroke="#727a73" stroke-opacity=".22"/>
+  <g transform="translate(92 0)">
+    <text x="0" y="128" font-size="14" fill="#a15e36" letter-spacing="1.6">IRVAN GERHANA</text>
+    <text x="0" y="160" font-size="13" fill="#727a73">Product Engineer</text>
+    <text x="0" y="254" font-size="58" font-weight="600" letter-spacing="-2.5">I build digital products</text>
+    <text x="0" y="321" font-size="58" font-weight="600" letter-spacing="-2.5">from product logic</text>
+    <text x="0" y="388" font-size="58" font-weight="600" letter-spacing="-2.5">to production.</text>
+    <text x="0" y="448" font-size="18" fill="#727a73">I work across product thinking, interface design, and software engineering—</text>
+    <text x="0" y="476" font-size="18" fill="#727a73">bringing complex workflows into software that is clear to use and practical to operate.</text>
+    <rect x="0" y="524" width="198" height="50" rx="3" fill="#a15e36"/>
+    <text x="22" y="555" font-size="14" fill="#e9e5da" font-weight="700">Explore selected work ↗</text>
+    <rect x="210" y="524" width="142" height="50" rx="3" fill="none" stroke="#727a73" stroke-opacity=".55"/>
+    <text x="232" y="555" font-size="14">View résumé ↗</text>
+    <text x="0" y="635" font-size="13" fill="#727a73" letter-spacing="1.5">FROM PIXEL TO PRODUCTION.</text>
+  </g>
+  <path d="M88 750H1352" stroke="#727a73" stroke-opacity=".22"/>
+  <text x="92" y="790" font-size="12" fill="#727a73" letter-spacing="2">HOW THE WORK CONNECTS</text>
+</g>
+
+
+
+
+<g transform="translate(840 120)">
+  <rect x="0" y="0" width="420" height="160" fill="#202523" opacity=".055" stroke="#727a73" stroke-opacity=".5"/>
+  <text x="20" y="30" font-size="11" fill="#a15e36" letter-spacing="2">01 / PRODUCT DIRECTION</text>
+  <text x="20" y="67" font-family="Georgia,serif" font-size="26" fill="#202523">A professional platform</text>
+  <path d="M20 88H390" stroke="#727a73" stroke-opacity=".4"/>
+  <text x="20" y="119" font-size="13" fill="#727a73">Identity · Audience · Narrative</text>
+  <rect x="65" y="190" width="390" height="160" fill="#202523" opacity=".08" stroke="#727a73" stroke-opacity=".45"/>
+  <text x="85" y="220" font-size="11" fill="#a15e36" letter-spacing="2">02 / INFORMATION ARCHITECTURE</text>
+  <g fill="none" stroke="#202523" stroke-opacity=".45"><rect x="85" y="242" width="90" height="70"/><rect x="195" y="242" width="90" height="70"/><rect x="305" y="242" width="125" height="70"/></g>
+  <path d="M175 277h20m90 0h20" stroke="#a15e36" stroke-width="2"/>
+  <rect x="5" y="385" width="435" height="128" fill="#202523" opacity=".055" stroke="#727a73" stroke-opacity=".45"/>
+  <text x="25" y="415" font-size="11" fill="#a15e36" letter-spacing="2">03 / IMPLEMENTATION</text>
+  <text x="25" y="450" font-size="13" fill="#202523">Typed content → App routes → UI</text>
+  <text x="25" y="480" font-size="12" fill="#727a73">Conceptual relationship · not product UI</text>
+  <path d="M205 350V385M205 350l-6 9m6-9l6 9" stroke="#a15e36" stroke-width="2" fill="none"/>
+</g>
+</g>
+<g font-family="Arial, Helvetica, sans-serif" fill="#202523">
+  <text x="92" y="850" font-size="11" fill="#727a73">STATIC CONCEPT STUDY · THE PRODUCT FIELD NOTES · 1440 × 900</text>
+</g>
+</svg>
