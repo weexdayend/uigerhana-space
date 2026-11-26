@@ -1,10 +1,9 @@
 import { SiteHeader } from "@/components/SiteHeader";
-import { HeroAndServices } from "@/components/HeroAndServices";
-import { ProcessSection } from "@/components/ProcessSection";
+import { IntroductionSection } from "@/components/IntroductionSection";
 import { WorkSection } from "@/components/WorkSection";
-import { NotesSection } from "@/components/NotesSection";
-import { OpenSourceSection } from "@/components/OpenSourceSection";
-import { FaqSection } from "@/components/FaqSection";
+import { ExpertiseSection } from "@/components/ExpertiseSection";
+import { ExperienceSection } from "@/components/ExperienceSection";
+import { ProcessSection } from "@/components/ProcessSection";
 import { ContactAndFooter } from "@/components/ContactAndFooter";
 
 export default function Home() {
@@ -12,14 +11,13 @@ export default function Home() {
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
-        <HeroAndServices />
-        <ProcessSection />
+        <IntroductionSection />
         <WorkSection />
-        <NotesSection />
-        <OpenSourceSection />
-        <FaqSection />
-        <ContactAndFooter />
+        <ExpertiseSection />
+        <ExperienceSection />
+        <ProcessSection />
       </main>
+      <ContactAndFooter />
     </div>
   );
 }

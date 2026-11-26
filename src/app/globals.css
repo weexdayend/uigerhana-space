@@ -23,14 +23,6 @@ body {
   font-family: var(--font-pixelify-sans), var(--font-geist-mono), monospace;
 }
 
-/* Subtle 2px pixel-matrix fill for light bento metric container */
-.dither-grid-light {
-  background-color: #ebe6db;
-  background-image: radial-gradient(rgba(18, 21, 24, 0.14) 1px, transparent 1px);
-  background-size: 8px 8px;
-}
-
-/* Crisp 2px pixel checkerboard edge strip on dark surfaces */
 .dither-band-dark {
   background-image:
     linear-gradient(45deg, rgba(232, 228, 216, 0.28) 25%, transparent 25%),
@@ -41,29 +33,41 @@ body {
   background-position: 0 0, 0 4px, 4px -4px, -4px 0;
 }
 
-/* Diagonal hatch frame for the Open Source browser window card */
-.hatch-pattern {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(232, 228, 216, 0.24),
-    rgba(232, 228, 216, 0.24) 1px,
-    transparent 1px,
-    transparent 6px
-  );
-}
-
-.hatch-pattern-light {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(18, 21, 24, 0.14),
-    rgba(18, 21, 24, 0.14) 1px,
-    transparent 1px,
-    transparent 6px
-  );
+.cv-heading {
+  border-bottom: 1px solid rgba(18, 21, 24, 0.24);
+  padding-bottom: 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  html { scroll-behavior: auto; }
+}
+
+@page { size: A4; margin: 16mm 14mm; }
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #121518 !important;
+    overflow: visible !important;
+  }
+
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .no-print,
+  footer[data-band] { display: none !important; }
+
+  .cv-section { break-inside: auto; }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
   }
 }
