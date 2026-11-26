@@ -159,7 +159,7 @@ Exit criteria:
 
 **Goal:** turn the selected concept into a reusable identity system.
 
-**Status:** initial System Atlas art direction is being refined for owner review. Typography, delegated palette, GSAP choreography, and rem-based spacing guidance are documented; this is not a production token freeze.
+**Status:** Initial component-system and interaction-state package prepared for owner review on 2026-11-27. Semantic token roles, component anatomy, responsive layout rules, and interaction behavior are documented as proposals; this is not a production token freeze or final accessibility sign-off.
 
 Work:
 - Define color roles and contrast behavior.
@@ -172,12 +172,13 @@ Work:
 - Separate core identity assets from optional treatments.
 
 Deliverables:
-- Visual system sheet.
-- Color and typography tokens.
-- Layout and spacing rules.
-- Graphic and imagery guidelines.
-- Interaction-state examples.
-- Responsive rules.
+- [x] Initial visual-system sheet and reusable component catalogue.
+- [x] Semantic color, typography, spacing, border, and layout token proposal.
+- [x] Component anatomy for navigation, buttons, links, case-study cards, domain rows, article cards, and résumé actions.
+- [x] Interaction-state contract for hover, focus-visible, pressed, disabled, external links, mobile navigation, and reduced motion.
+- [x] Responsive, reading-order, and evidence-hierarchy rules.
+- [ ] Owner review of semantic roles, token values, component density, and interaction examples.
+- [ ] Browser-state contrast verification and real-font metric review before token freeze.
 
 Exit criteria:
 - The system works beyond one hero.

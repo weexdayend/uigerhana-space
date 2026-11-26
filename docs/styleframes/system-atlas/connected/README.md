@@ -62,6 +62,17 @@ The case-study example is limited to the currently approved public project, UI G
 
 The résumé study uses only existing résumé-backed role, skill, certification, and publication details. No phone number, email address, education history, or language proficiency is invented.
 
+## Reusable visual system
+
+The next System Atlas bake adds a component and interaction-state proposal that can be reviewed alongside these connected page frames.
+
+- [Component system and anatomy](../../../design-system/SYSTEM-ATLAS-COMPONENT-SYSTEM.md)
+- [Semantic token proposal](../../../design-system/SYSTEM-ATLAS-TOKEN-PROPOSAL.md)
+- [Interaction-state contract](../../../design-system/SYSTEM-ATLAS-INTERACTION-STATES.md)
+- [Component library visual board](./component-library.svg)
+
+The examples are reusable design contracts, not implemented components. Final token freeze and state-specific browser validation remain open.
+
 ## Motion and interaction direction
 
 ![System Atlas motion storyboard](./motion-storyboard.svg)
