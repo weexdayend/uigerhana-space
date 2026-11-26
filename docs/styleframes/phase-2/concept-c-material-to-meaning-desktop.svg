@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+<title id="title">Material to Meaning — Irvan Gerhana</title><desc id="desc">Static desktop hero styleframe at 1440 by 900. Shared approved profile copy, conceptual visual treatment only.</desc>
+<defs>
+<linearGradient id="fade" x1="0" x2="1"><stop offset="0" stop-color="#17191d"/><stop offset="1" stop-color="#17191d" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="1440" height="900" fill="#17191d"/>
+
+<g font-family="Arial, Helvetica, sans-serif" fill="#f2efe7">
+  <g transform="translate(88 0)">
+    <path d="M0 25h18v18H0z" fill="#d59a52"/><path d="M6 31h6v6H6z" fill="#17191d"/>
+    <text x="30" y="39" font-size="13" font-weight="700" letter-spacing="4">GERHANA</text>
+    <text x="790" y="39" font-size="13" fill="#a9a49a">Work</text><text x="866" y="39" font-size="13" fill="#a9a49a">About</text><text x="947" y="39" font-size="13" fill="#a9a49a">Notes</text>
+    <text x="1195" y="39" font-size="13" fill="#d59a52">Résumé ↗</text>
+  </g>
+  <path d="M88 62H1352" stroke="#a9a49a" stroke-opacity=".22"/>
+  <g transform="translate(92 0)">
+    <text x="0" y="128" font-size="14" fill="#d59a52" letter-spacing="1.6">IRVAN GERHANA</text>
+    <text x="0" y="160" font-size="13" fill="#a9a49a">Product Engineer</text>
+    <text x="0" y="254" font-size="58" font-weight="600" letter-spacing="-2.5">I build digital products</text>
+    <text x="0" y="321" font-size="58" font-weight="600" letter-spacing="-2.5">from product logic</text>
+    <text x="0" y="388" font-size="58" font-weight="600" letter-spacing="-2.5">to production.</text>
+    <text x="0" y="448" font-size="18" fill="#a6b2ac">I work across product thinking, interface design, and software engineering—</text><text x="0" y="476" font-size="18" fill="#a9a49a">bringing complex workflows into software that is clear to use and practical to operate.</text>
+    <rect x="0" y="524" width="198" height="50" rx="3" fill="#d59a52"/>
+    <text x="22" y="555" font-size="14" fill="#17191d" font-weight="700">Explore selected work ↗</text>
+    <rect x="210" y="524" width="142" height="50" rx="3" fill="none" stroke="#a9a49a" stroke-opacity=".55"/>
+    <text x="232" y="555" font-size="14">View résumé ↗</text>
+    <text x="0" y="635" font-size="13" fill="#a9a49a" letter-spacing="1.5">FROM PIXEL TO PRODUCTION.</text>
+  </g>
+  <path d="M88 750H1352" stroke="#a9a49a" stroke-opacity=".22"/>
+  <text x="92" y="790" font-size="12" fill="#a9a49a" letter-spacing="2">HOW THE WORK CONNECTS</text>
+</g>
+
+
+
+<g transform="translate(860 130)">
+  <path d="M50 210L245 40L470 160L280 355Z" fill="#d59a52" opacity=".08"/>
+  <path d="M50 210L280 355L470 160L245 40Z" fill="none" stroke="#f2efe7" stroke-opacity=".45" stroke-width="2"/>
+  <path d="M50 210L50 330L280 480L280 355" fill="#f2efe7" opacity=".06"/>
+  <path d="M280 355L470 160L470 285L280 480" fill="#d59a52" opacity=".12"/>
+  <path d="M70 215L260 55L450 165" fill="none" stroke="#f2efe7" stroke-opacity=".19"/><path d="M94 227L279 74L443 189" fill="none" stroke="#f2efe7" stroke-opacity=".19"/><path d="M118 239L298 93L436 213" fill="none" stroke="#f2efe7" stroke-opacity=".19"/><path d="M142 251L317 112L429 237" fill="none" stroke="#f2efe7" stroke-opacity=".19"/><path d="M166 263L336 131L422 261" fill="none" stroke="#f2efe7" stroke-opacity=".19"/><path d="M190 275L355 150L415 285" fill="none" stroke="#f2efe7" stroke-opacity=".19"/><path d="M214 287L374 169L408 309" fill="none" stroke="#f2efe7" stroke-opacity=".19"/><path d="M238 299L393 188L401 333" fill="none" stroke="#f2efe7" stroke-opacity=".19"/>
+  <g fill="#d59a52"><rect x="25" y="60" width="12" height="12" opacity="0.18"/><rect x="59" y="60" width="12" height="12" opacity="0.3"/><rect x="93" y="60" width="12" height="12" opacity="0.42"/><rect x="127" y="60" width="12" height="12" opacity="0.54"/><rect x="161" y="60" width="12" height="12" opacity="0.18"/><rect x="195" y="60" width="12" height="12" opacity="0.3"/><rect x="25" y="94" width="12" height="12" opacity="0.42"/><rect x="59" y="94" width="12" height="12" opacity="0.54"/><rect x="93" y="94" width="12" height="12" opacity="0.18"/><rect x="127" y="94" width="12" height="12" opacity="0.3"/><rect x="161" y="94" width="12" height="12" opacity="0.42"/><rect x="195" y="94" width="12" height="12" opacity="0.54"/><rect x="25" y="128" width="12" height="12" opacity="0.18"/><rect x="59" y="128" width="12" height="12" opacity="0.3"/><rect x="93" y="128" width="12" height="12" opacity="0.42"/><rect x="127" y="128" width="12" height="12" opacity="0.54"/><rect x="161" y="128" width="12" height="12" opacity="0.18"/><rect x="195" y="128" width="12" height="12" opacity="0.3"/><rect x="25" y="162" width="12" height="12" opacity="0.42"/><rect x="59" y="162" width="12" height="12" opacity="0.54"/><rect x="93" y="162" width="12" height="12" opacity="0.18"/><rect x="127" y="162" width="12" height="12" opacity="0.3"/><rect x="161" y="162" width="12" height="12" opacity="0.42"/><rect x="195" y="162" width="12" height="12" opacity="0.54"/></g>
+  <g fill="#f2efe7" opacity=".35"><rect x="330" y="300" width="7" height="7"/><rect x="348" y="300" width="7" height="7"/><rect x="366" y="300" width="7" height="7"/><rect x="384" y="300" width="7" height="7"/><rect x="402" y="300" width="7" height="7"/><rect x="420" y="300" width="7" height="7"/><rect x="438" y="300" width="7" height="7"/><rect x="456" y="300" width="7" height="7"/><rect x="330" y="318" width="7" height="7"/><rect x="348" y="318" width="7" height="7"/><rect x="366" y="318" width="7" height="7"/><rect x="384" y="318" width="7" height="7"/><rect x="402" y="318" width="7" height="7"/><rect x="420" y="318" width="7" height="7"/><rect x="438" y="318" width="7" height="7"/><rect x="456" y="318" width="7" height="7"/><rect x="330" y="336" width="7" height="7"/><rect x="348" y="336" width="7" height="7"/><rect x="366" y="336" width="7" height="7"/><rect x="384" y="336" width="7" height="7"/><rect x="402" y="336" width="7" height="7"/><rect x="420" y="336" width="7" height="7"/><rect x="438" y="336" width="7" height="7"/><rect x="456" y="336" width="7" height="7"/><rect x="330" y="354" width="7" height="7"/><rect x="348" y="354" width="7" height="7"/><rect x="366" y="354" width="7" height="7"/><rect x="384" y="354" width="7" height="7"/><rect x="402" y="354" width="7" height="7"/><rect x="420" y="354" width="7" height="7"/><rect x="438" y="354" width="7" height="7"/><rect x="456" y="354" width="7" height="7"/><rect x="330" y="372" width="7" height="7"/><rect x="348" y="372" width="7" height="7"/><rect x="366" y="372" width="7" height="7"/><rect x="384" y="372" width="7" height="7"/><rect x="402" y="372" width="7" height="7"/><rect x="420" y="372" width="7" height="7"/><rect x="438" y="372" width="7" height="7"/><rect x="456" y="372" width="7" height="7"/></g>
+  <path d="M80 430C170 390 200 390 290 405S405 430 500 370" fill="none" stroke="#d59a52" stroke-width="3"/>
+  <circle cx="290" cy="405" r="8" fill="#17191d" stroke="#d59a52" stroke-width="3"/>
+  <path d="M85 110L170 185L245 40" fill="none" stroke="#d59a52" stroke-width="2"/>
+  <path d="M170 185l-3 -12m3 12l-12 -3" stroke="#d59a52" stroke-width="2"/>
+</g>
+<g font-family="Arial, Helvetica, sans-serif" fill="#f2efe7">
+  <text x="92" y="850" font-size="11" fill="#a9a49a">STATIC CONCEPT STUDY · MATERIAL TO MEANING · 1440 × 900</text>
+</g>
+</svg>
