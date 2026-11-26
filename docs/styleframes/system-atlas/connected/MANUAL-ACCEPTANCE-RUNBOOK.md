@@ -10,7 +10,7 @@ This runbook is deliberately separate from Playwright CI. It records the exact n
 
 ## 1. Evidence already available
 
-- Cross-engine CI run [#45912275133](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133), artifact [15160233789](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133/artifacts/15160233789).
+- Exact-HEAD cross-engine CI run [#45912926554](https://github.com/weexdayend/uigerhana-space/actions/runs/45912926554), artifact [15160708872](https://github.com/weexdayend/uigerhana-space/actions/runs/45912926554/artifacts/15160708872). The initial discovery artifact remains available from [run #45912275133](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133).
 - Ten connected SVG artboards rendered in Chromium, Firefox, and WebKit with Manrope and Plus Jakarta Sans loaded. All three geometry/font reports show zero text-node collisions, zero out-of-viewBox text, and zero targeted artboard layout failures.
 - Runtime suite exercises ten viewport samples on all four current app routes. Its first run recorded 204 pass, 4 fail, and 2 skip; the four failures were three reports of ROOT-01 and one Firefox test-measurement false positive. See the acceptance matrix for the follow-up test treatment.
 - Chromium generated an A4 PDF preview; print-media assertions also run in Firefox and WebKit. Neither is a native print-dialog acceptance.
@@ -111,3 +111,9 @@ Owner decision / follow-up:
 ```
 
 Never convert NOT RUN or BLOCKED into PASS without the stated evidence. Preserve earlier failures and add a dated retest rather than overwriting history.
+
+## 9. Latest automated retest — 2026-11-27
+
+Exact commit `8a6e31fd57cc501efc5663e219cd7b40f0afd3d4` passed push run [#45912926554](https://github.com/weexdayend/uigerhana-space/actions/runs/45912926554). The runtime suite reported 208 passed and 2 skipped; ROOT-01 is retained as an expected failing diagnostic in each engine. The artifact [15160708872](https://github.com/weexdayend/uigerhana-space/actions/runs/45912926554/artifacts/15160708872) contains per-engine screenshots/geometry, test output, and print evidence.
+
+The native/manual gates in sections 2–7 are unchanged: a green automated suite does not supply owner sign-off, literal browser UI zoom, OS text scaling, native Safari, native print-dialog review, or deployed-commit parity.

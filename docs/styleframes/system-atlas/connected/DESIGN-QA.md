@@ -94,4 +94,20 @@ No production runtime, CSS, route, content data, dependency, or publication stat
 - [ ] Native OS text scaling, literal browser 200% zoom, actual Safari, native print dialog, and owner visual acceptance remain manual.
 - [ ] Production/deployed-commit parity remains blocked; this branch is not approved for deployment.
 
-The first three-engine run [#45912275133](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133) reported 204 passed / 4 failed / 2 skipped. The Firefox 768px overlap item was a test-geometry false positive due to the artboard's transparent mask and is corrected in the next test revision. See [responsive acceptance matrix](./RESPONSIVE-ACCEPTANCE-MATRIX.md), [visual review](./VISUAL-REVIEW.md), and [manual acceptance runbook](./MANUAL-ACCEPTANCE-RUNBOOK.md).
+The initial run [#45912275133](https://github.com/weexdayend/uigerhana-space/actions/runs/45912275133) reported 204 passed / 4 failed / 2 skipped, exposing ROOT-01 and a Firefox test-measurement false positive. The exact-HEAD retest [#45912926554](https://github.com/weexdayend/uigerhana-space/actions/runs/45912926554) passed with 208 passed / 2 skipped, including the corrected Firefox 768px measurement and three expected ROOT-01 diagnostics. See the exact-HEAD [101-file artifact](https://github.com/weexdayend/uigerhana-space/actions/runs/45912926554/artifacts/15160708872). See [responsive acceptance matrix](./RESPONSIVE-ACCEPTANCE-MATRIX.md), [visual review](./VISUAL-REVIEW.md), and [manual acceptance runbook](./MANUAL-ACCEPTANCE-RUNBOOK.md).
+
+
+### Exact-HEAD three-engine retest
+
+The follow-up push workflow [#45912926554](https://github.com/weexdayend/uigerhana-space/actions/runs/45912926554) passed both jobs on commit `8a6e31fd57cc501efc5663e219cd7b40f0afd3d4`.
+
+- Quality gates: typecheck, content publication gates, SVG/static copy integrity, lint, and production build — all passed.
+- Runtime Visual and Accessibility QA — passed. Playwright executed **210 tests across Chromium, Firefox, and WebKit: 208 passed, 2 skipped**. The three 200% root-font-size diagnostics are intentionally marked as expected failures, one per engine, so ROOT-01 remains visible without masking unrelated regression results. No unexpected failures were reported.
+- All **10 responsive viewport samples** were exercised on all **4 routes** per engine. The Firefox 768px hero overlap false positive is gone after the test began measuring the fully visible portion beneath the 35% transparent art mask.
+- All **10 connected SVG artboards** rendered per engine with Manrope and Plus Jakarta Sans loaded; each geometry report recorded zero text out of the viewBox, zero text-node collisions, and zero targeted artboard contract failures. The JSON now records the actual Playwright browser name and version.
+- Keyboard traversal/disclosure, reduced-motion, axe WCAG A/AA + best-practice checks, print-media checks, and the Chromium A4 two-page PDF test passed. The two non-Chromium PDF-generation cases are intentionally skipped because Playwright's `page.pdf()` is Chromium-only.
+- Browser versions in the run logs: Chromium **159.0.8154.6**, Firefox **159.0**, WebKit **27.2**.
+
+The [exact-HEAD browser QA artifact · 15160708872](https://github.com/weexdayend/uigerhana-space/actions/runs/45912926554/artifacts/15160708872) contains 101 files: responsive screenshots, three-engine static artboard captures and geometry reports, diagnostic JSON, accessibility/test results, and the Chromium PDF. Artifact size: 19,975,526 bytes; digest: `sha256:c5d3be96fddd5fcfe11ecca775e5df7ed92a4ca030b3975e343effadfe0d63fc`.
+
+**ROOT-01 remains P1 and open:** the 200% CSS root-font-size diagnostic still reproduces the clipped hero/document overflow at 390px in all three engines. This retest preserves it as an expected failure with evidence; no production CSS was changed. Native OS scaling is still NOT RUN.
