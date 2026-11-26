@@ -106,3 +106,21 @@ The GitHub Actions run for commit `648e3d7ce148b0b651c09a8359d54aa5034435e5` com
 - Tightened the publication-gate checker to count record object fields only, excluding TypeScript interface declarations.
 
 - Corrected the checker expression to match object-record fields (four-space indentation), not just its original generic declaration text.
+
+
+## 2026-11-26 — Final validation: project evidence and publication gates
+
+**Validated commit:** `a4c7448cd0427ffa581621a380cf54e252c15625`  
+**GitHub Actions:** successful.
+
+- Dependency installation: passed.
+- Next.js route type generation and TypeScript: passed.
+- Content publication gates: passed.
+- ESLint: passed.
+- Next.js production build: passed.
+
+The evidence register contains 15 résumé-derived workstreams. All 15 remain review-required, status-unconfirmed, and attribution-not-cleared. Public routes do not import the register. The public case-study selector continues to require explicit approved status.
+
+The public repository's brief, experience copy, and review documentation use generalized project labels until the owner clears attribution. No personal phone/email, client screenshots, client names from draft workstreams, or unsupported project outcomes were added in this pass.
+
+This validates source checks and the production build only; browser-based desktop/mobile inspection and résumé print-output review remain open.
