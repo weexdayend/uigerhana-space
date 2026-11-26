@@ -102,3 +102,5 @@ The GitHub Actions run for commit `648e3d7ce148b0b651c09a8359d54aa5034435e5` com
 - Added a CI step that fails if public app/components import the review-only project evidence register.
 - Added a CI assertion that all evidence records remain in review-required state until owner review.
 - Added a CI assertion that public case studies are selected exclusively through the explicit approved-publication filter.
+
+- Tightened the publication-gate checker to count record object fields only, excluding TypeScript interface declarations.
