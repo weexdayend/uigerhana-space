@@ -1,0 +1,60 @@
+# Connected styleframes — design QA and owner review
+
+**Status:** Review checklist prepared; visual acceptance not recorded  
+**Scope:** Static SVG styleframes only
+
+## What the artefacts cover
+
+| Artefact | Artboard | Review focus |
+|---|---:|---|
+| Homepage desktop | 1440 × 5740 | Full journey, content rhythm, evidence hierarchy |
+| Homepage tablet | 834 × 5200 | Reflow and route/copy order |
+| Homepage mobile | 390 × 7850 | Copy-first order, stacked sections, action reachability |
+| Work index | 1440 × 2580 | One approved case study vs generalized work domains |
+| Case study | 1440 × 3920 | Status, role, contribution, architecture, current state |
+| Résumé | 1440 × 2200 | Reading hierarchy and print-aware document surface |
+| Motion storyboard | 1440 × 1500 | GSAP choreography and reduced-motion state |
+
+The artboards are vector studies, not responsive browser implementations. Their declared dimensions do not validate reflow, text zoom, keyboard behavior, assistive technology, or production performance.
+
+## Owner review checklist
+
+### Identity and hierarchy
+- [ ] Name and Product Engineer positioning read before the visual metaphor.
+- [ ] Approved headline and introduction remain verbatim.
+- [ ] “From pixel to production.” supports the identity rather than replacing the headline.
+- [ ] Primary CTA points to selected work; secondary CTA points to the résumé.
+- [ ] The Atlas route remains secondary to copy and evidence.
+
+### Content integrity
+- [ ] The single public case study remains marked **In progress**.
+- [ ] Generalized work domains are not styled or described as separate public case studies.
+- [ ] The two experience roles preserve their résumé dates, including the overlap.
+- [ ] Featured articles, publication dates, and reading times match the typed source.
+- [ ] No unsupported outcome, metric, testimonial, client attribution, credential, or completed-launch claim appears.
+- [ ] No direct contact address or channel is invented.
+
+### Visual system
+- [ ] Basalt / Limestone / Sea Glass / Signal Copper palette roles are reviewed in context.
+- [ ] Manrope and Plus Jakarta Sans load as intended in an actual browser before type metrics are frozen.
+- [ ] Fine contour lines remain subordinate and legible.
+- [ ] CTA contrast, hover, focus, pressed, and disabled states are separately specified before implementation.
+- [ ] Spacing is translated into the approved rem token and paired `--py` / `--px` system; SVG coordinates are not CSS spacing tokens.
+
+### Responsive and accessibility review still required
+- [ ] Real browser review at 1440, 1024, 834, 390, and 360 CSS-pixel widths.
+- [ ] Literal browser 200% zoom and OS-level text scaling.
+- [ ] Keyboard-only navigation and visible focus treatment on real controls.
+- [ ] Screen-reader/assistive-technology reading order and landmark labels.
+- [ ] `prefers-reduced-motion` with content and route visible immediately.
+- [ ] Contrast in actual rendered states, not just static color-pair calculations.
+- [ ] Native print dialog / Save as PDF behavior and page-break review.
+- [ ] Safari/WebKit and Firefox coverage recorded in addition to Chromium.
+
+Owner-confirmed real-device and assistive-technology checks from 2026-11-27 remain recorded at category level only; exact devices, OS/browser versions, AT combinations, scenarios, and results were not supplied. Do not infer them from these artboards.
+
+## Review boundary
+
+A positive review of one SVG or one hero does not approve the whole connected system. Phase 5 requires owner acceptance of the connected journey and responsive compositions. Phase 1 remains open for the browser, print, deployment-parity, contact-channel, and prioritized-finding gates recorded in `docs/BRAND-IDENTITY-PLAN.md`.
+
+No production runtime, CSS, route, content data, dependency, or publication state is changed by this review package.

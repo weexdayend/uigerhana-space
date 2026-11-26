@@ -22,6 +22,12 @@ The System Atlas is the selected concept to refine. This is a new art-direction 
 
 [Open editable small-mobile SVG](./small-mobile.svg)
 
+## Connected full-page styleframes
+
+The Phase 5 package extends System Atlas through the full homepage journey and supporting routes.
+
+[Open connected desktop/tablet/mobile, work index, case study, résumé, motion storyboard, and QA notes](./connected/README.md).
+
 ## Direction decisions
 
 - **Typography:** Manrope for display and headings; Plus Jakarta Sans for body and interface.
