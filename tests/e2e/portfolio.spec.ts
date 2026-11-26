@@ -127,6 +127,39 @@ test.describe("visual state captures", () => {
         element.scrollLeft += delta;
       }, index);
       await page.waitForTimeout(150);
+
+      if (index === 1) {
+        const metadataOverlap = await region.evaluate((element) => {
+          const panel = element.querySelectorAll<HTMLElement>("[data-story-panel]")[1];
+          const label = panel.querySelector(".motion-story__visual-meta > span:first-child")!;
+          const artwork = panel.querySelector(".story-ui")!;
+          const labelBox = label.getBoundingClientRect();
+          const artworkBox = artwork.getBoundingClientRect();
+          return labelBox.bottom > artworkBox.top &&
+            labelBox.top < artworkBox.bottom &&
+            labelBox.right > artworkBox.left &&
+            labelBox.left < artworkBox.right;
+        });
+        expect(metadataOverlap).toBe(false);
+      }
+
+      if (index === 2) {
+        const collisions = await region.evaluate((element) => {
+          const panel = element.querySelectorAll<HTMLElement>("[data-story-panel]")[2];
+          const nodes = Array.from(
+            panel.querySelectorAll<HTMLElement>(".story-architecture__core, .story-architecture__node")
+          );
+          return nodes.flatMap((node, nodeIndex) => {
+            const a = node.getBoundingClientRect();
+            return nodes.slice(nodeIndex + 1).filter((other) => {
+              const b = other.getBoundingClientRect();
+              return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+            }).map((other) => [node.textContent?.trim(), other.textContent?.trim()]);
+          });
+        });
+        expect(collisions).toEqual([]);
+      }
+
       await page.screenshot({
         path: testInfo.outputPath(`mobile-story-stage-${index + 1}.png`),
         animations: "disabled",

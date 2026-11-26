@@ -35,7 +35,7 @@ const STORY_BEATS: StoryBeat[] = [
       "Research, information architecture, and interaction design connect complex rules to interfaces people can understand, navigate, and use with confidence.",
     focus: "Research · Information architecture · Interaction design",
     visual: "interface",
-    visualLabel: "Conceptual interface study · not a product screenshot",
+    visualLabel: "Conceptual UI · not a product screenshot",
   },
   {
     index: "03",
