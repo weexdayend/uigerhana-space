@@ -94,7 +94,8 @@ test("renders all System Atlas artboards with the selected fonts and no text col
     }, markup);
     await page.evaluate(() => document.fonts.ready);
 
-    const layout = await page.locator("svg").evaluate((svg) => {
+    const layout = await page.locator("svg").evaluate((element) => {
+      const svg = element as SVGSVGElement;
       const viewBox = svg.viewBox.baseVal;
       const textNodes = Array.from(svg.querySelectorAll<SVGTextElement>("text"));
       const boxes = textNodes
