@@ -6,6 +6,7 @@ import { PixelMark } from "@/components/PixelGraphics";
 
 const NAV_LINKS = [
   { href: "#about", label: "About" },
+  { href: "#story", label: "Story" },
   { href: "#work", label: "Work" },
   { href: "#expertise", label: "Expertise" },
   { href: "#experience", label: "Experience" },

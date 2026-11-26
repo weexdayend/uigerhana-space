@@ -12,6 +12,7 @@ The site brings together product thinking, interface design, software engineerin
 - Tailwind CSS
 - Geist and Pixelify Sans
 - Custom Bayer-dithered canvas artwork
+- GSAP + ScrollTrigger for the homepage narrative sequence
 
 ## Local development
 
@@ -73,6 +74,6 @@ Keep the homepage, experience section, and résumé aligned to these shared sour
 
 ## Design direction
 
-The visual identity retains the existing Obsidian / Stone / Amber palette, Geist typography, Pixelify Sans accents, editorial grids, pixel geometry, and Bayer dithering.
+The visual identity retains the existing Obsidian / Stone / Amber palette, Geist typography, Pixelify Sans accents, editorial grids, pixel geometry, and Bayer dithering. The homepage pairs a full-viewport introduction with a GSAP-pinned horizontal narrative on desktop; smaller screens use native swipeable panels, while reduced-motion preferences present the story as a vertical sequence.
 
 See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the full implementation contract, `docs/CASE-STUDY-REVIEW.md` for the project disclosure checklist, `docs/PROJECT-SOURCE-REVIEW.md` for the sanitized private-source review, and `docs/IMPLEMENTATION-LOG.md` for delivered work.

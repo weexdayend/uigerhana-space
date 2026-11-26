@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/SiteHeader";
 import { IntroductionSection } from "@/components/IntroductionSection";
+import { MotionNarrativeSection } from "@/components/MotionNarrativeSection";
 import { WorkSection } from "@/components/WorkSection";
 import { ExpertiseSection } from "@/components/ExpertiseSection";
 import { ExperienceSection } from "@/components/ExperienceSection";
@@ -13,6 +14,7 @@ export default function Home() {
       <SiteHeader />
       <main className="flex-1">
         <IntroductionSection />
+        <MotionNarrativeSection />
         <WorkSection />
         <ExpertiseSection />
         <ExperienceSection />

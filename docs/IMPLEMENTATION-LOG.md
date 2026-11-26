@@ -225,3 +225,30 @@ This validates source checks and the production build only; browser-based deskto
 - The live domain and deployment status were not verified in this pass because the site endpoint did not return a readable page from the available inspection path.
 - Browser-based visual review, keyboard/mobile interaction review, print pagination, and runtime accessibility checks remain open; a successful build is not a substitute for those checks.
 - No unverified email address, client attribution, private project screenshot, or case-study approval was introduced.
+
+
+## 2026-11-27 — Cinematic hero and horizontal motion narrative
+
+**Branch:** work/uigerhana-motion-narrative-v1
+
+### Delivered
+
+- Reworked the homepage introduction into a full-viewport hero while retaining the approved Product Engineer positioning, brand line, typography, Obsidian / Stone / Amber palette, and existing Bayer-dithered artwork.
+- Added a four-part narrative sequence covering product thinking, interface design, engineering, and production-minded delivery. The copy describes working principles and focus areas; it does not assign unverified outcomes to individual projects.
+- Added a desktop GSAP + ScrollTrigger pinned horizontal sequence with sequenced copy/visual reveals and a scroll progress indicator.
+- Kept the small-screen experience native and swipeable instead of forcing a pinned scroll interaction.
+- Added a vertical, non-pinned presentation for users who prefer reduced motion.
+- Added subtle pointer-responsive visual treatment and restrained hover/focus feedback.
+- Preserved the selected-work, expertise, experience, philosophy, writing, contact, résumé, and publication-gate architecture.
+
+### Implementation notes
+
+- Added GSAP 3.15.1 as a runtime dependency and recorded it in the npm lockfile.
+- GSAP animations are scoped to component lifecycle and are only activated for desktop layouts when reduced motion is not requested.
+- The narrative artwork is conceptual interface/architecture visualization, not a product screenshot.
+
+### Verification boundary
+
+- Repository source and branch ancestry were inspected before implementation. The working branch starts from the verified `main` merge commit `f759f6e7c1466ce6aeb89ac817e109441b8c8419`.
+- The execution environment could not resolve GitHub from the local terminal, so `npm ci`, typecheck, content gates, lint, production build, and browser QA could not be run locally in this pass.
+- The exact-SHA GitHub Actions result must be inspected before treating the implementation as validated. No PR was opened and no merge or deployment was performed.
