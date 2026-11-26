@@ -73,6 +73,15 @@ The next System Atlas bake adds a component and interaction-state proposal that 
 
 The examples are reusable design contracts, not implemented components. Final token freeze and state-specific browser validation remain open.
 
+## Responsive component and interaction specimens
+
+- [Desktop interaction-state board](./interaction-states-desktop.svg)
+- [Mobile navigation and component specimen](./interaction-states-mobile.svg)
+- [Surface-specific contrast and responsive review](./STATE-AND-RESPONSIVE-REVIEW.md)
+- [Interaction-state contract](../../../design-system/SYSTEM-ATLAS-INTERACTION-STATES.md)
+
+These boards are static design proposals. Focus, hover, pressed, disabled, and mobile disclosure states still require real-browser validation after a separately approved implementation.
+
 ## Motion and interaction direction
 
 ![System Atlas motion storyboard](./motion-storyboard.svg)

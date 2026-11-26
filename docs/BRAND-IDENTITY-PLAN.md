@@ -177,6 +177,7 @@ Deliverables:
 - [x] Component anatomy for navigation, buttons, links, case-study cards, domain rows, article cards, and résumé actions.
 - [x] Interaction-state contract for hover, focus-visible, pressed, disabled, external links, mobile navigation, and reduced motion.
 - [x] Responsive, reading-order, and evidence-hierarchy rules.
+- [x] Desktop and mobile component-state specimens with surface-specific contrast recommendations.
 - [ ] Owner review of semantic roles, token values, component density, and interaction examples.
 - [ ] Browser-state contrast verification and real-font metric review before token freeze.
 

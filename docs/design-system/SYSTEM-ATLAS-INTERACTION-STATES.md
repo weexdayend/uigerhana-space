@@ -89,3 +89,49 @@ If JavaScript or GSAP fails, the page must remain understandable and operable in
 - Native print-dialog behavior on the résumé route.
 
 This contract is proposed behavior. None of these component states has been implemented or runtime-tested in this design-only bake.
+
+
+## 9. Surface-specific contrast and boundary decisions
+
+Ratios below were calculated from the authored hex colors using the WCAG relative-luminance formula. These are base color-pair calculations, not rendered-state validation.
+
+| Foreground / boundary | Background | Ratio | Design decision |
+|---|---|---:|---|
+| Signal Copper | Atlas Ink | 7.51:1 | Accent text and focus candidate on dark |
+| Signal Copper | Deep Mineral | 6.71:1 | Accent text on secondary dark |
+| Signal Copper | Limestone | 2.08:1 | Not small text or sole control boundary on light |
+| Sea Glass | Atlas Ink | 6.87:1 | Route and secondary signal on dark |
+| Sea Glass | Deep Mineral | 6.14:1 | Outlined-control boundary candidate on dark |
+| Sea Glass | Limestone | 2.27:1 | Decorative only on light |
+| Fog | Atlas Ink | 9.42:1 | Supporting copy on dark |
+| Fog | Deep Mineral | 8.42:1 | Supporting copy on secondary dark |
+| Atlas Ink | Limestone | 15.61:1 | Primary text, control boundary, and focus candidate on light |
+| Atlas Ink | inset light `#E8E6DC` | 14.26:1 | Primary text and focus candidate |
+| Light Secondary | Limestone | 5.48:1 | Supporting text on light |
+| Contour Line | Atlas Ink | 1.93:1 | Decorative separator only |
+| Contour Line | Deep Mineral | 1.72:1 | Decorative separator only |
+| Contour Line | Raised Mineral | 1.54:1 | Decorative separator only |
+| Inset border `#C6C8BE` | Limestone | 1.48:1 | Decorative separator only |
+| Inset border `#C6C8BE` | inset light `#E8E6DC` | 1.35:1 | Decorative separator only |
+
+### Component pairing rules
+
+- Dark surface: Copper primary fill with Atlas Ink label; Sea Glass secondary-control boundary with Fog or Limestone label; Copper focus ring.
+- Light surface: Copper primary fill with Atlas Ink label and Atlas Ink one-pixel boundary; Atlas Ink secondary-control boundary and focus ring.
+- Text links use Fog/Limestone on dark and Atlas Ink on light, plus underline or another non-color cue. Do not use Copper or Sea Glass as small link text on light.
+- Status always includes readable text such as “In progress”; color is supplemental.
+- Contour Line and Inset border group content but are never the only visible boundary of an interactive control.
+- A disabled button uses native disabled semantics. An anchor without a real destination is plain text.
+
+## 10. Focus-ring proposal
+
+- Width: `2px`; offset: `0.1875rem` candidate.
+- Dark surface ring: Signal Copper.
+- Light surface ring: Atlas Ink.
+- Keep the ring unclipped and separate from decorative borders.
+- Avoid glow, pulse, or motion as the only focus indication.
+- Validate against the actual adjacent surface, including inset cards, sticky headers, and scroll-container edges.
+
+[Desktop interaction-state specimen](../styleframes/system-atlas/connected/interaction-states-desktop.svg) · [Mobile component specimen](../styleframes/system-atlas/connected/interaction-states-mobile.svg).
+
+These calculations do not constitute an axe-core or browser visual pass.
