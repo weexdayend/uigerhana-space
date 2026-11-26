@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CaseStudyArchitecture } from "@/components/CaseStudyArchitecture";
+import { CaseStudyContributionBreakdown } from "@/components/CaseStudyContributionBreakdown";
+import { CaseStudyTechnologyMap } from "@/components/CaseStudyTechnologyMap";
+import { CaseStudyVisualGallery } from "@/components/CaseStudyVisualGallery";
 import { getPublicCaseStudy, PUBLIC_CASE_STUDIES } from "@/data/case-studies";
 
 interface CaseStudyPageProps {
@@ -79,7 +83,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   return (
     <main className="min-h-screen bg-[#f2efe7] text-[#121518]">
       <header className="border-b border-[#121518]/18">
-        <div className="mx-auto flex max-w-[1040px] items-center justify-between gap-4 px-5 py-7 sm:px-10">
+        <div className="mx-auto flex max-w-[1120px] items-center justify-between gap-4 px-5 py-7 sm:px-10">
           <Link href="/work" className="text-sm text-[#585f5e] transition-colors hover:text-[#8a5a20]">
             ← All work
           </Link>
@@ -89,14 +93,19 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         </div>
       </header>
 
-      <article className="mx-auto max-w-[1040px] px-5 py-16 sm:px-10 sm:py-24">
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">{study.eyebrow}</p>
+      <article className="mx-auto max-w-[1120px] px-5 py-14 sm:px-10 sm:py-20">
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">{study.eyebrow}</p>
+          <span className="border border-[#121518]/18 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.08em] text-[#8a5a20]">
+            {STATUS_LABELS[study.projectStatus]}
+          </span>
+        </div>
         <h1 className="mt-5 max-w-[16ch] text-[clamp(2.8rem,7vw,6rem)] font-normal leading-[0.94] tracking-[-0.065em]">
           {study.title}
         </h1>
         <p className="mt-7 max-w-[64ch] text-lg leading-[1.75] text-[#121518]/75">{study.summary}</p>
 
-        <div className="mt-12 grid gap-5 border-y border-[#121518]/18 py-6 sm:grid-cols-3">
+        <div className="mt-12 grid gap-5 border-y border-[#121518]/18 py-6 sm:grid-cols-2">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#8a5a20]">Context</p>
             <p className="mt-2 text-sm">{study.context}</p>
@@ -105,28 +114,32 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#8a5a20]">Role</p>
             <p className="mt-2 text-sm leading-[1.7]">{study.role}</p>
           </div>
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#8a5a20]">Status</p>
-            <p className="mt-2 text-sm">{STATUS_LABELS[study.projectStatus]}</p>
-          </div>
         </div>
 
-        <div className="mt-5">
+        <CaseStudyContributionBreakdown contributions={study.contributions} />
+        <CaseStudyArchitecture diagram={study.architectureDiagram} />
+        <CaseStudyVisualGallery visuals={study.visualStudies} />
+
+        <div className="mt-2">
           <ContentSection {...study.challenge} />
           <ContentSection {...study.approach} />
           <ContentSection {...study.implementation} />
           <ContentSection {...study.currentState} />
         </div>
 
-        <section className="border-t border-[#121518]/18 py-8">
-          <h2 className="text-xl font-normal tracking-tight">Technology</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {study.stack.map((item) => (
-              <span key={item} className="border border-[#121518]/20 px-3 py-1.5 font-mono text-xs text-[#121518]/75">{item}</span>
-            ))}
-          </div>
-        </section>
+        <CaseStudyTechnologyMap groups={study.technologyGroups} />
       </article>
+
+      <footer className="border-t border-[#121518]/18">
+        <div className="mx-auto flex max-w-[1120px] flex-col justify-between gap-4 px-5 py-8 sm:flex-row sm:items-center sm:px-10">
+          <Link href="/work" className="text-sm text-[#585f5e] transition-colors hover:text-[#8a5a20]">
+            ← Explore more work
+          </Link>
+          <Link href="/" className="text-sm transition-colors hover:text-[#8a5a20]">
+            UI Gerhana home ↗
+          </Link>
+        </div>
+      </footer>
     </main>
   );
 }
