@@ -33,6 +33,8 @@ npm run build
 ## Routes
 
 - `/` — personal homepage
+- `/work` — selected work and generalized work domains
+- `/work/[slug]` — approved case-study details only
 - `/cv` — online résumé with browser print / Save PDF support
 
 ## Content architecture
@@ -43,6 +45,7 @@ Professional facts are maintained in typed modules under `src/data`:
 - `experience.ts` — résumé-backed roles and responsibilities
 - `skills.ts` — skills, certification, and publication profile handles
 - `projects.ts` — generalized work domains for the public homepage
+- `case-studies.ts` — evidence-led case studies with an explicit publication approval gate
 - `approach.ts` — engineering principles
 - `site.ts` — site-level identity and location metadata
 
@@ -61,4 +64,4 @@ Keep the homepage, experience section, and résumé aligned to these shared sour
 
 The visual identity retains the existing Obsidian / Stone / Amber palette, Geist typography, Pixelify Sans accents, editorial grids, pixel geometry, and Bayer dithering.
 
-See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the full implementation contract.
+See `docs/MASTER-IMPLEMENTATION-BRIEF.md` for the full implementation contract and `docs/CASE-STUDY-REVIEW.md` for the project disclosure and evidence checklist.
