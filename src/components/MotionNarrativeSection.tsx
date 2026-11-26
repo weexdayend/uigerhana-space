@@ -247,9 +247,9 @@ export function MotionNarrativeSection() {
 
         timeline.fromTo(
           elements,
-          { autoAlpha: 0, y: 28 },
+          { opacity: 0.62, y: 28 },
           {
-            autoAlpha: 1,
+            opacity: 1,
             y: 0,
             duration: 0.42,
             stagger: 0.05,
@@ -262,7 +262,7 @@ export function MotionNarrativeSection() {
           timeline.to(
             elements,
             {
-              autoAlpha: 0,
+              opacity: 0.72,
               y: -18,
               duration: 0.22,
               ease: "power1.in",
@@ -319,10 +319,10 @@ export function MotionNarrativeSection() {
       <div className="motion-story__hint" aria-hidden="true">
         <span className="motion-story__hint-desktop">Scroll to move through the story</span>
         <span className="motion-story__hint-mobile">Swipe to explore the story</span>
-        <span>04 / 04</span>
+        <span>04 chapters</span>
       </div>
 
-      <div className="motion-story__progress" aria-hidden="true">
+      <div className="motion-story__progress">
         <span
           ref={progressRef}
           role="progressbar"
