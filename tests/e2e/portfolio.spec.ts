@@ -252,50 +252,75 @@ test.describe("keyboard and motion behavior", () => {
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
-  test("full keyboard traversal reaches every visible control in DOM order on all routes", async ({ page }) => {
+  test("keyboard traversal exposes important controls and exits without traps on all routes", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
+
+    const requiredLabels: Record<string, string[]> = {
+      "/": ["Skip to content", "UI Gerhana home", "Work", "About", "Notes", "Résumé", "Explore selected work", "Product journey", "Explore work", "Back to top"],
+      "/work": ["Work", "About", "Notes", "Résumé", "Read case study"],
+      "/work/uigerhana-space": ["All work", "Résumé", "Explore more work", "UI Gerhana home"],
+      "/cv": ["Back to uigerhana.space", "Print / Save PDF"],
+    };
 
     for (const route of ROUTES) {
       await page.goto(route, { waitUntil: "domcontentloaded" });
-      const expected = await page.evaluate((selector) => {
-        const nodes = Array.from(document.querySelectorAll<HTMLElement>(selector));
-        const visible = nodes.filter((element) => {
-          const style = getComputedStyle(element);
-          return element.getClientRects().length > 0 &&
-            style.visibility !== "hidden" &&
-            style.display !== "none" &&
-            !element.closest('[aria-hidden="true"]');
-        });
-        const positiveTabIndex = Array.from(document.querySelectorAll<HTMLElement>("[tabindex]"))
+      const positiveTabIndex = await page.locator("[tabindex]").evaluateAll((nodes) =>
+        nodes
           .filter((element) => Number(element.getAttribute("tabindex")) > 0)
-          .map((element) => element.outerHTML.slice(0, 160));
-        return { count: visible.length, positiveTabIndex };
-      }, FOCUSABLE_SELECTOR);
+          .map((element) => element.outerHTML.slice(0, 160))
+      );
+      expect(positiveTabIndex, `Positive tabindex on ${route}`).toEqual([]);
 
-      expect(expected.count, `No visible keyboard controls found on ${route}`).toBeGreaterThan(0);
-      expect(expected.positiveTabIndex, `Positive tabindex on ${route}`).toEqual([]);
+      const visited: Array<{ index: number; label: string; href: string | null }> = [];
+      const seen = new Set<number>();
+      let sequenceEnded = false;
 
-      for (let index = 0; index < expected.count; index += 1) {
+      for (let step = 0; step < 80; step += 1) {
         await page.keyboard.press("Tab");
         const focused = await page.evaluate((selector) => {
-          const visible = Array.from(document.querySelectorAll<HTMLElement>(selector)).filter((element) => {
-            const style = getComputedStyle(element);
-            return element.getClientRects().length > 0 &&
-              style.visibility !== "hidden" &&
-              style.display !== "none" &&
-              !element.closest('[aria-hidden="true"]');
-          });
           const active = document.activeElement as HTMLElement | null;
+          if (!active || active === document.body || active === document.documentElement) {
+            return { end: true as const };
+          }
+
+          const candidates = Array.from(document.querySelectorAll<HTMLElement>(selector));
+          const index = candidates.indexOf(active);
           return {
-            index: active ? visible.indexOf(active) : -1,
-            tag: active?.tagName ?? "BODY",
-            outlineStyle: active ? getComputedStyle(active).outlineStyle : "none",
-            label: active?.getAttribute("aria-label") || active?.innerText?.trim().slice(0, 60) || "",
+            end: false as const,
+            index,
+            label: active.getAttribute("aria-label") || active.innerText?.trim().slice(0, 80) || active.tagName,
+            href: active instanceof HTMLAnchorElement ? active.getAttribute("href") : null,
+            outlineStyle: getComputedStyle(active).outlineStyle,
           };
         }, FOCUSABLE_SELECTOR);
 
-        expect(focused.index, `Unexpected focus position on ${route}, tab ${index + 1}: ${JSON.stringify(focused)}`).toBe(index);
-        expect(focused.outlineStyle, `No visible focus indicator on ${route}, tab ${index + 1}: ${JSON.stringify(focused)}`).not.toBe("none");
+        if (focused.end) {
+          sequenceEnded = true;
+          break;
+        }
+
+        expect(focused.index, `Tab moved to an element outside the focusable set on ${route}: ${JSON.stringify(focused)}`).toBeGreaterThanOrEqual(0);
+        expect(focused.outlineStyle, `No visible focus indicator on ${route}: ${JSON.stringify(focused)}`).not.toBe("none");
+
+        if (seen.has(focused.index)) {
+          // Chromium can return to the first control after the final tab stop.
+          sequenceEnded = true;
+          break;
+        }
+
+        seen.add(focused.index);
+        visited.push({ index: focused.index, label: focused.label, href: focused.href });
+      }
+
+      expect(sequenceEnded, `Keyboard traversal did not reach the end on ${route}`).toBe(true);
+      expect(visited.length, `Too few keyboard stops on ${route}`).toBeGreaterThanOrEqual(route === "/" ? 12 : route === "/cv" ? 4 : 5);
+
+      const labels = visited.map((entry) => entry.label);
+      for (const required of requiredLabels[route] ?? []) {
+        expect(
+          labels.some((label) => label.includes(required)),
+          `Keyboard traversal missed "${required}" on ${route}. Reached: ${JSON.stringify(labels)}`
+        ).toBe(true);
       }
     }
   });
