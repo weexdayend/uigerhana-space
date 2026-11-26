@@ -48,14 +48,21 @@ This is a source-based audit. It is not a claim that every visual or interaction
 
 At the time of the original source audit, the public site at `https://uigerhana.space` was not accessible from the audit environment and no owner browser was available. Those original responsive/accessibility notes were source observations only; they were not runtime QA.
 
-A follow-up production-build browser suite has since run in Chromium on exact commit `d7c130d87c44162c4aef82d227cfb3edbdfa7f48` ([GitHub Actions run 45882720414](https://github.com/weexdayend/uigerhana-space/actions/runs/45882720414)): 28 tests passed, including six homepage viewports, four route smoke checks at desktop/mobile, keyboard/reduced-motion flows, and eight axe scans with no violations in their declared scope. Human review of the six homepage viewport screenshots and story-stage captures identified and drove fixes for mobile story collisions and a tablet-portrait hero overlap; the final screenshots were rechecked.
+Follow-up production-build browser QA has now run against exact commit `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a` in both push and pull-request CI ([push run 45886068015](https://github.com/weexdayend/uigerhana-space/actions/runs/45886068015), [PR run 45886076242](https://github.com/weexdayend/uigerhana-space/actions/runs/45886076242)): **31 Playwright tests passed, 0 failed, 0 flaky** in both runs. The suite covers six homepage viewports, four routes at desktop/mobile, actual Chromium keyboard traversal, mobile menu keyboard behavior, reduced-motion desktop/mobile, axe scans across 12 route/viewport combinations, and a 720 × 450 CSS effective reflow simulation for desktop 200%-zoom width.
 
-Still not verified by that CI or screenshot review:
+The final CV print preview was generated from the production build, verified as exactly two A4 pages, and visually reviewed. The nearly empty third page seen in an earlier run was fixed by hiding a non-print footer; the two-page assertion now prevents recurrence.
 
-- Live deployment version and whether production serves the validated commit.
+The earlier screenshot review also identified and led to fixes for mobile story metadata/art collision, overlapping architecture nodes, and the tablet-portrait hero. The final viewport/story captures were re-opened after those changes.
+
+Still not verified by CI or this screenshot/PDF review:
+
+- Live deployment version and whether production serves the validated commit (the domain was not accessible through this inspection path).
 - Physical-device touch behavior and real Safari/WebKit or Firefox behavior.
-- Full manual keyboard traversal and screen-reader announcement quality.
-- 200% zoom/text scaling, CV print output, and representative-device performance/network behavior.
+- Manual testing with a real keyboard in the owner's browser and screen-reader announcement quality.
+- Literal browser 200% zoom, OS-level text scaling, and native print/Save as PDF dialog behavior.
+- Representative-device performance/network behavior and owner acceptance.
+
+See `docs/RUNTIME-QA-BASELINE.md` for exact scope and remaining manual sign-off.
 - Full visual polish against an approved design reference (no visual reference or pixel-diff baseline exists).
 
 See `docs/RUNTIME-QA-BASELINE.md` for the exact runtime scope, results, and open manual sign-off matrix.
@@ -402,9 +409,7 @@ This is a recommendation for concept exploration, not an approved page rewrite.
 
 ## 12. Browser validation plan
 
-**Correction (2026-11-27):** the matrix below was a plan, not completed QA. The prior audit did not run the site in a browser, inspect rendered screenshots, execute keyboard interactions, run axe, test screen readers, or test 200% zoom. See `docs/RUNTIME-QA-BASELINE.md` for the runtime harness and the still-open manual review gate.
-
-A Playwright + axe-core suite is now wired into CI, but its exact-SHA run and human screenshot review must be recorded before Phase 1 can close.
+**Correction (2026-11-27):** the matrix below began as a plan, not completed QA. The original audit did not run the site in a browser. A follow-up Chromium suite now covers the declared viewports, keyboard routes, reduced motion, axe scans, effective-width reflow, and print-PDF generation. It does not emulate literal browser zoom or substitute for screen-reader/device/manual checks. See `docs/RUNTIME-QA-BASELINE.md` for the exact-SHA result and remaining manual review gate.
 
 | Test viewport / mode | What to inspect |
 |---|---|
@@ -432,15 +437,18 @@ Record screenshots, browser/device details, and defects. Do not mark a visual re
 
 ### Still open before Phase 1 can be fully closed
 
-- [x] Execute the Playwright/axe suite on an exact proposed SHA: 28 passed on `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`.
+- [x] Execute the Playwright/axe suite on an exact proposed SHA: 31 passed, 0 failed, 0 flaky on `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a` in both push and PR CI.
 - [x] Review six homepage viewport captures and desktop/mobile story-stage screenshots; fix the visual collisions found and recheck the final screenshots.
-- [ ] Manually operate desktop pinning and tablet/mobile story scrolling on an interactive browser/device.
-- [ ] Complete full keyboard, reduced-motion, physical touch, screen-reader, and 200% zoom checks.
+- [x] Automate route-wide Chromium keyboard traversal, focus visibility, mobile-menu Escape/focus return, and reduced-motion desktop/mobile behavior.
+- [x] Run axe across 12 route/viewport combinations and the 720 × 450 CSS effective 200%-reflow viewport for all four routes.
+- [x] Generate and visually review the final two-page A4 CV print PDF; confirm the blank trailing page is removed.
+- [ ] Manually operate desktop pinning and tablet/mobile story scrolling in the owner's browser/device.
+- [ ] Complete real-device touch, screen-reader, literal browser 200% zoom/text scaling, and native print-dialog checks.
 - [ ] Verify the deployed production domain and commit parity.
 - [ ] Confirm direct public contact preference.
 - [ ] Owner review of the prioritized findings.
 
-**Phase 1 status:** source inventory and automated Chromium/axe runtime validation complete; screenshot review complete for the stated captures; manual accessibility, real-device, production, and owner validation remain open. Do not describe this as full accessibility sign-off.
+**Phase 1 status:** source inventory, automated Chromium/axe runtime checks, route-wide scripted keyboard traversal, effective-width reflow, and screenshot/PDF review are complete. Manual assistive-technology, physical-device, literal browser zoom, production, and owner validation remain open. This is not full accessibility or production sign-off.
 
 ## 14. Immediate next step
 

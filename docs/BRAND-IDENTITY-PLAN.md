@@ -56,7 +56,7 @@ Exit criteria:
 - [x] Existing content-integrity safeguards remain authoritative.
 
 ## Phase 1 — Current experience and content audit
-**Status:** Static source inventory, exact-SHA Chromium/axe runtime suite, and six-viewport/story screenshot review are complete. Manual accessibility, physical-device, production-domain, and owner validation remain open. The validated automated run is [45882720414](https://github.com/weexdayend/uigerhana-space/actions/runs/45882720414) on `d7c130d87c44162c4aef82d227cfb3edbdfa7f48`. See `docs/CURRENT-EXPERIENCE-AUDIT.md` and `docs/RUNTIME-QA-BASELINE.md`.
+**Status:** Static source inventory, exact-SHA Chromium/axe runtime suite, route-wide keyboard traversal, reduced-motion desktop/mobile, effective 200%-width reflow, and two-page A4 CV print-preview checks are complete. The final automated run passed 31 tests with no failures or flaky retries on `1026f632742bbbfcd17f8ac3c5e6b8b6eaa9687a` ([push 45886068015](https://github.com/weexdayend/uigerhana-space/actions/runs/45886068015), [PR 45886076242](https://github.com/weexdayend/uigerhana-space/actions/runs/45886076242)). Manual screen-reader, physical-device, literal browser zoom, production-domain, and owner validation remain open. See `docs/CURRENT-EXPERIENCE-AUDIT.md` and `docs/RUNTIME-QA-BASELINE.md`.
 
 
 **Goal:** understand what already exists before changing the design.
@@ -322,7 +322,7 @@ A visual effect must not compromise a higher-priority item.
 
 ## 7. Immediate next action
 
-Complete the remaining manual keyboard, reduced-motion, screen-reader, physical touch, and 200% zoom checks. Verify the production domain and commit parity, confirm the preferred public contact-channel decision, and review findings with the owner. The concept exploration brief may be used as preparation, but do not select a visual direction until the Phase 1 review is genuinely closed.
+Complete manual VoiceOver/NVDA (or TalkBack), physical touch-device, literal browser 200% zoom/text scaling, and native print-dialog checks. Verify the production domain and commit parity, confirm the preferred public contact-channel decision, and review findings with the owner. The concept exploration brief may be used as preparation, but do not select a visual direction until the Phase 1 review is genuinely closed.
 
 Then produce comparable static hero studies for the four territories using the shared copy and frame defined in `docs/CREATIVE-CONCEPT-EXPLORATION.md`. Review the whole experience—not just the hero—before approving an art direction.
 
