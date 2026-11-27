@@ -153,6 +153,13 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 **Evidence:** `tests/e2e/mobile-performance-lab.spec.ts`; [Phase 8.8 methodology and observed medians](MOBILE-PERFORMANCE-LAB.md); PR Actions [#46072238941](https://github.com/weexdayend/uigerhana-space/actions/runs/46072238941); artifact [#15234410023](https://github.com/weexdayend/uigerhana-space/actions/runs/46072238941/artifacts/15234410023). PR runtime passed 334 tests / 11 skipped / 0 failed; the new mobile lab test passed once in Chromium.
 **Boundary:** This is mobile-class Chromium emulation, not physical Android/iOS, field CWV, real carrier variability, or INP. It sets no performance budget. `P8-PERF-02` remains NOT VERIFIED until representative physical-device and field data are reviewed.
 
+### ROOT-13 — Mobile touch navigation and horizontal story gestures
+
+**Status:** INSTRUMENTED — exact-head CI and evidence pending.
+**Method:** Chromium touch-device emulation at 390 × 844 CSS px / DPR 3. The automated journey opens mobile navigation by tap, selects the Work anchor, opens the work index, and follows the approved case-study CTA. A separate CDP touch-dispatch test sends start/move/end swipe sequences through the horizontal Product Journey scroller and records scroll movement and panel visibility.
+**Evidence:** `tests/e2e/mobile-touch-journeys.spec.ts`; [Phase 8.9 methodology](MOBILE-TOUCH-JOURNEYS.md); artifacts `mobile-touch-navigation-journey.json` and `mobile-touch-product-journey-swipe.json`.
+**Boundary:** Chromium-only emulated touch, not a physical device or native OS gesture recognizer. It does not certify every device, native edge-swipe/back behavior, assistive technology, or field touch latency. Existing three-engine tests remain independently required.
+
 ## 4. Evidence ledger
 
 Use this table as the source of truth. Replace PENDING only with an exact evidence reference and result.
