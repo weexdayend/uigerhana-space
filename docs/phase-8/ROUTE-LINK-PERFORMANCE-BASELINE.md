@@ -13,7 +13,7 @@ The currently approved public route inventory is:
 - `/work/uigerhana-space` — approved public case study
 - `/cv` — online résumé
 
-Case-study pages are public only through `PUBLIC_CASE_STUDIES`. A draft case study must remain a 404 and must not appear in the sitemap. The test explicitly checks the current draft slug `/work/professional-services-automation-platform` to prevent accidental publication.
+Case-study pages are public only through `PUBLIC_CASE_STUDIES`. A draft case study must remain a 404 and must not appear in the sitemap. The test explicitly checks the current draft slugs `/work/professional-services-automation-platform`, `/work/passwordless-team-invitations`, and `/work/verifiable-backup-and-recovery-operations` to prevent accidental publication.
 
 The route test verifies, on the rendered production build:
 - HTTP 200 for every approved public route.
