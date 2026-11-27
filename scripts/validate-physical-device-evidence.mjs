@@ -390,6 +390,7 @@ export async function validateEvidencePayload(evidence, evidenceRoot, expectedCo
     schemaVersion: evidence.schemaVersion,
     sourceCommit: evidence.sourceCommit ?? null,
     expectedCommit: expectedCommit ?? null,
+    validatedAt: new Date().toISOString(),
     sessionCount: sessionSummaries.length,
     platformsSeen,
     sessions: sessionSummaries,
