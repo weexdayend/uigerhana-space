@@ -73,20 +73,12 @@ assert.ok(component.includes('target="_blank"'));
 assert.ok(component.includes('rel="noopener noreferrer"'));
 assert.ok(component.includes('aria-label="Publication profiles"'));
 
-for (const unrelatedDomain of [
-  "PROFILE",
-  "EXPERIENCE",
-  "SKILL_GROUPS",
-  "WORK_DOMAINS",
-  "PUBLIC_CASE_STUDIES",
-  "CASE_STUDIES",
-  "PROJECTS",
-]) {
-  assert.ok(
-    !component.includes(unrelatedDomain),
-    "Writing presentation must not derive from unrelated content domain: " + unrelatedDomain
-  );
-}
+const imports = component.match(/^import .+$/gm) ?? [];
+assert.deepEqual(
+  imports,
+  ['import { FEATURED_WRITING, PUBLICATION_PROFILES } from "@/data/writing"'],
+  "Writing presentation must use only its dedicated writing and publication data source"
+);
 
 const writingStyles = css.slice(css.indexOf(".atlas-writing {"));
 assert.ok(writingStyles.length > 0, "System Atlas writing styles are missing");
