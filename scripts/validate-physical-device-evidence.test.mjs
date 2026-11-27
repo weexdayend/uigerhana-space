@@ -146,6 +146,7 @@ test("accepts complete Android+iOS physical evidence while keeping release appro
   const report = await validateEvidencePayload(evidence, root, COMMIT);
 
   assert.equal(report.status, "evidence-complete");
+  assert.ok(Number.isFinite(Date.parse(report.validatedAt)), "validation report must be timestamped");
   assert.deepEqual(report.platformsSeen.sort(), ["android", "ios"]);
   assert.equal(report.attachmentCount, 14);
   assert.equal(report.releaseApproved, false);
