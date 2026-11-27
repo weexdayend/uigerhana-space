@@ -440,22 +440,35 @@ test.describe("keyboard and motion behavior", () => {
               style.visibility !== "hidden" &&
               rect.width > 0 &&
               rect.height > 0 &&
-              (rect.right > viewportWidth + 1 || element.scrollWidth > element.clientWidth + 1);
+              (rect.right > viewportWidth + 1 || rect.left < -1 || element.scrollWidth > element.clientWidth + 1);
           })
           .map((element) => {
             const rect = element.getBoundingClientRect();
+            const horizontalScroller = element.closest(".motion-story__viewport");
             return {
               tag: element.tagName.toLowerCase(),
               className: typeof element.className === "string" ? element.className : "",
-              text: (element.innerText || "").trim().replace(/\\s+/g, " ").slice(0, 90),
+              text: (element.textContent || "").trim().replace(/\\s+/g, " ").slice(0, 90),
               left: Math.round(rect.left * 10) / 10,
               right: Math.round(rect.right * 10) / 10,
               width: Math.round(rect.width * 10) / 10,
+              boxOverflow: rect.right > viewportWidth + 1 || rect.left < -1,
+              internalOverflow: element.scrollWidth > element.clientWidth + 1,
+              insideHorizontalScroller: Boolean(horizontalScroller),
               scrollWidth: element.scrollWidth,
               clientWidth: element.clientWidth,
             };
           })
-          .slice(0, 12);
+          .sort((left, right) => {
+            if (left.insideHorizontalScroller !== right.insideHorizontalScroller) {
+              return Number(left.insideHorizontalScroller) - Number(right.insideHorizontalScroller);
+            }
+            if (left.boxOverflow !== right.boxOverflow) {
+              return Number(right.boxOverflow) - Number(left.boxOverflow);
+            }
+            return right.right - left.right;
+          })
+          .slice(0, 24);
 
         return {
           viewportWidth,
