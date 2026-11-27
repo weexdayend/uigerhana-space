@@ -1158,7 +1158,15 @@ test.describe("System Atlas writing and publication", () => {
           ),
           cardCount: cards.length,
           cardOverflows: cards.some((card) => card.scrollWidth > card.clientWidth + 1),
-          textOverflows: textNodes.some((item) => item.scrollWidth > item.clientWidth + 1),
+          textOverflowTargets: textNodes
+            .filter((item) => item.scrollWidth > item.clientWidth + 1)
+            .map((item) => ({
+              tag: item.tagName.toLowerCase(),
+              className: item.className,
+              text: (item.textContent ?? "").replace(/\\s+/g, " ").trim().slice(0, 100),
+              scrollWidth: item.scrollWidth,
+              clientWidth: item.clientWidth,
+            })),
         };
       });
 
@@ -1169,7 +1177,7 @@ test.describe("System Atlas writing and publication", () => {
       expect(layout.headingInViewport).toBe(true);
       expect(layout.cardCount).toBe(3);
       expect(layout.cardOverflows).toBe(false);
-      expect(layout.textOverflows).toBe(false);
+      expect(layout.textOverflowTargets, JSON.stringify(layout.textOverflowTargets, null, 2)).toEqual([]);
     }
   });
 
