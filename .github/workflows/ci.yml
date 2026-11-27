@@ -47,6 +47,9 @@ jobs:
       - name: Professional experience source integrity
         run: node scripts/verify-experience-section.mjs
 
+      - name: Engineering approach source integrity
+        run: node scripts/verify-engineering-approach.mjs
+
       - name: Lint
         run: npm run lint
 
