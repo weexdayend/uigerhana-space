@@ -3586,28 +3586,33 @@ body {
   white-space: nowrap;
 }
 
-.atlas-approach__principles {
+.atlas-approach__principles-frame {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1px;
-  margin: 1.5rem 0 0;
-  border: 1px solid var(--contour-line);
-  background: var(--contour-line);
-  padding: 0;
-  list-style: none;
+  margin-top: 1.5rem;
 }
 
-.atlas-approach__principles::before {
+.atlas-approach__route {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: calc(var(--atlas-approach-card-y) + 1.25rem);
   right: calc(var(--atlas-approach-card-x) + 1.25rem);
   left: calc(var(--atlas-approach-card-x) + 1.25rem);
   height: 1px;
   background: var(--sea-glass);
-  content: "";
+  transform-origin: left center;
   pointer-events: none;
+}
+
+.atlas-approach__principles {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  border: 1px solid var(--contour-line);
+  background: var(--contour-line);
+  padding: 0;
+  list-style: none;
 }
 
 .atlas-approach__principle {
@@ -3629,7 +3634,7 @@ body {
 
 .atlas-approach__waypoint {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   align-items: center;
   gap: 0.875rem;
@@ -3700,7 +3705,7 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .atlas-approach__principles::before {
+  .atlas-approach__route {
     display: none;
   }
 
@@ -3723,15 +3728,15 @@ body {
     padding-left: 0;
   }
 
-  .atlas-approach__principles::before {
+  .atlas-approach__route {
     display: block;
     top: 2rem;
     right: auto;
     bottom: 2rem;
-    left: 2.5rem;
+    left: calc(var(--atlas-approach-card-x) + 1.25rem);
     width: 1px;
     height: auto;
-    background: var(--sea-glass);
+    transform-origin: center top;
   }
 
   .atlas-approach__principle {
