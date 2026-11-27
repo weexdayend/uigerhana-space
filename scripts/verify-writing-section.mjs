@@ -76,7 +76,7 @@ assert.ok(component.includes('aria-label="Publication profiles"'));
 const imports = component.match(/^import .+$/gm) ?? [];
 assert.deepEqual(
   imports,
-  ['import { FEATURED_WRITING, PUBLICATION_PROFILES } from "@/data/writing"'],
+  ['import { FEATURED_WRITING, PUBLICATION_PROFILES } from "@/data/writing";'],
   "Writing presentation must use only its dedicated writing and publication data source"
 );
 
