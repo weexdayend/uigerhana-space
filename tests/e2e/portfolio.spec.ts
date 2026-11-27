@@ -709,3 +709,112 @@ test.describe("System Atlas case-study detail", () => {
     }
   });
 });
+
+
+test.describe("System Atlas expertise and capabilities", () => {
+  test("keeps five source-backed capability groups distinct from generalized work domains", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const response = await page.goto("/", { waitUntil: "domcontentloaded" });
+    expect(response?.ok() || response?.status() === 304).toBe(true);
+
+    const section = page.locator("#expertise");
+    await expect(section).toBeVisible();
+    await expect(section.getByRole("heading", {
+      level: 2,
+      name: "Connected disciplines. One product mindset.",
+    })).toBeVisible();
+
+    const groups = section.locator(".atlas-expertise__group");
+    await expect(groups).toHaveCount(5);
+    await expect(groups.nth(0).getByRole("heading", { level: 3, name: "Product & experience" })).toBeVisible();
+    await expect(groups.nth(1).getByRole("heading", { level: 3, name: "Frontend engineering" })).toBeVisible();
+    await expect(groups.nth(2).getByRole("heading", { level: 3, name: "Backend & data architecture" })).toBeVisible();
+    await expect(groups.nth(3).getByRole("heading", { level: 3, name: "AI & data engineering" })).toBeVisible();
+    await expect(groups.nth(4).getByRole("heading", { level: 3, name: "Infrastructure & security" })).toBeVisible();
+
+    await expect(section.getByText("Professional expertise", { exact: true }).first()).toBeVisible();
+    await expect(section.getByText("Technical capability", { exact: true }).first()).toBeVisible();
+    await expect(section.getByText(/does not imply a separate published project/i)).toBeVisible();
+
+    const domains = page.locator("#work .work-domains");
+    await expect(domains).toHaveCount(1);
+    await expect(page.getByRole("heading", { name: /Generalized work domains/i })).toBeVisible();
+    await expect(page.locator("#work .work-domains [data-case-study]")).toHaveCount(0);
+
+    const layout = await section.evaluate((element) => ({
+      width: element.getBoundingClientRect().width,
+      document: document.documentElement.scrollWidth,
+      viewport: document.documentElement.clientWidth,
+    }));
+    expect(layout.width).toBeGreaterThan(0);
+    expect(layout.document).toBeLessThanOrEqual(layout.viewport + 1);
+  });
+
+  test("keeps the expertise route reflowable with 200% root text at mobile widths", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+    await page.evaluate(() => document.fonts.ready);
+
+    for (const width of [390, 360, 320]) {
+      await page.setViewportSize({ width, height: 844 });
+      const layout = await page.locator("#expertise").evaluate((section) => {
+        const heading = section.querySelector("h2");
+        const headingRect = heading?.getBoundingClientRect();
+        return {
+          viewport: document.documentElement.clientWidth,
+          document: document.documentElement.scrollWidth,
+          body: document.body.scrollWidth,
+          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          headingClipped: Boolean(heading && heading.scrollWidth > heading.clientWidth + 1),
+          headingInViewport: Boolean(
+            headingRect && headingRect.left >= -1 &&
+            headingRect.right <= document.documentElement.clientWidth + 1
+          ),
+          groupCount: section.querySelectorAll(".atlas-expertise__group").length,
+        };
+      });
+
+      expect(layout.rootFontSize).toBeGreaterThanOrEqual(32);
+      expect(layout.document).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.body).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.headingClipped).toBe(false);
+      expect(layout.headingInViewport).toBe(true);
+      expect(layout.groupCount).toBe(5);
+    }
+  });
+
+  test("supports keyboard focus through expertise content without introducing controls", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const section = page.locator("#expertise");
+    await section.scrollIntoViewIfNeeded();
+
+    const interactiveCount = await section.locator("a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])").count();
+    expect(interactiveCount).toBe(0);
+    await expect(section.getByRole("list").first()).toBeVisible();
+    await expect(section.getByRole("heading", { level: 3 })).toHaveCount(5);
+  });
+
+  test("has no axe WCAG A/AA or configured best-practice violations at desktop and mobile", async ({ page }) => {
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      await page.locator("#expertise").scrollIntoViewIfNeeded();
+      await page.evaluate(() => document.fonts.ready);
+
+      const results = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"])
+        .analyze();
+      const violations = results.violations.map((violation) => ({
+        id: violation.id,
+        impact: violation.impact,
+        nodes: violation.nodes.map((node) => node.target.join(" ")),
+      }));
+      expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
+    }
+  });
+});
