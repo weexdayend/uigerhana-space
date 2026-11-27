@@ -2,7 +2,7 @@
 
 **Status:** Active — evidence-led QA and release gate; no deployment authorization.
 **Phase 8 starting baseline:** `main` / merge commit `675eaed00b8e06163c8df8b06474fd32cf2554f7` (PR #24).
-**Current main head (2026-11-28):** `3444f4898859f524c562fc85ba0f246ec3bf1586` (PR #29 merge).
+**Current main head (2026-11-28):** `3ccf1d0c57135da49e89a7837337a193c478da84` (PR #34 merge; PRs #30–#34 merged sequentially).
 **Scope:** Whole-site quality; fix verified defects only. Do not add decorative UI or silently expand public content.
 
 ## 1. Release principles
@@ -155,17 +155,25 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-13 — Mobile touch navigation and horizontal story gestures
 
-**Status:** INSTRUMENTED — exact-head CI and evidence pending.
+**Status:** PASS — exact-head PR CI completed on PR #33 head `9cf1351605dea92f776319ebeb32b5040da865c0`; 336 passed / 15 skipped. Both mobile touch journeys passed in Chromium. Physical-device and native OS gesture acceptance remain manual.
 **Method:** Chromium touch-device emulation at 390 × 844 CSS px / DPR 3. The automated journey opens mobile navigation by tap, selects the Work anchor, opens the work index, and follows the approved case-study CTA. A separate CDP touch-dispatch test sends start/move/end swipe sequences through the horizontal Product Journey scroller and records scroll movement and panel visibility.
 **Evidence:** `tests/e2e/mobile-touch-journeys.spec.ts`; [Phase 8.9 methodology](MOBILE-TOUCH-JOURNEYS.md); artifacts `mobile-touch-navigation-journey.json` and `mobile-touch-product-journey-swipe.json`.
 **Boundary:** Chromium-only emulated touch, not a physical device or native OS gesture recognizer. It does not certify every device, native edge-swipe/back behavior, assistive technology, or field touch latency. Existing three-engine tests remain independently required.
 
 ### ROOT-14 — Physical-device evidence intake and validation
 
-**Status:** INSTRUMENTED — exact-head CI pending; no physical-device session data has been supplied.
+**Status:** PASS — validator and exact-head CI completed on PR #34 head `8d99e5d3f6ebe8288b02a6b6cde62c6bbd827252`; 8/8 validator tests passed. No physical-device session data has been supplied.
 **Method:** A versioned JSON contract requires one physical Android and one physical iOS session. Each session captures exact device/OS/browser/viewport/network metadata and pass/fail/not-run outcomes for public routes, touch navigation, Product Journey swipes, native/browser back, OS text scaling, reduced motion, and assistive technology. Every passing scenario must reference a retained evidence attachment whose SHA-256 is verified from a path contained within the evidence directory.
 **Evidence:** `scripts/validate-physical-device-evidence.mjs`; `scripts/validate-physical-device-evidence.test.mjs`; [contract and owner instructions](PHYSICAL-DEVICE-EVIDENCE.md); [session template](../../evidence/physical-device/physical-device-session.template.json); [read-only manual workflow](../../.github/workflows/physical-device-acceptance.yml).
 **Decision boundary:** The validator can report evidence-complete, incomplete, acceptance-failed, or invalid. It always sets `releaseApproved: false` and requires a separate owner go/no-go. No real device evidence is claimed yet.
+
+### ROOT-15 — Consolidated release evidence orchestration
+
+**Status:** IMPLEMENTED — PR CI pending; manual source audits and their exact-commit artifacts are still required.
+**Method:** The release evidence gate accepts the run IDs of the external-destination, production-parity, and physical-device workflows. It validates each run's workflow path, manual-dispatch event, completed state, exact head SHA, and artifact name before downloading the artifacts from those specific runs. A provenance manifest binds each JSON report to its run metadata and SHA-256.
+**Evaluation:** The evaluator validates the four public-route observations and external destination classifications, production TLS/route/deployment/served-marker evidence, and the physical-device validator result. It rejects path traversal/symlink escape, report digest mismatch, source-run SHA mismatch, unexpected workflow provenance, reused run IDs, and internally inconsistent evidence.
+**Decision boundary:** The result is `invalid`, `blocked`, or `owner-review-required`. Even complete technical evidence always emits `releaseApproved: false` and `releaseDecision: "owner-review-required"`. Human review of destination content and revision-marker provenance, native browser zoom, native OS scaling, native print, field mobile performance/INP, and explicit owner go/no-go remain mandatory.
+**Evidence:** `scripts/evaluate-release-evidence.mjs`; `scripts/evaluate-release-evidence.test.mjs`; `.github/workflows/release-evidence-gate.yml`; [Phase 8.11 operating guide](RELEASE-EVIDENCE-ORCHESTRATION.md).
 
 ## 4. Evidence ledger
 
@@ -198,8 +206,9 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 4. Phase 8.4 interaction-state and primary-target checks passed both exact-head CI triggers (327 passed, 6 skipped, 0 failed); PR #28 retains the matching artifacts.
 5. Phase 8.5 contrast remediation passed exact-head CI and merged as PR #29; Phase 8.6 added the opt-in external-destination audit; Phase 8.7 added read-only production parity/deployment evidence instrumentation.
 6. Phase 8.8 adds a mobile-class Chromium performance lab profile; its PR-triggered exact-head artifact is recorded separately from physical-device/field performance.
-7. Phase 8.9 adds Chromium touch-emulated navigation/swipe journeys; exact-head runtime evidence remains pending until both triggers complete.
-8. Phase 8.10 adds a physical-device evidence contract, SHA-verified attachment validator, self-tests, and a read-only manual audit workflow; no physical sessions are claimed until owner evidence is supplied.
+7. Phase 8.9 adds Chromium touch-emulated navigation/swipe journeys; PR #33 exact-head runtime passed 336 tests / 15 skipped, including both mobile touch journeys in Chromium.
+8. Phase 8.10 adds a physical-device evidence contract, SHA-verified attachment validator, self-tests, and a read-only manual audit workflow; PR #34 passed 8/8 validator tests, but no physical sessions are claimed until owner evidence is supplied.
+9. Phase 8.11 adds exact-commit source-run orchestration, cross-run artifact verification, and a release evidence report that remains owner-review-only.
 6. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
 7. Complete accessibility/interaction delta audit and responsive/zoom regression.
 8. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
