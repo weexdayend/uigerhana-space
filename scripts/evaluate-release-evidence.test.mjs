@@ -55,6 +55,7 @@ function makePhysicalReport() {
     status: "evidence-complete",
     sourceCommit: COMMIT,
     expectedCommit: COMMIT,
+    validatedAt: "2026-11-28T10:06:00.000Z",
     sessionCount: 2,
     platformsSeen: ["android", "ios"],
     sessions: [
@@ -90,6 +91,8 @@ async function createFixture(t, overrides = {}) {
   const metadata = {
     externalDestination: {
       runId: 101,
+      runCreatedAt: "2026-11-28T09:55:00.000Z",
+      runUpdatedAt: "2026-11-28T10:01:00.000Z",
       workflowPath: ".github/workflows/external-destination-audit.yml",
       headSha: COMMIT,
       event: "workflow_dispatch",
@@ -99,6 +102,8 @@ async function createFixture(t, overrides = {}) {
     },
     productionParity: {
       runId: 102,
+      runCreatedAt: "2026-11-28T10:02:00.000Z",
+      runUpdatedAt: "2026-11-28T10:07:00.000Z",
       workflowPath: ".github/workflows/production-parity-audit.yml",
       headSha: COMMIT,
       event: "workflow_dispatch",
@@ -108,6 +113,8 @@ async function createFixture(t, overrides = {}) {
     },
     physicalDevice: {
       runId: 103,
+      runCreatedAt: "2026-11-28T10:05:00.000Z",
+      runUpdatedAt: "2026-11-28T10:09:00.000Z",
       workflowPath: ".github/workflows/physical-device-acceptance.yml",
       headSha: COMMIT,
       event: "workflow_dispatch",
@@ -242,6 +249,36 @@ test("rejects any input that attempts to mark machine evidence as release approv
 
   assert.equal(report.status, "invalid");
   assert.ok(report.errors.some((item) => item.includes("must never approve release")));
+});
+
+test("rejects a report timestamp outside its source workflow run window", async (t) => {
+  const external = makeExternalReport();
+  external.checkedAt = "2026-11-28T09:54:00.000Z";
+  const fixture = await createFixture(t, { reports: { externalDestination: external } });
+  const report = await evaluateReleaseEvidenceManifest(fixture.manifestPath);
+
+  assert.equal(report.status, "invalid");
+  assert.ok(report.errors.some((item) => item.includes("within the source workflow run window")));
+});
+
+test("rejects a manifest generated before a source workflow completed", async (t) => {
+  const fixture = await createFixture(t, {
+    inputs: { productionParity: { runUpdatedAt: "2026-11-28T10:11:00.000Z" } },
+  });
+  const report = await evaluateReleaseEvidenceManifest(fixture.manifestPath);
+
+  assert.equal(report.status, "invalid");
+  assert.ok(report.errors.some((item) => item.includes("completed before the provenance manifest")));
+});
+
+test("rejects physical-device validation reports without a run-bound validation timestamp", async (t) => {
+  const physical = makePhysicalReport();
+  delete physical.validatedAt;
+  const fixture = await createFixture(t, { reports: { physicalDevice: physical } });
+  const report = await evaluateReleaseEvidenceManifest(fixture.manifestPath);
+
+  assert.equal(report.status, "invalid");
+  assert.ok(report.errors.some((item) => item.includes("valid validatedAt timestamp")));
 });
 
 test("rejects reuse of one workflow run as multiple independent evidence sources", async (t) => {

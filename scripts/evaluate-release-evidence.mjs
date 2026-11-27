@@ -33,6 +33,37 @@ function validTimestamp(value) {
     Number.isFinite(Date.parse(value));
 }
 
+function validateRunTimeProvenance(key, input, report, manifestGeneratedAt, errors) {
+  const label = "Manifest input " + key;
+  if (!validTimestamp(input.runCreatedAt) || !validTimestamp(input.runUpdatedAt)) {
+    errors.push(label + " must include valid workflow run created_at and updated_at timestamps.");
+    return;
+  }
+
+  const runStartedAt = Date.parse(input.runCreatedAt);
+  const runCompletedAt = Date.parse(input.runUpdatedAt);
+  if (runCompletedAt < runStartedAt) {
+    errors.push(label + " workflow run updated_at cannot precede created_at.");
+    return;
+  }
+  if (!validTimestamp(manifestGeneratedAt) ||
+      Date.parse(manifestGeneratedAt) < runCompletedAt) {
+    errors.push(label + " workflow run must be completed before the provenance manifest is generated.");
+  }
+
+  const reportTimestamp = key === "physicalDevice" ? report?.validatedAt : report?.checkedAt;
+  if (!validTimestamp(reportTimestamp)) {
+    errors.push(label + " report must include a valid " +
+      (key === "physicalDevice" ? "validatedAt" : "checkedAt") + " timestamp.");
+    return;
+  }
+
+  const timestamp = Date.parse(reportTimestamp);
+  if (timestamp < runStartedAt || timestamp > runCompletedAt) {
+    errors.push(label + " report timestamp must fall within the source workflow run window.");
+  }
+}
+
 function isWithin(parent, candidate) {
   const path = relative(parent, candidate);
   return path === "" || (!path.startsWith("..") && !isAbsolute(path));
@@ -264,6 +295,9 @@ function evaluatePhysicalDevice(report, expectedCommit, blockers, errors) {
       !sameSha(report.expectedCommit, expectedCommit)) {
     errors.push("Physical-device report sourceCommit and expectedCommit must both match the reviewed SHA.");
   }
+  if (!validTimestamp(report.validatedAt)) {
+    errors.push("Physical-device report validatedAt is missing or invalid.");
+  }
   if (report.releaseApproved !== false ||
       report.releaseDecision !== "owner-review-required") {
     errors.push("Physical-device validator must never approve release; owner review must remain required.");
@@ -312,7 +346,7 @@ function evaluatePhysicalDevice(report, expectedCommit, blockers, errors) {
   return gate;
 }
 
-async function readVerifiedInput(manifestDirectory, key, input, expectedCommit, errors, seenRunIds) {
+async function readVerifiedInput(manifestDirectory, key, input, expectedCommit, manifestGeneratedAt, errors, seenRunIds) {
   const spec = SOURCE_SPECS[key];
   if (!isRecord(input)) {
     errors.push("Manifest input " + key + " is missing.");
@@ -374,7 +408,9 @@ async function readVerifiedInput(manifestDirectory, key, input, expectedCommit, 
   }
 
   try {
-    return JSON.parse(bytes.toString("utf8"));
+    const report = JSON.parse(bytes.toString("utf8"));
+    validateRunTimeProvenance(key, input, report, manifestGeneratedAt, errors);
+    return report;
   } catch {
     errors.push("Manifest input " + key + " report is not valid JSON.");
     return null;
@@ -430,7 +466,7 @@ export async function evaluateReleaseEvidenceManifest(manifestPath) {
   if (manifestDirectory) {
     for (const key of Object.keys(SOURCE_SPECS)) {
       reports[key] = await readVerifiedInput(
-        manifestDirectory, key, inputs[key], expectedCommit, errors, seenRunIds
+        manifestDirectory, key, inputs[key], expectedCommit, manifest.generatedAt, errors, seenRunIds
       );
     }
   }
@@ -475,6 +511,10 @@ export async function evaluateReleaseEvidenceManifest(manifestPath) {
     {
       id: "field-mobile-performance",
       detail: "Review representative-device and trustworthy field CWV/INP evidence; Chromium emulation is not field evidence.",
+    },
+    {
+      id: "evidence-freshness-window",
+      detail: "The evaluator binds each report to its source workflow run but does not impose an arbitrary maximum evidence age; the owner must define and apply the acceptable freshness window before release.",
     },
     {
       id: "final-owner-go-no-go",

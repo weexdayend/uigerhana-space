@@ -143,7 +143,7 @@ jobs:
           production_path="$(relative_path "$production_file")"
           physical_path="$(relative_path "$physical_file")"
 
-          jq -n             --arg repository "$GITHUB_REPOSITORY"             --arg expectedCommit "$EXPECTED_COMMIT"             --arg generatedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)"             --arg externalPath "$external_path"             --arg externalSha "$(file_sha "$external_file")"             --arg productionPath "$production_path"             --arg productionSha "$(file_sha "$production_file")"             --arg physicalPath "$physical_path"             --arg physicalSha "$(file_sha "$physical_file")"             --slurpfile externalRun evidence-input/runs/external.json             --slurpfile productionRun evidence-input/runs/production.json             --slurpfile physicalRun evidence-input/runs/physical-device.json             '{
+          jq -n             --arg repository "$GITHUB_REPOSITORY"             --arg expectedCommit "$EXPECTED_COMMIT"             --arg generatedAt "$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)"             --arg externalPath "$external_path"             --arg externalSha "$(file_sha "$external_file")"             --arg productionPath "$production_path"             --arg productionSha "$(file_sha "$production_file")"             --arg physicalPath "$physical_path"             --arg physicalSha "$(file_sha "$physical_file")"             --slurpfile externalRun evidence-input/runs/external.json             --slurpfile productionRun evidence-input/runs/production.json             --slurpfile physicalRun evidence-input/runs/physical-device.json             '{
               schemaVersion: 1,
               repository: $repository,
               expectedCommit: $expectedCommit,
@@ -156,6 +156,8 @@ jobs:
                   event: $externalRun[0].event,
                   status: $externalRun[0].status,
                   conclusion: $externalRun[0].conclusion,
+                  runCreatedAt: $externalRun[0].created_at,
+                  runUpdatedAt: $externalRun[0].updated_at,
                   artifactName: "external-destination-audit-" + $expectedCommit,
                   reportPath: $externalPath,
                   reportSha256: $externalSha
@@ -167,6 +169,8 @@ jobs:
                   event: $productionRun[0].event,
                   status: $productionRun[0].status,
                   conclusion: $productionRun[0].conclusion,
+                  runCreatedAt: $productionRun[0].created_at,
+                  runUpdatedAt: $productionRun[0].updated_at,
                   artifactName: "production-parity-audit-" + $expectedCommit,
                   reportPath: $productionPath,
                   reportSha256: $productionSha
@@ -178,6 +182,8 @@ jobs:
                   event: $physicalRun[0].event,
                   status: $physicalRun[0].status,
                   conclusion: $physicalRun[0].conclusion,
+                  runCreatedAt: $physicalRun[0].created_at,
+                  runUpdatedAt: $physicalRun[0].updated_at,
                   artifactName: "physical-device-acceptance-" + $expectedCommit,
                   reportPath: $physicalPath,
                   reportSha256: $physicalSha

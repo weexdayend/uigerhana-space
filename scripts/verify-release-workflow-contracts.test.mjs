@@ -82,3 +82,20 @@ test("release evidence gate binds source event, completion, outcome, and exact h
   assert.ok(source.includes('.status == "completed"'));
   assert.ok(source.includes('(.conclusion == "success" or .conclusion == "failure")'));
 });
+
+
+test("release gate binds report timestamps to each completed source run window", async () => {
+  const [gate, evaluator, validator] = await Promise.all([
+    workflow("release-evidence-gate.yml"),
+    readFile(new URL("./evaluate-release-evidence.mjs", import.meta.url), "utf8"),
+    readFile(new URL("./validate-physical-device-evidence.mjs", import.meta.url), "utf8"),
+  ]);
+  for (const source of ["externalRun", "productionRun", "physicalRun"]) {
+    assert.ok(gate.includes("runCreatedAt: $" + source + "[0].created_at"));
+    assert.ok(gate.includes("runUpdatedAt: $" + source + "[0].updated_at"));
+  }
+  assert.ok(evaluator.includes("validateRunTimeProvenance"));
+  assert.ok(evaluator.includes("report timestamp must fall within the source workflow run window"));
+  assert.ok(evaluator.includes("workflow run must be completed before the provenance manifest is generated."));
+  assert.ok(validator.includes("validatedAt: new Date().toISOString()"));
+});
