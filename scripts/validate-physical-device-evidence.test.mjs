@@ -127,13 +127,17 @@ async function createSession(root, platform) {
 async function createValidPayload(root) {
   const android = await createSession(root, "android");
   const ios = await createSession(root, "ios");
+  const androidAttachments = android.attachments;
+  const iosAttachments = ios.attachments;
+  delete android.attachments;
+  delete ios.attachments;
   return {
     schemaVersion: 1,
     sourceCommit: COMMIT,
     reviewedAt: "2026-11-28T10:00:00+07:00",
     reviewerRole: "owner",
     sessions: [android, ios],
-    attachments: [...android.attachments, ...ios.attachments],
+    attachments: [...androidAttachments, ...iosAttachments],
   };
 }
 
