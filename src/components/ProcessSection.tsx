@@ -1,48 +1,119 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ENGINEERING_PRINCIPLES } from "@/data/approach";
 
 export function ProcessSection() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const routeRef = useRef<HTMLSpanElement | null>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const route = routeRef.current;
+    if (!section || !route) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const media = gsap.matchMedia();
+
+    media.add("(min-width: 60.001rem) and (prefers-reduced-motion: no-preference)", () => {
+      const context = gsap.context(() => {
+        gsap.fromTo(
+          route,
+          { scaleX: 0, transformOrigin: "left center" },
+          {
+            scaleX: 1,
+            duration: 0.9,
+            ease: "power2.inOut",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 76%",
+              once: true,
+            },
+          }
+        );
+      }, section);
+
+      return () => context.revert();
+    });
+
+    media.add("(max-width: 42rem) and (prefers-reduced-motion: no-preference)", () => {
+      const context = gsap.context(() => {
+        gsap.fromTo(
+          route,
+          { scaleY: 0, transformOrigin: "center top" },
+          {
+            scaleY: 1,
+            duration: 0.9,
+            ease: "power2.inOut",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 76%",
+              once: true,
+            },
+          }
+        );
+      }, section);
+
+      return () => context.revert();
+    });
+
+    return () => media.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="approach"
       data-band="dark"
-      className="bg-[#0b0e11] py-20 text-[#e8e4d8] sm:py-28"
+      aria-labelledby="approach-title"
+      className="atlas-approach"
     >
-      <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
-        <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
-          <div className="min-w-0 lg:col-span-6">
-            <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#f0b765]">
-              Engineering philosophy
+      <div className="atlas-approach__container">
+        <header className="atlas-approach__header">
+          <div className="atlas-approach__heading">
+            <p className="atlas-approach__eyebrow">
+              <span>05</span>
+              <span aria-hidden="true">/</span>
+              <span>Engineering approach</span>
             </p>
-            <h2 className="mt-4 max-w-[13ch] break-words text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
-              How I think about building software.
-            </h2>
+            <h2 id="approach-title">How I think about building software.</h2>
           </div>
-          <p className="max-w-[50ch] text-sm leading-[1.75] text-[#e8e4d8]/65 sm:text-base lg:col-span-6 lg:justify-self-end">
+          <p className="atlas-approach__introduction">
             Principles shaped by working with enterprise data, operational
             workflows, user interfaces, intelligent automation, and production
             systems.
           </p>
+        </header>
+
+        <div className="atlas-approach__route-heading">
+          <p>Four connected principles</p>
+          <span aria-hidden="true">01 — 04</span>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-px border border-[#e8e4d8]/18 bg-[#e8e4d8]/18 sm:grid-cols-2 lg:grid-cols-4">
-          {ENGINEERING_PRINCIPLES.map((principle) => (
-            <article
-              key={principle.id}
-              className="flex min-h-[240px] flex-col bg-[#0b0e11] p-6 sm:p-7"
-            >
-              <span className="font-pixel text-3xl text-[#f0b765]">
-                {principle.index}
-              </span>
-              <div className="mt-auto pt-12">
-                <h3 className="break-words text-xl font-normal tracking-tight">
-                  {principle.title}
-                </h3>
-                <p className="mt-3 break-words text-sm leading-[1.7] text-[#e8e4d8]/60">
-                  {principle.description}
-                </p>
-              </div>
-            </article>
-          ))}
+        <div className="atlas-approach__principles-frame">
+          <span
+            ref={routeRef}
+            className="atlas-approach__route"
+            aria-hidden="true"
+          />
+          <ol className="atlas-approach__principles" aria-label="Four engineering principles">
+            {ENGINEERING_PRINCIPLES.map((principle) => (
+              <li key={principle.id} className="atlas-approach__principle">
+                <article aria-labelledby={`approach-${principle.id}`}>
+                  <div className="atlas-approach__waypoint">
+                    <span>{principle.index}</span>
+                    <i aria-hidden="true" />
+                  </div>
+                  <div className="atlas-approach__principle-copy">
+                    <h3 id={`approach-${principle.id}`}>{principle.title}</h3>
+                    <p>{principle.description}</p>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>
