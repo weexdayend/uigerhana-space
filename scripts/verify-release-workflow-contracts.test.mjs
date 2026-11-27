@@ -29,7 +29,7 @@ test("physical-device workflow resolves evidence JSON inside its evidence root",
 test("physical-device workflow uploads a report named for the selected commit", async () => {
   const source = await workflow("physical-device-acceptance.yml");
   assert.ok(source.includes('REPORT_PATH: ${{ runner.temp }}/physical-device-acceptance-report.json'));
-  assert.ok(source.includes('name: physical-device-acceptance-${{ github.sha }}'));
+  assert.ok(source.includes('name: physical-device-acceptance-${{ github.sha }}-${{ github.run_attempt }}'));
   assert.ok(source.includes('path: ${{ runner.temp }}/physical-device-acceptance-report.json'));
 });
 
@@ -48,9 +48,9 @@ test("release evidence gate downloads artifacts from explicit source run ids", a
   ]) {
     assert.ok(source.includes("run-id: ${{ inputs." + runInput + " }}"));
   }
-  assert.ok(source.includes("name: external-destination-audit-${{ inputs.expected_commit }}"));
-  assert.ok(source.includes("name: production-parity-audit-${{ inputs.expected_commit }}"));
-  assert.ok(source.includes("name: physical-device-acceptance-${{ inputs.expected_commit }}"));
+  assert.ok(source.includes("name: external-destination-audit-${{ inputs.expected_commit }}-${{ steps.source-runs.outputs.external_attempt }}"));
+  assert.ok(source.includes("name: production-parity-audit-${{ inputs.expected_commit }}-${{ steps.source-runs.outputs.production_attempt }}"));
+  assert.ok(source.includes("name: physical-device-acceptance-${{ inputs.expected_commit }}-${{ steps.source-runs.outputs.physical_device_attempt }}"));
 });
 
 test("all audit workflows use manual dispatch and read-only permissions", async () => {
@@ -98,4 +98,25 @@ test("release gate binds report timestamps to each completed source run window",
   assert.ok(evaluator.includes("report timestamp must fall within the source workflow run window"));
   assert.ok(evaluator.includes("workflow run must be completed before the provenance manifest is generated."));
   assert.ok(validator.includes("validatedAt: new Date().toISOString()"));
+});
+
+
+test("all source audit artifacts include the immutable workflow run attempt", async () => {
+  const [external, production, physical, gate, evaluator] = await Promise.all([
+    workflow("external-destination-audit.yml"),
+    workflow("production-parity-audit.yml"),
+    workflow("physical-device-acceptance.yml"),
+    workflow("release-evidence-gate.yml"),
+    readFile(new URL("./evaluate-release-evidence.mjs", import.meta.url), "utf8"),
+  ]);
+  assert.ok(external.includes("name: external-destination-audit-${{ github.sha }}-${{ github.run_attempt }}"));
+  assert.ok(production.includes("name: production-parity-audit-${{ inputs.expected_commit }}-${{ github.run_attempt }}"));
+  assert.ok(physical.includes("name: physical-device-acceptance-${{ github.sha }}-${{ github.run_attempt }}"));
+  assert.ok(gate.includes("id: source-runs"));
+  assert.ok(gate.includes("jq -r '.run_attempt // empty'"));
+  assert.ok(gate.includes("runAttempt: $externalRun[0].run_attempt"));
+  assert.ok(gate.includes("runAttempt: $productionRun[0].run_attempt"));
+  assert.ok(gate.includes("runAttempt: $physicalRun[0].run_attempt"));
+  assert.ok(evaluator.includes("input.runAttempt < 1"));
+  assert.ok(evaluator.includes("expectedCommit + \"-\" + input.runAttempt"));
 });
