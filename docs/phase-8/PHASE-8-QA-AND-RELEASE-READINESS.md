@@ -189,7 +189,8 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 **Finding:** The release evidence manifest verified source run IDs, exact workflow paths, event, conclusion, commit SHA, artifact name, and report digest, but it did not prove that the embedded report was generated during the workflow run being referenced.  
 **Remediation:** Capture each GitHub Actions run's `created_at` and `updated_at`; require external/production `checkedAt` and physical-device `validatedAt` to fall within that run window; require the provenance manifest to be generated after all source runs have completed.  
 **Boundary:** This binds a report to its specific source run but does not impose a maximum evidence age. The owner must define the acceptable freshness window before release. Release approval remains false and owner review remains mandatory.  
-**Regression coverage:** Release evaluator fixtures reject out-of-window reports, manifests generated before source-run completion, and physical reports without validation timestamps. Workflow contract tests verify the metadata wiring and validator timestamp.
+**Regression coverage:** Release evaluator fixtures reject out-of-window reports, manifests generated before source-run completion, and physical reports without validation timestamps. Workflow contract tests verify the metadata wiring and validator timestamp.  
+**Evidence:** `docs/phase-8/EVIDENCE-TIME-PROVENANCE.md`; `scripts/evaluate-release-evidence.mjs`; `scripts/validate-physical-device-evidence.mjs`; `.github/workflows/release-evidence-gate.yml`.
 
 ## 4. Evidence ledger
 
