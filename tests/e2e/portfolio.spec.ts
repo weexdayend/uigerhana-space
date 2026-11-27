@@ -696,8 +696,11 @@ test.describe("System Atlas résumé route", () => {
 
     for (const width of [390, 360, 320]) {
       await page.setViewportSize({ width, height: 844 });
-      const metrics = await page.locator("[data-resume-document]").evaluate((surface) => {
-        const candidates = Array.from(surface.querySelectorAll<HTMLElement>([
+      const metrics = await page.evaluate(() => {
+        const candidates = Array.from(document.querySelectorAll<HTMLElement>([
+          ".resume-back-link",
+          ".resume-print-button",
+          ".resume-chrome__inner",
           ".resume-header__name",
           ".resume-header__summary",
           ".resume-role__title",
@@ -712,7 +715,7 @@ test.describe("System Atlas résumé route", () => {
           ".resume-publication-link",
           ".resume-document-footer",
         ].join(", ")));
-        const name = surface.querySelector<HTMLElement>(".resume-header__name")!;
+        const name = document.querySelector<HTMLElement>(".resume-header__name")!;
         const nameBox = name.getBoundingClientRect();
         return {
           viewport: document.documentElement.clientWidth,
