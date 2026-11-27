@@ -1,3 +1,4 @@
+import { writeFile } from "node:fs/promises";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
 interface FocusAuditCase {
@@ -214,17 +215,16 @@ test.describe("Phase 8.4 interaction accessibility states", () => {
       }
     }
 
+    const evidence = {
+      method: "Tab-key traversal to each representative primary action",
+      viewportCases: FOCUS_AUDIT_CASES.map(({ route, viewport }) => ({ route, viewport })),
+      recordCount: records.length,
+      records,
+    };
+    const body = JSON.stringify(evidence, null, 2);
+    await writeFile(testInfo.outputPath("keyboard-focus-visible-state-audit.json"), body);
     await testInfo.attach("keyboard-focus-visible-state-audit.json", {
-      body: JSON.stringify(
-        {
-          method: "Tab-key traversal to each representative primary action",
-          viewportCases: FOCUS_AUDIT_CASES.map(({ route, viewport }) => ({ route, viewport })),
-          recordCount: records.length,
-          records,
-        },
-        null,
-        2
-      ),
+      body,
       contentType: "application/json",
     });
   });
@@ -269,8 +269,10 @@ test.describe("Phase 8.4 interaction accessibility states", () => {
       records.push({ route: "/", selector, ...appearance });
     }
 
+    const body = JSON.stringify({ records }, null, 2);
+    await writeFile(testInfo.outputPath("mobile-navigation-focus-state-audit.json"), body);
     await testInfo.attach("mobile-navigation-focus-state-audit.json", {
-      body: JSON.stringify({ records }, null, 2),
+      body,
       contentType: "application/json",
     });
   });
@@ -310,17 +312,16 @@ test.describe("Phase 8.4 interaction accessibility states", () => {
       }
     }
 
+    const evidence = {
+      standard: "WCAG 2.2 SC 2.5.8 minimum target size — audited primary control/CTA hit areas only",
+      minimumCssPixels,
+      excluded: "Inline prose links and general text links are not treated as standalone controls in this target-size sample.",
+      records,
+    };
+    const body = JSON.stringify(evidence, null, 2);
+    await writeFile(testInfo.outputPath("primary-target-size-audit.json"), body);
     await testInfo.attach("primary-target-size-audit.json", {
-      body: JSON.stringify(
-        {
-          standard: "WCAG 2.2 SC 2.5.8 minimum target size — audited primary control/CTA hit areas only",
-          minimumCssPixels,
-          excluded: "Inline prose links and general text links are not treated as standalone controls in this target-size sample.",
-          records,
-        },
-        null,
-        2
-      ),
+      body,
       contentType: "application/json",
     });
   });
@@ -370,13 +371,15 @@ test.describe("Phase 8.4 interaction accessibility states", () => {
       });
     }
 
+    const body = JSON.stringify({ records }, null, 2);
+    await writeFile(testInfo.outputPath("pointer-hover-state-audit.json"), body);
     await testInfo.attach("pointer-hover-state-audit.json", {
-      body: JSON.stringify({ records }, null, 2),
+      body,
       contentType: "application/json",
     });
   });
 
-  test("mobile navigation pointer activation opens and closes the menu", async ({ page }) => {
+  test("mobile navigation pointer activation opens and closes the menu", async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
 
@@ -389,5 +392,19 @@ test.describe("Phase 8.4 interaction accessibility states", () => {
     await menuButton.click();
     await expect(menuButton).toHaveAttribute("aria-expanded", "false");
     await expect(navigation).toHaveCount(0);
+
+    const evidence = {
+      route: "/",
+      viewport: { width: 390, height: 844 },
+      activation: "pointer",
+      openState: { ariaExpanded: "true", navigationVisible: true },
+      closedState: { ariaExpanded: "false", navigationCount: 0 },
+    };
+    const body = JSON.stringify(evidence, null, 2);
+    await writeFile(testInfo.outputPath("mobile-navigation-pointer-state-audit.json"), body);
+    await testInfo.attach("mobile-navigation-pointer-state-audit.json", {
+      body,
+      contentType: "application/json",
+    });
   });
 });
