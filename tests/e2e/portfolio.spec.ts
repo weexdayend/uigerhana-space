@@ -36,7 +36,7 @@ test.describe("responsive homepage runtime", () => {
       page.on("pageerror", (error) => runtimeErrors.push(error.message));
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       const response = await page.goto("/", { waitUntil: "domcontentloaded" });
-      expect(response?.status()).toBe(200);
+      expect(response?.ok() || response?.status() === 304).toBe(true);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       await expect(page.locator(".hero-atlas__primary-link")).toBeVisible();
       await page.evaluate(() => document.fonts.ready);

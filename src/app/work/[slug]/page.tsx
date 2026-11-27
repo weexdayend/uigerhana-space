@@ -186,7 +186,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             <span aria-hidden="true">←</span>
             <span>Explore more work</span>
           </Link>
-          <Link className="atlas-detail__footer-home" href="/">
+          <Link className="atlas-detail__footer-home" href="/" aria-label="UI Gerhana home">
             UI Gerhana <span aria-hidden="true">↗</span>
           </Link>
         </div>

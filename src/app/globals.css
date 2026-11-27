@@ -2227,7 +2227,7 @@ body {
 }
 
 .atlas-detail-contributions__index {
-  color: var(--signal-copper);
+  color: var(--deep-mineral);
   font-family: var(--font-manrope), system-ui, sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
@@ -2711,7 +2711,7 @@ body {
 
 .atlas-detail-technology__index {
   margin: 0;
-  color: var(--signal-copper);
+  color: var(--deep-mineral);
   font-family: var(--font-manrope), system-ui, sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
