@@ -102,7 +102,34 @@ All 12 samples had HTTP 200 with no recorded console errors, page errors, or fai
 
 The follow-up run writes route/indexing and rendered-link JSON into `test-results`; each unpublished slug also receives its own `draft-route-publication-boundary.json` evidence attachment.
 
-## 5. Interpretation rules
+## 5. Final exact-head verification
+
+The final exact-head push and pull-request workflows both completed successfully:
+
+- Push Actions [#46061549692](https://github.com/weexdayend/uigerhana-space/actions/runs/46061549692): quality and runtime visual/accessibility QA passed.
+- PR Actions [#46061556961](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961): quality and runtime visual/accessibility QA passed.
+- Both browser runs reported **314 passed, 4 skipped, 0 failed** on head `8aa97c511fccf1e5f58e38eb21f0aa1d4a0b573a`.
+- Final artifacts: push [#15229531062](https://github.com/weexdayend/uigerhana-space/actions/runs/46061549692/artifacts/15229531062) and PR [#15228823778](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961/artifacts/15228823778).
+
+The final artifacts confirm:
+
+- Four approved routes return HTTP 200, with matching canonical metadata, sitemap entries, and robots policy.
+- Three unpublished slugs remain absent from the sitemap. Each renders the not-found UI, does not render `[data-case-study-detail]`, and exposes `noindex`. A streamed not-found response can report HTTP 200 in Chromium; Firefox and WebKit reported 404. Status is recorded, not treated as the publication boundary by itself.
+- Each browser engine inventories 36 rendered anchors: 26 internal and 10 external. Four unique internal destinations returned HTTP 200 and every rendered fragment resolved. Six unique HTTPS external destinations were inventoried.
+- External-host reachability and destination content remain unverified by CI.
+
+The final Chromium report (browser `159.0.8154.6`, 1440 × 900) contains 12 HTTP 200 samples, three navigations per route:
+
+| Route | Median TTFB | Median FCP / LCP | Median CLS | Median transfer bytes | Median resources |
+|---|---:|---:|---:|---:|---:|
+| `/` | 2.5 ms | 144 / 144 ms | 0 | 0 B | 15 |
+| `/work` | 1.7 ms | 84 / 84 ms | 0 | 23,787 B | 22 |
+| `/work/uigerhana-space` | 1.9 ms | 84 / 84 ms | 0 | 10,423 B | 19 |
+| `/cv` | 2.8 ms | 120 / 120 ms | 0 | 9,117 B | 18 |
+
+No console errors, page errors, or failed requests were recorded. Median long-task total was 0 ms on all routes. This does not mean there were no individual long tasks in every sample; consult raw samples in the artifact. Transfer-byte medians mix isolated-context first views and same-context repeats. No performance budget is declared.
+
+## 6. Interpretation rules
 
 This is a repeatable **lab baseline**, not field Core Web Vitals:
 - It does not claim field LCP/CLS or real-user performance.
@@ -113,7 +140,7 @@ This is a repeatable **lab baseline**, not field Core Web Vitals:
 
 The test should remain observational until the baseline is reviewed. A green test means the production build loaded the intended route set and produced a complete timing/resource report; it does not mean those timings already meet a performance target.
 
-## 6. Release gates still outside this slice
+## 7. Release gates still outside this slice
 
 - Live external-link reachability and third-party destination content.
 - Native browser 200% zoom.
