@@ -19,7 +19,7 @@ The release gate reads `run_attempt` from the exact source run API response, rej
 
 ## Retry behavior
 
-When a source workflow is rerun, the new attempt receives a different artifact name while the run ID remains stable. The release gate therefore cannot silently select the prior attempt's artifact by relying on a generic commit-only name. If the expected artifact is missing or has expired, the explicit download fails closed.
+When a source workflow is rerun, the new attempt receives a different artifact name while the run ID remains stable. The release gate therefore cannot silently select the prior attempt's artifact by relying on a generic commit-only name. If the expected artifact is missing or has expired, the explicit download fails closed. Phase 8.15 adds a pre-download inspection of the run's actual artifact ID, expiry state, creation timestamp, and effective `expires_at`; see [Evidence Artifact Expiry](EVIDENCE-ARTIFACT-EXPIRY.md).
 
 ## Boundaries
 

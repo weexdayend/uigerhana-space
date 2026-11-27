@@ -100,6 +100,11 @@ async function createFixture(t, overrides = {}) {
       status: "completed",
       conclusion: "success",
       artifactName: "external-destination-audit-" + COMMIT + "-1",
+      artifactId: 201,
+      artifactCreatedAt: "2026-11-28T09:58:00.000Z",
+      artifactExpiresAt: "2026-12-31T23:59:59.000Z",
+      artifactExpired: false,
+      artifactSizeBytes: 2048,
     },
     productionParity: {
       runId: 102,
@@ -112,6 +117,11 @@ async function createFixture(t, overrides = {}) {
       status: "completed",
       conclusion: "success",
       artifactName: "production-parity-audit-" + COMMIT + "-1",
+      artifactId: 202,
+      artifactCreatedAt: "2026-11-28T10:03:00.000Z",
+      artifactExpiresAt: "2026-12-31T23:59:59.000Z",
+      artifactExpired: false,
+      artifactSizeBytes: 4096,
     },
     physicalDevice: {
       runId: 103,
@@ -124,6 +134,11 @@ async function createFixture(t, overrides = {}) {
       status: "completed",
       conclusion: "success",
       artifactName: "physical-device-acceptance-" + COMMIT + "-1",
+      artifactId: 203,
+      artifactCreatedAt: "2026-11-28T10:06:30.000Z",
+      artifactExpiresAt: "2026-12-31T23:59:59.000Z",
+      artifactExpired: false,
+      artifactSizeBytes: 8192,
     },
   };
 
@@ -302,6 +317,55 @@ test("rejects missing or invalid source workflow run attempts", async (t) => {
 
   assert.equal(report.status, "invalid");
   assert.ok(report.errors.some((item) => item.includes("invalid workflow run attempt")));
+});
+
+test("rejects an artifact marked expired even when its report digest is valid", async (t) => {
+  const fixture = await createFixture(t, {
+    inputs: { externalDestination: { artifactExpired: true } },
+  });
+  const report = await evaluateReleaseEvidenceManifest(fixture.manifestPath);
+
+  assert.equal(report.status, "invalid");
+  assert.ok(report.errors.some((item) => item.includes("artifact is expired")));
+});
+
+test("rejects source artifacts whose actual expiry precedes evidence evaluation", async (t) => {
+  const fixture = await createFixture(t, {
+    inputs: { productionParity: { artifactExpiresAt: "2026-11-28T10:09:00.000Z" } },
+  });
+  const report = await evaluateReleaseEvidenceManifest(fixture.manifestPath);
+
+  assert.equal(report.status, "invalid");
+  assert.ok(report.errors.some((item) => item.includes("artifact has expired or expires before evidence evaluation")));
+});
+
+test("rejects an artifact created outside its source workflow execution window", async (t) => {
+  const fixture = await createFixture(t, {
+    inputs: { physicalDevice: { artifactCreatedAt: "2026-11-28T10:04:59.000Z" } },
+  });
+  const report = await evaluateReleaseEvidenceManifest(fixture.manifestPath);
+
+  assert.equal(report.status, "invalid");
+  assert.ok(report.errors.some((item) => item.includes("artifact creation timestamp must fall within the source workflow run window")));
+});
+
+test("rejects duplicate artifact ids across independent evidence sources", async (t) => {
+  const fixture = await createFixture(t, {
+    inputs: { physicalDevice: { artifactId: 201 } },
+  });
+  const report = await evaluateReleaseEvidenceManifest(fixture.manifestPath);
+
+  assert.equal(report.status, "invalid");
+  assert.ok(report.errors.some((item) => item.includes("Source artifact ids must be unique")));
+});
+
+test("surfaces actual artifact id and expiry metadata in the gate report", async (t) => {
+  const fixture = await createFixture(t);
+  const report = await evaluateReleaseEvidenceManifest(fixture.manifestPath);
+
+  assert.equal(report.gates.externalDestination.sourceArtifact.id, 201);
+  assert.equal(report.gates.productionParity.sourceArtifact.expiresAt, "2026-12-31T23:59:59.000Z");
+  assert.equal(report.gates.physicalDevice.sourceArtifact.expired, false);
 });
 
 test("rejects reuse of one workflow run as multiple independent evidence sources", async (t) => {

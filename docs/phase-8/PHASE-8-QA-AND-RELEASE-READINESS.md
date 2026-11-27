@@ -201,6 +201,16 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 **Regression coverage:** Evaluator tests reject invalid attempts and wrong attempt-bound artifact names. Workflow contract tests assert attempt-specific upload/download names and manifest metadata.  
 **Evidence:** [Phase 8.14 artifact identity contract](ATTEMPT-AWARE-AUDIT-ARTIFACTS.md); `.github/workflows/release-evidence-gate.yml`; and the three source audit workflows.
 
+### ROOT-19 — Evidence artifact retention and expiry
+
+**Status:** INSTRUMENTED — exact-head CI pending.  
+**Finding:** Commit + attempt-specific names prevent cross-attempt ambiguity, but the release evaluator did not independently establish that the selected artifact still existed, remained unexpired, or would remain available through evaluation.  
+**Remediation:** Query paginated artifact metadata from each exact source run; require exactly one matching name, positive artifact ID, non-empty size, `expired=false`, and a future effective `expires_at`; download only that exact artifact from its explicit run ID; retain artifact ID, creation/expiry timestamps, expiry state, and size in the manifest.  
+**Evaluation:** Reject duplicate artifact IDs, artifact creation outside the source run window, expired/unknown expiry state, and expiry at or before manifest/evaluation time.  
+**Boundary:** The actual API `expires_at` is authoritative because repository/organization retention limits may shorten requested upload retention. No minimum days-remaining or arbitrary evidence-age policy is invented; freshness policy stays owner-controlled. The machine gate never approves release.  
+**Regression coverage:** Evaluator tests cover expired artifacts, expiry before evaluation, out-of-window artifact creation, duplicate artifact IDs, and output metadata. Workflow contract tests inspect exact run-artifact lookup and fail-closed expiry handling.  
+**Evidence:** `docs/phase-8/EVIDENCE-ARTIFACT-EXPIRY.md`; `.github/workflows/release-evidence-gate.yml`; `scripts/evaluate-release-evidence.mjs`.
+
 ## 4. Evidence ledger
 
 Use this table as the source of truth. Replace PENDING only with an exact evidence reference and result.
