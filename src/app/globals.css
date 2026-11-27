@@ -133,9 +133,13 @@ body {
 }
 
 .resume-back-link:focus-visible,
-.resume-print-button:focus-visible,
-.resume-publication-link:focus-visible {
+.resume-print-button:focus-visible {
   outline: 2px solid var(--sea-glass);
+  outline-offset: 4px;
+}
+
+.resume-publication-link:focus-visible {
+  outline: 2px solid var(--atlas-ink);
   outline-offset: 4px;
 }
 
