@@ -4093,11 +4093,14 @@ body {
   }
 
   .atlas-writing__directory {
+    align-items: stretch;
     flex-direction: column;
     gap: 1rem;
   }
 
   .atlas-writing__directory nav {
+    width: 100%;
+    max-width: 100%;
     justify-content: flex-start;
   }
 }
