@@ -41,6 +41,9 @@ jobs:
       - name: System Atlas static copy and SVG integrity
         run: npm run verify:styleframes
 
+      - name: Expertise and capability source integrity
+        run: node scripts/verify-expertise-capabilities.mjs
+
       - name: Lint
         run: npm run lint
 
