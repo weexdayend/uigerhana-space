@@ -105,6 +105,18 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 **Exit:** All required engine suites pass on the exact PR head; no Safari claim unless Safari itself was tested.
 
+### ROOT-09 — Interaction-state and primary-target audit
+
+**Status:** Automated checks added in Phase 8.4; exact-head CI pending.
+
+**Method:** Tab to representative primary controls across the four public routes and assert visible focus-ring geometry; open the mobile menu and audit its link focus states; measure 24 × 24 CSS-pixel minimum hit areas for primary controls/CTAs only; verify representative pointer-hover states change their authored computed style; verify pointer activation keeps the mobile menu's `aria-expanded` and rendered navigation synchronized.
+
+**Scope boundary:** Inline prose links are not classified as standalone controls for the target-size sample. Pointer-state measurement runs once in Chromium; focus and target geometry are checked in Chromium, Firefox, and WebKit. This automation does not claim physical touch-device behavior, exact contrast ratios for every hover palette, native browser/OS focus rendering, or assistive-technology acceptance.
+
+**Evidence:** `tests/e2e/interaction-accessibility.spec.ts` and [Phase 8.4 methodology](INTERACTION-ACCESSIBILITY-STATE-AUDIT.md).
+
+**Exit:** All state checks pass on the exact PR head and JSON reports are present in the uploaded CI artifact. Owner-native AT, OS scaling, browser zoom, and physical-device checks remain manual.
+
 ## 4. Evidence ledger
 
 Use this table as the source of truth. Replace PENDING only with an exact evidence reference and result.
@@ -120,7 +132,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 | OS text scaling | Native OS setting | MANUAL / NOT RUN | Record actual platform/settings |
 | Native print dialog / Save PDF | Actual OS/browser dialog | MANUAL / NOT RUN | Headless Chromium PDF is only regression evidence |
 | ROOT-06 route/link integrity | Rendered links, fragments, canonical, sitemap, robots and unpublished-route behavior | PASS — AUTOMATED FINAL HEAD | [PR Actions #46061556961](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961); [artifact #15228823778](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961/artifacts/15228823778) | 314 passed / 4 skipped / 0 failed; unpublished route boundary checks use not-found UI, no detail, and noindex rather than assuming streamed response status must be 404 |
-| ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — RERUN SNAPSHOT | [Actions #46058407707 artifact #15227981742](https://github.com/weexdayend/uigerhana-space/actions/runs/46058407707/artifacts/15227981742) | 12 HTTP 200 samples; median FCP/LCP home 164 ms, work 96 ms, case study 124 ms, CV 68 ms; CLS 0; no runtime errors/request failures; no budgets set |
+| ROOT-09 interaction-state and target audit | Focus-visible, hover delta, mobile menu pointer state, and 24 × 24 CSS px primary targets | PENDING — Phase 8.4 | [Audit methodology](INTERACTION-ACCESSIBILITY-STATE-AUDIT.md); `tests/e2e/interaction-accessibility.spec.ts` | Focus/target checks across three engines; hover measurements Chromium-only; exact-head CI pending |\n| ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — RERUN SNAPSHOT | [Actions #46058407707 artifact #15227981742](https://github.com/weexdayend/uigerhana-space/actions/runs/46058407707/artifacts/15227981742) | 12 HTTP 200 samples; median FCP/LCP home 164 ms, work 96 ms, case study 124 ms, CV 68 ms; CLS 0; no runtime errors/request failures; no budgets set |
 | External link reachability | Manual third-party spot-check | NOT VERIFIED | Use destination inventory from PR #27 artifact |
 | Production parity | Non-invasive live verification | NOT VERIFIED | No deployment authority |
 | Final release acceptance | Owner decision | OPEN | Owner sign-off |
@@ -129,12 +141,12 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 
 1. #24 exact-main CI and #25/#26 stacked exact-head checks completed successfully.
 2. ROOT-01 automated CSS root-text reflow proxy closed by PR #26; literal zoom and native OS scaling stay manual.
-3. PR #27 route/link integrity and Chromium performance instrumentation passed exact-head CI on both push and PR triggers (314 passed, 4 skipped, 0 failed); final JSON and visual evidence is retained in artifacts #15229531062 and #15228823778.
-4. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
-5. Complete accessibility/interaction delta audit and responsive/zoom regression.
-6. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
-7. Verify production parity read-only and record external destination spot-checks.
-8. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
+3. PR #27 route/link integrity and Chromium performance instrumentation passed exact-head CI on both push and PR triggers (314 passed, 4 skipped, 0 failed); final JSON and visual evidence is retained in artifacts #15229531062 and #15228823778.\n4. Phase 8.4 adds runtime evidence for focus-visible, hover-state deltas, mobile menu pointer state, and primary target geometry.
+5. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
+6. Complete accessibility/interaction delta audit and responsive/zoom regression.
+7. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
+8. Verify production parity read-only and record external destination spot-checks.
+9. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
 
 ## 6. Release decision
 
