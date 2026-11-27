@@ -2096,6 +2096,7 @@ body {
 .atlas-work__action,
 .atlas-case-study__action {
   display: inline-flex;
+  min-height: 2rem;
   max-width: 100%;
   align-items: center;
   gap: 0.5rem;
