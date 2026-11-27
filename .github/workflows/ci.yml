@@ -50,6 +50,9 @@ jobs:
       - name: Engineering approach source integrity
         run: node scripts/verify-engineering-approach.mjs
 
+      - name: Writing and publication source integrity
+        run: npm run verify:writing
+
       - name: Lint
         run: npm run lint
 

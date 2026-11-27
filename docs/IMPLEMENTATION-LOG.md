@@ -670,3 +670,35 @@ No application code, website UI, public copy, contact details, project evidence,
 - GitHub Actions must validate typecheck, content/styleframe gates, expertise/experience/approach integrity, lint, production build, and Chromium/Firefox/WebKit runtime tests on this PR's exact head.
 - The editing environment does not expose an installed `node_modules/next/dist/docs` tree or local browser runtime; no local Next.js guide inspection, typecheck, browser screenshot, or assistive-technology run is claimed.
 - No merge or deployment is included.
+
+
+## 2026-11-28 — Phase 7.6 System Atlas Writing & Publication
+
+**Branch:** phase-7/writing-publication-atlas  
+**Base:** phase-7/engineering-approach-atlas at 5cda24982011cecbcb574dbb01809ce8645e8a08
+
+### Source and content audit
+
+- Kept src/data/writing.ts as the only source for featured public writing and publication-profile destinations.
+- Preserved exactly three existing Medium articles, including their IDs, titles, summaries, URLs, categories, publication dates, labels, and reading times.
+- Preserved the existing DEV Community and Medium profile handles and destinations.
+- Kept article records separate from GitHub identity links, résumé history, engineering principles, work domains, and public case-study records.
+- No article, byline, publication date, topic claim, external destination, audience metric, or publication frequency was invented or added.
+
+### Delivered
+
+- Rebuilt the existing homepage Writing section as a System Atlas editorial archive without introducing a new route or duplicating publication data.
+- Implemented the connected styleframe hierarchy: 06 / Writing & notes, the existing editorial heading and introduction, three source-driven article cards, and the two publication-profile links.
+- Applied the Limestone / inset-light surfaces, Deep Mineral / Atlas Ink text roles, Manrope display typography, Plus Jakarta Sans body copy, and monospace publication metadata.
+- Added a responsive three-column desktop, two-column tablet, and single-column mobile composition with root-relative card insets and 200% root-text reflow coverage.
+- Kept all external article and profile links explicit, keyboard reachable, and safe for new-tab navigation.
+- Added a dedicated writing source-integrity gate and CI step, plus Playwright checks for source order, publication metadata, link destinations, responsive layout, 200% text reflow, reduced motion, keyboard access, and axe WCAG A/AA plus configured best-practice checks.
+
+### Validation boundary
+
+- The writing source and component structure were reviewed against the accepted connected styleframes and provenance notes.
+- GitHub Actions must validate the exact PR head through typecheck, publication/styleframe and feature-integrity gates, lint, production build, and Chromium/Firefox/WebKit runtime tests.
+- Local Next.js dependency-guide inspection and local browser execution are not available in this editing environment; no local typecheck, lint, build, screenshot, or assistive-technology result is claimed.
+- Browser visual, layout, and axe results remain pending until the exact proposed commit finishes CI.
+- The public contact-channel decision and résumé route remain separate follow-on slices.
+- No merge or deployment is included.
