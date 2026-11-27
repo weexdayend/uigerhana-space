@@ -1,7 +1,8 @@
 # Phase 8 — Quality Assurance & Release Readiness
 
 **Status:** Active — evidence-led QA and release gate; no deployment authorization.
-**Baseline:** `main` / merge commit `675eaed00b8e06163c8df8b06474fd32cf2554f7` (PR #24).
+**Phase 8 starting baseline:** `main` / merge commit `675eaed00b8e06163c8df8b06474fd32cf2554f7` (PR #24).
+**Current main head (2026-11-28):** `3444f4898859f524c562fc85ba0f246ec3bf1586` (PR #29 merge).
 **Scope:** Whole-site quality; fix verified defects only. Do not add decorative UI or silently expand public content.
 
 ## 1. Release principles
@@ -120,13 +121,21 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-10 — Focus-indicator and hover-text contrast
 
-**Status:** PENDING — automated contrast regression added in Phase 8.5; exact-head CI not yet complete.
+**Status:** PASS — PR #29 merged; exact-head push and PR quality/runtime checks passed.
 **Finding:** The résumé publication link inherited the same `--sea-glass` focus ring as controls on the dark résumé chrome. Against the résumé document paper surface `#f8f6f0`, that color measures approximately 2.40:1, below the 3:1 non-text contrast threshold used for focus indicators.
 **Remediation:** Keep the sea-glass ring on the dark résumé back/print controls; use `--atlas-ink` for the publication link on the light paper surface. No type, layout, or interaction behavior is changed.
 **Method:** Tab to the three résumé controls, resolve their solid adjacent surface, and measure focus-indicator contrast; pointer-hover representative résumé controls and the contact action, resolving the composited solid background before measuring normal-text contrast. Non-solid image/gradient backdrops are outside this automated method and must not be represented as measured passes.
 **Standards boundary:** The 3:1 adjacent-surface check is scoped to WCAG 2.2 SC 1.4.11 Non-text Contrast (Level AA); it is not a SC 2.4.13 Focus Appearance (Level AAA) certification because the test does not calculate the complete focus perimeter area or compare the same pixels between focused and unfocused states. Hover normal-text checks use SC 1.4.3.
-**Evidence:** `tests/e2e/interaction-contrast.spec.ts` and [Phase 8.5 contrast methodology](INTERACTION-STATE-CONTRAST-AUDIT.md). Exact-head CI evidence will be added after the branch checks complete.
+**Evidence:** PR #29 head `acc25faae7575b19293cae5fffef96aecaa64215`; push Actions [#46068569732](https://github.com/weexdayend/uigerhana-space/actions/runs/46068569732), PR Actions [#46068576358](https://github.com/weexdayend/uigerhana-space/actions/runs/46068576358), and browser evidence artifact [#15231449634](https://github.com/weexdayend/uigerhana-space/actions/runs/46068576358/artifacts/15231449634). Both quality and runtime jobs passed on the exact head; PR #29 merged as `3444f4898859f524c562fc85ba0f246ec3bf1586`.
 **Exit:** Focus indicators reach at least 3:1, sampled normal hover text reaches at least 4.5:1, and machine-readable JSON is retained in the matching artifact. Full-site contrast certification, gradients/images, every disabled/pressed state, and native platform rendering remain outside this slice.
+
+### ROOT-11 — External destination reachability
+
+**Status:** INSTRUMENTED — optional manual-dispatch audit; no destination result claimed until it is run and reviewed.
+**Method:** The dedicated workflow builds the selected repository commit, scans rendered anchors on all four approved public routes, deduplicates external HTTPS destinations, and issues bounded GET requests (15-second timeout, up to eight redirects, three concurrent requests). JSON records the source route/label, status, final URL, content type, duration, and classification.
+**Classification:** 2xx/3xx = reachable; 404/410 = unavailable at probe time; 401/403/405/407/429 = restricted; 408/425/5xx = transient; request/TLS/time-out exceptions = network-error; other statuses = inconclusive.
+**Evidence:** `tests/e2e/release-readiness.spec.ts` (opt-in test) and `.github/workflows/external-destination-audit.yml`. Run manually with `workflow_dispatch` against the exact reviewed branch/commit and retain `external-destination-reachability.json`.
+**Boundary:** This audits links from the reviewed local production build, not the live site. A reachable HTTP response does not establish content correctness, currentness, safety, privacy approval, or owner acceptance. Restricted and transient responses are not counted as broken links; the workflow is observational and does not gate ordinary CI.
 
 ## 4. Evidence ledger
 
@@ -144,7 +153,8 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 | Native print dialog / Save PDF | Actual OS/browser dialog | MANUAL / NOT RUN | Headless Chromium PDF is only regression evidence |
 | ROOT-06 route/link integrity | Rendered links, fragments, canonical, sitemap, robots and unpublished-route behavior | PASS — AUTOMATED FINAL HEAD | [PR Actions #46061556961](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961); [artifact #15228823778](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961/artifacts/15228823778) | 314 passed / 4 skipped / 0 failed; unpublished route boundary checks use not-found UI, no detail, and noindex rather than assuming streamed response status must be 404 |
 | ROOT-09 interaction-state and target audit | Focus-visible, hover delta, mobile menu pointer state, and 24 × 24 CSS px primary targets | PASS — AUTOMATED EXACT HEAD | PR Actions #46066904014; push Actions #46066883235; artifacts #15230689950 / #15230759858 | 327 passed / 6 skipped / 0 failed on both runtime jobs; native AT and physical-device acceptance remain manual |
-| ROOT-10 interaction-state contrast | Focus indicator 3:1 and sampled hover text 4.5:1 on solid surfaces | PENDING — PHASE 8.5 | `tests/e2e/interaction-contrast.spec.ts`; `docs/phase-8/INTERACTION-STATE-CONTRAST-AUDIT.md` | Awaiting exact-head CI; full-site contrast and image/gradient surfaces are not claimed |
+| ROOT-10 interaction-state contrast | Focus indicator 3:1 and sampled hover text 4.5:1 on solid surfaces | PASS — EXACT HEAD | PR #29 head `acc25faae7575b19293cae5fffef96aecaa64215`; push Actions #46068569732; PR Actions #46068576358; artifact #15231449634 | Both exact-head quality/runtime checks passed; scope remains sampled controls/solid surfaces only |
+| ROOT-11 external destination reachability | Bounded GET probes from reviewed local production build | READY — NOT RUN | `.github/workflows/external-destination-audit.yml`; `tests/e2e/release-readiness.spec.ts` | Manual dispatch required; results classify restricted/transient separately and do not gate CI |
 | ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — FINAL EXACT HEAD | [PR Actions #46061556961](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961); artifact #15228823778 | 12 HTTP 200 samples / 4 routes; median FCP/LCP home 144 ms, work 84 ms, case study 84 ms, CV 120 ms; median CLS 0; no console/page/request errors; individual long tasks retained; no budgets set |
 | External link reachability | Manual third-party spot-check | NOT VERIFIED | Use destination inventory from PR #27 artifact |
 | Production parity | Non-invasive live verification | NOT VERIFIED | No deployment authority |
@@ -156,7 +166,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 2. ROOT-01 automated CSS root-text reflow proxy closed by PR #26; literal zoom and native OS scaling stay manual.
 3. PR #27 route/link integrity and Chromium performance instrumentation passed exact-head CI on both push and PR triggers (314 passed, 4 skipped, 0 failed); final JSON and visual evidence is retained in artifacts #15229531062 and #15228823778.
 4. Phase 8.4 interaction-state and primary-target checks passed both exact-head CI triggers (327 passed, 6 skipped, 0 failed); PR #28 retains the matching artifacts.
-5. Phase 8.5 adds focus-indicator and hover-text contrast regression, including the résumé publication focus-ring remediation.
+5. Phase 8.5 focus-indicator and sampled hover-text contrast remediation passed exact-head push/PR CI and merged as PR #29. Phase 8.6 adds an opt-in, non-gating external destination reachability audit; run and review its artifact before changing the external-link evidence state.
 6. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
 7. Complete accessibility/interaction delta audit and responsive/zoom regression.
 8. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
@@ -171,7 +181,7 @@ The automated 200% CSS root-text reflow proxy is now green on PR #26, but the fo
 - Literal browser zoom and native OS text scaling have not been accepted on a real browser/OS.
 - Native browser print dialog and OS Save as PDF have not been accepted.
 - Native zoom / OS text scale / print-dialog acceptance, live external-link reachability, production parity, field/mobile/INP performance, and explicit owner go/no-go remain open.
-- External destination reachability is not covered by the local-origin link test.
+- External destination reachability is now instrumented as an opt-in manual-dispatch audit, but remains NOT VERIFIED until the workflow runs and its JSON evidence is reviewed. The local-origin link test alone does not probe third-party hosts.
 - Production commit parity is not verified.
 - Field/mobile performance and evidence-based performance budgets are not established.
 - Final owner release acceptance remains open.
