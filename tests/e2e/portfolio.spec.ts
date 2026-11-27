@@ -571,123 +571,134 @@ test.describe("keyboard and motion behavior", () => {
   });
 
   test("captures element-level 200% root-text reflow diagnostics across public routes", async ({ page }, testInfo) => {
-    await page.setViewportSize({ width: 390, height: 844 });
+    const widths = [390, 360, 320] as const;
     const routeReports: Array<Record<string, unknown>> = [];
 
     for (const route of ROUTES) {
       await page.goto(route, { waitUntil: "domcontentloaded" });
       await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
       await page.evaluate(() => document.fonts.ready);
-      await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
 
-      const report = await page.evaluate(() => {
-        const viewportWidth = document.documentElement.clientWidth;
-
-        const snapshot = (element: HTMLElement) => {
-          const style = getComputedStyle(element);
-          const rect = element.getBoundingClientRect();
-          return {
-            tag: element.tagName.toLowerCase(),
-            id: element.id || null,
-            className: typeof element.className === "string" ? element.className : "",
-            text: (element.innerText || element.textContent || "").trim().replace(/\\s+/g, " ").slice(0, 110),
-            rect: {
-              left: Math.round(rect.left * 10) / 10,
-              right: Math.round(rect.right * 10) / 10,
-              top: Math.round(rect.top * 10) / 10,
-              width: Math.round(rect.width * 10) / 10,
-              height: Math.round(rect.height * 10) / 10,
-            },
-            dimensions: {
-              clientWidth: element.clientWidth,
-              scrollWidth: element.scrollWidth,
-              clientHeight: element.clientHeight,
-              scrollHeight: element.scrollHeight,
-            },
-            css: {
-              display: style.display,
-              position: style.position,
-              boxSizing: style.boxSizing,
-              width: style.width,
-              minWidth: style.minWidth,
-              maxWidth: style.maxWidth,
-              gridTemplateColumns: style.gridTemplateColumns,
-              flex: style.flex,
-              flexWrap: style.flexWrap,
-              fontSize: style.fontSize,
-              lineHeight: style.lineHeight,
-              letterSpacing: style.letterSpacing,
-              whiteSpace: style.whiteSpace,
-              overflowWrap: style.overflowWrap,
-              wordBreak: style.wordBreak,
-              textWrap: style.textWrap,
-              overflowX: style.overflowX,
-              paddingInline: style.paddingInline,
-              marginInline: style.marginInline,
-            },
-          };
-        };
-
-        const isVisible = (element: HTMLElement) => {
-          const style = getComputedStyle(element);
-          const rect = element.getBoundingClientRect();
-          return style.display !== "none" &&
-            style.visibility !== "hidden" &&
-            rect.width > 2 &&
-            rect.height > 2 &&
-            !element.classList.contains("sr-only");
-        };
-
-        const headings = Array.from(
-          document.querySelectorAll<HTMLElement>("main h1, main h2, main h3")
-        ).filter(isVisible).map((element) => ({
-          ...snapshot(element),
-          clipped: element.scrollWidth > element.clientWidth + 1,
-          ancestors: [
-            element.parentElement,
-            element.parentElement?.parentElement,
-            element.parentElement?.parentElement?.parentElement,
-          ].filter((node): node is HTMLElement => Boolean(node)).map(snapshot),
+      for (const viewportWidth of widths) {
+        await page.setViewportSize({ width: viewportWidth, height: 844 });
+        await page.evaluate(() => new Promise<void>((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
         }));
+        await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
 
-        const overflowCandidates = Array.from(document.body.querySelectorAll<HTMLElement>("*"))
-          .filter((element) => {
-            if (!isVisible(element)) return false;
+        const report = await page.evaluate(() => {
+          const viewportWidth = document.documentElement.clientWidth;
+
+          const snapshot = (element: HTMLElement) => {
+            const style = getComputedStyle(element);
             const rect = element.getBoundingClientRect();
-            return rect.left < -1 ||
-              rect.right > viewportWidth + 1 ||
-              element.scrollWidth > element.clientWidth + 1;
-          })
-          .map((element) => ({
+            return {
+              tag: element.tagName.toLowerCase(),
+              id: element.id || null,
+              className: typeof element.className === "string" ? element.className : "",
+              text: (element.innerText || element.textContent || "").trim().replace(/\\s+/g, " ").slice(0, 110),
+              rect: {
+                left: Math.round(rect.left * 10) / 10,
+                right: Math.round(rect.right * 10) / 10,
+                top: Math.round(rect.top * 10) / 10,
+                width: Math.round(rect.width * 10) / 10,
+                height: Math.round(rect.height * 10) / 10,
+              },
+              dimensions: {
+                clientWidth: element.clientWidth,
+                scrollWidth: element.scrollWidth,
+                clientHeight: element.clientHeight,
+                scrollHeight: element.scrollHeight,
+              },
+              css: {
+                display: style.display,
+                position: style.position,
+                boxSizing: style.boxSizing,
+                width: style.width,
+                minWidth: style.minWidth,
+                maxWidth: style.maxWidth,
+                gridTemplateColumns: style.gridTemplateColumns,
+                flex: style.flex,
+                flexWrap: style.flexWrap,
+                fontSize: style.fontSize,
+                lineHeight: style.lineHeight,
+                letterSpacing: style.letterSpacing,
+                whiteSpace: style.whiteSpace,
+                overflowWrap: style.overflowWrap,
+                wordBreak: style.wordBreak,
+                textWrap: style.textWrap,
+                overflowX: style.overflowX,
+                paddingInline: style.paddingInline,
+                marginInline: style.marginInline,
+              },
+            };
+          };
+
+          const isVisible = (element: HTMLElement) => {
+            const style = getComputedStyle(element);
+            const rect = element.getBoundingClientRect();
+            return style.display !== "none" &&
+              style.visibility !== "hidden" &&
+              rect.width > 2 &&
+              rect.height > 2 &&
+              !element.classList.contains("sr-only");
+          };
+
+          const headings = Array.from(
+            document.querySelectorAll<HTMLElement>("main h1, main h2, main h3")
+          ).filter(isVisible).map((element) => ({
             ...snapshot(element),
-            outsideViewport: (() => {
-              const rect = element.getBoundingClientRect();
-              return rect.left < -1 || rect.right > viewportWidth + 1;
-            })(),
+            clipped: element.scrollWidth > element.clientWidth + 1,
             ancestors: [
               element.parentElement,
               element.parentElement?.parentElement,
               element.parentElement?.parentElement?.parentElement,
             ].filter((node): node is HTMLElement => Boolean(node)).map(snapshot),
-          }))
-          .sort((left, right) => Number(right.outsideViewport) - Number(left.outsideViewport))
-          .slice(0, 80);
+          }));
 
-        return {
-          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
-          viewportWidth,
-          documentWidth: document.documentElement.scrollWidth,
-          bodyWidth: document.body.scrollWidth,
-          headings,
-          overflowCandidates,
-        };
-      });
+          const overflowCandidates = Array.from(document.body.querySelectorAll<HTMLElement>("*"))
+            .filter((element) => {
+              if (!isVisible(element)) return false;
+              const rect = element.getBoundingClientRect();
+              return rect.left < -1 ||
+                rect.right > viewportWidth + 1 ||
+                element.scrollWidth > element.clientWidth + 1;
+            })
+            .map((element) => ({
+              ...snapshot(element),
+              outsideViewport: (() => {
+                const rect = element.getBoundingClientRect();
+                return rect.left < -1 || rect.right > viewportWidth + 1;
+              })(),
+              ancestors: [
+                element.parentElement,
+                element.parentElement?.parentElement,
+                element.parentElement?.parentElement?.parentElement,
+              ].filter((node): node is HTMLElement => Boolean(node)).map(snapshot),
+            }))
+            .sort((left, right) => Number(right.outsideViewport) - Number(left.outsideViewport))
+            .slice(0, 80);
 
-      routeReports.push({ route, ...report });
-      await page.screenshot({
-        path: testInfo.outputPath(`root-text-200-${route === "/" ? "home" : route.slice(1).replaceAll("/", "-")}.png`),
-        animations: "disabled",
-      });
+          return {
+            rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+            viewportWidth,
+            documentWidth: document.documentElement.scrollWidth,
+            bodyWidth: document.body.scrollWidth,
+            headings,
+            overflowCandidates,
+          };
+        });
+
+        routeReports.push({ route, ...report });
+
+        if (viewportWidth === 390 || viewportWidth === 320) {
+          const routeName = route === "/" ? "home" : route.slice(1).replaceAll("/", "-");
+          await page.screenshot({
+            path: testInfo.outputPath(`root-text-200-${routeName}-${viewportWidth}.png`),
+            animations: "disabled",
+          });
+        }
+      }
     }
 
     const evidence = JSON.stringify(routeReports, null, 2);
@@ -697,7 +708,7 @@ test.describe("keyboard and motion behavior", () => {
       contentType: "application/json",
     });
 
-    expect(routeReports).toHaveLength(ROUTES.length);
+    expect(routeReports).toHaveLength(ROUTES.length * widths.length);
     expect(routeReports.every((entry) => entry.rootFontSize === 32)).toBe(true);
   });
 
