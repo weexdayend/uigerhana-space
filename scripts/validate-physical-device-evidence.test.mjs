@@ -7,8 +7,6 @@ import test from "node:test";
 import { validateEvidencePayload, REQUIRED_SCENARIOS, PUBLIC_ROUTES } from "./validate-physical-device-evidence.mjs";
 
 const COMMIT = "a".repeat(40);
-const tempRoots = [];
-
 async function createEvidenceRoot() {
   const root = await mkdtemp(join(tmpdir(), "uigerhana-device-evidence-"));
   tempRoots.push(root);
