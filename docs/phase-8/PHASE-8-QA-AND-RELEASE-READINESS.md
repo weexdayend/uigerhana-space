@@ -144,7 +144,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 | ROOT-06 route/link integrity | Rendered links, fragments, canonical, sitemap, robots and unpublished-route behavior | PASS — AUTOMATED FINAL HEAD | [PR Actions #46061556961](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961); [artifact #15228823778](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961/artifacts/15228823778) | 314 passed / 4 skipped / 0 failed; unpublished route boundary checks use not-found UI, no detail, and noindex rather than assuming streamed response status must be 404 |
 | ROOT-09 interaction-state and target audit | Focus-visible, hover delta, mobile menu pointer state, and 24 × 24 CSS px primary targets | PASS — AUTOMATED EXACT HEAD | PR Actions #46066904014; push Actions #46066883235; artifacts #15230689950 / #15230759858 | 327 passed / 6 skipped / 0 failed on both runtime jobs; native AT and physical-device acceptance remain manual |
 | ROOT-10 interaction-state contrast | Focus indicator 3:1 and sampled hover text 4.5:1 on solid surfaces | PENDING — PHASE 8.5 | `tests/e2e/interaction-contrast.spec.ts`; `docs/phase-8/INTERACTION-STATE-CONTRAST-AUDIT.md` | Awaiting exact-head CI; full-site contrast and image/gradient surfaces are not claimed |
-| ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — RERUN SNAPSHOT | [Actions #46058407707 artifact #15227981742](https://github.com/weexdayend/uigerhana-space/actions/runs/46058407707/artifacts/15227981742) | 12 HTTP 200 samples; median FCP/LCP home 164 ms, work 96 ms, case study 124 ms, CV 68 ms; CLS 0; no runtime errors/request failures; no budgets set |
+| ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — FINAL EXACT HEAD | [PR Actions #46061556961](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961); artifact #15228823778 | 12 HTTP 200 samples / 4 routes; median FCP/LCP home 144 ms, work 84 ms, case study 84 ms, CV 120 ms; median CLS 0; no console/page/request errors; individual long tasks retained; no budgets set |
 | External link reachability | Manual third-party spot-check | NOT VERIFIED | Use destination inventory from PR #27 artifact |
 | Production parity | Non-invasive live verification | NOT VERIFIED | No deployment authority |
 | Final release acceptance | Owner decision | OPEN | Owner sign-off |
@@ -156,11 +156,11 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 3. PR #27 route/link integrity and Chromium performance instrumentation passed exact-head CI on both push and PR triggers (314 passed, 4 skipped, 0 failed); final JSON and visual evidence is retained in artifacts #15229531062 and #15228823778.
 4. Phase 8.4 interaction-state and primary-target checks passed both exact-head CI triggers (327 passed, 6 skipped, 0 failed); PR #28 retains the matching artifacts.
 5. Phase 8.5 adds focus-indicator and hover-text contrast regression, including the résumé publication focus-ring remediation.
-5. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
-6. Complete accessibility/interaction delta audit and responsive/zoom regression.
-7. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
-8. Verify production parity read-only and record external destination spot-checks.
-9. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
+6. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
+7. Complete accessibility/interaction delta audit and responsive/zoom regression.
+8. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
+9. Verify production parity read-only and record external destination spot-checks.
+10. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
 
 ## 6. Release decision
 
