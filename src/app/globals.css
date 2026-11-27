@@ -2941,3 +2941,284 @@ body {
     transition: none;
   }
 }
+
+
+/* System Atlas — Expertise & capabilities */
+.atlas-expertise {
+  --atlas-expertise-space: clamp(3.5rem, 7vw, 6.5rem);
+  overflow: clip;
+  background: var(--atlas-ink);
+  color: var(--limestone);
+  padding-block: var(--atlas-expertise-space);
+}
+
+.atlas-expertise__container {
+  width: min(100%, 86rem);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.atlas-expertise__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 0.9fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 6rem);
+}
+
+.atlas-expertise__heading,
+.atlas-expertise__group-content {
+  min-width: 0;
+}
+
+.atlas-expertise__eyebrow,
+.atlas-expertise__kind,
+.atlas-expertise__legend,
+.atlas-expertise__disclosure {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+.atlas-expertise__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  color: var(--sea-glass);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.atlas-expertise__eyebrow span:first-child {
+  color: var(--signal-copper);
+}
+
+.atlas-expertise__heading h2 {
+  max-width: 13ch;
+  margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+  color: var(--limestone);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: clamp(2.5rem, 5.6vw, 5rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.06em;
+  overflow-wrap: anywhere;
+}
+
+.atlas-expertise__heading h2 span {
+  color: var(--sea-glass);
+}
+
+.atlas-expertise__introduction {
+  max-width: 47ch;
+  margin: 0 0 0.375rem;
+  color: var(--fog);
+  font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+.atlas-expertise__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  margin-top: clamp(3rem, 6vw, 5rem);
+  border-bottom: 1px solid var(--contour-line);
+  padding-bottom: 1rem;
+  color: var(--fog);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.atlas-expertise__legend span,
+.atlas-expertise__kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.atlas-expertise__legend i,
+.atlas-expertise__kind span {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 auto;
+  background: var(--sea-glass);
+}
+
+.atlas-expertise__legend i[data-kind="expertise"],
+.atlas-expertise__kind span[data-kind="expertise"] {
+  background: var(--signal-copper);
+}
+
+.atlas-expertise__groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  border-bottom: 1px solid var(--contour-line);
+  padding: 0;
+  list-style: none;
+}
+
+.atlas-expertise__group {
+  min-width: 0;
+  border-bottom: 1px solid var(--contour-line);
+}
+
+.atlas-expertise__group:nth-child(odd) {
+  border-right: 1px solid var(--contour-line);
+}
+
+.atlas-expertise__group:nth-child(even) {
+  padding-left: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.atlas-expertise__group article {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding-block: clamp(1.75rem, 3.4vw, 3rem);
+  padding-right: clamp(1rem, 3vw, 2.5rem);
+}
+
+.atlas-expertise__group:nth-child(even) article {
+  padding-right: 0;
+}
+
+.atlas-expertise__group-index {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  color: var(--sage-graphite);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.atlas-expertise__index-line {
+  width: 1px;
+  min-height: 2rem;
+  flex: 1 1 auto;
+  margin-block: 0.875rem;
+  background: linear-gradient(to bottom, var(--contour-line), transparent);
+}
+
+.atlas-expertise__index-node {
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 1px solid var(--sea-glass);
+  border-radius: 50%;
+  background: var(--atlas-ink);
+}
+
+.atlas-expertise__kind {
+  margin: 0;
+  color: var(--fog);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.atlas-expertise__group-heading h3 {
+  margin: 0.875rem 0 0;
+  color: var(--limestone);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+
+.atlas-expertise__description {
+  max-width: 44ch;
+  margin: 0.875rem 0 0;
+  color: var(--fog);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.atlas-expertise__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.atlas-expertise__skills li {
+  max-width: 100%;
+  border: 1px solid var(--contour-line);
+  padding: 0.5rem 0.75rem;
+  color: var(--limestone);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.atlas-expertise__disclosure {
+  max-width: 82ch;
+  margin: 1.5rem 0 0;
+  color: var(--sage-graphite);
+  font-size: 0.625rem;
+  line-height: 1.8;
+  letter-spacing: 0.025em;
+}
+
+@media (max-width: 58rem) {
+  .atlas-expertise__header {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+
+  .atlas-expertise__introduction {
+    max-width: 60ch;
+  }
+}
+
+@media (max-width: 42rem) {
+  .atlas-expertise__groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .atlas-expertise__group:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .atlas-expertise__group:nth-child(even) {
+    padding-left: 0;
+  }
+
+  .atlas-expertise__group article,
+  .atlas-expertise__group:nth-child(even) article {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 1rem;
+    padding-right: 0;
+  }
+
+  .atlas-expertise__legend {
+    gap: 0.75rem 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-expertise *,
+  .atlas-expertise *::before,
+  .atlas-expertise *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
