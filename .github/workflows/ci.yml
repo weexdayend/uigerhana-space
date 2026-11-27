@@ -53,6 +53,9 @@ jobs:
       - name: Writing and publication source integrity
         run: npm run verify:writing
 
+      - name: Contact and footer source integrity
+        run: npm run verify:contact
+
       - name: Lint
         run: npm run lint
 

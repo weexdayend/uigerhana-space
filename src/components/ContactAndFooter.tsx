@@ -4,40 +4,96 @@ import { PUBLIC_PROFILES } from "@/data/writing";
 
 export function ContactAndFooter() {
   return (
-    <footer data-band="dark" className="bg-[#0b0e11] text-[#e8e4d8]">
-      <section id="contact" className="mx-auto grid grid-cols-1 max-w-[1360px] gap-10 px-5 py-20 sm:px-10 sm:py-28 lg:grid-cols-12 lg:gap-14">
-        <div className="min-w-0 lg:col-span-7">
-          <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#f0b765]">Next / Conversation</p>
-          <h2 className="mt-4 max-w-[15ch] break-words text-[clamp(2.1rem,4vw,4rem)] font-normal leading-[1.02] tracking-[-0.055em]">
-            Good work starts with a clear understanding of the problem.
-          </h2>
-        </div>
-        <div className="flex min-w-0 flex-col items-start justify-end lg:col-span-5">
-          <p className="max-w-[48ch] text-sm leading-[1.8] text-[#e8e4d8]/65 sm:text-base">
-            I’m interested in thoughtful conversations around product development, enterprise workflows, software architecture, and technical collaboration.
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <a href="/cv" className="max-w-full whitespace-normal break-words bg-[#f2efe7] px-5 py-3 text-sm text-[#121518] transition-colors hover:bg-[#f0b765]">Review my résumé ↗</a>
-            <a href="#work" className="border border-[#e8e4d8]/25 px-5 py-3 text-sm transition-colors hover:border-[#f0b765] hover:text-[#f0b765]">Explore work</a>
+    <footer className="atlas-contact-footer" data-band="dark">
+      <section
+        id="contact"
+        className="atlas-contact"
+        aria-labelledby="contact-title"
+      >
+        <div className="atlas-contact__container">
+          <div className="atlas-contact__content">
+            <div className="atlas-contact__copy">
+              <p className="atlas-contact__eyebrow">
+                <span>07 /</span>
+                Next — Conversation
+              </p>
+              <h2 id="contact-title" className="atlas-contact__title">
+                Good work starts with a clear understanding of the problem.
+              </h2>
+            </div>
+
+            <div className="atlas-contact__invitation">
+              <p className="atlas-contact__introduction">
+                I’m interested in thoughtful conversations around product
+                development, enterprise workflows, software architecture, and
+                technical collaboration.
+              </p>
+
+              <div className="atlas-contact__actions">
+                <a className="atlas-contact__action atlas-contact__action--primary" href="/cv">
+                  Review my résumé
+                  <span aria-hidden="true">↗</span>
+                </a>
+                <a className="atlas-contact__action atlas-contact__action--secondary" href="#work">
+                  Explore work
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="atlas-contact__footer">
+            <div className="atlas-contact__identity">
+              <a
+                className="atlas-contact__brand"
+                href="#top"
+                aria-label={SITE_META.brand + " home"}
+              >
+                GERHANA
+                <span aria-hidden="true">↗</span>
+              </a>
+              <p>
+                {PROFILE.displayName}
+                <span aria-hidden="true"> · </span>
+                {PROFILE.positioning}
+                <span aria-hidden="true"> · </span>
+                {SITE_META.location}
+              </p>
+            </div>
+
+            <nav
+              className="atlas-contact__navigation"
+              aria-label="Public profiles and site links"
+            >
+              {PUBLIC_PROFILES.map((profile) => (
+                <a
+                  className="atlas-contact__profile-link"
+                  key={profile.id}
+                  href={profile.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={profile.label + " " + profile.handle + " (opens in a new tab)"}
+                >
+                  <span>{profile.label}</span>
+                  <span className="atlas-contact__profile-handle">{profile.handle}</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              ))}
+              <a className="atlas-contact__profile-link" href="/cv">
+                <span>Résumé</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </nav>
+
+            <p className="atlas-contact__availability">
+              No direct public contact channel is listed.
+            </p>
+            <a className="atlas-contact__back-to-top" href="#top">
+              Back to top ↑
+            </a>
           </div>
         </div>
       </section>
-      <div className="dither-band-dark h-1.5" aria-hidden="true" />
-      <div className="mx-auto flex max-w-[1360px] flex-col justify-between gap-4 px-5 py-8 sm:flex-row sm:items-center sm:px-10">
-        <div>
-          <p className="font-pixel text-xl font-bold">{SITE_META.brand}</p>
-          <p className="mt-1 text-xs text-[#e8e4d8]/75">{PROFILE.displayName} · {PROFILE.positioning} · {SITE_META.location}</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-xs text-[#e8e4d8]/75">
-          {PUBLIC_PROFILES.map((profile) => (
-            <a key={profile.id} href={profile.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[#f0b765]">
-              {profile.label} ↗
-            </a>
-          ))}
-          <a href="#top" className="transition-colors hover:text-[#e8e4d8]">Back to top ↑</a>
-          <a href="/cv" className="transition-colors hover:text-[#e8e4d8]">Résumé ↗</a>
-        </div>
-      </div>
     </footer>
   );
 }

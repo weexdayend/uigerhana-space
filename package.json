@@ -13,7 +13,8 @@
     "verify:styleframes": "node scripts/verify-system-atlas-styleframes.mjs",
     "test:e2e": "playwright test",
     "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json",
-    "verify:writing": "node scripts/verify-writing-section.mjs"
+    "verify:writing": "node scripts/verify-writing-section.mjs",
+    "verify:contact": "node scripts/verify-contact-footer.mjs"
   },
   "dependencies": {
     "next": "16.4.6",
