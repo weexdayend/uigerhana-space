@@ -67,10 +67,18 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-04 — Production parity / release integrity
 
-**Status:** OPEN; no deployment is authorized.
-**Required work:** Define a safe, non-invasive way to identify the currently served commit (build ID/response metadata or deployment record); compare live domain with the reviewed commit; inspect HTTP status, canonical/robots/sitemap, TLS, key routes, console/network failures, and cache behavior. Avoid modifying production.
-**Exit:** Production is explicitly verified against the approved commit, or production remains marked NOT VERIFIED. No DNS, hosting, deploy, or config changes in this PR.
+**Status:** INSTRUMENTED — read-only audit workflow added; no live audit result is claimed yet. Production commit parity remains NOT VERIFIED.
 
+**Source finding:** The repository declares `https://uigerhana.space` as the canonical origin but has no documented deployment workflow/host contract and the app does not currently emit a build-time revision marker. A GitHub deployment record alone does not prove what the live CDN/application server currently serves.
+
+**Automated method:** Manually dispatch `.github/workflows/production-parity-audit.yml` with the full 40-character expected commit SHA. The workflow checks out that commit, then performs unauthenticated GET checks for TLS certificate authorization/validity, HTTP-to-HTTPS redirect, the four public routes, title/description/H1/canonical/indexability metadata, robots.txt, and sitemap.xml. It also reads the latest GitHub `production` deployment record/status using `deployments: read`, and looks for an explicit `X-UI-Gerhana-Revision` header or `ui-gerhana-revision` meta marker. The full report is uploaded as a 90-day artifact.
+
+**Interpretation:** The report keeps deployment-record parity separate from served-commit parity. If GitHub records the expected SHA but the live response exposes no revision marker, the result stays NOT VERIFIABLE. Only a trusted build-time revision marker present on all four public routes and matching the expected SHA can produce VERIFIED. A marker must be injected by the actual build/deployment process from the commit that built the running application.
+
+**Evidence:** `scripts/audit-production-parity.mjs`; `.github/workflows/production-parity-audit.yml`; [Phase 8.7 methodology](PRODUCTION-PARITY-AND-DEPLOYMENT-EVIDENCE.md).
+
+**Boundary:** The workflow is GET-only and read-only. It does not deploy, change DNS/configuration/environment, purge caches, access application secrets, or invent a hosting-provider contract. A successful workflow run means evidence was collected, not that production passed. Native/browser, field-performance, external-content, and owner release gates remain independent.
+ 
 ### ROOT-05 — Runtime performance
 
 **Status:** PASS — final exact-head Chromium production-build lab snapshot recorded in PR #27.
