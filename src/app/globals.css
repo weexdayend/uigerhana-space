@@ -4019,6 +4019,8 @@ body {
 
 .atlas-writing__directory nav {
   display: flex;
+  min-width: 0;
+  max-width: 100%;
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
@@ -4027,6 +4029,9 @@ body {
 
 .atlas-writing__profile-link {
   display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
   align-items: baseline;
   gap: 0.5rem;
   color: var(--atlas-ink);
@@ -4043,9 +4048,11 @@ body {
 }
 
 .atlas-writing__profile-handle {
+  min-width: 0;
   color: var(--light-secondary-text);
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-size: 0.6875rem;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 60rem) {
