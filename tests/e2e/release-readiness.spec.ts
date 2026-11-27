@@ -68,6 +68,7 @@ test.describe("release route and link integrity", () => {
 
     expect(expectedRevision).toMatch(/^[0-9a-f]{40}$/);
     const marker = page.locator('meta[name="ui-gerhana-revision"]');
+    await expect(marker, "one revision marker per page").toHaveCount(1);
 
     for (const route of PUBLIC_ROUTES) {
       await page.goto(route, { waitUntil: "domcontentloaded" });
