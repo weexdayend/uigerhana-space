@@ -20,7 +20,7 @@
 - `main` points to `675eaed00b8e06163c8df8b06474fd32cf2554f7`, the merge commit for PR #24.
 - PR #24 head: `5de0dcb9f4e04063a51eadbf3a0ce1924a946a7d`.
 - Exact-main quality job for run [46054077202](https://github.com/weexdayend/uigerhana-space/actions/runs/46054077202) completed successfully: typecheck, all content/design integrity gates, lint, and production build.
-- Exact-main run #46054077202 is fully green: both quality and three-engine runtime QA jobs completed successfully. PR #25 exact-head run #46054485925 is also fully green on its documentation-only Phase 8 foundation.
+- Exact-main run #46054077202 is fully green. PR #25 exact-head run #46054485925 is fully green, and PR #26 remediation head `fb4de1234ad75d87d34a1f544847ef96a6f95845` is green in both [PR Actions #46055899645](https://github.com/weexdayend/uigerhana-space/actions/runs/46055899645) and [push Actions #46055893632](https://github.com/weexdayend/uigerhana-space/actions/runs/46055893632). Both #26 runs passed quality and three-engine runtime QA.
 
 ### Existing automated coverage (do not duplicate without reason)
 
@@ -41,20 +41,15 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-01 — 200% root-text reflow across public routes
 
-**Status:** Historical 390px findings no longer reproduce on the post-Phase-7 main baseline. Two residual case-study issues were reproduced at 320px, and a focused fix is now present in PR #26; exact-head cross-engine regression is pending.
+**Status:** AUTOMATED CSS ROOT-TEXT GATE PASS on PR #26 exact head. Native browser zoom and OS text scaling remain separate manual gates.
 
-**Historical evidence:** Earlier exact-head diagnostics recorded document widths of 429px on `/`, 390px on `/work` (heading clipping without page overflow), 469px on `/work/uigerhana-space`, and 442px on `/cv` under 200% CSS root-font-size stress at 390px. These values were reproduced on the earlier connected-styleframe head, not assumed to remain current.
+**Historical evidence:** Earlier exact-head diagnostics recorded document widths of 429px on `/`, 390px on `/work` (heading clipping without page overflow), 469px on `/work/uigerhana-space`, and 442px on `/cv` under 200% CSS root-font-size stress at a 390px viewport.
 
-**Current-main reproduction:** PR #26's element-level diagnostic at head `4bb66a5d94edcbf66ee81126ef67124b7b94c7de` ran all four public routes at 390px, 360px, and 320px in Chromium, Firefox, and WebKit. At 390px and 360px, no route had page-level overflow or visible heading clipping. At 320px, only the case-study route had two residual defects:
-- The Technology map card heading “Application” had a 174px content box but approximately 189px of text width, caused by the 1.25rem card inset on both sides at 200% root text.
-- The case-study Résumé utility link extended beyond the viewport (about 3.6px in Chromium/Firefox and 9.2px in WebKit) because both utility actions remained in a single flex row.
+**Current reproduction and fix:** PR #26's current-head diagnostic found two residual case-study issues at 320px: the Technology map heading “Application” clipped due to card inset, and the Résumé utility link extended beyond the viewport. The fix stacks the header utility links and reduces only the narrow Technology map inset, without reducing the type scale or removing content.
 
-**Remediation in PR #26:**
-- At the narrow 24rem breakpoint, the case-study utility header stacks its actions vertically and uses compact vertical spacing.
-- Technology-map cards use a 0.75rem inset at that breakpoint; the heading is allowed to wrap if a future category label needs it. The type size and public content remain unchanged.
-- The regression now asserts page/body width, visible heading containment, and route-header link bounds for all four routes at 390px/360px/320px. It retains screenshots and element/ancestor geometry in the browser artifact.
+**Exact-head evidence:** PR #26 head `fb4de1234ad75d87d34a1f544847ef96a6f95845` passed both [PR Actions #46055899645](https://github.com/weexdayend/uigerhana-space/actions/runs/46055899645) and [push Actions #46055893632](https://github.com/weexdayend/uigerhana-space/actions/runs/46055893632), including Chromium, Firefox, and WebKit. The reflow regression covers four public routes at 390px, 360px, and 320px, asserting page/body width, visible-heading clipping, and route-header link bounds.
 
-**Required evidence / exit:** PR #26's updated exact-head Actions must pass in Chromium, Firefox, and WebKit. The 12 route/viewport combinations must have no page-level overflow, clipped visible headings, or route-header links outside the viewport. Intentional internal horizontal story scrolling is not a page overflow. This automated CSS root-font-size proxy does not close literal browser zoom or native OS text-scaling gates.
+**Remaining boundary:** This closes only the automated CSS root-font-size proxy. It does not prove literal browser zoom at 200% or native OS text scaling.
 
 ### ROOT-02 — P1/P2: literal zoom and OS text scaling
 
@@ -77,15 +72,23 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-05 — Runtime performance
 
-**Status:** OPEN.
-**Required work:** Collect repeatable production-build performance evidence, not subjective guesses. Measure route-level Core Web Vitals where available (LCP, INP, CLS), navigation/resource timing, JS/CSS/font/image transfer sizes, long tasks, console errors, and scroll/motion behavior. Use cold/warm cache notes and representative network/device profiles. Do not fabricate a Lighthouse score or infer field CWV from lab runs.
-**Exit:** Report route, engine/device profile, run count, median/variation, trace/report artifacts, and any regression thresholds. Performance budgets must be justified by the observed baseline, not invented after the test.
+**Status:** Repeatable Chromium lab-baseline instrumentation added in PR #27; exact-head measurements pending.
+
+**Method:** Run the production build on the local Playwright server. For each of the four public routes, collect one first view in an isolated browser context and two same-context repeat navigations. Record TTFB, FCP, LCP, CLS, DOMContentLoaded/load timing, resource counts and byte totals by resource category, long-task count/duration, console errors, page errors, and failed requests. Preserve all raw samples and per-route medians.
+
+**Interpretation:** The initial run is a desktop Chromium lab sample at 1440 × 900. It is not field Core Web Vitals, INP, mobile-device performance, or a representative-user network profile. Do not set pass/fail performance budgets or claim Lighthouse scores from this initial dataset. Review medians and variance before proposing evidence-based budgets.
+
+**Exit:** Exact-head CI produces a complete artifact with 12 HTTP 200 route samples and per-route summaries. A later representative-device/network and field-data review remains required before production performance acceptance.
 
 ### ROOT-06 — Route and link integrity
 
-**Status:** Existing route smoke tests present; whole-site link integrity needs auditable inventory.
-**Required work:** Enumerate every internal link and public external destination from rendered public routes. Verify internal destinations resolve; external links are valid/intentional and use appropriate new-tab protections; anchors exist; sitemap/robots/canonical metadata align with intended public routes. Avoid treating intentionally gated unpublished case studies as broken routes.
-**Exit:** No unexpected 4xx/5xx, missing anchors, accidental draft exposure, empty href, placeholder URL, or unsafe external-link target.
+**Status:** Automated route, metadata, sitemap, robots, internal-link, fragment, and external-link-policy checks added in PR #27; exact-head CI pending.
+
+**Automated scope:** All rendered anchors on `/`, `/work`, `/work/uigerhana-space`, and `/cv` are inventoried. Internal destinations must return HTTP 200 and internal fragments must resolve to an existing ID. Canonical metadata and sitemap URLs must match the approved public route set. The known unapproved draft case study must remain 404 and absent from the sitemap. External links must use HTTPS; new-tab links must include `noopener` or `noreferrer`.
+
+**Limitation:** External third-party HTTP reachability is not probed by the local-origin CI check. The emitted inventory is the source for manual external-destination spot-checks. Avoid treating intentionally gated unpublished case studies as broken public routes.
+
+**Exit:** No unexpected internal 4xx/5xx, missing fragments, empty/placeholder/javascript hrefs, accidental draft exposure, duplicate DOM IDs, mismatched canonical/sitemap entries, or unsafe new-tab external links.
 
 ### ROOT-07 — Accessibility and interaction audit
 
@@ -95,9 +98,11 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-08 — Cross-engine / responsive integrity
 
-**Status:** CI projects exist for Chromium, Firefox, and WebKit; current exact-main run is pending at baseline.
-**Required work:** Require all three engine suites on the exact PR head. Keep viewport matrix, font loading, console/runtime errors, overflow geometry, and screenshot evidence. Clearly distinguish Playwright WebKit from installed Safari.
-**Exit:** All required engine jobs pass exact head; no Safari claim unless Safari itself was tested.
+**Status:** PR #26 exact-head CI green in Chromium, Firefox, and WebKit. PR #27 adds route/link integrity coverage across all three engines; the timing/resource baseline is intentionally Chromium-only.
+
+**Required work:** Keep viewport matrix, font loading, console/runtime errors, overflow geometry, route/link status, and screenshot evidence. Clearly distinguish Playwright WebKit from installed Safari.
+
+**Exit:** All required engine suites pass on the exact PR head; no Safari claim unless Safari itself was tested.
 
 ## 4. Evidence ledger
 
@@ -106,39 +111,41 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 | Gate | Method | State | Evidence / owner |
 |---|---|---|---|
 | #24 merge | GitHub PR state + main ref | PASS | PR #24 merge commit `675eaed...` |
-| #24 quality job | Exact-main Actions | PASS | Run [46054077202](https://github.com/weexdayend/uigerhana-space/actions/runs/46054077202), quality job |
-| #24 cross-engine runtime | Exact-main Actions | PENDING at Phase 8 authoring | Same run; runtime QA job |
-| ROOT-01 200% root text | Chromium/Firefox/WebKit | OPEN — P1 | Design QA recorded reproduction; Phase 8 re-test required |
+| #24 exact-main CI | Quality + cross-engine runtime | PASS | [Actions #46054077202](https://github.com/weexdayend/uigerhana-space/actions/runs/46054077202) |
+| #25 QA foundation | Exact-head quality + runtime | PASS | [Actions #46054485925](https://github.com/weexdayend/uigerhana-space/actions/runs/46054485925) |
+| #26 responsive remediation | Exact-head quality + Chromium/Firefox/WebKit | PASS | [PR Actions #46055899645](https://github.com/weexdayend/uigerhana-space/actions/runs/46055899645) and [push Actions #46055893632](https://github.com/weexdayend/uigerhana-space/actions/runs/46055893632) |
+| ROOT-01 200% CSS root text | Four routes × 390/360/320px × three engines | PASS — automated proxy | PR #26 exact-head CI; native zoom/OS text scaling remain manual |
 | Literal browser zoom 200% | Actual desktop browser | MANUAL / NOT RUN | Owner evidence required |
-| OS text scaling | Native OS setting | MANUAL / NOT RUN | Owner evidence required |
-| Native print dialog / Save PDF | Actual OS/browser dialog | MANUAL / NOT RUN | Owner evidence required |
-| Route/link integrity | Automated crawl + route checks | PENDING | Phase 8 |
-| Performance baseline | Lab + representative profile | PENDING | Phase 8 |
+| OS text scaling | Native OS setting | MANUAL / NOT RUN | Record actual platform/settings |
+| Native print dialog / Save PDF | Actual OS/browser dialog | MANUAL / NOT RUN | Headless Chromium PDF is only regression evidence |
+| ROOT-06 route/link integrity | Rendered links, HTTP routes, fragments, canonical, sitemap, robots | PENDING PR #27 | [Route/link test](https://github.com/weexdayend/uigerhana-space/tree/phase-8/route-link-performance-baseline/tests/e2e/release-readiness.spec.ts) |
+| ROOT-05 performance baseline | Chromium production-build lab sample | PENDING PR #27 | 12 samples / 4 routes; no budgets set before report review |
+| External link reachability | Manual third-party spot-check | NOT VERIFIED | Use destination inventory from PR #27 artifact |
 | Production parity | Non-invasive live verification | NOT VERIFIED | No deployment authority |
 | Final release acceptance | Owner decision | OPEN | Owner sign-off |
 
 ## 5. Work sequence
 
-1. Reconfirm #24 exact-main Actions and capture baseline artifacts.
-2. ROOT-01 reproduction and focused fix, with cross-engine regression.
-3. Route/link integrity and public metadata audit.
-4. Runtime performance baseline and evidence; optimize only measured issues.
-5. Accessibility/interaction delta audit and responsive/zoom regression.
-6. Native zoom / OS text-scale / native print / desktop pinned-story manual runbook.
-7. Production parity verification (read-only) and release checklist.
+1. #24 exact-main CI and #25/#26 stacked exact-head checks completed successfully.
+2. ROOT-01 automated CSS root-text reflow proxy closed by PR #26; literal zoom and native OS scaling stay manual.
+3. PR #27 implements route/link integrity and a repeatable Chromium performance baseline.
+4. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
+5. Complete accessibility/interaction delta audit and responsive/zoom regression.
+6. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
+7. Verify production parity read-only and record external destination spot-checks.
 8. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
 
 ## 6. Release decision
 
-**Initial Phase 8 decision: NO-GO / NOT RELEASE-READY.**
+**Current decision: NO-GO / NOT RELEASE-READY.**
 
-Reasons:
-- ROOT-01 P1 clipping/overflow is known open.
-- Literal browser zoom and native OS text scaling are not recorded.
-- Native print dialog and OS Save as PDF are not accepted.
-- Exact-main cross-engine job for PR #24 was in progress at authoring time.
+The automated 200% CSS root-text reflow proxy is now green on PR #26, but the following gates remain open:
+- Literal browser zoom and native OS text scaling have not been accepted on a real browser/OS.
+- Native browser print dialog and OS Save as PDF have not been accepted.
+- PR #27 route/link and performance artifacts still require exact-head CI and review.
+- External destination reachability is not covered by the local-origin link test.
 - Production commit parity is not verified.
-- Performance baseline and consolidated route/link audit are not complete.
-- Final owner acceptance remains open.
+- Field/mobile performance and evidence-based performance budgets are not established.
+- Final owner release acceptance remains open.
 
 This is an evidence-based hold, not a claim that the site is unusable. No production deployment or release action is authorized.
