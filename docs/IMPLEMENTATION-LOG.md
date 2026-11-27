@@ -587,3 +587,30 @@ No application code, website UI, public copy, contact details, project evidence,
 - PR #18 remains open and stacked on PR #17; neither PR was merged by this slice.
 - No deployment was performed.
 - Validation above applies to the code SHA shown here. This log entry is a documentation-only follow-up.
+
+## 2026-11-27 — Phase 7.3 System Atlas Expertise & Capabilities
+
+**Branch:** `phase-7/expertise-capabilities-atlas`  
+**Base:** `phase-7/case-study-detail-atlas`
+
+### Source and content audit
+
+- Retained the five existing `SKILL_GROUPS` as the sole capability content source: Product & experience, Frontend engineering, Backend & data architecture, AI & data engineering, and Infrastructure & security.
+- Classified Product & experience as professional expertise and the remaining four groups as technical capabilities; the taxonomy describes the content's role in this section and does not imply equal proficiency.
+- Kept the four generalized `WORK_DOMAINS` records separate from capability groups and individually approved public case studies.
+- Added an explicit disclosure that representative technologies are not proof of separate published projects, certifications, or quantified proficiency.
+- No new seniority, years-of-experience, project outcome, client attribution, contribution, or proficiency claim was introduced.
+
+### Delivered
+
+- Rebuilt the homepage expertise section with System Atlas editorial hierarchy, numbered route markers, restrained contour treatment, semantic capability classification, and a compact skills index.
+- Added responsive two-column and single-column layouts, root-relative spacing, semantic landmarks/lists, and a reduced-motion-safe CSS contract.
+- Added Playwright regression coverage for the five source groups, generalized-domain separation, 200% root-font reflow at narrow widths, keyboard-safe static content, and axe WCAG A/AA plus configured best-practice scans.
+- Added a dedicated source-integrity script and CI step to protect the five-group content contract and ensure capability UI does not import work domains or project/experience narratives.
+
+### Validation boundary
+
+- Repository-level source review and GitHub Actions are the authoritative validation paths for this stacked slice.
+- Local package installation, Next.js dependency-guide inspection, and local browser execution were not available in the editing environment; no local typecheck, lint, production build, browser screenshots, or assistive-technology run is claimed.
+- CI is expected to validate typecheck, content/styleframe gates, the new expertise contract, lint, production build, and Chromium/Firefox/WebKit runtime tests on the exact PR head.
+- No merge or deployment is included.
