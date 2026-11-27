@@ -72,14 +72,14 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-05 — Runtime performance
 
-**Status:** Initial 12-sample Chromium lab baseline recorded from PR #27 artifact; exact-head revalidation pending after a sitemap URL normalization assertion fix.
+**Status:** PASS — final exact-head Chromium production-build lab snapshot recorded in PR #27.
 
 **Method:** Run the production build on the local Playwright server. For each of the four public routes, collect one first view in an isolated browser context and two same-context repeat navigations. Record TTFB, FCP, LCP, CLS, DOMContentLoaded/load timing, resource counts and byte totals by resource category, long-task count/duration, console errors, page errors, and failed requests. Preserve all raw samples and per-route medians.
 
 **Interpretation:** The initial run is a desktop Chromium lab sample at 1440 × 900. It is not field Core Web Vitals, INP, mobile-device performance, or a representative-user network profile. Do not set pass/fail performance budgets or claim Lighthouse scores from this initial dataset. Review medians and variance before proposing evidence-based budgets.
 
-**Initial evidence:** PR Actions [#46057514836](https://github.com/weexdayend/uigerhana-space/actions/runs/46057514836), artifact [#15227537484](https://github.com/weexdayend/uigerhana-space/actions/runs/46057514836/artifacts/15227537484), recorded 12 HTTP 200 Chromium samples across the four routes. Median FCP/LCP: home 164 ms, work index 92 ms, case study 84 ms, CV 112 ms; median CLS was 0 on every route. No console/page/failed-request errors were recorded; one 55 ms long task occurred on the first CV view. These are local lab values with mixed cold/warm cache observations, not budgets or field CWV.
-**Exit:** Re-run the exact PR head after the sitemap assertion patch and preserve the updated report. A later representative-device/network and field-data review remains required before production performance acceptance.
+**Final exact-head evidence:** PR Actions [#46061556961](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961), artifact [#15228823778](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961/artifacts/15228823778), recorded 12 HTTP 200 Chromium samples across the four public routes. Median FCP/LCP: home 144 ms, work 84 ms, case study 84 ms, CV 120 ms; median CLS was 0 on every route. No console/page/failed-request errors were recorded; individual long tasks remain visible in raw navigation samples. These are local desktop lab values, not budgets, field CWV, mobile performance, or INP.
+**Exit:** The final exact-head rerun and raw artifact are recorded. Representative-device/network and field-data review remain required before production performance acceptance.
 
 ### ROOT-06 — Route and link integrity
 
@@ -107,15 +107,25 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-09 — Interaction-state and primary-target audit
 
-**Status:** Automated checks added in Phase 8.4; exact-head CI pending.
+**Status:** PASS — Phase 8.4 automated interaction-state and primary-target checks passed on both exact-head push and pull-request workflows.
 
 **Method:** Tab to representative primary controls across the four public routes and assert visible focus-ring geometry; open the mobile menu and audit its link focus states; measure 24 × 24 CSS-pixel minimum hit areas for primary controls/CTAs only; verify representative pointer-hover states change their authored computed style; verify pointer activation keeps the mobile menu's `aria-expanded` and rendered navigation synchronized.
 
 **Scope boundary:** Inline prose links are not classified as standalone controls for the target-size sample. Pointer-state measurement runs once in Chromium; focus and target geometry are checked in Chromium, Firefox, and WebKit. This automation does not claim physical touch-device behavior, exact contrast ratios for every hover palette, native browser/OS focus rendering, or assistive-technology acceptance.
 
-**Evidence:** `tests/e2e/interaction-accessibility.spec.ts` and [Phase 8.4 methodology](INTERACTION-ACCESSIBILITY-STATE-AUDIT.md).
+**Evidence:** `tests/e2e/interaction-accessibility.spec.ts`; PR Actions [#46066904014](https://github.com/weexdayend/uigerhana-space/actions/runs/46066904014) and push Actions [#46066883235](https://github.com/weexdayend/uigerhana-space/actions/runs/46066883235); artifacts [#15230689950](https://github.com/weexdayend/uigerhana-space/actions/runs/46066904014/artifacts/15230689950) and [#15230759858](https://github.com/weexdayend/uigerhana-space/actions/runs/46066883235/artifacts/15230759858); [Phase 8.4 methodology](INTERACTION-ACCESSIBILITY-STATE-AUDIT.md). Both runtime runs completed with 327 passed, 6 skipped, 0 failed.
 
-**Exit:** All state checks pass on the exact PR head and JSON reports are present in the uploaded CI artifact. Owner-native AT, OS scaling, browser zoom, and physical-device checks remain manual.
+**Exit:** All state checks pass on both exact-head triggers and the matching browser-QA artifacts are retained. Keyboard/focus/target checks cover Chromium, Firefox, and WebKit; hover-state and pointer activation measurements are Chromium-only. Owner-native AT, OS scaling, browser zoom, and physical-device checks remain manual.
+
+
+### ROOT-10 — Focus-indicator and hover-text contrast
+
+**Status:** PENDING — automated contrast regression added in Phase 8.5; exact-head CI not yet complete.
+**Finding:** The résumé publication link inherited the same `--sea-glass` focus ring as controls on the dark résumé chrome. Against the résumé document paper surface `#f8f6f0`, that color measures approximately 2.40:1, below the 3:1 non-text contrast threshold used for focus indicators.
+**Remediation:** Keep the sea-glass ring on the dark résumé back/print controls; use `--atlas-ink` for the publication link on the light paper surface. No type, layout, or interaction behavior is changed.
+**Method:** Tab to the three résumé controls, resolve their solid adjacent surface, and measure focus-indicator contrast; pointer-hover representative résumé controls and the contact action, resolving the composited solid background before measuring normal-text contrast. Non-solid image/gradient backdrops are outside this automated method and must not be represented as measured passes.
+**Evidence:** `tests/e2e/interaction-contrast.spec.ts` and [Phase 8.5 contrast methodology](INTERACTION-STATE-CONTRAST-AUDIT.md). Exact-head CI evidence will be added after the branch checks complete.
+**Exit:** Focus indicators reach at least 3:1, sampled normal hover text reaches at least 4.5:1, and machine-readable JSON is retained in the matching artifact. Full-site contrast certification, gradients/images, every disabled/pressed state, and native platform rendering remain outside this slice.
 
 ## 4. Evidence ledger
 
@@ -132,7 +142,9 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 | OS text scaling | Native OS setting | MANUAL / NOT RUN | Record actual platform/settings |
 | Native print dialog / Save PDF | Actual OS/browser dialog | MANUAL / NOT RUN | Headless Chromium PDF is only regression evidence |
 | ROOT-06 route/link integrity | Rendered links, fragments, canonical, sitemap, robots and unpublished-route behavior | PASS — AUTOMATED FINAL HEAD | [PR Actions #46061556961](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961); [artifact #15228823778](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961/artifacts/15228823778) | 314 passed / 4 skipped / 0 failed; unpublished route boundary checks use not-found UI, no detail, and noindex rather than assuming streamed response status must be 404 |
-| ROOT-09 interaction-state and target audit | Focus-visible, hover delta, mobile menu pointer state, and 24 × 24 CSS px primary targets | PENDING — Phase 8.4 | [Audit methodology](INTERACTION-ACCESSIBILITY-STATE-AUDIT.md); `tests/e2e/interaction-accessibility.spec.ts` | Focus/target checks across three engines; hover measurements Chromium-only; exact-head CI pending |\n| ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — RERUN SNAPSHOT | [Actions #46058407707 artifact #15227981742](https://github.com/weexdayend/uigerhana-space/actions/runs/46058407707/artifacts/15227981742) | 12 HTTP 200 samples; median FCP/LCP home 164 ms, work 96 ms, case study 124 ms, CV 68 ms; CLS 0; no runtime errors/request failures; no budgets set |
+| ROOT-09 interaction-state and target audit | Focus-visible, hover delta, mobile menu pointer state, and 24 × 24 CSS px primary targets | PASS — AUTOMATED EXACT HEAD | PR Actions #46066904014; push Actions #46066883235; artifacts #15230689950 / #15230759858 | 327 passed / 6 skipped / 0 failed on both runtime jobs; native AT and physical-device acceptance remain manual |
+| ROOT-10 interaction-state contrast | Focus indicator 3:1 and sampled hover text 4.5:1 on solid surfaces | PENDING — PHASE 8.5 | `tests/e2e/interaction-contrast.spec.ts`; `docs/phase-8/INTERACTION-STATE-CONTRAST-AUDIT.md` | Awaiting exact-head CI; full-site contrast and image/gradient surfaces are not claimed |
+| ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — RERUN SNAPSHOT | [Actions #46058407707 artifact #15227981742](https://github.com/weexdayend/uigerhana-space/actions/runs/46058407707/artifacts/15227981742) | 12 HTTP 200 samples; median FCP/LCP home 164 ms, work 96 ms, case study 124 ms, CV 68 ms; CLS 0; no runtime errors/request failures; no budgets set |
 | External link reachability | Manual third-party spot-check | NOT VERIFIED | Use destination inventory from PR #27 artifact |
 | Production parity | Non-invasive live verification | NOT VERIFIED | No deployment authority |
 | Final release acceptance | Owner decision | OPEN | Owner sign-off |
@@ -141,7 +153,9 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 
 1. #24 exact-main CI and #25/#26 stacked exact-head checks completed successfully.
 2. ROOT-01 automated CSS root-text reflow proxy closed by PR #26; literal zoom and native OS scaling stay manual.
-3. PR #27 route/link integrity and Chromium performance instrumentation passed exact-head CI on both push and PR triggers (314 passed, 4 skipped, 0 failed); final JSON and visual evidence is retained in artifacts #15229531062 and #15228823778.\n4. Phase 8.4 adds runtime evidence for focus-visible, hover-state deltas, mobile menu pointer state, and primary target geometry.
+3. PR #27 route/link integrity and Chromium performance instrumentation passed exact-head CI on both push and PR triggers (314 passed, 4 skipped, 0 failed); final JSON and visual evidence is retained in artifacts #15229531062 and #15228823778.
+4. Phase 8.4 interaction-state and primary-target checks passed both exact-head CI triggers (327 passed, 6 skipped, 0 failed); PR #28 retains the matching artifacts.
+5. Phase 8.5 adds focus-indicator and hover-text contrast regression, including the résumé publication focus-ring remediation.
 5. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
 6. Complete accessibility/interaction delta audit and responsive/zoom regression.
 7. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
