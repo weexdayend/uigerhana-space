@@ -34,6 +34,8 @@ The test writes `focus-indicator-contrast-audit.json` and `hover-text-contrast-a
 
 ## 4. Measurement method and limits
 
+- **Standard:** the 3:1 adjacent-surface check is aligned with [WCAG 2.2 SC 1.4.11 — Non-text Contrast (Level AA)](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast). The sampled hover-text check uses [SC 1.4.3 — Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum).
+- This does **not** claim conformance to [SC 2.4.13 — Focus Appearance (Level AAA)](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance): the test does not calculate the full perimeter area or compare the same pixels between focused and unfocused states.
 - Colors are read from browser-computed CSS styles.
 - Semi-transparent solid background colors are composited from the target/parent chain to the nearest opaque solid background.
 - A background image or gradient encountered before an opaque solid surface is treated as unresolved; the test does not guess a color or report a false pass.
