@@ -557,3 +557,33 @@ No application code, website UI, public copy, contact details, project evidence,
 - The `/work/[slug]` detail route remains a separate follow-on slice.
 - No production deployment was performed.
 - The successful run above validates the feature implementation SHA shown above; a subsequent documentation-only log update is being included in this review branch and will receive its own exact-head CI run.
+
+## 2026-11-27 — Phase 7.2 System Atlas Case Study Detail
+
+**Branch:** `phase-7/case-study-detail-atlas`  
+**Code SHA validated:** `a111e696bd73f32cd211d8f760a39114609d0c94`  
+**GitHub Actions:** [run 46002185883](https://github.com/weexdayend/uigerhana-space/actions/runs/46002185883)
+
+### Delivered
+
+- Rebuilt `/work/[slug]` as a System Atlas editorial case-study experience with an explicit project-status marker, summary, Context / Role metadata, and a clear return path to the work index.
+- Reworked contribution breakdown, architecture, workflow, evidence, visual-study gallery, project narrative, and technology map into a cohesive detail-page system.
+- Kept public rendering gated through `PUBLIC_CASE_STUDIES`; the only approved public project remains **In progress**.
+- Preserved existing case-study copy and project evidence. No draft study, client attribution, outcome metric, or new project claim was promoted.
+- Marked the architecture view as a source-structure illustration, not deployment or infrastructure topology; retained clear disclosure that visual gallery items are generated studies, not screenshots of a separate shipped product.
+- Added responsive detail-route and 200% root-font-size regression checks. Corrected accessibility findings for contrast on decorative numerals and the footer's keyboard-accessible home link; accepted valid cached `304 Not Modified` responses in the route test.
+
+### Validation
+
+- Typecheck, browser-test typecheck, content publication gates, System Atlas static integrity, lint, and production builds: passed.
+- Runtime visual and accessibility QA across Chromium, Firefox, and WebKit: passed.
+- Playwright: **220 passed, 2 skipped, 0 failed**.
+- axe-core WCAG A/AA and configured best-practice audits: passed across the configured desktop/mobile route matrix, including the case-study detail route.
+- Responsive route checks and effective-width / root-font 200% reflow checks: passed.
+- The first runtime run exposed low contrast on the large decorative numerals; those were changed to the Deep Mineral text role. The rerun also exposed a footer label mismatch and a cached 304 assertion in the new route test; both were corrected before the final green run.
+
+### Boundaries
+
+- PR #18 remains open and stacked on PR #17; neither PR was merged by this slice.
+- No deployment was performed.
+- Validation above applies to the code SHA shown here. This log entry is a documentation-only follow-up.
