@@ -192,6 +192,15 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 **Regression coverage:** Release evaluator fixtures reject out-of-window reports, manifests generated before source-run completion, and physical reports without validation timestamps. Workflow contract tests verify the metadata wiring and validator timestamp.  
 **Evidence:** `docs/phase-8/EVIDENCE-TIME-PROVENANCE.md`; `scripts/evaluate-release-evidence.mjs`; `scripts/validate-physical-device-evidence.mjs`; `.github/workflows/release-evidence-gate.yml`.
 
+### ROOT-18 — Attempt-aware source audit artifacts
+
+**Status:** INSTRUMENTED — exact-head CI pending.  
+**Finding:** GitHub Actions reruns keep the original workflow `run_id` while incrementing `run_attempt`. Commit-only artifact names did not distinguish the report package uploaded by each attempt.  
+**Remediation:** Name every source audit artifact with the reviewed commit SHA and `github.run_attempt`; read and validate `run_attempt` from the referenced source run metadata; download by explicit run ID and attempt-specific artifact name; store the attempt in the manifest; reject invalid attempt numbers or mismatched artifact names.  
+**Boundary:** This prevents ambiguous artifact selection across reruns. It does not prove the truth of physical-device attestations or served-marker provenance. Machine evidence remains owner-review-only.  
+**Regression coverage:** Evaluator tests reject invalid attempts and wrong attempt-bound artifact names. Workflow contract tests assert attempt-specific upload/download names and manifest metadata.  
+**Evidence:** [Phase 8.14 artifact identity contract](EVIDENCE-TIME-PROVENANCE.md) is not this phase; see `docs/phase-8/ATTEMPT-AWARE-AUDIT-ARTIFACTS.md`, `.github/workflows/release-evidence-gate.yml`, and the three source audit workflows.
+
 ## 4. Evidence ledger
 
 Use this table as the source of truth. Replace PENDING only with an exact evidence reference and result.
