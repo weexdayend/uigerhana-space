@@ -120,6 +120,21 @@ Run the read-only GitHub Actions workflow against the exact commit proposed for 
 Result: NOT RUN  
 Workflow run / artifact / findings:
 
+## G. Physical mobile performance and interaction
+
+The automated mobile-class Chromium artifact is only a controlled lab emulation. Complete this section on representative physical devices before claiming field/mobile acceptance.
+
+- [ ] Record the exact phone/tablet model, OS version, browser version, display scale, and device power/thermal state.
+- [ ] Record the network type/provider and approximate RTT/downlink/uplink at test time; do not label a throttled desktop as a physical device.
+- [ ] Test the homepage, work index, approved case study, and résumé on at least one representative iOS device/browser and one Android device/browser when those platforms are in the supported audience.
+- [ ] Repeat cold and warm route navigation; capture route timing, screenshots, and any console/network evidence available from remote debugging.
+- [ ] Verify touch targets, menus, pinned-story/reduced-motion behavior, text wrapping, horizontal overflow, and route navigation by touch.
+- [ ] Review real-user/field CWV and INP only when a trustworthy analytics source and sufficient traffic exist; record collection window and sample size.
+- [ ] Compare physical-device observations with `phase-8-mobile-performance-lab.json`; do not treat emulation deltas as pass/fail budgets without an evidence-based review.
+
+Result: NOT RUN  
+Device matrix / field data / findings:
+
 ## H. Final decision
 
 - [ ] All P1 defects closed with exact-head evidence.
