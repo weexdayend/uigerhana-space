@@ -1225,3 +1225,140 @@ test.describe("System Atlas writing and publication", () => {
     }
   });
 });
+
+
+test.describe("System Atlas contact and footer", () => {
+  test("preserves the existing conversation copy and approved site destinations", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const response = await page.goto("/", { waitUntil: "domcontentloaded" });
+    expect(response?.ok() || response?.status() === 304).toBe(true);
+
+    const footer = page.locator(".atlas-contact-footer");
+    const section = footer.locator("#contact");
+    await expect(section).toBeVisible();
+    await expect(section.getByRole("heading", {
+      level: 2,
+      name: "Good work starts with a clear understanding of the problem.",
+    })).toBeVisible();
+    await expect(section.getByText(
+      "I’m interested in thoughtful conversations around product development, enterprise workflows, software architecture, and technical collaboration.",
+      { exact: true }
+    )).toBeVisible();
+
+    await expect(section.getByRole("link", { name: /Review my résumé/ })).toHaveAttribute("href", "/cv");
+    await expect(section.getByRole("link", { name: /Explore work/ })).toHaveAttribute("href", "#work");
+    await expect(footer.getByRole("link", { name: "UI Gerhana home" })).toHaveAttribute("href", "#top");
+
+    const navigation = footer.getByRole("navigation", { name: "Public profiles and site links" });
+    await expect(navigation.getByRole("link")).toHaveCount(4);
+    await expect(navigation.getByRole("link", { name: /GitHub.*@weexdayend/ })).toHaveAttribute("href", "https://github.com/weexdayend");
+    await expect(navigation.getByRole("link", { name: /DEV Community.*@uigerhana/ })).toHaveAttribute("href", "https://dev.to/uigerhana");
+    await expect(navigation.getByRole("link", { name: /Medium.*@weexdayend/ })).toHaveAttribute("href", "https://medium.com/@weexdayend");
+    await expect(navigation.getByRole("link", { name: "Résumé" })).toHaveAttribute("href", "/cv");
+
+    const identity = footer.locator(".atlas-contact__identity p");
+    await expect(identity).toContainText("Irvan Gerhana");
+    await expect(identity).toContainText("Product Engineer");
+    await expect(identity).toContainText("Bandung, Indonesia");
+    await expect(footer.getByText("No direct public contact channel is listed.", { exact: true })).toBeVisible();
+    await expect(footer.locator('a[href^="mailto:"], a[href^="tel:"]')).toHaveCount(0);
+  });
+
+  test("keeps the conversation layout responsive at desktop, tablet, and mobile widths", async ({ page }) => {
+    for (const sample of [
+      { width: 1440, columns: 2 },
+      { width: 834, columns: 1 },
+      { width: 390, columns: 1 },
+    ]) {
+      await page.setViewportSize({ width: sample.width, height: 900 });
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const content = page.locator("#contact .atlas-contact__content");
+      const columns = await content.evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").length);
+      expect(columns).toBe(sample.columns);
+      await expect(page.locator(".atlas-contact__profile-link")).toHaveCount(4);
+    }
+  });
+
+  test("reflows the conversation heading and footer metadata at 200% root text", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+    await page.evaluate(() => document.fonts.ready);
+
+    for (const width of [390, 360, 320]) {
+      await page.setViewportSize({ width, height: 844 });
+      const layout = await page.locator("#contact").evaluate((section) => {
+        const heading = section.querySelector<HTMLElement>(".atlas-contact__title");
+        const headingRect = heading?.getBoundingClientRect();
+        const footer = section.querySelector<HTMLElement>(".atlas-contact__footer");
+        const textNodes = Array.from(section.querySelectorAll<HTMLElement>(
+          ".atlas-contact__title, .atlas-contact__introduction, .atlas-contact__identity p, .atlas-contact__availability"
+        ));
+        return {
+          viewport: document.documentElement.clientWidth,
+          document: document.documentElement.scrollWidth,
+          body: document.body.scrollWidth,
+          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          headingClipped: Boolean(heading && heading.scrollWidth > heading.clientWidth + 1),
+          headingInViewport: Boolean(
+            headingRect && headingRect.left >= -1 &&
+            headingRect.right <= document.documentElement.clientWidth + 1
+          ),
+          footerVisible: Boolean(footer && footer.getBoundingClientRect().width > 0),
+          textOverflows: textNodes.some((item) => item.scrollWidth > item.clientWidth + 1),
+        };
+      });
+
+      expect(layout.rootFontSize).toBeGreaterThanOrEqual(32);
+      expect(layout.document).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.body).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.headingClipped).toBe(false);
+      expect(layout.headingInViewport).toBe(true);
+      expect(layout.footerVisible).toBe(true);
+      expect(layout.textOverflows).toBe(false);
+    }
+  });
+
+  test("keeps all contact and profile links keyboard-accessible with reduced motion", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    const footer = page.locator(".atlas-contact-footer");
+    await footer.scrollIntoViewIfNeeded();
+    const links = footer.locator("a[href]");
+    await expect(links).toHaveCount(8);
+    await expect(footer.getByRole("link", { name: "Back to top ↑" })).toHaveAttribute("href", "#top");
+
+    for (const link of await links.all()) {
+      await expect(link).toBeVisible();
+      await expect(link).toHaveCSS("opacity", "1");
+    }
+
+    await links.first().focus();
+    await expect(links.first()).toBeFocused();
+  });
+
+  test("has no axe WCAG A/AA or configured best-practice violations at desktop and mobile", async ({ page }) => {
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      await page.locator("#contact").scrollIntoViewIfNeeded();
+      await page.evaluate(() => document.fonts.ready);
+
+      const results = await new AxeBuilder({ page })
+        .include(".atlas-contact-footer")
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"])
+        .analyze();
+      const violations = results.violations.map((violation) => ({
+        id: violation.id,
+        impact: violation.impact,
+        nodes: violation.nodes.map((node) => node.target.join(" ")),
+      }));
+      expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
+    }
+  });
+});

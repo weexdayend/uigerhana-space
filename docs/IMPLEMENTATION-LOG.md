@@ -702,3 +702,57 @@ No application code, website UI, public copy, contact details, project evidence,
 - Browser visual, layout, and axe results remain pending until the exact proposed commit finishes CI.
 - The public contact-channel decision and résumé route remain separate follow-on slices.
 - No merge or deployment is included.
+
+
+## 2026-11-28 — Phase 7.7 System Atlas Contact & Footer
+
+**Branch:** phase-7/contact-footer-atlas  
+**Base:** phase-7/writing-publication-atlas at 73f4f0f7ac88f254c480fcae6bb8ba61bbd5b5f9
+
+### Source and content audit
+
+- Kept src/data/profile.ts, src/data/site.ts, and src/data/writing.ts as the only identity, site-metadata, and public-profile sources.
+- Preserved the existing conversation heading and invitation copy from ContactAndFooter.
+- Preserved the existing résumé destination (/cv), work destination (#work), top destination (#top), public-profile handles, and profile URLs.
+- Preserved the existing display name, Product Engineer positioning, and Bandung location from approved source records.
+- Kept direct contact intentionally absent. No email address, phone number, form submission endpoint, messaging account, or unverified availability claim was added.
+
+### Delivered
+
+- Rebuilt the closing conversation section and footer in the connected System Atlas visual language.
+- Implemented the approved two-column desktop conversation composition and stacked tablet/mobile reading order.
+- Replaced the legacy dither strip and pixel treatment with semantic Deep Mineral / Atlas Ink surfaces, Limestone headings, Fog body copy, Sea Glass interaction roles, Manrope display type, Plus Jakarta Sans interface copy, and monospace metadata.
+- Kept two clear actions: Review my résumé and Explore work.
+- Rendered all three existing public profiles (GitHub, DEV Community, Medium), plus the existing résumé route and a home/top link.
+- Added an explicit note that no direct public contact channel is listed.
+- Added root-text 200% reflow, responsive layout, keyboard, reduced-motion, and axe WCAG A/AA plus configured best-practice runtime coverage.
+- Added a dedicated source-integrity script and quality CI step.
+
+### Validation boundary
+
+- The component and design references were reviewed against the connected System Atlas homepage frames and content-provenance notes.
+- GitHub Actions must validate the exact PR head through typecheck, publication/styleframe and feature-integrity gates, lint, production build, and Chromium/Firefox/WebKit runtime tests.
+- The editing environment does not expose the installed Next.js dependency documentation or a local browser runtime; no local typecheck, lint, build, screenshots, or assistive-technology result is claimed.
+- Browser visual, reflow, keyboard, and axe results remain pending until exact-head CI completes.
+- The public contact-channel decision remains an owner gate; résumé route alignment and print verification remain a separate follow-on slice.
+- No merge or deployment is included.
+
+
+## 2026-11-28 — Phase 7.6 Exact-Head Responsive Hardening
+
+**Parent:** PR #22 · \`phase-7/writing-publication-atlas\`  
+**Validated head:** \`fd9686f671dfa5aca696f341517ac848247f604a\`  
+**GitHub Actions PR-check:** [run 46047733496](https://github.com/weexdayend/uigerhana-space/actions/runs/46047733496)
+
+- Constrained and stretched the Writing publication directory at narrow widths so DEV / Medium profile links wrap within the available mobile column.
+- Allowed the expertise classification label to wrap at 200% root text without widening its card.
+- Allowed article date and reading-time metadata to wrap independently when the text scale increases.
+- Kept all source article, profile, and expertise content unchanged.
+
+### Validation
+
+- Quality job: typecheck, publication/content/styleframe/feature integrity, lint, and production build all passed on the exact head.
+- Chromium, Firefox, and WebKit Playwright runtime: **271 passed, 2 skipped, 0 failed**.
+- Configured axe WCAG A/AA and best-practice checks passed in the browser matrix.
+- Browser evidence upload completed.
+- PR #22 remains open and unmerged; no deployment was performed.
