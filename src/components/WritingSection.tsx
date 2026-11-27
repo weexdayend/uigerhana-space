@@ -8,7 +8,7 @@ export function WritingSection() {
       className="bg-[#f2efe7] py-20 text-[#121518] sm:py-28"
     >
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
-        <div className="grid items-end gap-6 lg:grid-cols-12">
+        <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">
               Writing / Notes in public
@@ -23,7 +23,7 @@ export function WritingSection() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-px border border-[#121518]/18 bg-[#121518]/18 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-px border border-[#121518]/18 bg-[#121518]/18 lg:grid-cols-3">
           {FEATURED_WRITING.map((article, index) => (
             <article
               key={article.id}
