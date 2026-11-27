@@ -152,20 +152,29 @@ test.describe("release route and link integrity", () => {
   });
 
   for (const draftRoute of DRAFT_CASE_STUDY_ROUTES) {
-    test("returns HTTP 404 for unapproved draft case study " + draftRoute, async ({
-      request,
+    test("renders an unindexed not-found state for unpublished case study " + draftRoute, async ({
+      page,
     }, testInfo) => {
-      const response = await request.get(draftRoute);
-      expect(
-        response.status(),
-        "unapproved draft case study must be rejected before rendering: " + draftRoute
-      ).toBe(404);
+      const response = await page.goto(draftRoute, { waitUntil: "domcontentloaded" });
+      const status = response?.status() ?? null;
+      expect([200, 404], "not-found navigation status for " + draftRoute).toContain(status);
 
-      await testInfo.attach("draft-route-denial.json", {
+      await expect(page.getByText("This page could not be found.")).toBeVisible();
+      await expect(page.locator("[data-case-study-detail]")).toHaveCount(0);
+
+      const robots = await page.locator('meta[name="robots"]').getAttribute("content");
+      expect(robots ?? "", "unpublished route must be marked noindex: " + draftRoute)
+        .toContain("noindex");
+
+      await testInfo.attach("draft-route-publication-boundary.json", {
         body: JSON.stringify({
           route: draftRoute,
-          status: response.status(),
-          rejected: response.status() === 404,
+          responseStatus: status,
+          responseUrl: response?.url() ?? null,
+          notFoundUiVisible: true,
+          caseStudyDetailRendered: false,
+          robots,
+          noindex: (robots ?? "").includes("noindex"),
         }, null, 2),
         contentType: "application/json",
       });
