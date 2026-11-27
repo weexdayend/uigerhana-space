@@ -142,11 +142,11 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 1. #24 exact-main CI and #25/#26 stacked exact-head checks completed successfully.
 2. ROOT-01 automated CSS root-text reflow proxy closed by PR #26; literal zoom and native OS scaling stay manual.
 3. PR #27 route/link integrity and Chromium performance instrumentation passed exact-head CI on both push and PR triggers (314 passed, 4 skipped, 0 failed); final JSON and visual evidence is retained in artifacts #15229531062 and #15228823778.\n4. Phase 8.4 adds runtime evidence for focus-visible, hover-state deltas, mobile menu pointer state, and primary target geometry.
-4. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
-5. Complete accessibility/interaction delta audit and responsive/zoom regression.
-6. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
-7. Verify production parity read-only and record external destination spot-checks.
-8. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
+5. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
+6. Complete accessibility/interaction delta audit and responsive/zoom regression.
+7. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
+8. Verify production parity read-only and record external destination spot-checks.
+9. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
 
 ## 6. Release decision
 
