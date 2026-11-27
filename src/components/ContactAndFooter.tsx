@@ -8,7 +8,7 @@ export function ContactAndFooter() {
       <section id="contact" className="mx-auto grid grid-cols-1 max-w-[1360px] gap-10 px-5 py-20 sm:px-10 sm:py-28 lg:grid-cols-12 lg:gap-14">
         <div className="min-w-0 lg:col-span-7">
           <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#f0b765]">Next / Conversation</p>
-          <h2 className="mt-4 max-w-[15ch] text-[clamp(2.1rem,4vw,4rem)] font-normal leading-[1.02] tracking-[-0.055em]">
+          <h2 className="mt-4 max-w-[15ch] break-words text-[clamp(2.1rem,4vw,4rem)] font-normal leading-[1.02] tracking-[-0.055em]">
             Good work starts with a clear understanding of the problem.
           </h2>
         </div>
