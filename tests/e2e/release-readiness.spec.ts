@@ -536,3 +536,196 @@ test.describe("release performance baseline", () => {
     expect(samples.every((sample) => sample.resourceCount >= 0 && sample.transferBytes >= 0)).toBe(true);
   });
 });
+
+
+type ExternalReachabilityClassification =
+  | "reachable"
+  | "unavailable"
+  | "restricted"
+  | "transient"
+  | "network-error"
+  | "inconclusive";
+
+interface ExternalDestinationSource {
+  url: string;
+  sourceRoutes: string[];
+  labels: string[];
+}
+
+interface ExternalDestinationResult extends ExternalDestinationSource {
+  method: "GET";
+  status: number | null;
+  finalUrl: string | null;
+  contentType: string | null;
+  durationMs: number;
+  classification: ExternalReachabilityClassification;
+  detail: string | null;
+}
+
+function classifyExternalResponse(status: number): ExternalReachabilityClassification {
+  if (status >= 200 && status < 400) return "reachable";
+  if ([401, 403, 405, 407, 429].includes(status)) return "restricted";
+  if ([408, 425].includes(status) || status >= 500) return "transient";
+  if ([404, 410].includes(status)) return "unavailable";
+  return "inconclusive";
+}
+
+test.describe("Phase 8.6 external destination reachability", () => {
+  test("external destinations are audited on the reviewed production build", async ({
+    page,
+    request,
+  }, testInfo) => {
+    test.skip(
+      process.env.P8_EXTERNAL_DESTINATION_AUDIT !== "1",
+      "Run the dedicated workflow_dispatch audit to probe third-party destinations."
+    );
+
+    const baseURL = testInfo.project.use.baseURL as string;
+    const localOrigin = new URL(baseURL).origin;
+    const canonicalOrigin = new URL(SITE_ORIGIN).origin;
+    const sources = new Map<string, ExternalDestinationSource>();
+    const routeResponses: Array<{ route: string; status: number | null }> = [];
+
+    for (const route of PUBLIC_ROUTES) {
+      const response = await page.goto(route, { waitUntil: "domcontentloaded" });
+      routeResponses.push({ route, status: response?.status() ?? null });
+      expect(response?.status(), "reviewed build route " + route).toBe(200);
+      await expect(page.locator("main h1").first(), route + " primary heading").toBeVisible();
+
+      const anchors = await page.locator("a[href]").evaluateAll((elements) =>
+        elements.map((element) => {
+          const anchor = element as HTMLAnchorElement;
+          return {
+            href: anchor.href,
+            text: (anchor.innerText || "").trim().replace(/\s+/g, " ").slice(0, 120),
+            ariaLabel: anchor.getAttribute("aria-label"),
+          };
+        })
+      );
+
+      for (const anchor of anchors) {
+        const destination = new URL(anchor.href, page.url());
+        if (
+          destination.protocol !== "https:" ||
+          destination.origin === localOrigin ||
+          destination.origin === canonicalOrigin
+        ) {
+          continue;
+        }
+
+        // Fragments describe an in-page target, not a distinct HTTP resource.
+        destination.hash = "";
+        const url = destination.href;
+        const currentSource = sources.get(url) ?? {
+          url,
+          sourceRoutes: [],
+          labels: [],
+        };
+
+        if (!currentSource.sourceRoutes.includes(route)) currentSource.sourceRoutes.push(route);
+        const label = anchor.text || anchor.ariaLabel || "(unlabelled link)";
+        if (!currentSource.labels.includes(label)) currentSource.labels.push(label);
+        sources.set(url, currentSource);
+      }
+    }
+
+    const destinations = [...sources.values()].sort((left, right) =>
+      left.url.localeCompare(right.url)
+    );
+    expect(destinations.length, "at least one external HTTPS destination must be inventoried")
+      .toBeGreaterThan(0);
+
+    const results: ExternalDestinationResult[] = [];
+    // Keep outbound traffic modest and deterministic; the report is observational.
+    for (let offset = 0; offset < destinations.length; offset += 3) {
+      const batch = destinations.slice(offset, offset + 3);
+      const batchResults = await Promise.all(
+        batch.map(async (destination): Promise<ExternalDestinationResult> => {
+          const startedAt = Date.now();
+          try {
+            const response = await request.get(destination.url, {
+              timeout: 15_000,
+              maxRedirects: 8,
+              failOnStatusCode: false,
+            });
+            const result: ExternalDestinationResult = {
+              ...destination,
+              method: "GET",
+              status: response.status(),
+              finalUrl: response.url(),
+              contentType: response.headers()["content-type"] ?? null,
+              durationMs: Date.now() - startedAt,
+              classification: classifyExternalResponse(response.status()),
+              detail: null,
+            };
+            await response.dispose();
+            return result;
+          } catch (error) {
+            return {
+              ...destination,
+              method: "GET",
+              status: null,
+              finalUrl: null,
+              contentType: null,
+              durationMs: Date.now() - startedAt,
+              classification: "network-error",
+              detail: error instanceof Error ? error.message : String(error),
+            };
+          }
+        })
+      );
+      results.push(...batchResults);
+    }
+
+    const counts = results.reduce<Record<ExternalReachabilityClassification, number>>(
+      (summary, result) => {
+        summary[result.classification] += 1;
+        return summary;
+      },
+      {
+        reachable: 0,
+        unavailable: 0,
+        restricted: 0,
+        transient: 0,
+        "network-error": 0,
+        inconclusive: 0,
+      }
+    );
+
+    const report = {
+      scope: "HTTP reachability of external HTTPS links rendered by the reviewed local production build",
+      sourceCommit: process.env.GITHUB_SHA ?? null,
+      checkedAt: new Date().toISOString(),
+      browser: "Chromium",
+      project: testInfo.project.name,
+      routes: routeResponses,
+      requestPolicy: {
+        method: "GET",
+        timeoutMs: 15_000,
+        maximumRedirects: 8,
+        concurrency: 3,
+        authentication: "none",
+        cookies: "none",
+        note: "A successful response establishes HTTP reachability only, not that destination content is accurate, current, safe, or owner-approved.",
+      },
+      destinationCount: results.length,
+      summary: counts,
+      results,
+      boundaries: [
+        "This probes links in the reviewed repository build, not links currently served by the live production domain.",
+        "401/403/405/407/429 are restricted or method/policy blocked and are not reported as broken.",
+        "408/425/5xx are transient observations and require a later retry before a failure conclusion.",
+        "404/410 indicate the probed URL was unavailable at the time of this single request.",
+        "Network/TLS/time-out errors are observations from the GitHub Actions runner, not proof of universal unavailability.",
+        "No authenticated destination, content-semantic review, privacy review, or user-owner approval is performed.",
+      ],
+    };
+
+    const body = JSON.stringify(report, null, 2);
+    await writeFile(testInfo.outputPath("external-destination-reachability.json"), body);
+    await testInfo.attach("external-destination-reachability.json", {
+      body,
+      contentType: "application/json",
+    });
+  });
+});
