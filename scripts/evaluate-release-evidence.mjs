@@ -105,6 +105,41 @@ function externalStatusMatches(result) {
   }
 }
 
+function validateArtifactRetention(key, input, manifestGeneratedAt, errors, seenArtifactIds) {
+  const label = "Manifest input " + key;
+  if (!Number.isSafeInteger(input.artifactId) || input.artifactId <= 0) {
+    errors.push(label + " has an invalid source artifact id.");
+  } else if (seenArtifactIds.has(input.artifactId)) {
+    errors.push("Source artifact ids must be unique across evidence sources.");
+  } else {
+    seenArtifactIds.add(input.artifactId);
+  }
+
+  if (input.artifactExpired !== false) {
+    errors.push(label + " artifact is expired or its expiry state is not explicitly false.");
+  }
+  if (!Number.isSafeInteger(input.artifactSizeBytes) || input.artifactSizeBytes <= 0) {
+    errors.push(label + " has an invalid or empty source artifact size.");
+  }
+  if (!validTimestamp(input.artifactCreatedAt) || !validTimestamp(input.artifactExpiresAt)) {
+    errors.push(label + " must include valid artifact created_at and expires_at timestamps.");
+    return;
+  }
+
+  const artifactCreatedAt = Date.parse(input.artifactCreatedAt);
+  const artifactExpiresAt = Date.parse(input.artifactExpiresAt);
+  const runStartedAt = Date.parse(input.runCreatedAt);
+  const runCompletedAt = Date.parse(input.runUpdatedAt);
+  if (artifactCreatedAt < runStartedAt || artifactCreatedAt > runCompletedAt) {
+    errors.push(label + " artifact creation timestamp must fall within the source workflow run window.");
+  }
+  if (!validTimestamp(manifestGeneratedAt) ||
+      artifactExpiresAt <= Date.parse(manifestGeneratedAt) ||
+      artifactExpiresAt <= Date.now()) {
+    errors.push(label + " artifact has expired or expires before evidence evaluation.");
+  }
+}
+
 function addBlocker(blockers, gate, detail) {
   blockers.push({ gate, detail });
 }
@@ -346,7 +381,7 @@ function evaluatePhysicalDevice(report, expectedCommit, blockers, errors) {
   return gate;
 }
 
-async function readVerifiedInput(manifestDirectory, key, input, expectedCommit, manifestGeneratedAt, errors, seenRunIds) {
+async function readVerifiedInput(manifestDirectory, key, input, expectedCommit, manifestGeneratedAt, errors, seenRunIds, seenArtifactIds) {
   const spec = SOURCE_SPECS[key];
   if (!isRecord(input)) {
     errors.push("Manifest input " + key + " is missing.");
@@ -378,6 +413,7 @@ async function readVerifiedInput(manifestDirectory, key, input, expectedCommit, 
   if (input.artifactName !== expectedArtifactName) {
     errors.push("Manifest input " + key + " artifact name is not bound to expectedCommit and runAttempt.");
   }
+  validateArtifactRetention(key, input, manifestGeneratedAt, errors, seenArtifactIds);
   if (typeof input.reportPath !== "string" || input.reportPath.trim() === "" ||
       isAbsolute(input.reportPath)) {
     errors.push("Manifest input " + key + " reportPath must be a non-empty relative path.");
@@ -464,13 +500,14 @@ export async function evaluateReleaseEvidenceManifest(manifestPath) {
 
   const reports = {};
   const seenRunIds = new Set();
+  const seenArtifactIds = new Set();
   const manifestDirectory = await realpath(dirname(absoluteManifestPath)).catch(() => null);
   if (!manifestDirectory) errors.push("Manifest directory does not exist.");
 
   if (manifestDirectory) {
     for (const key of Object.keys(SOURCE_SPECS)) {
       reports[key] = await readVerifiedInput(
-        manifestDirectory, key, inputs[key], expectedCommit, manifest.generatedAt, errors, seenRunIds
+        manifestDirectory, key, inputs[key], expectedCommit, manifest.generatedAt, errors, seenRunIds, seenArtifactIds
       );
     }
   }
@@ -486,6 +523,23 @@ export async function evaluateReleaseEvidenceManifest(manifestPath) {
       reports.physicalDevice, expectedCommit, blockers, errors
     ),
   };
+
+  const artifactSources = [
+    ["externalDestination", "externalDestination"],
+    ["productionParity", "productionParity"],
+    ["physicalDevice", "physicalDevice"],
+  ];
+  for (const [manifestKey, gateKey] of artifactSources) {
+    const input = inputs[manifestKey];
+    gates[gateKey].sourceArtifact = isRecord(input) ? {
+      id: input.artifactId ?? null,
+      name: input.artifactName ?? null,
+      createdAt: input.artifactCreatedAt ?? null,
+      expiresAt: input.artifactExpiresAt ?? null,
+      expired: input.artifactExpired ?? null,
+      sizeBytes: input.artifactSizeBytes ?? null,
+    } : null;
+  }
 
   const ownerReviewRequired = [
     {
