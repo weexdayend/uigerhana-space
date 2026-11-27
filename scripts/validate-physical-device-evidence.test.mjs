@@ -9,7 +9,6 @@ import { validateEvidencePayload, REQUIRED_SCENARIOS, PUBLIC_ROUTES } from "./va
 const COMMIT = "a".repeat(40);
 async function createEvidenceRoot() {
   const root = await mkdtemp(join(tmpdir(), "uigerhana-device-evidence-"));
-  tempRoots.push(root);
   return root;
 }
 
