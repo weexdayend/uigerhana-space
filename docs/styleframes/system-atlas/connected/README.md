@@ -1,8 +1,8 @@
 # The System Atlas — Phase 5 connected styleframes
 
-**Status:** Initial connected styleframe package prepared for owner review · 2026-11-27  
+**Status:** Owner-accepted visual foundation · 2026-11-27  
 **Direction:** Owner-selected System Atlas · Manrope + Plus Jakarta Sans · GSAP  
-**Review state:** Not approved for production implementation
+**Review state:** Approved for staged implementation; route-level runtime QA remains required
 
 This package tests the visual direction across a complete visitor journey rather than treating the hero as the whole identity. It is a set of editable static SVG studies, not browser screenshots or implemented UI.
 
@@ -84,7 +84,7 @@ The examples are reusable design contracts, not implemented components. Final to
 - [Manual acceptance runbook — owner visual review, browser zoom, OS text scaling, native print, and deployment parity](./MANUAL-ACCEPTANCE-RUNBOOK.md)
 - [Interaction-state contract](../../../design-system/SYSTEM-ATLAS-INTERACTION-STATES.md)
 
-These boards are static design proposals. Focus, hover, pressed, disabled, and mobile disclosure states still require real-browser validation after a separately approved implementation.
+The connected visual direction was accepted by the owner on 2026-11-27. These boards remain static design studies, not production screenshots. Focus, hover, pressed, disabled, and mobile disclosure states require real-browser validation in each implementation slice.
 
 ## Motion and interaction direction
 
@@ -114,4 +114,4 @@ The static route and every waypoint remain visible without JavaScript. Reduced m
 - A direct contact channel.
 - Production UI, application CSS, routes, dependency changes, site-wide integration, or deployment.
 
-The SVGs declare Manrope and Plus Jakarta Sans but do not embed font files. Real font loading, text wrapping, zoom, OS text scaling, and browser rendering require a later browser-based review. This package does not close the remaining Phase 1 gates.
+The SVGs declare Manrope and Plus Jakarta Sans but do not embed font files. The hero implementation now loads the selected fonts; each subsequent route still requires browser-based font, text-wrapping, contrast, and responsive QA. Owner acceptance of the connected visual direction does not close the remaining Phase 1 production, literal zoom/OS text scaling, print-dialog, contact-channel, or owner audit-acceptance gates.

@@ -13,61 +13,112 @@ export const metadata: Metadata = {
 
 export default function WorkIndexPage() {
   return (
-    <main className="min-h-screen bg-[#f2efe7] text-[#121518]">
-      <header className="border-b border-[#121518]/18">
-        <div className="mx-auto max-w-[1180px] px-5 py-8 sm:px-10">
-          <Link href="/" className="text-sm text-[#585f5e] transition-colors hover:text-[#8a5a20]">
-            ← UI Gerhana
+    <main className="atlas-work atlas-work-index">
+      <header className="atlas-route-header">
+        <div className="atlas-route-header__inner">
+          <Link
+            href="/"
+            aria-label="UI Gerhana home"
+            className="atlas-route-header__brand"
+          >
+            <span className="atlas-route-header__mark" aria-hidden="true" />
+            <span>GERHANA</span>
           </Link>
+          <nav aria-label="Page navigation" className="atlas-route-header__nav">
+            <Link href="/" className="atlas-route-header__link">
+              Home <span aria-hidden="true">↗</span>
+            </Link>
+            <Link href="/cv" className="atlas-route-header__link atlas-route-header__resume">
+              View résumé <span aria-hidden="true">↗</span>
+            </Link>
+          </nav>
         </div>
       </header>
 
-      <section className="mx-auto max-w-[1180px] px-5 py-16 sm:px-10 sm:py-24">
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">
-          Portfolio / Selected work
-        </p>
-        <h1 className="mt-5 max-w-[15ch] text-[clamp(2.8rem,7vw,6rem)] font-normal leading-[0.94] tracking-[-0.065em]">
-          Work shaped by real problems.
-        </h1>
-        <p className="mt-7 max-w-[62ch] text-base leading-[1.8] text-[#121518]/70">
-          A selection of product and engineering work, presented with context
-          around the problem, approach, implementation, and current state.
-          Project-specific details are published only when they are ready to be
-          shared.
-        </p>
+      <section className="atlas-work-index__intro">
+        <div className="atlas-work__container">
+          <div className="atlas-work-index__hero">
+            <div>
+              <p className="atlas-work__eyebrow">Portfolio / Selected work</p>
+              <h1 className="atlas-work-index__title">
+                Work shaped by real problems.
+              </h1>
+            </div>
+            <p className="atlas-work-index__description">
+              A selection of product and engineering work, presented with
+              context around the problem, approach, implementation, and current
+              state. Project-specific details are published only when they are
+              ready to be shared.
+            </p>
+          </div>
 
-        <h2 className="sr-only">Selected case studies</h2>
-        <div className="mt-14 grid gap-4 lg:grid-cols-2">
-          {PUBLIC_CASE_STUDIES.map((study) => (
-            <CaseStudyCard key={study.slug} study={study} />
-          ))}
+          <section
+            className="atlas-work-index__case-studies"
+            aria-labelledby="work-case-studies-title"
+          >
+            <p className="atlas-work__eyebrow">01 / Public case study</p>
+            <h2 id="work-case-studies-title" className="sr-only">
+              Selected case studies
+            </h2>
+            <div className="atlas-work-index__case-study-list">
+              {PUBLIC_CASE_STUDIES.map((study) => (
+                <CaseStudyCard key={study.slug} study={study} headingLevel={2} />
+              ))}
+            </div>
+          </section>
         </div>
       </section>
 
-      <section className="border-y border-[#121518]/18 bg-[#ebe6db]">
-        <div className="mx-auto max-w-[1180px] px-5 py-16 sm:px-10 sm:py-20">
-          <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">
-            Work domains
-          </p>
-          <h2 className="mt-4 max-w-[15ch] text-3xl font-normal leading-tight tracking-[-0.045em] sm:text-4xl">
-            Areas I have worked across.
-          </h2>
-          <div className="mt-10 grid gap-0 border-t border-[#121518]/18 sm:grid-cols-2">
+      <section
+        className="atlas-work-index__domains-band"
+        aria-labelledby="work-index-domains-title"
+      >
+        <div className="atlas-work__container">
+          <header className="atlas-work-domains__intro">
+            <div>
+              <p className="atlas-work__eyebrow">02 / Work domains</p>
+              <h2 id="work-index-domains-title" className="atlas-work-domains__title">
+                Areas I have worked across.
+              </h2>
+            </div>
+            <p className="atlas-work-domains__description">
+              Generalized summaries derived from professional experience.
+            </p>
+          </header>
+
+          <div className="atlas-work-domains__grid">
             {WORK_DOMAINS.map((domain) => (
-              <article key={domain.id} className="border-b border-[#121518]/18 py-6 sm:px-5">
-                <span className="font-pixel text-2xl text-[#8a5a20]">{domain.index}</span>
-                <h3 className="mt-3 text-xl font-normal tracking-tight">{domain.title}</h3>
-                <p className="mt-2 max-w-[54ch] text-sm leading-[1.7] text-[#121518]/70">{domain.description}</p>
-                <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-[#8a5a20]">{domain.context}</p>
+              <article key={domain.id} className="atlas-work-domain">
+                <span className="atlas-work-domain__index">{domain.index}</span>
+                <div className="atlas-work-domain__body">
+                  <h3 className="atlas-work-domain__title">{domain.title}</h3>
+                  <p className="atlas-work-domain__description">{domain.description}</p>
+                  <p className="atlas-work-domain__context">{domain.context}</p>
+                </div>
               </article>
             ))}
           </div>
+          <p className="atlas-work-domains__disclosure">
+            Generalized work domains; not separate public case studies.
+          </p>
         </div>
       </section>
 
-      <footer className="mx-auto flex max-w-[1180px] flex-col justify-between gap-4 px-5 py-8 text-sm sm:flex-row sm:items-center sm:px-10">
-        <span className="text-[#585f5e]">Irvan Gerhana · Product Engineer</span>
-        <Link href="/cv" className="transition-colors hover:text-[#8a5a20]">View résumé ↗</Link>
+      <footer className="atlas-work-index__footer">
+        <div className="atlas-work__container atlas-work-index__footer-inner">
+          <div>
+            <p className="atlas-work__eyebrow">More to come</p>
+            <p className="atlas-work-index__footer-title">
+              More evidence will appear here when its role, status, and disclosure are approved.
+            </p>
+            <p className="atlas-work-index__footer-note">
+              No draft-only project detail is represented as public work.
+            </p>
+          </div>
+          <Link href="/" className="atlas-work-index__footer-link">
+            Back to introduction <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
       </footer>
     </main>
   );

@@ -523,3 +523,37 @@ See `docs/RUNTIME-QA-BASELINE.md` for the exact test scope and remaining manual 
 - Preserved the prohibition on concept selection, permanent token approval, public-copy changes, and application UI implementation before the remaining Phase 1 gates and explicit owner approval.
 
 No application code, website UI, public copy, contact details, project evidence, publication state, or deployment configuration changed.
+
+
+## 2026-11-27 — Phase 7.1 System Atlas Selected Work & Work Index
+
+**Branch:** `phase-7/selected-work-atlas`  
+**Feature implementation SHA validated:** `2cf2b1a070c95e5a322591e45f261a7315f6ba85`  
+**GitHub Actions:** [run 45962951609](https://github.com/weexdayend/uigerhana-space/actions/runs/45962951609)
+
+### Delivered
+
+- Rebuilt the homepage Selected Work section around the accepted System Atlas connected styleframe.
+- Reworked `/work` with the same visual hierarchy, responsive rhythm, navigation surface, and editorial typography.
+- Consolidated the featured case-study presentation into one reusable component with context, role, explicit status, and a direct case-study destination.
+- Kept public case-study rendering on `PUBLIC_CASE_STUDIES` only; the single public project remains explicitly **In progress**.
+- Kept generalized `WORK_DOMAINS` separate from individually-approved case studies, with a visible disclosure explaining that distinction.
+- Scoped the new work-index presentation styles and used the System Atlas semantic surface roles, 1rem page gutter, and rem-based inset values.
+- Updated the identity roadmap and connected-styleframe review docs to reflect owner acceptance of the visual foundation and the Phase 6 merge.
+
+### Validation
+
+- Typecheck, content publication gates, static System Atlas copy/SVG integrity, lint, and production build: passed.
+- Runtime visual and accessibility QA: passed in Chromium, Firefox, and WebKit.
+- Playwright: **214 passed, 2 skipped, 0 failed**.
+- Axe-core WCAG A/AA and configured best-practice scans: no violations across the homepage, work index, approved case-study detail, and résumé at desktop/mobile; the effective 200% reflow route matrix also passed.
+- Added regression tests for one approved public case study, explicit In-progress status, generalized-domain disclosure, and 200% root-text reflow on 390/360/320px for homepage and work index.
+- The first QA run exposed one contrast issue: the “More to come” footer eyebrow used a light-surface secondary color on a dark surface. It was corrected to the Fog dark-surface text role and the full three-engine suite passed afterward.
+
+### Boundaries
+
+- No public profile copy, case-study evidence, project publication status, client attribution, résumé content, or contact channel was changed.
+- No draft case study was exposed.
+- The `/work/[slug]` detail route remains a separate follow-on slice.
+- No production deployment was performed.
+- The successful run above validates the feature implementation SHA shown above; a subsequent documentation-only log update is being included in this review branch and will receive its own exact-head CI run.

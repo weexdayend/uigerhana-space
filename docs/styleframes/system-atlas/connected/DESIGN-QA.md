@@ -1,6 +1,6 @@
 # Connected styleframes — design QA and owner review
 
-**Status:** Review checklist prepared; visual acceptance not recorded  
+**Status:** Owner visual acceptance recorded 2026-11-27; implementation QA remains route-specific  
 **Scope:** Static SVG styleframes only
 
 ## What the artefacts cover
@@ -27,7 +27,7 @@ A follow-up static QA pass found missing leading text in several editorial SVGs:
 - [x] Text stays inside each SVG viewBox; no text-node bounding-box intersections remain.
 - [x] Tablet hero route/headline clearance, desktop introduction/panel clearance, and component-card action inset have explicit regression assertions.
 - [x] Exact-HEAD PR run [45904594136](https://github.com/weexdayend/uigerhana-space/actions/runs/45904594136) passed: 32 Playwright tests, typecheck, lint, content publication gates, static copy/SVG integrity, and production build. The styleframe test rendered all ten connected artboards with both selected fonts loaded; see the [29-file QA artifact](https://github.com/weexdayend/uigerhana-space/actions/runs/45904594136/artifacts/15158165064).
-- [ ] Owner visual acceptance of the connected direction remains open.
+- [x] Owner visual acceptance of the connected direction recorded 2026-11-27.
 
 See [Static artboard visual review](./VISUAL-REVIEW.md) for the three corrected defects, exact-HEAD CI evidence, artboard-by-artboard notes, and remaining gates. The Chromium checks cover static SVG rendering; they do not prove production CSS reflow, zoom behavior, native print output, or live interactive semantics.
 
@@ -75,11 +75,11 @@ See [Palette and contrast reconciliation](./PALETTE-RECONCILIATION.md) for audit
 - [ ] Native print dialog / Save as PDF behavior and page-break review.
 - [ ] Safari/WebKit and Firefox coverage recorded in addition to Chromium.
 
-Owner-confirmed real-device and assistive-technology checks from 2026-11-27 remain recorded at category level only; exact devices, OS/browser versions, AT combinations, scenarios, and results were not supplied. Do not infer them from these artboards.
+Owner-confirmed real-device and assistive-technology checks from 2026-11-27 remain recorded at category level only; exact devices, OS/browser versions, AT combinations, scenarios, and results were not supplied. The owner also accepted the connected System Atlas visual direction. Do not infer platform-specific coverage from either acceptance.
 
 ## Review boundary
 
-A positive review of one SVG or one hero does not approve the whole connected system. Phase 5 requires owner acceptance of the connected journey and responsive compositions. Phase 1 remains open for the browser, print, deployment-parity, contact-channel, and prioritized-finding gates recorded in `docs/BRAND-IDENTITY-PLAN.md`.
+The connected journey and responsive compositions have owner acceptance. That approval permits staged implementation, not an automatic production release. Browser rendering, interaction, zoom, print, deployment parity, contact-channel, and prioritized-finding gates remain governed by `docs/BRAND-IDENTITY-PLAN.md` and exact-slice QA.
 
 No production runtime, CSS, route, content data, dependency, or publication state is changed by this review package.
 

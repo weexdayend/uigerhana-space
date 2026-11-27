@@ -188,7 +188,7 @@ Exit criteria:
 
 ## Phase 5 — Full-page styleframes and experience validation
 
-**Status:** Initial connected styleframe package prepared for owner review on 2026-11-27. Owner acceptance remains open. The package includes desktop/tablet/mobile homepage frames, work index, the currently approved in-progress case study, résumé route, motion storyboard, and design/content QA notes. See `docs/styleframes/system-atlas/connected/README.md`.
+**Status:** Owner accepted the connected System Atlas styleframes and full-page visual direction on 2026-11-27. The package is the approved visual foundation for staged implementation. It includes desktop/tablet/mobile homepage frames, work index, the approved in-progress case study, résumé route, motion storyboard, and design/content QA notes. The SVGs remain design studies, not browser screenshots; token freeze and route-level runtime QA remain separate gates. See `docs/styleframes/system-atlas/connected/README.md`.
 
 **Goal:** prove the concept across a connected visitor journey before implementation.
 
@@ -206,8 +206,8 @@ Deliverables:
 - [x] Work index, approved in-progress case-study detail, and résumé route examples.
 - [x] Static GSAP choreography storyboard and explicit reduced-motion state.
 - [x] Content provenance and design-QA review notes.
-- [ ] Owner review and revision of the connected visual system.
-- [ ] Acceptance of the responsive hierarchy, section rhythm, and route-level examples.
+- [x] Owner review and acceptance of the connected visual system (2026-11-27).
+- [x] Owner acceptance of the responsive hierarchy, section rhythm, and route-level examples (2026-11-27).
 
 **Owner review gate:** approve the connected visual system. Approval of one hero image alone does not authorize a full-site redesign.
 
@@ -218,6 +218,8 @@ Exit criteria:
 - Mobile is intentionally composed, not simply scaled down.
 
 ## Phase 6 — Hero implementation as a controlled vertical slice
+
+**Status:** Delivered and merged in [PR #16](https://github.com/weexdayend/uigerhana-space/pull/16) on 2026-11-27. The System Atlas hero, navigation, font loading, route SVG, and reduced-motion behavior passed exact-PR quality and cross-browser runtime visual/accessibility QA. The post-merge `main` workflow also passed on merge commit `3675ea5cbe92464ad6c3e4f8445b6513580dd989` ([run 45930500523](https://github.com/weexdayend/uigerhana-space/actions/runs/45930500523)). No deployment is implied.
 
 **Goal:** implement the approved hero without destabilizing the rest of the site.
 
@@ -245,6 +247,8 @@ Exit criteria:
 - Owner approves the rendered result before wider rollout.
 
 ## Phase 7 — Site-wide identity integration
+
+**Status:** Active, delivered as reviewable vertical slices. The first slice aligns the homepage Selected Work section and `/work` index with the accepted connected styleframes; the case-study detail route, capabilities, experience, approach, writing/contact, and résumé remain separate follow-on slices.
 
 **Goal:** extend the approved system consistently.
 
@@ -336,10 +340,13 @@ A visual effect must not compromise a higher-priority item.
 
 ## 7. Immediate next action
 
-Review the connected System Atlas package in `docs/styleframes/system-atlas/connected/README.md` as one visitor journey, not as isolated screens. Review desktop, tablet, and mobile compositions; the work index; the currently approved in-progress case study; and the résumé reading/print direction. Record owner decisions before freezing palette roles, typography metrics, final section composition, or motion choreography.
+Continue Phase 7 as scoped, production-grade vertical slices. The current slice is **Selected Work & Work Index**:
+- Align the homepage Selected Work section and the `/work` route with the accepted System Atlas visual hierarchy.
+- Use only `PUBLIC_CASE_STUDIES` for public case-study features and keep project status visible.
+- Keep generalized `WORK_DOMAINS` distinct from individually approved case studies.
+- Preserve the existing public content and evidence/disclosure gates.
+- Validate responsive behavior, 200% root-font reflow, keyboard interaction, contrast, and route behavior on the exact PR head before merge.
 
-Phase 1 remains open for its previously listed owner-only gates: literal browser 200% zoom/OS text scaling, native print-dialog behavior, production-domain/commit parity, public contact-channel decision, owner acceptance of prioritized findings, and cross-browser coverage not already evidenced. Real-device and assistive-technology checks remain owner-confirmed complete; do not ask the owner to repeat them without a demonstrated gap.
+The next separate slice can align `/work/[slug]` case-study detail. Do not bundle the entire site, CV, or deployment into this change.
 
-This package is documentation and static design research only. Do not change `src/`, `app/`, CSS, dependencies, public profile copy, routes, or publication state. Do not present the SVGs as browser-rendered production captures. Phase 5 approval and any subsequent implementation authorization remain separate owner decisions.
-
-**End of roadmap — v1.0**
+Phase 1 remains open only for its outstanding owner-only gates: literal browser 200% zoom/OS text scaling, native print-dialog behavior, production-domain/commit parity, public contact-channel decision, and owner acceptance of prioritized audit findings. The earlier real-device and assistive-technology completion remains a category-level owner attestation; do not invent platform details.
