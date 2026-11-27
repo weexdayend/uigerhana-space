@@ -1027,6 +1027,7 @@ test.describe("System Atlas engineering approach", () => {
     await section.scrollIntoViewIfNeeded();
     await expect(section.locator(".atlas-approach__principle")).toHaveCount(4);
     await expect(section.getByRole("heading", { level: 3 })).toHaveCount(4);
+    await expect(section.locator(".atlas-approach__route")).toBeVisible();
 
     const interactiveCount = await section.locator(
       "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])"
