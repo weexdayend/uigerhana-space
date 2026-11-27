@@ -147,10 +147,10 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-12 — Mobile-class performance lab
 
-**Status:** INSTRUMENTED — exact-head CI and artifact evidence pending.
+**Status:** RECORDED — PR-triggered exact-head quality and browser QA passed; matching push-triggered browser QA remains pending.
 **Method:** Chromium local production-build emulation on a 390 × 844 CSS viewport, device scale factor 3, mobile layout/touch mode, 4× CPU throttle, and controlled cellular-4G-like network (150 ms RTT, 1.6 Mbps down, 750 Kbps up). Two navigations are collected for each of the four approved routes: one isolated-context first view and one same-context repeat.
 **Metrics:** TTFB, FCP, LCP/element, CLS, DOMContentLoaded/load timing, resource and byte totals/categories, long tasks, viewport/scroll widths, and navigation console/page/request errors. Raw JSON and per-route medians are retained.
-**Evidence:** `tests/e2e/mobile-performance-lab.spec.ts`; [Phase 8.8 methodology](MOBILE-PERFORMANCE-LAB.md); artifact `phase-8-mobile-performance-lab.json`.
+**Evidence:** `tests/e2e/mobile-performance-lab.spec.ts`; [Phase 8.8 methodology and observed medians](MOBILE-PERFORMANCE-LAB.md); PR Actions [#46072238941](https://github.com/weexdayend/uigerhana-space/actions/runs/46072238941); artifact [#15234410023](https://github.com/weexdayend/uigerhana-space/actions/runs/46072238941/artifacts/15234410023). PR runtime passed 334 tests / 11 skipped / 0 failed; the new mobile lab test passed once in Chromium.
 **Boundary:** This is mobile-class Chromium emulation, not physical Android/iOS, field CWV, real carrier variability, or INP. It sets no performance budget. `P8-PERF-02` remains NOT VERIFIED until representative physical-device and field data are reviewed.
 
 ## 4. Evidence ledger
