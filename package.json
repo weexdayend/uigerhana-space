@@ -12,7 +12,8 @@
     "verify:content": "node scripts/check-publication-gates.mjs",
     "verify:styleframes": "node scripts/verify-system-atlas-styleframes.mjs",
     "test:e2e": "playwright test",
-    "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json"
+    "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json",
+    "verify:writing": "node scripts/verify-writing-section.mjs"
   },
   "dependencies": {
     "next": "16.4.6",

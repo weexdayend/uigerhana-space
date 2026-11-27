@@ -3118,12 +3118,16 @@ body {
 }
 
 .atlas-expertise__kind {
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
   margin: 0;
   color: var(--fog);
   font-size: 0.625rem;
   font-weight: 500;
   letter-spacing: 0.09em;
   line-height: 1.6;
+  overflow-wrap: anywhere;
   text-transform: uppercase;
 }
 
@@ -3785,6 +3789,331 @@ body {
   .atlas-approach *,
   .atlas-approach *::before,
   .atlas-approach *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* System Atlas — Writing & publication archive */
+.atlas-writing {
+  --atlas-writing-space: clamp(4rem, 7vw, 6.5rem);
+  --atlas-writing-card-y: clamp(1.25rem, 2vw, 1.75rem);
+  --atlas-writing-card-x: clamp(1.25rem, 2vw, 1.75rem);
+  position: relative;
+  background: var(--limestone);
+  color: var(--atlas-ink);
+  padding-block: var(--atlas-writing-space);
+}
+
+.atlas-writing__container {
+  width: min(100%, 86rem);
+  margin-inline: auto;
+  padding-inline: var(--atlas-gutter);
+}
+
+.atlas-writing__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 0.9fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 6rem);
+}
+
+.atlas-writing__heading {
+  min-width: 0;
+}
+
+.atlas-writing__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  color: var(--light-secondary-text);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.atlas-writing__eyebrow span {
+  color: var(--deep-mineral);
+}
+
+.atlas-writing__heading h2 {
+  max-width: 15ch;
+  margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+  color: var(--atlas-ink);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: clamp(2.4rem, 5.2vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.06em;
+  overflow-wrap: anywhere;
+}
+
+.atlas-writing__introduction {
+  max-width: 48ch;
+  margin: 0 0 0.375rem;
+  color: var(--light-secondary-text);
+  font-size: clamp(0.9375rem, 1.15vw, 1.0625rem);
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+.atlas-writing__articles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.875rem);
+  margin-top: clamp(3rem, 5.5vw, 4.5rem);
+}
+
+.atlas-writing__article {
+  --py: var(--atlas-writing-card-y);
+  --px: var(--atlas-writing-card-x);
+  display: flex;
+  min-width: 0;
+  min-height: clamp(22rem, 29vw, 25rem);
+  flex-direction: column;
+  border: 1px solid var(--atlas-light-inset-border);
+  background: var(--atlas-inset-light);
+  padding: var(--py) var(--px);
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.atlas-writing__article:hover {
+  border-color: var(--deep-mineral);
+  background: var(--limestone);
+}
+
+.atlas-writing__article-topline {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.atlas-writing__category {
+  min-width: 0;
+  color: var(--light-secondary-text);
+  overflow-wrap: anywhere;
+}
+
+.atlas-writing__index {
+  flex: 0 0 auto;
+  color: var(--deep-mineral);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.atlas-writing__article-copy {
+  margin-top: clamp(2.5rem, 4vw, 3.5rem);
+}
+
+.atlas-writing__publication {
+  margin: 0;
+  color: var(--light-secondary-text);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.atlas-writing__title {
+  max-width: 24ch;
+  margin: 1rem 0 0;
+  color: var(--atlas-ink);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: clamp(1.25rem, 1.65vw, 1.625rem);
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+
+.atlas-writing__article-link {
+  color: inherit;
+  text-decoration-color: transparent;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 180ms ease;
+}
+
+.atlas-writing__article-link:hover {
+  text-decoration-color: var(--deep-mineral);
+}
+
+.atlas-writing__article-link:focus-visible,
+.atlas-writing__profile-link:focus-visible {
+  outline: 2px solid var(--deep-mineral);
+  outline-offset: 4px;
+}
+
+.atlas-writing__external {
+  display: inline-block;
+  margin-left: 0.5rem;
+  color: var(--deep-mineral);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.75em;
+  vertical-align: 0.08em;
+}
+
+.atlas-writing__summary {
+  max-width: 39ch;
+  margin: 1rem 0 0;
+  color: var(--light-secondary-text);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.atlas-writing__article-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  border-top: 1px solid var(--atlas-light-inset-border);
+  padding-top: 1.25rem;
+  color: var(--light-secondary-text);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.atlas-writing__article-footer span {
+  color: var(--deep-mineral);
+  white-space: nowrap;
+}
+
+.atlas-writing__directory {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: clamp(2rem, 3.5vw, 3rem);
+  border-top: 1px solid var(--atlas-light-inset-border);
+  padding-top: 1.5rem;
+}
+
+.atlas-writing__directory > p {
+  margin: 0;
+  color: var(--light-secondary-text);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+
+.atlas-writing__directory nav {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem 1.75rem;
+}
+
+.atlas-writing__profile-link {
+  display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--atlas-ink);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  text-decoration-color: var(--atlas-light-inset-border);
+  text-underline-offset: 0.25em;
+  transition: color 180ms ease, text-decoration-color 180ms ease;
+}
+
+.atlas-writing__profile-link:hover {
+  color: var(--deep-mineral);
+  text-decoration-color: var(--deep-mineral);
+}
+
+.atlas-writing__profile-handle {
+  min-width: 0;
+  color: var(--light-secondary-text);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 60rem) {
+  .atlas-writing__header {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+
+  .atlas-writing__introduction {
+    max-width: 60ch;
+  }
+
+  .atlas-writing__articles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .atlas-writing__article {
+    min-height: 21rem;
+  }
+
+  .atlas-writing__directory {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 42rem) {
+  .atlas-writing__articles {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .atlas-writing__article {
+    min-height: 0;
+  }
+
+  .atlas-writing__article-copy {
+    margin-top: 2.5rem;
+  }
+
+  .atlas-writing__directory {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .atlas-writing__directory nav {
+    width: 100%;
+    max-width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-writing *,
+  .atlas-writing *::before,
+  .atlas-writing *::after {
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

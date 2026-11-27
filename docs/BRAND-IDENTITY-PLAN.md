@@ -248,7 +248,7 @@ Exit criteria:
 
 ## Phase 7 — Site-wide identity integration
 
-**Status:** Active, delivered as reviewable vertical slices. Phase 7.1 aligns the homepage Selected Work section and `/work` index; Phase 7.2 aligns the approved `/work/[slug]` detail route; Phase 7.3 aligns homepage Expertise & Capabilities; Phase 7.4 aligns homepage Professional Experience; Phase 7.5 aligns the homepage Engineering Approach. Writing/contact and résumé remain separate follow-on slices.
+**Status:** Active, delivered as reviewable vertical slices. Phase 7.1 aligns the homepage Selected Work section and `/work` index; Phase 7.2 aligns the approved `/work/[slug]` detail route; Phase 7.3 aligns homepage Expertise & Capabilities; Phase 7.4 aligns homepage Professional Experience; Phase 7.5 aligns the homepage Engineering Approach; Phase 7.6 aligns homepage Writing & publication. Contact & footer and résumé remain separate follow-on slices.
 
 **Goal:** extend the approved system consistently.
 
@@ -346,7 +346,8 @@ Continue Phase 7 through independent, production-grade review slices. The delive
 - Phase 7.3 — homepage Expertise & Capabilities, sourced only from the existing five-group skills record.
 - Phase 7.4 — homepage Professional Experience, preserving the two source-backed overlapping role periods.
 - Phase 7.5 — homepage Engineering Approach, preserving the four existing `ENGINEERING_PRINCIPLES`.
+- Phase 7.6 — homepage Writing & publication presentation, preserving all three existing article records and the DEV / Medium publication profiles.
 
-The next separate slice is Writing & publication presentation. Keep contact-channel decisions and résumé alignment as separate follow-on slices. Preserve source-backed public copy, project evidence/disclosure gates, responsive behavior, 200% root-font reflow, keyboard access, contrast, and exact-PR-head browser validation. Review stacked changes in order and do not merge or deploy without an explicit owner decision.
+The next separate slice is Contact & Footer presentation, retaining only existing résumé/work destinations and public profiles; the unresolved direct contact-channel decision remains an explicit owner gate. Résumé route alignment follows separately. Preserve source-backed public copy, project evidence/disclosure gates, responsive behavior, 200% root-font reflow, keyboard access, contrast, and exact-PR-head browser validation. Review stacked changes in order and do not merge or deploy without an explicit owner decision.
 
 Phase 1 remains open only for its outstanding owner-only gates: literal browser 200% zoom/OS text scaling, native print-dialog behavior, production-domain/commit parity, public contact-channel decision, and owner acceptance of prioritized audit findings. The earlier real-device and assistive-technology completion remains a category-level owner attestation; do not invent platform details.

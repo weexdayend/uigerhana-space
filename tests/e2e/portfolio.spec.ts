@@ -1062,3 +1062,166 @@ test.describe("System Atlas engineering approach", () => {
     }
   });
 });
+
+
+test.describe("System Atlas writing and publication", () => {
+  test("presents the three existing public articles and their source-backed metadata in order", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const response = await page.goto("/", { waitUntil: "domcontentloaded" });
+    expect(response?.ok() || response?.status() === 304).toBe(true);
+
+    const section = page.locator("#writing");
+    await expect(section).toBeVisible();
+    await expect(section.getByRole("heading", {
+      level: 2,
+      name: "Ideas behind the systems.",
+    })).toBeVisible();
+
+    const articles = section.locator(".atlas-writing__article");
+    await expect(articles).toHaveCount(3);
+
+    const titles = [
+      "What Leaves When an Engineer Leaves",
+      "Why Payment Gateways Don’t Solve Enterprise Reconciliation",
+      "The Hidden Layer Every AI Agent Needs: Canonical Data Architecture",
+    ];
+    const dates = ["2026-07-01", "2026-06-26", "2026-06-24"];
+    const labels = ["1 Jul 2026", "26 Jun 2026", "24 Jun 2026"];
+    const readingTimes = ["17 min read", "5 min read", "6 min read"];
+    const categories = [
+      "Engineering practice",
+      "Financial intelligence",
+      "Enterprise AI",
+    ];
+
+    for (let index = 0; index < titles.length; index += 1) {
+      const article = articles.nth(index);
+      await expect(article.getByRole("heading", { level: 3, name: titles[index] })).toBeVisible();
+      await expect(article.getByText(categories[index], { exact: true })).toBeVisible();
+      await expect(article.locator(".atlas-writing__publication")).toContainText("Medium");
+      await expect(article.locator(".atlas-writing__publication")).toContainText(readingTimes[index]);
+      await expect(article.locator("time")).toHaveAttribute("datetime", dates[index]);
+      await expect(article.locator("time")).toHaveText(labels[index]);
+
+      const link = article.locator(".atlas-writing__article-link");
+      await expect(link).toBeVisible();
+      await expect(link).toContainText(titles[index]);
+      await expect(link).toHaveAttribute("target", "_blank");
+      await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      await expect(link).toHaveAttribute("href", /^https:\/\/medium\.com\/@weexdayend\//);
+    }
+
+    await expect(section.getByRole("navigation", { name: "Publication profiles" }).getByRole("link")).toHaveCount(2);
+    await expect(section.getByRole("link", { name: /DEV Community.*@uigerhana/ })).toHaveAttribute("href", "https://dev.to/uigerhana");
+    await expect(section.getByRole("link", { name: /Medium.*@weexdayend/ })).toHaveAttribute("href", "https://medium.com/@weexdayend");
+  });
+
+  test("uses the approved three-to-two-to-one article grid across responsive breakpoints", async ({ page }) => {
+    for (const sample of [
+      { width: 1440, columns: 3 },
+      { width: 834, columns: 2 },
+      { width: 390, columns: 1 },
+    ]) {
+      await page.setViewportSize({ width: sample.width, height: 900 });
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const grid = page.locator("#writing .atlas-writing__articles");
+      const count = await grid.evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").length);
+      expect(count).toBe(sample.columns);
+      await expect(grid.locator(".atlas-writing__article")).toHaveCount(3);
+    }
+  });
+
+  test("reflows article titles, summaries, and publication links at 200% root text", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+    await page.evaluate(() => document.fonts.ready);
+
+    for (const width of [390, 360, 320]) {
+      await page.setViewportSize({ width, height: 844 });
+      const layout = await page.locator("#writing").evaluate((section) => {
+        const heading = section.querySelector<HTMLElement>("h2");
+        const headingRect = heading?.getBoundingClientRect();
+        const cards = Array.from(section.querySelectorAll<HTMLElement>(".atlas-writing__article"));
+        const textNodes = Array.from(section.querySelectorAll<HTMLElement>(
+          ".atlas-writing__category, .atlas-writing__title, .atlas-writing__summary, .atlas-writing__article-footer, .atlas-writing__directory nav, .atlas-writing__profile-link"
+        ));
+        return {
+          viewport: document.documentElement.clientWidth,
+          document: document.documentElement.scrollWidth,
+          body: document.body.scrollWidth,
+          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          headingClipped: Boolean(heading && heading.scrollWidth > heading.clientWidth + 1),
+          headingInViewport: Boolean(
+            headingRect && headingRect.left >= -1 &&
+            headingRect.right <= document.documentElement.clientWidth + 1
+          ),
+          cardCount: cards.length,
+          cardOverflows: cards.some((card) => card.scrollWidth > card.clientWidth + 1),
+          textOverflowTargets: textNodes
+            .filter((item) => item.scrollWidth > item.clientWidth + 1)
+            .map((item) => ({
+              tag: item.tagName.toLowerCase(),
+              className: item.className,
+              text: (item.textContent ?? "").replace(/\\s+/g, " ").trim().slice(0, 100),
+              scrollWidth: item.scrollWidth,
+              clientWidth: item.clientWidth,
+            })),
+        };
+      });
+
+      expect(layout.rootFontSize).toBeGreaterThanOrEqual(32);
+      expect(layout.document).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.body).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.headingClipped).toBe(false);
+      expect(layout.headingInViewport).toBe(true);
+      expect(layout.cardCount).toBe(3);
+      expect(layout.cardOverflows).toBe(false);
+      expect(layout.textOverflowTargets, JSON.stringify(layout.textOverflowTargets, null, 2)).toEqual([]);
+    }
+  });
+
+  test("keeps article and publication links keyboard-accessible under reduced motion", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    const section = page.locator("#writing");
+    await section.scrollIntoViewIfNeeded();
+    await expect(section.locator(".atlas-writing__article")).toHaveCount(3);
+    await expect(section.getByRole("navigation", { name: "Publication profiles" }).getByRole("link")).toHaveCount(2);
+    await expect(section.locator(".atlas-writing__article-link")).toHaveCount(3);
+
+    const links = section.locator(".atlas-writing__article-link, .atlas-writing__profile-link");
+    for (const link of await links.all()) {
+      await expect(link).toBeVisible();
+      await expect(link).toHaveCSS("opacity", "1");
+    }
+
+    await links.first().focus();
+    await expect(links.first()).toBeFocused();
+  });
+
+  test("has no axe WCAG A/AA or configured best-practice violations at desktop and mobile", async ({ page }) => {
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      await page.locator("#writing").scrollIntoViewIfNeeded();
+      await page.evaluate(() => document.fonts.ready);
+
+      const results = await new AxeBuilder({ page })
+        .include("#writing")
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"])
+        .analyze();
+      const violations = results.violations.map((violation) => ({
+        id: violation.id,
+        impact: violation.impact,
+        nodes: violation.nodes.map((node) => node.target.join(" ")),
+      }));
+      expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
+    }
+  });
+});

@@ -5,84 +5,91 @@ export function WritingSection() {
     <section
       id="writing"
       data-band="light"
-      className="bg-[#f2efe7] py-20 text-[#121518] sm:py-28"
+      className="atlas-writing"
+      aria-labelledby="writing-title"
     >
-      <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
-        <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
-          <div className="min-w-0 lg:col-span-7">
-            <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">
-              Writing / Notes in public
+      <div className="atlas-writing__container">
+        <header className="atlas-writing__header">
+          <div className="atlas-writing__heading">
+            <p className="atlas-writing__eyebrow">
+              <span>06 /</span>
+              Writing &amp; notes
             </p>
-            <h2 className="mt-4 max-w-[15ch] break-words text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
-              Ideas behind the systems.
-            </h2>
+            <h2 id="writing-title">Ideas behind the systems.</h2>
           </div>
-          <p className="max-w-[52ch] text-sm leading-[1.75] text-[#121518]/70 sm:text-base lg:col-span-5 lg:justify-self-end">
+
+          <p className="atlas-writing__introduction">
             Writing about engineering judgment, enterprise workflows, data
             architecture, and the context that makes intelligent systems useful.
           </p>
-        </div>
+        </header>
 
-        <div className="mt-10 grid grid-cols-1 gap-px border border-[#121518]/18 bg-[#121518]/18 lg:grid-cols-3">
+        <div className="atlas-writing__articles">
           {FEATURED_WRITING.map((article, index) => (
-            <article
-              key={article.id}
-              className="flex min-w-0 min-h-[310px] flex-col bg-[#f8f6f0] p-6 sm:p-8"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-[#8a5a20]">
-                  {article.category}
-                </span>
-                <span className="font-pixel text-xl text-[#686863]">
-                  0{index + 1}
+            <article className="atlas-writing__article" key={article.id}>
+              <div className="atlas-writing__article-topline">
+                <span className="atlas-writing__category">{article.category}</span>
+                <span className="atlas-writing__index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
-              <div className="mt-8">
-                <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-[#585f5e]">
-                  {article.publication} · {article.readingTime}
+
+              <div className="atlas-writing__article-copy">
+                <p className="atlas-writing__publication">
+                  {article.publication}
+                  <span aria-hidden="true"> · </span>
+                  {article.readingTime}
                 </p>
-                <h3 className="mt-3 break-words text-xl font-normal leading-snug tracking-[-0.035em] sm:text-2xl">
+
+                <h3 className="atlas-writing__title">
                   <a
+                    className="atlas-writing__article-link"
                     href={article.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="break-words transition-colors hover:text-[#8a5a20] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b8680c]"
+                    aria-label={
+                      "Read " +
+                      article.title +
+                      " on " +
+                      article.publication +
+                      " (opens in a new tab)"
+                    }
                   >
                     {article.title}
-                    <span className="ml-2 inline-block text-sm text-[#8a5a20]" aria-hidden="true">↗</span>
+                    <span aria-hidden="true" className="atlas-writing__external">
+                      ↗
+                    </span>
                   </a>
                 </h3>
-                <p className="mt-4 break-words text-sm leading-[1.75] text-[#121518]/70">
-                  {article.summary}
-                </p>
+
+                <p className="atlas-writing__summary">{article.summary}</p>
               </div>
-              <div className="mt-auto flex items-center justify-between gap-3 border-t border-[#121518]/15 pt-5">
-                <time dateTime={article.publishedAt} className="text-xs text-[#585f5e]">
-                  {article.publishedLabel}
-                </time>
-                <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#8a5a20]">
-                  Read article
-                </span>
-              </div>
+
+              <footer className="atlas-writing__article-footer">
+                <time dateTime={article.publishedAt}>{article.publishedLabel}</time>
+                <span>{article.readingTime}</span>
+              </footer>
             </article>
           ))}
         </div>
 
-        <div className="mt-8 flex flex-col gap-4 border-t border-[#121518]/18 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-[#585f5e]">More writing and public notes</p>
-          <div className="flex flex-wrap gap-x-6 gap-y-3">
+        <div className="atlas-writing__directory">
+          <p>More writing and public notes</p>
+          <nav aria-label="Publication profiles">
             {PUBLICATION_PROFILES.map((profile) => (
               <a
                 key={profile.id}
                 href={profile.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm underline decoration-[#121518]/25 underline-offset-4 transition-colors hover:text-[#8a5a20] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b8680c]"
+                className="atlas-writing__profile-link"
               >
-                {profile.platform} {profile.handle} ↗
+                <span>{profile.platform}</span>
+                <span className="atlas-writing__profile-handle">{profile.handle}</span>
+                <span aria-hidden="true">↗</span>
               </a>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
     </section>
