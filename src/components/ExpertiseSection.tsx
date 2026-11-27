@@ -8,7 +8,7 @@ export function ExpertiseSection() {
       className="bg-[#0b0e11] py-20 text-[#e8e4d8] sm:py-28"
     >
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
-        <div className="grid items-end gap-6 lg:grid-cols-12">
+        <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
           <div className="lg:col-span-6">
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#f0b765]">
               Capabilities / technical expertise
@@ -24,11 +24,11 @@ export function ExpertiseSection() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-0 border-y border-[#e8e4d8]/18 lg:grid-cols-2">
+        <div className="mt-14 grid grid-cols-1 gap-0 border-y border-[#e8e4d8]/18 lg:grid-cols-2">
           {SKILL_GROUPS.map((group, index) => (
             <article
               key={group.id}
-              className={`grid gap-5 border-b border-[#e8e4d8]/18 py-7 sm:grid-cols-12 sm:gap-8 lg:px-6 ${index % 2 === 0 ? "lg:border-r" : ""}`}
+              className={`grid grid-cols-1 gap-5 border-b border-[#e8e4d8]/18 py-7 sm:grid-cols-12 sm:gap-8 lg:px-6 ${index % 2 === 0 ? "lg:border-r" : ""}`}
             >
               <div className="sm:col-span-5">
                 <span className="font-mono text-xs text-[#f0b765]">
