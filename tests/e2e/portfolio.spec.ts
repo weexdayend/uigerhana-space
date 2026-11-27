@@ -570,7 +570,7 @@ test.describe("keyboard and motion behavior", () => {
     }
   });
 
-  test("captures element-level 200% root-text reflow diagnostics across public routes", async ({ page }, testInfo) => {
+  test("keeps public routes reflowing at 200% root text", async ({ page }, testInfo) => {
     const widths = [390, 360, 320] as const;
     const routeReports: Array<Record<string, unknown>> = [];
 
@@ -656,6 +656,29 @@ test.describe("keyboard and motion behavior", () => {
             ].filter((node): node is HTMLElement => Boolean(node)).map(snapshot),
           }));
 
+          const clippedHeadings = headings
+            .filter((heading) => heading.clipped)
+            .map((heading) => ({
+              text: heading.text,
+              className: heading.className,
+              rect: heading.rect,
+              dimensions: heading.dimensions,
+              ancestors: heading.ancestors,
+            }));
+
+          const routeHeaderLinks = Array.from(
+            document.querySelectorAll<HTMLElement>(
+              ".atlas-header__inner a[href], .atlas-route-header__inner a[href], .atlas-detail__header-inner a[href], .resume-chrome__inner a[href]"
+            )
+          ).filter(isVisible);
+
+          const headerLinksOutsideViewport = routeHeaderLinks
+            .filter((link) => {
+              const rect = link.getBoundingClientRect();
+              return rect.left < -1 || rect.right > viewportWidth + 1;
+            })
+            .map(snapshot);
+
           const overflowCandidates = Array.from(document.body.querySelectorAll<HTMLElement>("*"))
             .filter((element) => {
               if (!isVisible(element)) return false;
@@ -685,9 +708,28 @@ test.describe("keyboard and motion behavior", () => {
             documentWidth: document.documentElement.scrollWidth,
             bodyWidth: document.body.scrollWidth,
             headings,
+            clippedHeadings,
+            headerLinksOutsideViewport,
             overflowCandidates,
           };
         });
+
+        expect(
+          report.documentWidth,
+          `Document overflow on ${route} at ${viewportWidth}px: ${JSON.stringify(report.overflowCandidates)}`
+        ).toBeLessThanOrEqual(viewportWidth + 1);
+        expect(
+          report.bodyWidth,
+          `Body overflow on ${route} at ${viewportWidth}px`
+        ).toBeLessThanOrEqual(viewportWidth + 1);
+        expect(
+          report.clippedHeadings,
+          `Visible heading clipping on ${route} at ${viewportWidth}px`
+        ).toEqual([]);
+        expect(
+          report.headerLinksOutsideViewport,
+          `Route header links outside the viewport on ${route} at ${viewportWidth}px`
+        ).toEqual([]);
 
         routeReports.push({ route, ...report });
 
