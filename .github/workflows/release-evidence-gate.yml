@@ -71,14 +71,16 @@ jobs:
               exit 1
             fi
             gh api "/repos/$GITHUB_REPOSITORY/actions/runs/$run_id" > "evidence-input/runs/$name.json"
-            jq -e               --arg sha "$EXPECTED_COMMIT"               --arg workflow "$expected_path"               '(.head_sha | ascii_downcase) == $sha
-                and .event == "workflow_dispatch"
-                and .status == "completed"
-                and (.conclusion == "success" or .conclusion == "failure")
-                and .path == $workflow'               "evidence-input/runs/$name.json" > /dev/null || {
-                echo "::error::$name run must be a completed manual dispatch of $expected_path on $EXPECTED_COMMIT."
-                exit 1
-              }
+            jq -e --arg sha "$EXPECTED_COMMIT" --arg workflow "$expected_path" '
+              (.head_sha | ascii_downcase) == $sha
+              and .event == "workflow_dispatch"
+              and .status == "completed"
+              and (.conclusion == "success" or .conclusion == "failure")
+              and .path == $workflow
+            ' "evidence-input/runs/$name.json" > /dev/null || {
+              echo "::error::$name run must be a completed manual dispatch of $expected_path on $EXPECTED_COMMIT."
+              exit 1
+            }
             local run_attempt
             run_attempt="$(jq -r '.run_attempt // empty' "evidence-input/runs/$name.json")"
             if ! printf '%s' "$run_attempt" | grep -Eq '^[1-9][0-9]*$'; then
@@ -87,6 +89,42 @@ jobs:
             fi
             local output_key="${name//-/_}"
             printf '%s_attempt=%s\n' "$output_key" "$run_attempt" >> "$GITHUB_OUTPUT"
+
+            local artifact_prefix
+            case "$name" in
+              external) artifact_prefix="external-destination-audit" ;;
+              production) artifact_prefix="production-parity-audit" ;;
+              physical-device) artifact_prefix="physical-device-acceptance" ;;
+              *) echo "::error::Unknown source audit: $name"; exit 1 ;;
+            esac
+            local artifact_name="${artifact_prefix}-${EXPECTED_COMMIT}-${run_attempt}"
+            local artifact_list_path="evidence-input/runs/$name-artifacts.json"
+            local artifact_path="evidence-input/runs/$name-artifact.json"
+            gh api --paginate "/repos/$GITHUB_REPOSITORY/actions/runs/$run_id/artifacts?per_page=100" | jq -s '{artifacts: [.[].artifacts[]?]}' > "$artifact_list_path"
+
+            local artifact_matches
+            artifact_matches="$(jq --arg name "$artifact_name" '[.artifacts[]? | select(.name == $name)] | length' "$artifact_list_path")"
+            if [ "$artifact_matches" != "1" ]; then
+              echo "::error::$name run must contain exactly one artifact named $artifact_name; found $artifact_matches."
+              exit 1
+            fi
+            jq --arg name "$artifact_name" '.artifacts[] | select(.name == $name)' "$artifact_list_path" > "$artifact_path"
+            jq -e '
+              (.id | type == "number" and . > 0)
+              and (.expired == false)
+              and (.size_in_bytes | type == "number" and . > 0)
+              and (.created_at | type == "string" and length > 0)
+              and (.expires_at | type == "string" and length > 0)
+            ' "$artifact_path" > /dev/null || {
+              echo "::error::$name source artifact metadata is incomplete, empty, or marked expired."
+              exit 1
+            }
+            local artifact_expires_at
+            artifact_expires_at="$(jq -r '.expires_at' "$artifact_path")"
+            node -e 'const expiresAt = Date.parse(process.argv[1]); if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) process.exit(1);' "$artifact_expires_at" || {
+              echo "::error::$name source artifact has expired or expires before this gate can evaluate it."
+              exit 1
+            }
           }
 
           verify_run external "$EXTERNAL_RUN_ID" ".github/workflows/external-destination-audit.yml"
@@ -212,191 +250,6 @@ jobs:
                   artifactExpiresAt: $physicalArtifact[0].expires_at,
                   artifactExpired: $physicalArtifact[0].expired,
                   artifactSizeBytes: $physicalArtifact[0].size_in_bytes,
-                  reportPath: $physicalPath,
-                  reportSha256: $physicalSha
-                }
-              }
-            }' > evidence-input/manifest.json
-
-          mkdir -p artifacts
-          node scripts/evaluate-release-evidence.mjs             evidence-input/manifest.json             artifacts/release-gate-report.json
-
-          {
-            echo "## Release evidence evaluation"
-            echo
-            node -e '
-              const report = require("./artifacts/release-gate-report.json");
-              console.log("- Status: " + report.status.toUpperCase());
-              console.log("- Reviewed commit: " + report.expectedCommit);
-              console.log("- Release approved: " + report.releaseApproved);
-              console.log("- Blockers: " + report.blockers.length);
-              console.log("- Owner review items: " + report.ownerReviewRequired.length);
-              for (const blocker of report.blockers) console.log("- BLOCKED / " + blocker.gate + ": " + blocker.detail);
-              for (const item of report.ownerReviewRequired) console.log("- OWNER / " + item.id + ": " + item.detail);
-            '
-            echo
-            echo "A successful workflow means the evaluation completed; it is not a release approval."
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload consolidated release evidence report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-evidence-gate-${{ inputs.expected_commit }}
-          path: |
-            artifacts/release-gate-report.json
-            evidence-input/manifest.json
-          if-no-files-found: warn
-          retention-days: 90
-; then
-              echo "::error::$name run has no valid positive run_attempt."
-              exit 1
-            fi
-            local output_key="${name//-/_}"
-            printf '%s_attempt=%s\\n' "$output_key" "$run_attempt" >> "$GITHUB_OUTPUT"
-
-            local artifact_prefix
-            case "$name" in
-              external) artifact_prefix="external-destination-audit" ;;
-              production) artifact_prefix="production-parity-audit" ;;
-              physical-device) artifact_prefix="physical-device-acceptance" ;;
-              *) echo "::error::Unknown source audit: $name"; exit 1 ;;
-            esac
-            local artifact_name="${artifact_prefix}-${EXPECTED_COMMIT}-${run_attempt}"
-            local artifact_list_path="evidence-input/runs/$name-artifacts.json"
-            local artifact_path="evidence-input/runs/$name-artifact.json"
-            gh api --paginate "/repos/$GITHUB_REPOSITORY/actions/runs/$run_id/artifacts?per_page=100" | jq -s '{artifacts: [.[].artifacts[]?]}' > "$artifact_list_path"
-
-            local artifact_matches
-            artifact_matches="$(jq --arg name "$artifact_name" '[.artifacts[]? | select(.name == $name)] | length' "$artifact_list_path")"
-            if [ "$artifact_matches" != "1" ]; then
-              echo "::error::$name run must contain exactly one artifact named $artifact_name; found $artifact_matches."
-              exit 1
-            fi
-            jq --arg name "$artifact_name" '.artifacts[] | select(.name == $name)' "$artifact_list_path" > "$artifact_path"
-            jq -e '
-              (.id | type == "number" and . > 0)
-              and (.expired == false)
-              and (.size_in_bytes | type == "number" and . > 0)
-              and (.created_at | type == "string" and length > 0)
-              and (.expires_at | type == "string" and length > 0)
-            ' "$artifact_path" > /dev/null || {
-              echo "::error::$name source artifact metadata is incomplete, empty, or marked expired."
-              exit 1
-            }
-            local artifact_expires_at
-            artifact_expires_at="$(jq -r '.expires_at' "$artifact_path")"
-            node -e 'const expiresAt = Date.parse(process.argv[1]); if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) process.exit(1);' "$artifact_expires_at" || {
-              echo "::error::$name source artifact has expired or expires before this gate can evaluate it."
-              exit 1
-            }
-          }
-
-          verify_run external "$EXTERNAL_RUN_ID" ".github/workflows/external-destination-audit.yml"
-          verify_run production "$PRODUCTION_RUN_ID" ".github/workflows/production-parity-audit.yml"
-          verify_run physical-device "$PHYSICAL_DEVICE_RUN_ID" ".github/workflows/physical-device-acceptance.yml"
-
-      - name: Download external destination evidence
-        uses: actions/download-artifact@v4
-        with:
-          name: external-destination-audit-${{ inputs.expected_commit }}
-          path: evidence-input/external
-          repository: ${{ github.repository }}
-          run-id: ${{ inputs.external_audit_run_id }}
-          github-token: ${{ github.token }}
-
-      - name: Download production parity evidence
-        uses: actions/download-artifact@v4
-        with:
-          name: production-parity-audit-${{ inputs.expected_commit }}
-          path: evidence-input/production
-          repository: ${{ github.repository }}
-          run-id: ${{ inputs.production_audit_run_id }}
-          github-token: ${{ github.token }}
-
-      - name: Download physical-device evidence report
-        uses: actions/download-artifact@v4
-        with:
-          name: physical-device-acceptance-${{ inputs.expected_commit }}
-          path: evidence-input/physical-device
-          repository: ${{ github.repository }}
-          run-id: ${{ inputs.physical_device_audit_run_id }}
-          github-token: ${{ github.token }}
-
-      - name: Build provenance manifest and evaluate evidence
-        env:
-          EXPECTED_COMMIT: ${{ inputs.expected_commit }}
-        run: |
-          set -euo pipefail
-
-          find_one() {
-            local directory="$1"
-            local filename="$2"
-            mapfile -t matches < <(find "$directory" -type f -name "$filename" -print)
-            if [ "${#matches[@]}" -ne 1 ]; then
-              echo "::error::Expected exactly one $filename in $directory; found ${#matches[@]}."
-              exit 1
-            fi
-            printf '%s' "${matches[0]}"
-          }
-
-          external_file="$(find_one evidence-input/external external-destination-reachability.json)"
-          production_file="$(find_one evidence-input/production production-parity-audit.json)"
-          physical_file="$(find_one evidence-input/physical-device physical-device-acceptance-report.json)"
-
-          relative_path() {
-            realpath --relative-to=evidence-input "$1"
-          }
-          file_sha() {
-            sha256sum "$1" | cut -d ' ' -f 1
-          }
-
-          external_path="$(relative_path "$external_file")"
-          production_path="$(relative_path "$production_file")"
-          physical_path="$(relative_path "$physical_file")"
-
-          jq -n             --arg repository "$GITHUB_REPOSITORY"             --arg expectedCommit "$EXPECTED_COMMIT"             --arg generatedAt "$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)"             --arg externalPath "$external_path"             --arg externalSha "$(file_sha "$external_file")"             --arg productionPath "$production_path"             --arg productionSha "$(file_sha "$production_file")"             --arg physicalPath "$physical_path"             --arg physicalSha "$(file_sha "$physical_file")"             --slurpfile externalRun evidence-input/runs/external.json             --slurpfile productionRun evidence-input/runs/production.json             --slurpfile physicalRun evidence-input/runs/physical-device.json             '{
-              schemaVersion: 1,
-              repository: $repository,
-              expectedCommit: $expectedCommit,
-              generatedAt: $generatedAt,
-              inputs: {
-                externalDestination: {
-                  runId: $externalRun[0].id,
-                  workflowPath: $externalRun[0].path,
-                  headSha: $externalRun[0].head_sha,
-                  event: $externalRun[0].event,
-                  status: $externalRun[0].status,
-                  conclusion: $externalRun[0].conclusion,
-                  runCreatedAt: $externalRun[0].created_at,
-                  runUpdatedAt: $externalRun[0].updated_at,
-                  artifactName: "external-destination-audit-" + $expectedCommit,
-                  reportPath: $externalPath,
-                  reportSha256: $externalSha
-                },
-                productionParity: {
-                  runId: $productionRun[0].id,
-                  workflowPath: $productionRun[0].path,
-                  headSha: $productionRun[0].head_sha,
-                  event: $productionRun[0].event,
-                  status: $productionRun[0].status,
-                  conclusion: $productionRun[0].conclusion,
-                  runCreatedAt: $productionRun[0].created_at,
-                  runUpdatedAt: $productionRun[0].updated_at,
-                  artifactName: "production-parity-audit-" + $expectedCommit,
-                  reportPath: $productionPath,
-                  reportSha256: $productionSha
-                },
-                physicalDevice: {
-                  runId: $physicalRun[0].id,
-                  workflowPath: $physicalRun[0].path,
-                  headSha: $physicalRun[0].head_sha,
-                  event: $physicalRun[0].event,
-                  status: $physicalRun[0].status,
-                  conclusion: $physicalRun[0].conclusion,
-                  runCreatedAt: $physicalRun[0].created_at,
-                  runUpdatedAt: $physicalRun[0].updated_at,
-                  artifactName: "physical-device-acceptance-" + $expectedCommit,
                   reportPath: $physicalPath,
                   reportSha256: $physicalSha
                 }
