@@ -45,3 +45,31 @@ No pass/fail performance budgets are set from this first sample. The assertions 
 - `P8-PERF-03` tracks the mobile-class lab artifact and exact-head CI.
 - `P8-PERF-02` (field/mobile/INP acceptance) remains **NOT VERIFIED** until representative physical-device and field evidence is reviewed.
 - Native zoom, OS text scaling, native print, production commit parity, external destination reachability/content, and owner go/no-go remain separate gates.
+
+## Exact-head CI observation
+
+The PR-triggered workflow on PR #32 head `1fa7ab1cdccbba0717bb0fc43432e87d36cb6e75` completed the new Chromium mobile-lab test and the wider browser suite:
+
+- PR quality job: passed in [Actions #46072238941](https://github.com/weexdayend/uigerhana-space/actions/runs/46072238941).
+- PR browser QA: **334 passed, 11 skipped, 0 failed** in [Actions #46072238941](https://github.com/weexdayend/uigerhana-space/actions/runs/46072238941).
+- New mobile-lab test executed once in Chromium and passed in 14.5 seconds. It was intentionally skipped in Firefox and WebKit; those engines ran the existing suite.
+- Evidence artifact: [#15234410023](https://github.com/weexdayend/uigerhana-space/actions/runs/46072238941/artifacts/15234410023).
+- Test artifact source commit (GitHub PR merge ref): `d6b7548430ec2665a53c2634a50cfab77c2d2c44`; PR head: `1fa7ab1cdccbba0717bb0fc43432e87d36cb6e75`.
+- Browser version: Chromium `159.0.8154.6`.
+
+### Observed initial profile
+
+All eight route navigations returned HTTP 200. Median values below combine one isolated-context first view and one same-context repeat; they are not cold-cache performance budgets.
+
+| Route | Median TTFB | Median FCP / LCP | Median CLS | Median transfer bytes | Median long-task total |
+|---|---:|---:|---:|---:|---:|
+| `/` | 150.1 ms | 872 / 872 ms | 0 | 163,221 B | 198 ms |
+| `/work` | 150.1 ms | 686 / 686 ms | 0 | 140,776 B | 67 ms |
+| `/work/uigerhana-space` | 150.0 ms | 732 / 732 ms | 0 | 140,094 B | 84 ms |
+| `/cv` | 150.0 ms | 736 / 736 ms | 0 | 143,712 B | 74 ms |
+
+No horizontal overflow was recorded in any of the eight samples at 390 CSS px. No console errors or uncaught page errors were recorded.
+
+The repeat navigations captured `net::ERR_ABORTED` for a small number of chunk requests on `/work` and `/cv`; these occurred during a page reload and remain visible in the raw `failedRequests` list. The test does not interpret these cancellations as a performance pass/fail and does not prove their cause. Review raw samples before treating them as application request failures.
+
+The observed lab values are an initial constrained-profile baseline only. The transfer medians mix isolated-context first views and warm same-context repeats; FCP/LCP are two-navigation medians; no budget or field result is inferred. Push-triggered browser QA was still running when this evidence note was written.
