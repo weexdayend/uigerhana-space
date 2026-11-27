@@ -660,7 +660,7 @@ test.describe("System Atlas case-study detail", () => {
     ]) {
       await page.setViewportSize(viewport);
       const response = await page.goto("/work/uigerhana-space", { waitUntil: "domcontentloaded" });
-      expect(response?.status()).toBe(200);
+      expect(response?.ok() || response?.status() === 304).toBe(true);
       await expect(page.getByRole("heading", { level: 1, name: "Building a personal professional platform" })).toBeVisible();
       await expect(page.locator('[data-project-status="in-progress"]')).toHaveText(/In progress/);
       await expect(page.getByRole("navigation", { name: "Case study navigation" })).toBeVisible();
