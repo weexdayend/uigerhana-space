@@ -1,6 +1,6 @@
 # Phase 8.5 — Interactive State Contrast Audit
 
-**Status:** Automated regression added; exact-head CI pending.
+**Status:** PASS — PR #29 merged; exact-head push and pull-request quality/runtime checks passed.
 **Stack base:** PR #28 / `phase-8/interaction-accessibility-states`.
 **Scope:** Focus-indicator contrast on the résumé route and representative hover-text contrast on solid surfaces. This is a targeted regression, not a full-site contrast certification.
 
@@ -44,7 +44,15 @@ The test writes `focus-indicator-contrast-audit.json` and `hover-text-contrast-a
 - The test does not inspect pseudo-element overlays, image pixels, anti-aliasing, every link/component/state, pressed/disabled states, or physical-device behavior. Those are not claimed as covered.
 - Browser automation does not replace native screen-reader, OS scaling, literal browser zoom, native print, or owner acceptance.
 
-## 5. Exit criteria
+## 5. Exact-head validation
+
+- PR #29 head: `acc25faae7575b19293cae5fffef96aecaa64215`.
+- Push Actions [#46068569732](https://github.com/weexdayend/uigerhana-space/actions/runs/46068569732): quality and runtime jobs passed.
+- Pull-request Actions [#46068576358](https://github.com/weexdayend/uigerhana-space/actions/runs/46068576358): quality and runtime jobs passed.
+- Browser evidence artifact: [#15231449634](https://github.com/weexdayend/uigerhana-space/actions/runs/46068576358/artifacts/15231449634).
+- PR #29 merged into `main` as `3444f4898859f524c562fc85ba0f246ec3bf1586`.
+
+## 6. Exit criteria
 
 - All focus samples expose the intended outline geometry and reach at least 3:1.
 - All sampled hover text reaches at least 4.5:1.
