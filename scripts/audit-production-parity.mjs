@@ -450,7 +450,7 @@ async function main() {
   const productionCommitParity = markerMismatch
     ? "mismatch"
     : allMarkersMatch
-      ? "verified"
+      ? "marker-match"
       : "not-verifiable";
 
   addFinding(
@@ -466,12 +466,12 @@ async function main() {
   addFinding(
     findings,
     "SERVED_COMMIT_PARITY",
-    productionCommitParity === "verified" ? "pass" : "review",
-    productionCommitParity === "verified"
-      ? "Served revision marker matches the expected commit."
+    productionCommitParity === "marker-match" ? "review" : "review",
+    productionCommitParity === "marker-match"
+      ? "All public routes declare the expected revision, but marker provenance must still be verified against the build/deployment process."
       : productionCommitParity === "mismatch"
         ? "A served revision marker does not match the expected commit."
-        : "No trustworthy served revision marker is exposed; a GitHub deployment record alone is not proof of the live served commit."
+        : "No consistent served revision marker is exposed; a GitHub deployment record alone is not proof of the live served commit."
   );
 
   const report = {
