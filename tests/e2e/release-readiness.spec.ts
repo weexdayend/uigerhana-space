@@ -123,16 +123,13 @@ test.describe("release route and link integrity", () => {
     expect(robots).toMatch(/Allow:\s*\/(?:\s|$)/i);
     expect(robots).toContain(SITE_ORIGIN + "/sitemap.xml");
 
-    const draftRoutes = [];
+    const draftRoutes = DRAFT_CASE_STUDY_ROUTES.map((route) => ({
+      route,
+      absentFromSitemap: !sitemap.includes(route),
+    }));
     for (const draftRoute of DRAFT_CASE_STUDY_ROUTES) {
-      const draftResponse = await request.get(draftRoute);
-      expect(draftResponse.status(), "unapproved draft case study must not be public: " + draftRoute).toBe(404);
-      expect(sitemap).not.toContain(draftRoute);
-      draftRoutes.push({
-        route: draftRoute,
-        status: draftResponse.status(),
-        absentFromSitemap: !sitemap.includes(draftRoute),
-      });
+      expect(sitemap, "unapproved draft case study must stay out of sitemap: " + draftRoute)
+        .not.toContain(draftRoute);
     }
 
     const evidence = {
@@ -153,6 +150,27 @@ test.describe("release route and link integrity", () => {
       contentType: "application/json",
     });
   });
+
+  for (const draftRoute of DRAFT_CASE_STUDY_ROUTES) {
+    test("returns HTTP 404 for unapproved draft case study " + draftRoute, async ({
+      request,
+    }, testInfo) => {
+      const response = await request.get(draftRoute);
+      expect(
+        response.status(),
+        "unapproved draft case study must be rejected before rendering: " + draftRoute
+      ).toBe(404);
+
+      await testInfo.attach("draft-route-denial.json", {
+        body: JSON.stringify({
+          route: draftRoute,
+          status: response.status(),
+          rejected: response.status() === 404,
+        }, null, 2),
+        contentType: "application/json",
+      });
+    });
+  }
 
   test("audits every rendered anchor, internal destination, fragment, and external target policy", async ({
     page,
