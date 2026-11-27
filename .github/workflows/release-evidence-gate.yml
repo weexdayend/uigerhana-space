@@ -143,7 +143,7 @@ jobs:
           production_path="$(relative_path "$production_file")"
           physical_path="$(relative_path "$physical_file")"
 
-          jq -n             --arg repository "$GITHUB_REPOSITORY"             --arg expectedCommit "$EXPECTED_COMMIT"             --arg generatedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)"             --arg externalPath "$external_path"             --arg externalSha "$(file_sha "$external_file")"             --arg productionPath "$production_path"             --arg productionSha "$(file_sha "$production_file")"             --arg physicalPath "$physical_path"             --arg physicalSha "$(file_sha "$physical_file")"             --slurpfile externalRun evidence-input/runs/external.json             --slurpfile productionRun evidence-input/runs/production.json             --slurpfile physicalRun evidence-input/runs/physical-device.json             '{
+          jq -n             --arg repository "$GITHUB_REPOSITORY"             --arg expectedCommit "$EXPECTED_COMMIT"             --arg generatedAt "$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)"             --arg externalPath "$external_path"             --arg externalSha "$(file_sha "$external_file")"             --arg productionPath "$production_path"             --arg productionSha "$(file_sha "$production_file")"             --arg physicalPath "$physical_path"             --arg physicalSha "$(file_sha "$physical_file")"             --slurpfile externalRun evidence-input/runs/external.json             --slurpfile productionRun evidence-input/runs/production.json             --slurpfile physicalRun evidence-input/runs/physical-device.json             '{
               schemaVersion: 1,
               repository: $repository,
               expectedCommit: $expectedCommit,
