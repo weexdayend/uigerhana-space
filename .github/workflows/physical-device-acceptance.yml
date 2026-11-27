@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       expected_commit:
-        description: Full 40-character SHA for the exact reviewed commit
+        description: Full lowercase 40-character SHA for the exact reviewed commit
         required: true
         type: string
       evidence_file:
@@ -16,6 +16,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: physical-device-acceptance-${{ inputs.expected_commit }}
+  cancel-in-progress: false
+
 jobs:
   audit:
     name: Validate physical-device evidence
@@ -26,7 +30,7 @@ jobs:
       - name: Checkout selected commit
         uses: actions/checkout@v4
         with:
-          ref: \${{ github.sha }}
+          ref: ${{ github.sha }}
           persist-credentials: false
 
       - name: Setup Node.js
@@ -34,19 +38,19 @@ jobs:
         with:
           node-version: 24
 
-      - name: Verify exact commit and evidence path
+      - name: Verify exact commit and contained evidence path
         env:
-          EXPECTED_COMMIT: \${{ inputs.expected_commit }}
-          EVIDENCE_FILE: \${{ inputs.evidence_file }}
+          EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+          EVIDENCE_FILE: ${{ inputs.evidence_file }}
         run: |
           set -euo pipefail
           actual_commit="$(git rev-parse HEAD)"
-          if [ "$actual_commit" != "$EXPECTED_COMMIT" ]; then
-            echo "::error::Checked-out commit does not match expected_commit."
+          if ! printf '%s' "$EXPECTED_COMMIT" | grep -Eq '^[a-f0-9]{40}$'; then
+            echo "::error::expected_commit must be a lowercase full 40-character SHA."
             exit 1
           fi
-          if ! printf '%s' "$EXPECTED_COMMIT" | grep -Eq '^[a-fA-F0-9]{40}$'; then
-            echo "::error::expected_commit must be a full 40-character SHA."
+          if [ "$actual_commit" != "$EXPECTED_COMMIT" ]; then
+            echo "::error::Checked-out commit does not match expected_commit."
             exit 1
           fi
           case "$EVIDENCE_FILE" in
@@ -56,16 +60,25 @@ jobs:
               exit 1
               ;;
           esac
-          test -f "$EVIDENCE_FILE"
+          evidence_root="$(realpath -e evidence/physical-device)"
+          evidence_real="$(realpath -e "$EVIDENCE_FILE")"
+          case "$evidence_real" in
+            "$evidence_root"/*.json) ;;
+            *)
+              echo "::error::evidence_file resolves outside evidence/physical-device/ or is not JSON."
+              exit 1
+              ;;
+          esac
+          test -f "$evidence_real"
 
       - name: Run validator unit tests
         run: node --test scripts/validate-physical-device-evidence.test.mjs
 
       - name: Validate physical-device evidence
         env:
-          EXPECTED_COMMIT: \${{ inputs.expected_commit }}
-          EVIDENCE_FILE: \${{ inputs.evidence_file }}
-          REPORT_PATH: \${{ runner.temp }}/physical-device-acceptance-report.json
+          EVIDENCE_FILE: ${{ inputs.evidence_file }}
+          EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+          REPORT_PATH: ${{ runner.temp }}/physical-device-acceptance-report.json
         run: |
           set -euo pipefail
           evidence_dir="$(dirname "$EVIDENCE_FILE")"
@@ -75,7 +88,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: physical-device-acceptance-\${{ github.sha }}
-          path: \${{ runner.temp }}/physical-device-acceptance-report.json
+          name: physical-device-acceptance-${{ github.sha }}
+          path: ${{ runner.temp }}/physical-device-acceptance-report.json
           if-no-files-found: ignore
           retention-days: 90

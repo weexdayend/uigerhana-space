@@ -18,6 +18,7 @@
     "verify:resume": "node scripts/verify-resume-route.mjs",
     "test:device-evidence": "node --test scripts/validate-physical-device-evidence.test.mjs",
     "test:release-evidence": "node --test scripts/evaluate-release-evidence.test.mjs",
+    "test:release-workflows": "node --test scripts/verify-release-workflow-contracts.test.mjs",
     "evaluate:release-evidence": "node scripts/evaluate-release-evidence.mjs"
   },
   "dependencies": {

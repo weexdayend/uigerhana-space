@@ -74,7 +74,7 @@ jobs:
                 and .event == "workflow_dispatch"
                 and .status == "completed"
                 and (.conclusion == "success" or .conclusion == "failure")
-                and (.path | startswith($workflow))'               "evidence-input/runs/$name.json" > /dev/null || {
+                and .path == $workflow'               "evidence-input/runs/$name.json" > /dev/null || {
                 echo "::error::$name run must be a completed manual dispatch of $expected_path on $EXPECTED_COMMIT."
                 exit 1
               }
