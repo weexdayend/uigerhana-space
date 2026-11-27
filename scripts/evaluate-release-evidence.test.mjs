@@ -91,6 +91,7 @@ async function createFixture(t, overrides = {}) {
   const metadata = {
     externalDestination: {
       runId: 101,
+      runAttempt: 1,
       runCreatedAt: "2026-11-28T09:55:00.000Z",
       runUpdatedAt: "2026-11-28T10:01:00.000Z",
       workflowPath: ".github/workflows/external-destination-audit.yml",
@@ -98,10 +99,11 @@ async function createFixture(t, overrides = {}) {
       event: "workflow_dispatch",
       status: "completed",
       conclusion: "success",
-      artifactName: "external-destination-audit-" + COMMIT,
+      artifactName: "external-destination-audit-" + COMMIT + "-1",
     },
     productionParity: {
       runId: 102,
+      runAttempt: 1,
       runCreatedAt: "2026-11-28T10:02:00.000Z",
       runUpdatedAt: "2026-11-28T10:07:00.000Z",
       workflowPath: ".github/workflows/production-parity-audit.yml",
@@ -109,10 +111,11 @@ async function createFixture(t, overrides = {}) {
       event: "workflow_dispatch",
       status: "completed",
       conclusion: "success",
-      artifactName: "production-parity-audit-" + COMMIT,
+      artifactName: "production-parity-audit-" + COMMIT + "-1",
     },
     physicalDevice: {
       runId: 103,
+      runAttempt: 1,
       runCreatedAt: "2026-11-28T10:05:00.000Z",
       runUpdatedAt: "2026-11-28T10:09:00.000Z",
       workflowPath: ".github/workflows/physical-device-acceptance.yml",
@@ -120,7 +123,7 @@ async function createFixture(t, overrides = {}) {
       event: "workflow_dispatch",
       status: "completed",
       conclusion: "success",
-      artifactName: "physical-device-acceptance-" + COMMIT,
+      artifactName: "physical-device-acceptance-" + COMMIT + "-1",
     },
   };
 
@@ -279,6 +282,26 @@ test("rejects physical-device validation reports without a run-bound validation 
 
   assert.equal(report.status, "invalid");
   assert.ok(report.errors.some((item) => item.includes("valid validatedAt timestamp")));
+});
+
+test("rejects a source artifact that is not bound to the validated run attempt", async (t) => {
+  const fixture = await createFixture(t, {
+    inputs: { productionParity: { runAttempt: 2 } },
+  });
+  const report = await evaluateReleaseEvidenceManifest(fixture.manifestPath);
+
+  assert.equal(report.status, "invalid");
+  assert.ok(report.errors.some((item) => item.includes("artifact name is not bound to expectedCommit and runAttempt")));
+});
+
+test("rejects missing or invalid source workflow run attempts", async (t) => {
+  const fixture = await createFixture(t, {
+    inputs: { physicalDevice: { runAttempt: 0 } },
+  });
+  const report = await evaluateReleaseEvidenceManifest(fixture.manifestPath);
+
+  assert.equal(report.status, "invalid");
+  assert.ok(report.errors.some((item) => item.includes("invalid workflow run attempt")));
 });
 
 test("rejects reuse of one workflow run as multiple independent evidence sources", async (t) => {
