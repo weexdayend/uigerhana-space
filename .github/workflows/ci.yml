@@ -61,6 +61,8 @@ jobs:
 
       - name: Production parity audit syntax
         run: node --check scripts/audit-production-parity.mjs
+      - name: Physical-device evidence validator tests
+        run: npm run test:device-evidence
 
       - name: Lint
         run: npm run lint

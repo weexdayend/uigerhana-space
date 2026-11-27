@@ -15,7 +15,8 @@
     "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json",
     "verify:writing": "node scripts/verify-writing-section.mjs",
     "verify:contact": "node scripts/verify-contact-footer.mjs",
-    "verify:resume": "node scripts/verify-resume-route.mjs"
+    "verify:resume": "node scripts/verify-resume-route.mjs",
+    "test:device-evidence": "node --test scripts/validate-physical-device-evidence.test.mjs"
   },
   "dependencies": {
     "next": "16.4.6",

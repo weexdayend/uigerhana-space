@@ -148,7 +148,30 @@ Device matrix / field data / findings:
 Result: NOT RUN  
 Physical devices / browser / OS / findings:
 
-## I. Final decision
+## I. Physical-device evidence package and validation
+
+1. Copy `evidence/physical-device/physical-device-session.template.json` to `evidence/physical-device/session.json`.
+2. Record one real Android and one real iOS device session. Do not use desktop responsive emulation, simulator, or Playwright touch emulation as physical-device evidence.
+3. Complete all required scenarios listed in [PHYSICAL-DEVICE-EVIDENCE.md](PHYSICAL-DEVICE-EVIDENCE.md). Mark results honestly; use `fail`, `blocked`, or `not-run` rather than converting an incomplete check to pass.
+4. Place screenshots, recordings, and logs under `evidence/physical-device/`. Avoid personal notifications, accounts, faces, voice, location, and hardware identifiers.
+5. Add one attachment record per retained file with a unique id, relative path, session id, scenario id, and SHA-256. Reference its id from the corresponding scenario's `attachmentIds`.
+6. Run the validator against the exact reviewed commit:
+
+```bash
+EXPECTED_COMMIT="<full-40-character-reviewed-commit>" \
+REPORT_PATH="./physical-device-acceptance-report.json" \
+node scripts/validate-physical-device-evidence.mjs \
+  evidence/physical-device/session.json \
+  evidence/physical-device
+```
+
+7. Alternatively, after `.github/workflows/physical-device-acceptance.yml` has been merged onto the repository's default branch (required for its manual `workflow_dispatch` entry point), open Actions, select **Physical Device Acceptance Audit**, choose the branch containing the evidence files, and supply the same exact commit SHA and evidence file path.
+8. Review the JSON report and uploaded workflow artifact. Resolve every invalid item, failed scenario, and missing platform/session before asking for owner acceptance.
+
+Result: NOT RUN — no physical Android/iOS evidence has been supplied.  
+Reviewed commit / workflow run / report artifact / findings:
+
+## J. Final decision
 
 - [ ] All P1 defects closed with exact-head evidence.
 - [ ] All required engine suites green.

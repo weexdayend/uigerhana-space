@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "REPLACE_WITH_EXACT_40_CHARACTER_COMMIT_SHA",
+  "reviewedAt": "REPLACE_WITH_ISO_8601_TIMESTAMP",
+  "reviewerRole": "owner",
+  "sessions": [
+    {
+      "id": "android-physical-session",
+      "platform": "android",
+      "physicalDeviceConfirmed": false,
+      "device": {
+        "manufacturer": "REPLACE",
+        "model": "REPLACE",
+        "osVersion": "REPLACE",
+        "displayScale": 1
+      },
+      "browser": {
+        "name": "REPLACE",
+        "version": "REPLACE"
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "devicePixelRatio": 3
+      },
+      "network": {
+        "type": "wifi"
+      },
+      "testedAt": "REPLACE_WITH_ISO_8601_TIMESTAMP",
+      "scenarios": {
+        "publicRoutes": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "routes": [
+            {
+              "path": "/",
+              "statusCode": null,
+              "mainContentVisible": false,
+              "horizontalOverflow": true
+            },
+            {
+              "path": "/work",
+              "statusCode": null,
+              "mainContentVisible": false,
+              "horizontalOverflow": true
+            },
+            {
+              "path": "/work/uigerhana-space",
+              "statusCode": null,
+              "mainContentVisible": false,
+              "horizontalOverflow": true
+            },
+            {
+              "path": "/cv",
+              "statusCode": null,
+              "mainContentVisible": false,
+              "horizontalOverflow": true
+            }
+          ]
+        },
+        "touchNavigation": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "steps": [
+            {
+              "id": "open-mobile-menu",
+              "result": "not-run",
+              "target": {
+                "width": 0,
+                "height": 0
+              }
+            },
+            {
+              "id": "navigate-work-anchor",
+              "result": "not-run",
+              "target": {
+                "width": 0,
+                "height": 0
+              }
+            },
+            {
+              "id": "open-work-index",
+              "result": "not-run",
+              "target": {
+                "width": 0,
+                "height": 0
+              }
+            },
+            {
+              "id": "open-approved-case-study",
+              "result": "not-run",
+              "target": {
+                "width": 0,
+                "height": 0
+              }
+            }
+          ]
+        },
+        "storySwipe": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "reachedPanels": [],
+          "verticalScrollPreserved": false,
+          "gestureConflicts": true
+        },
+        "nativeBackNavigation": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "works": false,
+          "returnsToPreviousRoute": false
+        },
+        "osTextScaling": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "setting": "REPLACE_WITH_EXACT_OS_SETTING",
+          "applied": false,
+          "contentClipped": true,
+          "horizontalOverflow": true
+        },
+        "reducedMotion": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "setting": "REPLACE_WITH_EXACT_OS_SETTING",
+          "active": false,
+          "allContentInOrder": false,
+          "pinnedStoryDisabled": false
+        },
+        "assistiveTechnology": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "technology": "REPLACE_WITH_SCREEN_READER_OR_AT",
+          "version": "REPLACE",
+          "checks": {
+            "landmarks": false,
+            "headingOrder": false,
+            "linkNames": false,
+            "menuState": false,
+            "readingOrder": false,
+            "focusOrder": false
+          }
+        }
+      }
+    },
+    {
+      "id": "ios-physical-session",
+      "platform": "ios",
+      "physicalDeviceConfirmed": false,
+      "device": {
+        "manufacturer": "REPLACE",
+        "model": "REPLACE",
+        "osVersion": "REPLACE",
+        "displayScale": 1
+      },
+      "browser": {
+        "name": "REPLACE",
+        "version": "REPLACE"
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "devicePixelRatio": 3
+      },
+      "network": {
+        "type": "wifi"
+      },
+      "testedAt": "REPLACE_WITH_ISO_8601_TIMESTAMP",
+      "scenarios": {
+        "publicRoutes": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "routes": [
+            {
+              "path": "/",
+              "statusCode": null,
+              "mainContentVisible": false,
+              "horizontalOverflow": true
+            },
+            {
+              "path": "/work",
+              "statusCode": null,
+              "mainContentVisible": false,
+              "horizontalOverflow": true
+            },
+            {
+              "path": "/work/uigerhana-space",
+              "statusCode": null,
+              "mainContentVisible": false,
+              "horizontalOverflow": true
+            },
+            {
+              "path": "/cv",
+              "statusCode": null,
+              "mainContentVisible": false,
+              "horizontalOverflow": true
+            }
+          ]
+        },
+        "touchNavigation": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "steps": [
+            {
+              "id": "open-mobile-menu",
+              "result": "not-run",
+              "target": {
+                "width": 0,
+                "height": 0
+              }
+            },
+            {
+              "id": "navigate-work-anchor",
+              "result": "not-run",
+              "target": {
+                "width": 0,
+                "height": 0
+              }
+            },
+            {
+              "id": "open-work-index",
+              "result": "not-run",
+              "target": {
+                "width": 0,
+                "height": 0
+              }
+            },
+            {
+              "id": "open-approved-case-study",
+              "result": "not-run",
+              "target": {
+                "width": 0,
+                "height": 0
+              }
+            }
+          ]
+        },
+        "storySwipe": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "reachedPanels": [],
+          "verticalScrollPreserved": false,
+          "gestureConflicts": true
+        },
+        "nativeBackNavigation": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "works": false,
+          "returnsToPreviousRoute": false
+        },
+        "osTextScaling": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "setting": "REPLACE_WITH_EXACT_OS_SETTING",
+          "applied": false,
+          "contentClipped": true,
+          "horizontalOverflow": true
+        },
+        "reducedMotion": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "setting": "REPLACE_WITH_EXACT_OS_SETTING",
+          "active": false,
+          "allContentInOrder": false,
+          "pinnedStoryDisabled": false
+        },
+        "assistiveTechnology": {
+          "status": "not-run",
+          "attachmentIds": [],
+          "technology": "REPLACE_WITH_SCREEN_READER_OR_AT",
+          "version": "REPLACE",
+          "checks": {
+            "landmarks": false,
+            "headingOrder": false,
+            "linkNames": false,
+            "menuState": false,
+            "readingOrder": false,
+            "focusOrder": false
+          }
+        }
+      }
+    }
+  ],
+  "attachments": []
+}

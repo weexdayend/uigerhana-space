@@ -160,6 +160,13 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 **Evidence:** `tests/e2e/mobile-touch-journeys.spec.ts`; [Phase 8.9 methodology](MOBILE-TOUCH-JOURNEYS.md); artifacts `mobile-touch-navigation-journey.json` and `mobile-touch-product-journey-swipe.json`.
 **Boundary:** Chromium-only emulated touch, not a physical device or native OS gesture recognizer. It does not certify every device, native edge-swipe/back behavior, assistive technology, or field touch latency. Existing three-engine tests remain independently required.
 
+### ROOT-14 — Physical-device evidence intake and validation
+
+**Status:** INSTRUMENTED — exact-head CI pending; no physical-device session data has been supplied.
+**Method:** A versioned JSON contract requires one physical Android and one physical iOS session. Each session captures exact device/OS/browser/viewport/network metadata and pass/fail/not-run outcomes for public routes, touch navigation, Product Journey swipes, native/browser back, OS text scaling, reduced motion, and assistive technology. Every passing scenario must reference a retained evidence attachment whose SHA-256 is verified from a path contained within the evidence directory.
+**Evidence:** `scripts/validate-physical-device-evidence.mjs`; `scripts/validate-physical-device-evidence.test.mjs`; [contract and owner instructions](PHYSICAL-DEVICE-EVIDENCE.md); [session template](../../evidence/physical-device/physical-device-session.template.json); [read-only manual workflow](../../.github/workflows/physical-device-acceptance.yml).
+**Decision boundary:** The validator can report evidence-complete, incomplete, acceptance-failed, or invalid. It always sets `releaseApproved: false` and requires a separate owner go/no-go. No real device evidence is claimed yet.
+
 ## 4. Evidence ledger
 
 Use this table as the source of truth. Replace PENDING only with an exact evidence reference and result.
@@ -190,7 +197,9 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 3. PR #27 route/link integrity and Chromium performance instrumentation passed exact-head CI on both push and PR triggers (314 passed, 4 skipped, 0 failed); final JSON and visual evidence is retained in artifacts #15229531062 and #15228823778.
 4. Phase 8.4 interaction-state and primary-target checks passed both exact-head CI triggers (327 passed, 6 skipped, 0 failed); PR #28 retains the matching artifacts.
 5. Phase 8.5 contrast remediation passed exact-head CI and merged as PR #29; Phase 8.6 added the opt-in external-destination audit; Phase 8.7 added read-only production parity/deployment evidence instrumentation.
-6. Phase 8.8 adds a mobile-class Chromium performance lab profile; review the emulated lab artifact separately from physical-device/field performance.
+6. Phase 8.8 adds a mobile-class Chromium performance lab profile; its PR-triggered exact-head artifact is recorded separately from physical-device/field performance.
+7. Phase 8.9 adds Chromium touch-emulated navigation/swipe journeys; exact-head runtime evidence remains pending until both triggers complete.
+8. Phase 8.10 adds a physical-device evidence contract, SHA-verified attachment validator, self-tests, and a read-only manual audit workflow; no physical sessions are claimed until owner evidence is supplied.
 6. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
 7. Complete accessibility/interaction delta audit and responsive/zoom regression.
 8. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
