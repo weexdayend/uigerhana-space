@@ -44,6 +44,9 @@ jobs:
       - name: Expertise and capability source integrity
         run: node scripts/verify-expertise-capabilities.mjs
 
+      - name: Professional experience source integrity
+        run: node scripts/verify-experience-section.mjs
+
       - name: Lint
         run: npm run lint
 

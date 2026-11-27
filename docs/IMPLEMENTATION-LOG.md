@@ -614,3 +614,31 @@ No application code, website UI, public copy, contact details, project evidence,
 - Local package installation, Next.js dependency-guide inspection, and local browser execution were not available in the editing environment; no local typecheck, lint, production build, browser screenshots, or assistive-technology run is claimed.
 - CI is expected to validate typecheck, content/styleframe gates, the new expertise contract, lint, production build, and Chromium/Firefox/WebKit runtime tests on the exact PR head.
 - No merge or deployment is included.
+
+## 2026-11-28 — Phase 7.4 System Atlas Professional Experience
+
+**Branch:** `phase-7/professional-experience-atlas`  
+**Base:** `phase-7/expertise-capabilities-atlas` after the Phase 7.3 regression-locator correction.
+
+### Source and content audit
+
+- Kept `src/data/experience.ts` as the single public experience source.
+- Preserved both role titles, organizations, locations, periods, summaries, and all 12 existing highlight statements verbatim.
+- Retained the overlapping date ranges: Saptakarya `2021 — Present` and Infomedia Nusantara `2017 — Present`; the section explicitly states that the periods overlap.
+- Kept role history separate from the five expertise groups, four generalized work domains, public case studies, and engineering principles.
+- No sequential-career implication, new ownership attribution, seniority claim, outcome metric, or client disclosure was added.
+
+### Delivered
+
+- Rebuilt the homepage Professional Experience section in the connected System Atlas visual language.
+- Added a two-column editorial role layout on wide screens and a single-column stack at narrower widths, with Manrope display, Plus Jakarta Sans body copy, monospace date metadata, Limestone surfaces, and Signal Copper route markers.
+- Preserved complete role details and semantic article/list structure without adding inert or unnecessary controls.
+- Added 200% root-text reflow, role-source, reduced-motion, keyboard-neutrality, and axe WCAG A/AA plus configured best-practice regression coverage.
+- Added a dedicated experience source-integrity script and CI step.
+
+### Validation boundary
+
+- GitHub Actions must validate typecheck, publication/styleframe gates, expertise and experience source integrity, lint, production build, and Chromium/Firefox/WebKit runtime checks on the exact PR head.
+- Local Next.js dependency-guide inspection and local browser execution were not available in this editing environment; no local test, screenshot, or assistive-technology result is claimed.
+- The stacked base includes a correction to the Phase 7.3 generalized-domain test locators; the parent CI result must be rechecked independently.
+- No merge or deployment is included.
