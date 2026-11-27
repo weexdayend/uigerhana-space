@@ -466,7 +466,7 @@ async function main() {
   addFinding(
     findings,
     "SERVED_COMMIT_PARITY",
-    productionCommitParity === "marker-match" ? "review" : "review",
+    "review",
     productionCommitParity === "marker-match"
       ? "All public routes declare the expected revision, but marker provenance must still be verified against the build/deployment process."
       : productionCommitParity === "mismatch"
