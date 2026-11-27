@@ -109,7 +109,7 @@ test.describe("release route and link integrity", () => {
     expect(sitemapResponse.status(), "sitemap.xml response").toBe(200);
     const sitemap = await sitemapResponse.text();
     const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)]
-      .map((match) => match[1].replace(/&amp;/g, "&"))
+      .map((match) => new URL(match[1].replace(/&amp;/g, "&")).href)
       .sort();
     const expectedSitemapUrls = PUBLIC_ROUTES
       .map((route) => SITE_ORIGIN + (route === "/" ? "/" : route))
@@ -142,6 +142,11 @@ test.describe("release route and link integrity", () => {
       robots: { status: robotsResponse.status(), content: robots },
       publicationBoundary: { draftRoutes },
     };
+
+    await writeFile(
+      testInfo.outputPath("public-route-metadata-and-indexing.json"),
+      JSON.stringify(evidence, null, 2)
+    );
 
     await testInfo.attach("public-route-metadata-and-indexing.json", {
       body: JSON.stringify(evidence, null, 2),
@@ -275,6 +280,11 @@ test.describe("release route and link integrity", () => {
       externalHttpReachability: "not probed by this local-origin CI check",
       inventory,
     };
+
+    await writeFile(
+      testInfo.outputPath("rendered-link-integrity-inventory.json"),
+      JSON.stringify(evidence, null, 2)
+    );
 
     await testInfo.attach("rendered-link-integrity-inventory.json", {
       body: JSON.stringify(evidence, null, 2),
