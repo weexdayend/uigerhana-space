@@ -1902,6 +1902,10 @@ body {
   letter-spacing: 0.04em;
 }
 
+.atlas-work-index__footer .atlas-work__eyebrow {
+  color: var(--fog);
+}
+
 .atlas-work-index__footer-link {
   flex: 0 0 auto;
   color: var(--signal-copper);
