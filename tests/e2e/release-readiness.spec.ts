@@ -162,9 +162,17 @@ test.describe("release route and link integrity", () => {
       await expect(page.getByText("This page could not be found.")).toBeVisible();
       await expect(page.locator("[data-case-study-detail]")).toHaveCount(0);
 
-      const robots = await page.locator('meta[name="robots"]').getAttribute("content");
-      expect(robots ?? "", "unpublished route must be marked noindex: " + draftRoute)
-        .toContain("noindex");
+      const robotsDirectives = await page
+        .locator('meta[name="robots"]')
+        .evaluateAll((elements) =>
+          elements.map((element) => element.getAttribute("content") ?? "")
+        );
+      expect(robotsDirectives.length, "unpublished route must expose robots metadata: " + draftRoute)
+        .toBeGreaterThan(0);
+      expect(
+        robotsDirectives.every((directive) => directive.includes("noindex")),
+        "every robots directive must keep unpublished route out of search indexing: " + draftRoute
+      ).toBe(true);
 
       await testInfo.attach("draft-route-publication-boundary.json", {
         body: JSON.stringify({
@@ -173,8 +181,8 @@ test.describe("release route and link integrity", () => {
           responseUrl: response?.url() ?? null,
           notFoundUiVisible: true,
           caseStudyDetailRendered: false,
-          robots,
-          noindex: (robots ?? "").includes("noindex"),
+          robotsDirectives,
+          noindex: robotsDirectives.length > 0 && robotsDirectives.every((directive) => directive.includes("noindex")),
         }, null, 2),
         contentType: "application/json",
       });
