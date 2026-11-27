@@ -20,7 +20,7 @@
 - `main` points to `675eaed00b8e06163c8df8b06474fd32cf2554f7`, the merge commit for PR #24.
 - PR #24 head: `5de0dcb9f4e04063a51eadbf3a0ce1924a946a7d`.
 - Exact-main quality job for run [46054077202](https://github.com/weexdayend/uigerhana-space/actions/runs/46054077202) completed successfully: typecheck, all content/design integrity gates, lint, and production build.
-- At the time this document was authored, that run's three-engine runtime QA job was still in progress. Do not describe the whole run as green until GitHub reports completion.
+- Exact-main run #46054077202 is fully green: both quality and three-engine runtime QA jobs completed successfully. PR #25 exact-head run #46054485925 is also fully green on its documentation-only Phase 8 foundation.
 
 ### Existing automated coverage (do not duplicate without reason)
 
@@ -35,21 +35,26 @@ The current Playwright suite already covers:
 - Print-media visibility, preservation of CV content, and exact two-page Chromium A4 PDF regression.
 - Chromium, Firefox, and WebKit CI projects.
 
-The existing suite is the base; Phase 8 should improve evidence quality, fix the known P1 regression, and make release decisions auditable.
+The existing suite is the base; Phase 8 improves evidence quality, remediates only confirmed residual defects, and makes release decisions auditable.
 
 ## 3. Prioritized findings
 
-### ROOT-01 — P1: homepage clips/overflows at 200% text scale
+### ROOT-01 — 200% root-text reflow across public routes
 
-**Status:** OPEN at Phase 8 start.
-**Evidence:** `docs/styleframes/system-atlas/connected/DESIGN-QA.md` records the production app homepage heading clipping and document overflow under 200% CSS root-font-size stress at 390px, reproduced in Chromium, Firefox, and WebKit. The diagnostic is preserved as an expected failure so it cannot be mistaken for a passing layout.
-**Required work:**
-- Reproduce on the current Phase 8 base before changing styles.
-- Trace the exact overflowing element(s), computed dimensions, font metrics, and responsible layout constraints.
-- Fix the source layout without hiding content, clipping text, reducing user text size, or introducing horizontal page scroll.
-- Add a focused regression that fails before the fix and passes after it in all three engines.
-- Preserve screenshots/diagnostic JSON and state exact engine versions.
-**Exit:** 200% root-text stress at 390px (and existing 360/320 matrix) has no page-level overflow or clipped heading/action content in Chromium, Firefox, and WebKit. Any intended local horizontal scroller must remain independently operable and not expand the document.
+**Status:** Historical 390px findings no longer reproduce on the post-Phase-7 main baseline. Two residual case-study issues were reproduced at 320px, and a focused fix is now present in PR #26; exact-head cross-engine regression is pending.
+
+**Historical evidence:** Earlier exact-head diagnostics recorded document widths of 429px on `/`, 390px on `/work` (heading clipping without page overflow), 469px on `/work/uigerhana-space`, and 442px on `/cv` under 200% CSS root-font-size stress at 390px. These values were reproduced on the earlier connected-styleframe head, not assumed to remain current.
+
+**Current-main reproduction:** PR #26's element-level diagnostic at head `4bb66a5d94edcbf66ee81126ef67124b7b94c7de` ran all four public routes at 390px, 360px, and 320px in Chromium, Firefox, and WebKit. At 390px and 360px, no route had page-level overflow or visible heading clipping. At 320px, only the case-study route had two residual defects:
+- The Technology map card heading “Application” had a 174px content box but approximately 189px of text width, caused by the 1.25rem card inset on both sides at 200% root text.
+- The case-study Résumé utility link extended beyond the viewport (about 3.6px in Chromium/Firefox and 9.2px in WebKit) because both utility actions remained in a single flex row.
+
+**Remediation in PR #26:**
+- At the narrow 24rem breakpoint, the case-study utility header stacks its actions vertically and uses compact vertical spacing.
+- Technology-map cards use a 0.75rem inset at that breakpoint; the heading is allowed to wrap if a future category label needs it. The type size and public content remain unchanged.
+- The regression now asserts page/body width, visible heading containment, and route-header link bounds for all four routes at 390px/360px/320px. It retains screenshots and element/ancestor geometry in the browser artifact.
+
+**Required evidence / exit:** PR #26's updated exact-head Actions must pass in Chromium, Firefox, and WebKit. The 12 route/viewport combinations must have no page-level overflow, clipped visible headings, or route-header links outside the viewport. Intentional internal horizontal story scrolling is not a page overflow. This automated CSS root-font-size proxy does not close literal browser zoom or native OS text-scaling gates.
 
 ### ROOT-02 — P1/P2: literal zoom and OS text scaling
 
