@@ -56,6 +56,9 @@ jobs:
       - name: Contact and footer source integrity
         run: npm run verify:contact
 
+      - name: Résumé source and print integrity
+        run: npm run verify:resume
+
       - name: Lint
         run: npm run lint
 

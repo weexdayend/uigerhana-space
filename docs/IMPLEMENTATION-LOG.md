@@ -756,3 +756,35 @@ No application code, website UI, public copy, contact details, project evidence,
 - Configured axe WCAG A/AA and best-practice checks passed in the browser matrix.
 - Browser evidence upload completed.
 - PR #22 remains open and unmerged; no deployment was performed.
+
+
+## 2026-11-28 — Phase 7.8 System Atlas Résumé & A4 Print Alignment
+
+**Branch:** phase-7/resume-print-atlas  
+**Parent:** PR #23 · phase-7/contact-footer-atlas  
+**Base head:** 7139b51e60c29a4a608aef57e3d810959e30531e
+
+### Source and content audit
+
+- Retained PROFILE.summary, PROFILE.context, PROFILE.positioning, SITE_META.location, and SITE_META.timezone as the identity/document sources.
+- Retained both existing EXPERIENCE roles and their overlapping periods, with all 12 source highlights.
+- Retained the five SKILL_GROUPS, the existing Binar Academy certification, and both PUBLICATION_PROFILES URLs.
+- Kept the existing page metadata and canonical /cv route.
+- Did not introduce education history, language proficiency, phone/email details, metrics, new titles, or new career claims.
+
+### Delivered
+
+- Rebuilt the résumé screen composition using the connected System Atlas résumé artboard: dark utility bar, Limestone document surface, editorial Manrope heading, Plus Jakarta Sans reading text, and monospace metadata.
+- Aligned role/date hierarchy, experience highlights, skill rows, certification, publication profile links, and document footer.
+- Added responsive wrapping for toolbar, role periods, skill labels, and publication handles.
+- Replaced legacy utility-only print styling with an explicit A4 portrait contract and 16mm / 14mm margins.
+- Hide only browser navigation/print controls in print; preserve the résumé sections, role/date context, publication links, and document footer.
+- Added verify:resume source/print integrity gate and connected it to CI.
+- Retained the Chromium two-page A4 PDF regression and extended cross-engine route/reflow/print-media coverage.
+
+### Validation boundary
+
+- Exact-head typecheck, integrity, lint, production build, Chromium/Firefox/WebKit runtime, axe, and A4 PDF results are pending until GitHub Actions completes on the PR head.
+- The editing environment does not expose the installed Next.js documentation under node_modules/next/dist/docs/ or a local browser runtime. No local typecheck, lint, build, screenshot, PDF, or native print-dialog result is claimed.
+- Headless Chromium PDF generation is a regression check only. Native system print dialog / Save as PDF and installed Safari review remain separate manual owner gates.
+- No merge or deployment is included.

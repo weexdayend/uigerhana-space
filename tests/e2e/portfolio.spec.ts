@@ -587,19 +587,30 @@ test.describe("keyboard and motion behavior", () => {
       await expect(page.getByRole("heading", { name: heading })).toBeVisible();
     }
 
+    await expect(page.locator("[data-resume-document]")).toBeVisible();
+    await expect(page.locator(".resume-document-footer")).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Publication profiles" }).getByRole("link")).toHaveCount(2);
+
     const printLayout = await page.evaluate(() => {
-      const article = document.querySelector("article");
+      const article = document.querySelector<HTMLElement>("[data-resume-document]");
+      const toolbar = document.querySelector<HTMLElement>(".resume-chrome");
+      const role = document.querySelector<HTMLElement>(".resume-role");
       return {
-        background: getComputedStyle(document.body).backgroundColor,
         articleBackground: article ? getComputedStyle(article).backgroundColor : "",
         articleBorder: article ? getComputedStyle(article).borderTopWidth : "",
         articleWidth: article?.getBoundingClientRect().width ?? 0,
+        toolbarDisplay: toolbar ? getComputedStyle(toolbar).display : "",
+        roleBreakInside: role ? getComputedStyle(role).breakInside : "",
+        footerDisplay: getComputedStyle(document.querySelector(".resume-document-footer")!).display,
         documentWidth: document.documentElement.scrollWidth,
         viewportWidth: document.documentElement.clientWidth,
       };
     });
     expect(printLayout.articleWidth).toBeGreaterThan(0);
     expect(printLayout.articleBorder).toBe("0px");
+    expect(printLayout.toolbarDisplay).toBe("none");
+    expect(printLayout.roleBreakInside).toContain("avoid");
+    expect(printLayout.footerDisplay).not.toBe("none");
     expect(printLayout.documentWidth).toBeLessThanOrEqual(printLayout.viewportWidth + 1);
   });
 
@@ -615,6 +626,122 @@ test.describe("keyboard and motion behavior", () => {
     expect(pdf.subarray(0, 5).toString()).toBe("%PDF-");
     const pdfPageCount = (pdf.toString("latin1").match(/\/Type\s*\/Page\b/g) ?? []).length;
     expect(pdfPageCount, "CV print output must not append a mostly empty trailing page").toBe(2);
+  });
+});
+
+test.describe("System Atlas résumé route", () => {
+  test("presents the source-backed résumé structure across desktop, tablet, and mobile", async ({ page }) => {
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 834, height: 1112 },
+      { width: 390, height: 844 },
+      { width: 320, height: 800 },
+    ]) {
+      await page.setViewportSize(viewport);
+      const response = await page.goto("/cv", { waitUntil: "domcontentloaded" });
+      expect(response?.ok() || response?.status() === 304).toBe(true);
+      await page.evaluate(() => document.fonts.ready);
+
+      const documentSurface = page.locator("[data-resume-document]");
+      await expect(documentSurface).toBeVisible();
+      await expect(documentSurface.getByRole("heading", { level: 1, name: "Irvan Gerhana" })).toBeVisible();
+      await expect(documentSurface.locator("[data-resume-role]")).toHaveCount(2);
+      await expect(documentSurface.locator("[data-resume-skill-group]")).toHaveCount(5);
+      await expect(documentSurface.locator(".resume-role__highlights li")).toHaveCount(12);
+      await expect(documentSurface.locator(".resume-certification")).toHaveCount(1);
+      await expect(documentSurface.getByRole("navigation", { name: "Publication profiles" }).getByRole("link")).toHaveCount(2);
+
+      const metrics = await page.evaluate(() => {
+        const documentSurface = document.querySelector<HTMLElement>("[data-resume-document]")!;
+        const name = documentSurface.querySelector<HTMLElement>(".resume-header__name")!;
+        const nameBox = name.getBoundingClientRect();
+        return {
+          viewport: document.documentElement.clientWidth,
+          document: document.documentElement.scrollWidth,
+          body: document.body.scrollWidth,
+          surface: documentSurface.getBoundingClientRect().width,
+          nameWithinViewport: nameBox.left >= -1 && nameBox.right <= document.documentElement.clientWidth + 1,
+        };
+      });
+      expect(metrics.document).toBeLessThanOrEqual(metrics.viewport + 1);
+      expect(metrics.body).toBeLessThanOrEqual(metrics.viewport + 1);
+      expect(metrics.surface).toBeGreaterThan(0);
+      expect(metrics.nameWithinViewport).toBe(true);
+    }
+  });
+
+  test("preserves the two source-backed overlapping role periods and the full highlight record", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto("/cv", { waitUntil: "domcontentloaded" });
+
+    const experience = page.locator("#experience");
+    const saptakarya = experience.locator('[data-resume-role="saptakarya"]');
+    const infomedia = experience.locator('[data-resume-role="infomedia"]');
+    await expect(saptakarya.getByRole("heading", { name: "Co-Founder & Lead Software Engineer" })).toBeVisible();
+    await expect(saptakarya).toContainText("2021 — Present");
+    await expect(infomedia.getByRole("heading", { name: "Information Systems & Cybersecurity Engineer" })).toBeVisible();
+    await expect(infomedia).toContainText("2017 — Present");
+    await expect(saptakarya.locator("li")).toHaveCount(6);
+    await expect(infomedia.locator("li")).toHaveCount(6);
+    await expect(page.locator("#skills .resume-skill-row")).toHaveCount(5);
+    await expect(page.locator("#certifications")).toContainText("UI/UX Research and Design");
+    await expect(page.locator("#certifications")).toContainText("Binar Academy");
+  });
+
+  test("reflows every résumé section at 200% root text without clipped content or page overflow", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/cv", { waitUntil: "domcontentloaded" });
+    await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+    await page.evaluate(() => document.fonts.ready);
+
+    for (const width of [390, 360, 320]) {
+      await page.setViewportSize({ width, height: 844 });
+      const metrics = await page.evaluate(() => {
+        const candidates = Array.from(document.querySelectorAll<HTMLElement>([
+          ".resume-back-link",
+          ".resume-print-button",
+          ".resume-chrome__inner",
+          ".resume-header__name",
+          ".resume-header__summary",
+          ".resume-role__title",
+          ".resume-role__period",
+          ".resume-role__organization",
+          ".resume-role__summary",
+          ".resume-role__highlights",
+          ".resume-skill-row__label",
+          ".resume-skill-row__skills",
+          ".resume-certification",
+          ".resume-publications__summary",
+          ".resume-publication-link",
+          ".resume-document-footer",
+        ].join(", ")));
+        const name = document.querySelector<HTMLElement>(".resume-header__name")!;
+        const nameBox = name.getBoundingClientRect();
+        return {
+          viewport: document.documentElement.clientWidth,
+          document: document.documentElement.scrollWidth,
+          body: document.body.scrollWidth,
+          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          nameClipped: name.scrollWidth > name.clientWidth + 1,
+          nameWithinViewport: nameBox.left >= -1 && nameBox.right <= document.documentElement.clientWidth + 1,
+          overflowTargets: candidates
+            .filter((item) => item.scrollWidth > item.clientWidth + 1)
+            .map((item) => ({
+              tag: item.tagName.toLowerCase(),
+              className: item.className,
+              text: (item.textContent ?? "").replace(/\s+/g, " ").trim().slice(0, 100),
+              scrollWidth: item.scrollWidth,
+              clientWidth: item.clientWidth,
+            })),
+        };
+      });
+      expect(metrics.rootFontSize).toBeGreaterThanOrEqual(32);
+      expect(metrics.document).toBeLessThanOrEqual(metrics.viewport + 1);
+      expect(metrics.body).toBeLessThanOrEqual(metrics.viewport + 1);
+      expect(metrics.nameClipped).toBe(false);
+      expect(metrics.nameWithinViewport).toBe(true);
+      expect(metrics.overflowTargets, JSON.stringify(metrics.overflowTargets, null, 2)).toEqual([]);
+    }
   });
 });
 

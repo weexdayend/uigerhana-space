@@ -248,7 +248,7 @@ Exit criteria:
 
 ## Phase 7 — Site-wide identity integration
 
-**Status:** Active, delivered as reviewable vertical slices. Phase 7.1 aligns the homepage Selected Work section and `/work` index; Phase 7.2 aligns the approved `/work/[slug]` detail route; Phase 7.3 aligns homepage Expertise & Capabilities; Phase 7.4 aligns homepage Professional Experience; Phase 7.5 aligns the homepage Engineering Approach; Phase 7.6 aligns homepage Writing & publication; Phase 7.7 aligns the homepage closing conversation and footer. Résumé route alignment remains a separate follow-on slice.
+**Status:** Active, delivered as reviewable vertical slices. Phase 7.1 aligns the homepage Selected Work section and `/work` index; Phase 7.2 aligns the approved `/work/[slug]` detail route; Phase 7.3 aligns homepage Expertise & Capabilities; Phase 7.4 aligns homepage Professional Experience; Phase 7.5 aligns the homepage Engineering Approach; Phase 7.6 aligns homepage Writing & publication; Phase 7.7 aligns the homepage closing conversation and footer; Phase 7.8 aligns the résumé route and A4 print experience.
 
 **Goal:** extend the approved system consistently.
 
@@ -271,6 +271,34 @@ Exit criteria:
 - Pages feel related but suit their content.
 - No section is a disconnected template.
 - Public content and disclosure states remain accurate.
+
+## Phase 7.8 — Résumé route and print alignment
+
+**Status:** Implemented as a source-backed vertical slice; exact-head browser and print regression remains required. This phase does not certify the native operating-system print dialog or replace the owner manual acceptance gate.
+
+**Goal:** bring the existing /cv document into the System Atlas visual system without reducing its usefulness as a professional document.
+
+Work:
+- Rebuild the résumé route with the approved Manrope / Plus Jakarta Sans / monospace hierarchy and Basalt / Limestone / Sea Glass / Signal Copper semantic roles.
+- Preserve the current profile summary, both overlapping professional role periods, all 12 role highlights, five skill groups, certification, and publication profile URLs from their existing data records.
+- Reflow the toolbar, document, role metadata, skill groups, publication links, and footer at desktop, tablet, mobile, and 200% root text.
+- Keep the print action available on screen and remove browser-only controls from printed output.
+- Define A4 portrait with the existing 16mm × 14mm page margins, preserve linked content, and avoid splitting compact role/skill/certification units where the page geometry permits.
+- Keep the two-page Chromium headless PDF regression and extend semantic, responsive, keyboard, and print-media assertions.
+
+Deliverables:
+- System Atlas /cv route and print-action presentation.
+- Dedicated source/print integrity gate in CI.
+- Exact-head responsive and cross-engine browser QA.
+- Chromium A4 PDF artifact and page-count regression.
+- Updated implementation log and phase roadmap.
+
+Exit criteria:
+- All public résumé content remains source-backed and complete.
+- The document has no horizontal overflow at the supported narrow widths or 200% root text stress.
+- All sections, role/date associations, and publication links remain present in print media.
+- Chromium produces the expected two-page A4 PDF without a blank trailing page.
+- Exact-head CI passes; native print-dialog review remains a separately recorded owner/manual gate.
 
 ## Phase 8 — Quality assurance and release readiness
 
@@ -348,7 +376,8 @@ Continue Phase 7 through independent, production-grade review slices. The delive
 - Phase 7.5 — homepage Engineering Approach, preserving the four existing `ENGINEERING_PRINCIPLES`.
 - Phase 7.6 — homepage Writing & publication presentation, preserving all three existing article records and the DEV / Medium publication profiles.
 - Phase 7.7 — homepage Contact & Footer presentation, preserving the existing conversation copy, résumé/work destinations, and GitHub / DEV / Medium profiles.
+- Phase 7.8 — /cv résumé route and A4 print alignment, preserving the complete source-backed document.
 
-The next separate slice is résumé route alignment, including document readability and print behavior. The direct public contact-channel decision remains an explicit owner gate and is not silently inferred from profile links. Preserve source-backed public copy, project evidence/disclosure gates, responsive behavior, 200% root-font reflow, keyboard access, contrast, and exact-PR-head browser validation. Review stacked changes in order and do not merge or deploy without an explicit owner decision.
+The next slice is Phase 8 quality assurance and release readiness. Keep native OS print-dialog behavior, literal browser zoom/OS text scaling, production-domain parity, and owner acceptance as explicit manual gates. Preserve source-backed public copy, project evidence/disclosure rules, responsive behavior, keyboard access, contrast, and exact-PR-head browser validation. Review stacked changes in order and do not merge or deploy without an explicit owner decision.
 
 Phase 1 remains open only for its outstanding owner-only gates: literal browser 200% zoom/OS text scaling, native print-dialog behavior, production-domain/commit parity, public contact-channel decision, and owner acceptance of prioritized audit findings. The earlier real-device and assistive-technology completion remains a category-level owner attestation; do not invent platform details.
