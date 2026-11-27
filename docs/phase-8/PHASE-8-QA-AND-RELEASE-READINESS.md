@@ -145,6 +145,14 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 **Evidence:** `tests/e2e/release-readiness.spec.ts` (opt-in test) and `.github/workflows/external-destination-audit.yml`. Run manually with `workflow_dispatch` against the exact reviewed branch/commit and retain `external-destination-reachability.json`.
 **Boundary:** This audits links from the reviewed local production build, not the live site. A reachable HTTP response does not establish content correctness, currentness, safety, privacy approval, or owner acceptance. Restricted and transient responses are not counted as broken links; the workflow is observational and does not gate ordinary CI.
 
+### ROOT-12 — Mobile-class performance lab
+
+**Status:** INSTRUMENTED — exact-head CI and artifact evidence pending.
+**Method:** Chromium local production-build emulation on a 390 × 844 CSS viewport, device scale factor 3, mobile layout/touch mode, 4× CPU throttle, and controlled cellular-4G-like network (150 ms RTT, 1.6 Mbps down, 750 Kbps up). Two navigations are collected for each of the four approved routes: one isolated-context first view and one same-context repeat.
+**Metrics:** TTFB, FCP, LCP/element, CLS, DOMContentLoaded/load timing, resource and byte totals/categories, long tasks, viewport/scroll widths, and navigation console/page/request errors. Raw JSON and per-route medians are retained.
+**Evidence:** `tests/e2e/mobile-performance-lab.spec.ts`; [Phase 8.8 methodology](MOBILE-PERFORMANCE-LAB.md); artifact `phase-8-mobile-performance-lab.json`.
+**Boundary:** This is mobile-class Chromium emulation, not physical Android/iOS, field CWV, real carrier variability, or INP. It sets no performance budget. `P8-PERF-02` remains NOT VERIFIED until representative physical-device and field data are reviewed.
+
 ## 4. Evidence ledger
 
 Use this table as the source of truth. Replace PENDING only with an exact evidence reference and result.
@@ -174,7 +182,8 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 2. ROOT-01 automated CSS root-text reflow proxy closed by PR #26; literal zoom and native OS scaling stay manual.
 3. PR #27 route/link integrity and Chromium performance instrumentation passed exact-head CI on both push and PR triggers (314 passed, 4 skipped, 0 failed); final JSON and visual evidence is retained in artifacts #15229531062 and #15228823778.
 4. Phase 8.4 interaction-state and primary-target checks passed both exact-head CI triggers (327 passed, 6 skipped, 0 failed); PR #28 retains the matching artifacts.
-5. Phase 8.5 focus-indicator and sampled hover-text contrast remediation passed exact-head push/PR CI and merged as PR #29. Phase 8.6 adds an opt-in, non-gating external destination reachability audit; run and review its artifact before changing the external-link evidence state.
+5. Phase 8.5 contrast remediation passed exact-head CI and merged as PR #29; Phase 8.6 added the opt-in external-destination audit; Phase 8.7 added read-only production parity/deployment evidence instrumentation.
+6. Phase 8.8 adds a mobile-class Chromium performance lab profile; review the emulated lab artifact separately from physical-device/field performance.
 6. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
 7. Complete accessibility/interaction delta audit and responsive/zoom regression.
 8. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
