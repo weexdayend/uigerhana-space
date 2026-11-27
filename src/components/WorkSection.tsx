@@ -11,7 +11,7 @@ export function WorkSection() {
       className="bg-[#f2efe7] py-20 text-[#121518] sm:py-28"
     >
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
-        <div className="grid items-end gap-6 lg:grid-cols-12">
+        <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">
               Selected work / case studies
@@ -27,7 +27,7 @@ export function WorkSection() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4 lg:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-2">
           {PUBLIC_CASE_STUDIES.map((study) => (
             <CaseStudyCard key={study.slug} study={study} />
           ))}
@@ -51,7 +51,7 @@ export function WorkSection() {
             </Link>
           </div>
 
-          <div className="grid gap-px border border-[#121518]/18 bg-[#121518]/18 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-px border border-[#121518]/18 bg-[#121518]/18 sm:grid-cols-2">
             {WORK_DOMAINS.map((domain) => (
               <article
                 key={domain.id}
