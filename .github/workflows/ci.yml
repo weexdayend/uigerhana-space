@@ -59,6 +59,9 @@ jobs:
       - name: Résumé source and print integrity
         run: npm run verify:resume
 
+      - name: Production parity audit syntax
+        run: node --check scripts/audit-production-parity.mjs
+
       - name: Lint
         run: npm run lint
 

@@ -100,7 +100,27 @@ Run the dedicated GitHub Actions workflow manually against the reviewed branch/c
 Result: NOT RUN  
 Workflow run / artifact / findings:
 
-## G. Final decision
+## G. Production parity and deployment evidence
+
+Run the read-only GitHub Actions workflow against the exact commit proposed for production. This checks the live canonical site and GitHub deployment records; it does not deploy or change configuration.
+
+- [ ] Dispatch `.github/workflows/production-parity-audit.yml` and supply the full 40-character expected commit SHA.
+- [ ] Save `production-parity-audit.json` with this acceptance session.
+- [ ] Review TLS authorization, certificate SAN, validity dates, and fingerprint.
+- [ ] Review HTTP-to-HTTPS redirect and final origin.
+- [ ] Review status, canonical URL, title, description, H1, indexability, and timing for all four public routes.
+- [ ] Review robots.txt and sitemap.xml against the approved public route set.
+- [ ] Review selected security/cache headers as observations; do not call an unapproved header policy a pass/fail requirement.
+- [ ] Review the latest GitHub production deployment record and status separately from the live site response.
+- [ ] Confirm whether all four live routes expose the explicit build revision marker and whether it matches the expected SHA.
+- [ ] If no trusted revision marker is present, keep production commit parity as NOT VERIFIED even when the GitHub deployment record matches.
+- [ ] If a marker is present, verify the deployment process injects it from the exact source commit that built the running application.
+- [ ] Record CDN/cache/host limitations and any route discrepancy for owner review.
+
+Result: NOT RUN  
+Workflow run / artifact / findings:
+
+## H. Final decision
 
 - [ ] All P1 defects closed with exact-head evidence.
 - [ ] All required engine suites green.
