@@ -22,7 +22,7 @@ interface HoverContrastRecord {
   route: string;
   selector: string;
   color: string;
-  background: Backdrop;
+  backdrop: Backdrop;
   contrastRatio: number | null;
 }
 
