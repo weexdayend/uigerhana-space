@@ -33,7 +33,7 @@ The report is uploaded as production-parity-audit.json and retained for 90 days.
 | GitHub production deployment record | Commit and status recorded by GitHub for the environment | What a CDN or app server currently serves |
 | Served revision marker matching SHA | The live response declares the expected build revision | Trustworthiness unless the deployment process injects the marker from the actual build commit |
 
-The outcome distinguishes deploymentRecordParity from productionCommitParity. A matching GitHub deployment record with no served revision marker is **not verifiable**, not a pass. A marker mismatch is reported as a mismatch. The workflow's own green status means the audit executed and saved evidence; it is not a production release pass.
+The outcome distinguishes deploymentRecordParity from productionCommitParity. A matching GitHub deployment record with no served revision marker is **not verifiable**, not a pass. A marker mismatch is reported as a mismatch. If every route declares the expected SHA, the report says marker-match—not verified—because an owner must still confirm that the deployment process injects the marker from the exact source commit used to build the running application. The workflow's own green status means the audit executed and saved evidence; it is not a production release pass.
 
 ## Current limitations and next prerequisite
 
@@ -43,4 +43,4 @@ The outcome distinguishes deploymentRecordParity from productionCommitParity. A 
 - No deploy, DNS change, environment change, cache purge, secret access, or production mutation is performed.
 - The external inspection path used during this bake could not retrieve the live domain directly; the manual GitHub Actions runner audit is the next evidence collection path.
 
-**Current production commit parity: NOT VERIFIED.** The source has no evidence mechanism yet that binds the live response to a Git SHA.
+**Current production commit parity: NOT VERIFIED.** The source has no evidence mechanism yet that binds the live response to a Git SHA. Even a future marker match remains a review item until its build/deployment provenance is confirmed.
