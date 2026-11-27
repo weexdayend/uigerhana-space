@@ -3,7 +3,11 @@ import { expect, test } from "@playwright/test";
 
 const SITE_ORIGIN = "https://uigerhana.space";
 const PUBLIC_ROUTES = ["/", "/work", "/work/uigerhana-space", "/cv"] as const;
-const DRAFT_CASE_STUDY_ROUTE = "/work/professional-services-automation-platform";
+const DRAFT_CASE_STUDY_ROUTES = [
+  "/work/professional-services-automation-platform",
+  "/work/passwordless-team-invitations",
+  "/work/verifiable-backup-and-recovery-operations",
+] as const;
 
 interface RouteLinkRecord {
   sourceRoute: string;
@@ -119,20 +123,24 @@ test.describe("release route and link integrity", () => {
     expect(robots).toMatch(/Allow:\s*\/(?:\s|$)/i);
     expect(robots).toContain(SITE_ORIGIN + "/sitemap.xml");
 
-    const draftResponse = await request.get(DRAFT_CASE_STUDY_ROUTE);
-    expect(draftResponse.status(), "unapproved draft case study must not be public").toBe(404);
-    expect(sitemap).not.toContain(DRAFT_CASE_STUDY_ROUTE);
+    const draftRoutes = [];
+    for (const draftRoute of DRAFT_CASE_STUDY_ROUTES) {
+      const draftResponse = await request.get(draftRoute);
+      expect(draftResponse.status(), "unapproved draft case study must not be public: " + draftRoute).toBe(404);
+      expect(sitemap).not.toContain(draftRoute);
+      draftRoutes.push({
+        route: draftRoute,
+        status: draftResponse.status(),
+        absentFromSitemap: !sitemap.includes(draftRoute),
+      });
+    }
 
     const evidence = {
       siteOrigin: SITE_ORIGIN,
       publicRoutes: routeEvidence,
       sitemap: { status: sitemapResponse.status(), urls: sitemapUrls },
       robots: { status: robotsResponse.status(), content: robots },
-      publicationBoundary: {
-        draftRoute: DRAFT_CASE_STUDY_ROUTE,
-        status: draftResponse.status(),
-        absentFromSitemap: !sitemap.includes(DRAFT_CASE_STUDY_ROUTE),
-      },
+      publicationBoundary: { draftRoutes },
     };
 
     await testInfo.attach("public-route-metadata-and-indexing.json", {
