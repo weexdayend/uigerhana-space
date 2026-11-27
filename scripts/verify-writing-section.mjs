@@ -100,6 +100,11 @@ assert.ok(writingStyles.includes("@media (max-width: 42rem)"));
 assert.ok(writingStyles.includes("@media (prefers-reduced-motion: reduce)"));
 assert.ok(writingStyles.includes("var(--atlas-inset-light)"));
 assert.ok(writingStyles.includes("var(--light-secondary-text)"));
+assert.match(
+  writingStyles,
+  /\.atlas-writing__article-footer\s*\{[^}]*flex-wrap:\s*wrap;/s,
+  "Article publication metadata must wrap when the text scale increases"
+);
 assert.doesNotMatch(
   writingStyles,
   /(?:padding|margin|gap):[^;]*\b(?:8|12|16)px\b/,
