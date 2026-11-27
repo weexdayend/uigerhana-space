@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Pixelify_Sans } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Manrope,
+  Pixelify_Sans,
+  Plus_Jakarta_Sans,
+} from "next/font/google";
 import "./globals.css";
 import { PROFILE } from "@/data/profile";
 import { PUBLIC_PROFILES } from "@/data/writing";
@@ -8,6 +14,18 @@ import { SITE_META } from "@/data/site";
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 const pixelifySans = Pixelify_Sans({ variable: "--font-pixelify-sans", subsets: ["latin"], weight: ["400", "500", "700"] });
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 const personStructuredData = {
   "@context": "https://schema.org",
@@ -62,11 +80,11 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = { themeColor: "#0b0e11" };
+export const viewport: Viewport = { themeColor: "#10191B" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${pixelifySans.variable} h-full antialiased`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${pixelifySans.variable} ${manrope.variable} ${plusJakartaSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <script
           type="application/ld+json"

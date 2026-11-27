@@ -8,12 +8,12 @@ export function ProcessSection() {
       className="bg-[#0b0e11] py-20 text-[#e8e4d8] sm:py-28"
     >
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
-        <div className="grid items-end gap-6 lg:grid-cols-12">
-          <div className="lg:col-span-6">
+        <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
+          <div className="min-w-0 lg:col-span-6">
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#f0b765]">
               Engineering philosophy
             </p>
-            <h2 className="mt-4 max-w-[13ch] text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
+            <h2 className="mt-4 max-w-[13ch] break-words text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
               How I think about building software.
             </h2>
           </div>
@@ -24,7 +24,7 @@ export function ProcessSection() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-px border border-[#e8e4d8]/18 bg-[#e8e4d8]/18 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid grid-cols-1 gap-px border border-[#e8e4d8]/18 bg-[#e8e4d8]/18 sm:grid-cols-2 lg:grid-cols-4">
           {ENGINEERING_PRINCIPLES.map((principle) => (
             <article
               key={principle.id}
@@ -34,10 +34,10 @@ export function ProcessSection() {
                 {principle.index}
               </span>
               <div className="mt-auto pt-12">
-                <h3 className="text-xl font-normal tracking-tight">
+                <h3 className="break-words text-xl font-normal tracking-tight">
                   {principle.title}
                 </h3>
-                <p className="mt-3 text-sm leading-[1.7] text-[#e8e4d8]/60">
+                <p className="mt-3 break-words text-sm leading-[1.7] text-[#e8e4d8]/60">
                   {principle.description}
                 </p>
               </div>

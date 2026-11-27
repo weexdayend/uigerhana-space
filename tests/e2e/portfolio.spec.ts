@@ -38,7 +38,7 @@ test.describe("responsive homepage runtime", () => {
       const response = await page.goto("/", { waitUntil: "domcontentloaded" });
       expect(response?.status()).toBe(200);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-      await expect(page.locator(".hero-organic__primary-link")).toBeVisible();
+      await expect(page.locator(".hero-atlas__primary-link")).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
       for (const selector of [
         "[data-hero-title]",
@@ -49,35 +49,43 @@ test.describe("responsive homepage runtime", () => {
         await expect(page.locator(selector)).toHaveCSS("opacity", "1");
       }
       const layout = await page.evaluate(() => {
-        const lines = Array.from(document.querySelectorAll<HTMLElement>(".hero-organic__title-line, .hero-organic__title-second"));
+        const heading = document.querySelector<HTMLElement>("[data-hero-title]");
+        const headingBox = heading?.getBoundingClientRect();
+        const copyBox = document.querySelector<HTMLElement>(".hero-atlas__copy")?.getBoundingClientRect();
+        const artBox = document.querySelector<HTMLElement>(".hero-atlas__visual")?.getBoundingClientRect();
+        const intersects = Boolean(
+          copyBox &&
+          artBox &&
+          copyBox.left < artBox.right &&
+          copyBox.right > artBox.left &&
+          copyBox.top < artBox.bottom &&
+          copyBox.bottom > artBox.top
+        );
         return {
           viewport: document.documentElement.clientWidth,
           document: document.documentElement.scrollWidth,
           body: document.body.scrollWidth,
-          titleOverflows: lines.filter((el) => el.scrollWidth > el.clientWidth + 1).map((el) => ({
-            text: el.textContent?.trim(), clientWidth: el.clientWidth, scrollWidth: el.scrollWidth,
-          })),
-          heroColumnsOverlap: (() => {
-            const copy = document.querySelector<HTMLElement>(".hero-organic__copy");
-            const art = document.querySelector<HTMLElement>(".hero-organic__art");
-            if (!copy || !art) return false;
-            const a = copy.getBoundingClientRect();
-            const b = art.getBoundingClientRect();
-            // The tablet art starts with a 35% transparent top mask.
-            // Test the fully visible region instead of the entire masked box.
-            const fullyVisibleArtTop = b.top + b.height * 0.35;
-            return a.left < b.right &&
-              a.right > b.left &&
-              a.top < b.bottom &&
-              a.bottom > fullyVisibleArtTop;
-          })(),
+          headingClipped: Boolean(heading && heading.scrollWidth > heading.clientWidth + 1),
+          headingWithinViewport: Boolean(
+            headingBox &&
+            headingBox.left >= -1 &&
+            headingBox.right <= document.documentElement.clientWidth + 1
+          ),
+          heroColumnsOverlap: intersects,
+          copyBottom: copyBox?.bottom ?? 0,
+          artTop: artBox?.top ?? 0,
+          routeVisible: Boolean(artBox && artBox.width > 0 && artBox.height > 0),
         };
       });
       expect(layout.document).toBeLessThanOrEqual(layout.viewport + 1);
       expect(layout.body).toBeLessThanOrEqual(layout.viewport + 1);
-      expect(layout.titleOverflows).toEqual([]);
-      if (viewport.width >= 768 && viewport.width <= 820) {
+      expect(layout.headingClipped).toBe(false);
+      expect(layout.headingWithinViewport).toBe(true);
+      expect(layout.routeVisible).toBe(true);
+      if (viewport.width > 840) {
         expect(layout.heroColumnsOverlap).toBe(false);
+      } else {
+        expect(layout.artTop).toBeGreaterThanOrEqual(layout.copyBottom - 1);
       }
       expect(runtimeErrors).toEqual([]);
       await page.screenshot({
@@ -390,67 +398,116 @@ test.describe("keyboard and motion behavior", () => {
     }
   });
 
-  test("200% root-font-size diagnostic records the open text-reflow finding", async ({ page }, testInfo) => {
-    test.fail(
-      true,
-      "Known open P1 ROOT-01: the homepage hero clips at 200% root font size in all three engines. This proxy is not native OS text scaling."
-    );
-    await page.setViewportSize({ width: 390, height: 844 });
-
-    const routeReports: Array<{
-      route: string;
-      rootFontSize: number;
+  test("200% root-font-size reflows the System Atlas hero at 320, 360, and 390px", async ({ page }, testInfo) => {
+    const widths = [390, 360, 320];
+    const reports: Array<{
       viewportWidth: number;
       documentWidth: number;
       bodyWidth: number;
+      rootFontSize: number;
+      headingClipped: boolean;
       headingWithinViewport: boolean;
-      clippedHeadings: string[];
+      actionsWithinViewport: boolean;
+      overflowCandidates: Array<{
+        tag: string;
+        className: string;
+        text: string;
+        left: number;
+        right: number;
+        width: number;
+        scrollWidth: number;
+        clientWidth: number;
+      }>;
     }> = [];
 
-    for (const route of ROUTES) {
-      await page.goto(route, { waitUntil: "domcontentloaded" });
-      await page.addStyleTag({
-        content: "html { font-size: 200% !important; }",
-      });
-      await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
+    await page.setViewportSize({ width: widths[0], height: 844 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+    await page.evaluate(() => document.fonts.ready);
 
-      const layout = await page.evaluate(() => {
-        const heading = document.querySelector<HTMLElement>("main h1");
+    for (const viewportWidth of widths) {
+      await page.setViewportSize({ width: viewportWidth, height: 844 });
+      const report = await page.evaluate(() => {
+        const viewportWidth = document.documentElement.clientWidth;
+        const heading = document.querySelector<HTMLElement>("[data-hero-title]");
         const headingBox = heading?.getBoundingClientRect();
-        const clippedHeadings = Array.from(document.querySelectorAll<HTMLElement>("main h1, main h2"))
-          .filter((element) => element.scrollWidth > element.clientWidth + 1)
-          .map((element) => element.innerText.trim().slice(0, 80));
+        const actionsBox = document.querySelector<HTMLElement>("[data-hero-actions]")?.getBoundingClientRect();
+        const overflowCandidates = Array.from(document.body.querySelectorAll<HTMLElement>("*"))
+          .filter((element) => {
+            const style = getComputedStyle(element);
+            const rect = element.getBoundingClientRect();
+            return style.display !== "none" &&
+              style.visibility !== "hidden" &&
+              rect.width > 0 &&
+              rect.height > 0 &&
+              (rect.right > viewportWidth + 1 || rect.left < -1 || element.scrollWidth > element.clientWidth + 1);
+          })
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            const horizontalScroller = element.closest(".motion-story__viewport");
+            return {
+              tag: element.tagName.toLowerCase(),
+              className: typeof element.className === "string" ? element.className : "",
+              text: (element.textContent || "").trim().replace(/\\s+/g, " ").slice(0, 90),
+              left: Math.round(rect.left * 10) / 10,
+              right: Math.round(rect.right * 10) / 10,
+              width: Math.round(rect.width * 10) / 10,
+              boxOverflow: rect.right > viewportWidth + 1 || rect.left < -1,
+              internalOverflow: element.scrollWidth > element.clientWidth + 1,
+              insideHorizontalScroller: Boolean(horizontalScroller),
+              scrollWidth: element.scrollWidth,
+              clientWidth: element.clientWidth,
+            };
+          })
+          .sort((left, right) => {
+            if (left.insideHorizontalScroller !== right.insideHorizontalScroller) {
+              return Number(left.insideHorizontalScroller) - Number(right.insideHorizontalScroller);
+            }
+            if (left.boxOverflow !== right.boxOverflow) {
+              return Number(right.boxOverflow) - Number(left.boxOverflow);
+            }
+            return right.right - left.right;
+          })
+          .slice(0, 24);
+
         return {
-          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
-          viewportWidth: document.documentElement.clientWidth,
+          viewportWidth,
           documentWidth: document.documentElement.scrollWidth,
           bodyWidth: document.body.scrollWidth,
+          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          headingClipped: Boolean(heading && heading.scrollWidth > heading.clientWidth + 1),
           headingWithinViewport: Boolean(
             headingBox &&
             headingBox.left >= -1 &&
-            headingBox.right <= document.documentElement.clientWidth + 1
+            headingBox.right <= viewportWidth + 1
           ),
-          clippedHeadings,
+          actionsWithinViewport: Boolean(
+            actionsBox &&
+            actionsBox.left >= -1 &&
+            actionsBox.right <= viewportWidth + 1
+          ),
+          overflowCandidates,
         };
       });
-      routeReports.push({ route, ...layout });
+      reports.push(report);
     }
 
-    await testInfo.attach("root-font-size-200-percent-diagnostic.json", {
-      body: JSON.stringify(routeReports, null, 2),
+    await testInfo.attach("system-atlas-root-font-200-percent-reflow.json", {
+      body: JSON.stringify(reports, null, 2),
       contentType: "application/json",
     });
 
-    const findings = routeReports.filter((report) =>
-      report.documentWidth > report.viewportWidth + 1 ||
-      report.bodyWidth > report.viewportWidth + 1 ||
-      !report.headingWithinViewport ||
-      report.clippedHeadings.length > 0
-    );
-    expect(
-      findings,
-      "Known root-font-size reflow findings; review screenshots and keep RA-12 open until native OS scaling is tested."
-    ).toEqual([]);
+    for (const layout of reports) {
+      expect(layout.rootFontSize).toBeGreaterThanOrEqual(32);
+      expect(
+        layout.documentWidth,
+        `Document overflow at ${layout.viewportWidth}px: ${JSON.stringify(layout.overflowCandidates)}`
+      ).toBeLessThanOrEqual(layout.viewportWidth + 1);
+      expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewportWidth + 1);
+      expect(layout.headingClipped).toBe(false);
+      expect(layout.headingWithinViewport).toBe(true);
+      expect(layout.actionsWithinViewport).toBe(true);
+    }
   });
 
   test("CV print media hides browser controls and preserves all résumé sections", async ({ page }) => {

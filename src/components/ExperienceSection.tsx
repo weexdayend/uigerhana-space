@@ -8,12 +8,12 @@ export function ExperienceSection() {
       className="bg-[#f2efe7] py-20 text-[#121518] sm:py-28"
     >
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
-        <div className="grid items-end gap-6 lg:grid-cols-12">
-          <div className="lg:col-span-6">
+        <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
+          <div className="min-w-0 lg:col-span-6">
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">
               Professional experience
             </p>
-            <h2 className="mt-4 max-w-[12ch] text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
+            <h2 className="mt-4 max-w-[12ch] break-words text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
               Building across products, platforms, and systems.
             </h2>
           </div>
@@ -29,16 +29,16 @@ export function ExperienceSection() {
           {EXPERIENCE.map((role, index) => (
             <article
               key={role.id}
-              className="grid gap-6 border-b border-[#121518]/20 py-8 lg:grid-cols-12 lg:gap-10 lg:py-10"
+              className="grid grid-cols-1 min-w-0 gap-6 border-b border-[#121518]/20 py-8 lg:grid-cols-12 lg:gap-10 lg:py-10"
             >
-              <div className="lg:col-span-4">
+              <div className="min-w-0 lg:col-span-4">
                 <span className="font-pixel text-2xl text-[#8a5a20]">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <p className="mt-4 font-mono text-xs uppercase tracking-[0.08em] text-[#585f5e]">
                   {role.period}
                 </p>
-                <h3 className="mt-2 text-2xl font-normal leading-tight tracking-[-0.035em]">
+                <h3 className="mt-2 break-words text-2xl font-normal leading-tight tracking-[-0.035em]">
                   {role.title}
                 </h3>
                 <p className="mt-2 text-sm text-[#585f5e]">
@@ -48,7 +48,7 @@ export function ExperienceSection() {
               </div>
 
               <div className="lg:col-span-8">
-                <p className="max-w-[66ch] text-base leading-[1.7] text-[#121518]/80">
+                <p className="max-w-[66ch] break-words text-base leading-[1.7] text-[#121518]/80">
                   {role.summary}
                 </p>
                 <ul className="mt-6 space-y-3">
