@@ -660,7 +660,7 @@ No application code, website UI, public copy, contact details, project evidence,
 - Rebuilt the existing homepage `ProcessSection` as the System Atlas Engineering Approach section; no parallel section or new route was created.
 - Added a semantic ordered principle map with one editorial introduction, four waypoints, a connected horizontal route on wide layouts, and a vertical route on narrow mobile layouts.
 - Applied Atlas Ink / Deep Mineral / Limestone / Fog / Sea Glass / Signal Copper semantic roles with Manrope headings, Plus Jakarta Sans body copy, and monospace metadata.
-- Added responsive two-column and single-column compositions, root-relative inset spacing, and reduced-motion-safe static rendering. The route is visual context, not an interactive control or a prerequisite for understanding.
+- Added responsive two-column and single-column compositions, root-relative inset spacing, and a GSAP draw-once route reveal using ScrollTrigger without pinning or scroll-lock. The route remains fully visible without JavaScript and under reduced motion; it is visual context, not an interactive control or a prerequisite for understanding.
 - Added Playwright coverage for source order/content, 200% root-text reflow at narrow widths, keyboard-neutrality, reduced motion, and axe WCAG A/AA plus configured best-practice checks.
 - Added an engineering-approach source-integrity script and CI gate.
 
