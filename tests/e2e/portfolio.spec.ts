@@ -1144,7 +1144,7 @@ test.describe("System Atlas writing and publication", () => {
         const headingRect = heading?.getBoundingClientRect();
         const cards = Array.from(section.querySelectorAll<HTMLElement>(".atlas-writing__article"));
         const textNodes = Array.from(section.querySelectorAll<HTMLElement>(
-          ".atlas-writing__category, .atlas-writing__title, .atlas-writing__summary, .atlas-writing__article-footer"
+          ".atlas-writing__category, .atlas-writing__title, .atlas-writing__summary, .atlas-writing__article-footer, .atlas-writing__directory nav, .atlas-writing__profile-link"
         ));
         return {
           viewport: document.documentElement.clientWidth,
