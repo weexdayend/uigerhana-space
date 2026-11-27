@@ -820,3 +820,125 @@ test.describe("System Atlas expertise and capabilities", () => {
     }
   });
 });
+
+
+test.describe("System Atlas professional experience", () => {
+  test("preserves both résumé-backed roles and their overlapping periods", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const response = await page.goto("/", { waitUntil: "domcontentloaded" });
+    expect(response?.ok() || response?.status() === 304).toBe(true);
+
+    const section = page.locator("#experience");
+    await expect(section).toBeVisible();
+    await expect(section.getByRole("heading", {
+      level: 2,
+      name: "Building across products, platforms, and systems.",
+    })).toBeVisible();
+    await expect(section.getByText(/two role periods overlap/i)).toBeVisible();
+
+    const roles = section.locator(".atlas-experience__role");
+    await expect(roles).toHaveCount(2);
+
+    await expect(roles.nth(0).getByRole("heading", {
+      level: 3,
+      name: "Co-Founder & Lead Software Engineer",
+    })).toBeVisible();
+    await expect(roles.nth(0).getByText("Saptakarya", { exact: true })).toBeVisible();
+    await expect(roles.nth(0).getByText("2021 — Present", { exact: true })).toBeVisible();
+    await expect(roles.nth(0).locator(".atlas-experience__highlights li")).toHaveCount(6);
+
+    await expect(roles.nth(1).getByRole("heading", {
+      level: 3,
+      name: "Information Systems & Cybersecurity Engineer",
+    })).toBeVisible();
+    await expect(roles.nth(1).getByText("Infomedia Nusantara (Telkom Group)", { exact: true })).toBeVisible();
+    await expect(roles.nth(1).getByText("2017 — Present", { exact: true })).toBeVisible();
+    await expect(roles.nth(1).locator(".atlas-experience__highlights li")).toHaveCount(6);
+
+    const dates = await roles.locator(".atlas-experience__period").allTextContents();
+    expect(dates).toEqual(["2021 — Present", "2017 — Present"]);
+    await expect(section.getByText(/two roles · overlapping periods/i)).toBeVisible();
+  });
+
+  test("reflows both experience records at 200% root text without horizontal overflow", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+    await page.evaluate(() => document.fonts.ready);
+
+    for (const width of [390, 360, 320]) {
+      await page.setViewportSize({ width, height: 844 });
+      const layout = await page.locator("#experience").evaluate((section) => {
+        const heading = section.querySelector("h2");
+        const headingRect = heading?.getBoundingClientRect();
+        const roles = Array.from(section.querySelectorAll<HTMLElement>(".atlas-experience__role"));
+        return {
+          viewport: document.documentElement.clientWidth,
+          document: document.documentElement.scrollWidth,
+          body: document.body.scrollWidth,
+          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          headingClipped: Boolean(heading && heading.scrollWidth > heading.clientWidth + 1),
+          headingInViewport: Boolean(
+            headingRect && headingRect.left >= -1 &&
+            headingRect.right <= document.documentElement.clientWidth + 1
+          ),
+          roleCount: roles.length,
+          roleWidths: roles.map((role) => Math.round(role.getBoundingClientRect().width)),
+          roleOverflows: roles.some((role) => role.scrollWidth > role.clientWidth + 1),
+        };
+      });
+
+      expect(layout.rootFontSize).toBeGreaterThanOrEqual(32);
+      expect(layout.document).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.body).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.headingClipped).toBe(false);
+      expect(layout.headingInViewport).toBe(true);
+      expect(layout.roleCount).toBe(2);
+      expect(layout.roleWidths.every((width) => width > 0)).toBe(true);
+      expect(layout.roleOverflows).toBe(false);
+    }
+  });
+
+  test("keeps role content static and keyboard-neutral", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    const section = page.locator("#experience");
+    await section.scrollIntoViewIfNeeded();
+    await expect(section.locator(".atlas-experience__role")).toHaveCount(2);
+    await expect(section.getByRole("heading", { level: 3 })).toHaveCount(2);
+
+    const interactiveCount = await section.locator(
+      "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])"
+    ).count();
+    expect(interactiveCount).toBe(0);
+
+    for (const role of await section.locator(".atlas-experience__role").all()) {
+      await expect(role).toHaveCSS("opacity", "1");
+    }
+  });
+
+  test("has no axe WCAG A/AA or configured best-practice violations in the section", async ({ page }) => {
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      await page.locator("#experience").scrollIntoViewIfNeeded();
+      await page.evaluate(() => document.fonts.ready);
+
+      const results = await new AxeBuilder({ page })
+        .include("#experience")
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"])
+        .analyze();
+      const violations = results.violations.map((violation) => ({
+        id: violation.id,
+        impact: violation.impact,
+        nodes: violation.nodes.map((node) => node.target.join(" ")),
+      }));
+      expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
+    }
+  });
+});
