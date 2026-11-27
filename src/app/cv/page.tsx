@@ -9,79 +9,155 @@ import { SITE_META } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Résumé",
-  description: "Professional résumé of Irvan Gerhana, Product Engineer working across product thinking, interface design, software engineering, enterprise AI, and production systems.",
+  description:
+    "Professional résumé of Irvan Gerhana, Product Engineer working across product thinking, interface design, software engineering, enterprise AI, and production systems.",
   alternates: { canonical: "/cv" },
 };
 
 export default function CvPage() {
   return (
-    <main className="min-h-screen bg-[#f2efe7] px-5 py-8 text-[#121518] sm:px-8 sm:py-12 print:min-h-0 print:px-0 print:py-0">
-      <div className="no-print mx-auto mb-8 flex max-w-[900px] items-center justify-between gap-4">
-        <Link href="/" className="text-sm text-[#121518]/70 transition-colors hover:text-[#b8680c]">← Back to uigerhana.space</Link>
-        <CvPrintButton />
-      </div>
-      <article className="mx-auto max-w-[900px] border border-[#121518]/18 bg-[#f8f6f0] p-6 sm:p-10 lg:p-14 print:max-w-none print:border-0 print:bg-white print:p-0">
-        <header className="border-b-2 border-[#121518] pb-7">
-          <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">{PROFILE.positioning} · {SITE_META.location}</p>
-          <h1 className="mt-4 text-4xl font-normal tracking-[-0.055em] sm:text-5xl">{PROFILE.displayName}</h1>
-          <p className="mt-3 text-base text-[#121518]/70">Independent · Founder · Product Builder</p>
-          <p className="mt-5 max-w-[72ch] text-sm leading-[1.75] text-[#121518]/80">{PROFILE.summary}</p>
+    <main className="resume-page" data-resume-route>
+      <nav className="resume-chrome" aria-label="Résumé actions">
+        <div className="resume-chrome__inner">
+          <Link href="/" className="resume-back-link">
+            <span aria-hidden="true">←</span>
+            Back to uigerhana.space
+          </Link>
+          <CvPrintButton />
+        </div>
+      </nav>
+
+      <article className="resume-document" data-resume-document aria-labelledby="resume-name">
+        <header className="resume-header">
+          <p className="resume-header__eyebrow">
+            <span>{PROFILE.positioning}</span>
+            <span aria-hidden="true">·</span>
+            <span>{SITE_META.location}</span>
+          </p>
+          <h1 className="resume-header__name" id="resume-name">
+            {PROFILE.displayName}
+          </h1>
+          <p className="resume-header__context">{PROFILE.context.join(" · ")}</p>
+          <p className="resume-header__summary" data-resume-summary>
+            {PROFILE.summary}
+          </p>
         </header>
 
-        <section className="cv-section mt-8">
-          <h2 className="cv-heading">Professional Experience</h2>
-          <div className="mt-5 space-y-8">
+        <section
+          className="resume-section resume-section--experience"
+          id="experience"
+          aria-labelledby="resume-experience-heading"
+        >
+          <h2 className="resume-section__heading" id="resume-experience-heading">
+            Professional Experience
+          </h2>
+          <div className="resume-experience-list">
             {EXPERIENCE.map((role) => (
-              <section key={role.id} className="break-inside-avoid">
-                <div className="flex flex-col justify-between gap-1 sm:flex-row sm:items-baseline">
-                  <h3 className="text-lg font-semibold tracking-tight">{role.title}</h3>
-                  <span className="font-mono text-xs text-[#8a5a20]">{role.period}</span>
+              <section
+                className="resume-role"
+                key={role.id}
+                data-resume-role={role.id}
+                aria-labelledby={"resume-role-" + role.id}
+              >
+                <div className="resume-role__header">
+                  <h3 className="resume-role__title" id={"resume-role-" + role.id}>
+                    {role.title}
+                  </h3>
+                  <span className="resume-role__period">{role.period}</span>
                 </div>
-                <p className="mt-1 text-sm text-[#121518]/70">{role.organization} · {role.location}</p>
-                <p className="mt-3 text-sm leading-[1.7] text-[#121518]/80">{role.summary}</p>
-                <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-[1.65] text-[#121518]/80">
-                  {role.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
+                <p className="resume-role__organization">
+                  {role.organization}
+                  <span aria-hidden="true"> · </span>
+                  {role.location}
+                </p>
+                <p className="resume-role__summary">{role.summary}</p>
+                <ul className="resume-role__highlights">
+                  {role.highlights.map((highlight) => (
+                    <li key={highlight}>{highlight}</li>
+                  ))}
                 </ul>
               </section>
             ))}
           </div>
         </section>
 
-        <section className="cv-section mt-9 break-inside-avoid">
-          <h2 className="cv-heading">Technical Skills</h2>
-          <div className="mt-4 space-y-3">
+        <section
+          className="resume-section"
+          id="skills"
+          aria-labelledby="resume-skills-heading"
+        >
+          <h2 className="resume-section__heading" id="resume-skills-heading">
+            Technical Skills
+          </h2>
+          <div className="resume-skills-list">
             {SKILL_GROUPS.map((group) => (
-              <div key={group.id} className="grid gap-1 sm:grid-cols-[190px_1fr] sm:gap-5">
-                <h3 className="text-sm font-semibold">{group.title}</h3>
-                <p className="text-sm leading-[1.65] text-[#121518]/80">{group.skills.join(", ")}</p>
+              <div
+                className="resume-skill-row"
+                key={group.id}
+                data-resume-skill-group={group.id}
+              >
+                <h3 className="resume-skill-row__label">{group.title}</h3>
+                <p className="resume-skill-row__skills">{group.skills.join(", ")}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="cv-section mt-9 break-inside-avoid">
-          <h2 className="cv-heading">Certification</h2>
-          <ul className="mt-4 space-y-2 text-sm">
+        <section
+          className="resume-section"
+          id="certifications"
+          aria-labelledby="resume-certifications-heading"
+        >
+          <h2 className="resume-section__heading" id="resume-certifications-heading">
+            Certification
+          </h2>
+          <ul className="resume-certifications-list">
             {CERTIFICATIONS.map((certification) => (
-              <li key={certification.name}><span className="font-semibold">{certification.name}</span><span className="text-[#121518]/70"> — {certification.issuer}</span></li>
+              <li className="resume-certification" key={certification.name}>
+                <span className="resume-certification__name">{certification.name}</span>
+                <span className="resume-certification__issuer">{certification.issuer}</span>
+              </li>
             ))}
           </ul>
         </section>
 
-        <section className="cv-section mt-9 break-inside-avoid">
-          <h2 className="cv-heading">Technical Leadership & Publications</h2>
-          <p className="mt-4 text-sm leading-[1.7] text-[#121518]/80">
-            Focus areas include Enterprise AI Engineering, AI Governance, Context Engineering, Canonical Data Architecture, Agentic Systems, and Distributed Software Architecture.
+        <section
+          className="resume-section"
+          id="publications"
+          aria-labelledby="resume-publications-heading"
+        >
+          <h2 className="resume-section__heading" id="resume-publications-heading">
+            Technical Leadership &amp; Publications
+          </h2>
+          <p className="resume-publications__summary">
+            Focus areas include Enterprise AI Engineering, AI Governance, Context Engineering,
+            Canonical Data Architecture, Agentic Systems, and Distributed Software Architecture.
           </p>
-          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#121518]/75">
+          <nav className="resume-publications__links" aria-label="Publication profiles">
             {PUBLICATION_PROFILES.map((profile) => (
-              <a key={profile.id} href={profile.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[#8a5a20]">
-                {profile.platform}: {profile.handle} ↗
+              <a
+                className="resume-publication-link"
+                key={profile.id}
+                href={profile.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={profile.platform + ": " + profile.handle + " (opens in a new tab)"}
+              >
+                <span>{profile.platform}</span>
+                <span className="resume-publication-link__handle">{profile.handle}</span>
+                <span aria-hidden="true">↗</span>
               </a>
             ))}
-          </div>
+          </nav>
         </section>
-        <footer className="no-print mt-10 border-t border-[#121518]/20 pt-4 text-xs text-[#585f5e]">{PROFILE.displayName} · {PROFILE.positioning} · {SITE_META.timezone}</footer>
+
+        <footer className="resume-document-footer">
+          <span>{PROFILE.displayName}</span>
+          <span aria-hidden="true">·</span>
+          <span>{PROFILE.positioning}</span>
+          <span aria-hidden="true">·</span>
+          <span>{SITE_META.timezone}</span>
+        </footer>
       </article>
     </main>
   );
