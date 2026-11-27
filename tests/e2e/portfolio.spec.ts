@@ -942,3 +942,122 @@ test.describe("System Atlas professional experience", () => {
     }
   });
 });
+
+
+test.describe("System Atlas engineering approach", () => {
+  test("presents the four approved engineering principles in source order", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const response = await page.goto("/", { waitUntil: "domcontentloaded" });
+    expect(response?.ok() || response?.status() === 304).toBe(true);
+
+    const section = page.locator("#approach");
+    await expect(section).toBeVisible();
+    await expect(section.getByRole("heading", {
+      level: 2,
+      name: "How I think about building software.",
+    })).toBeVisible();
+
+    const principles = section.locator(".atlas-approach__principle");
+    await expect(principles).toHaveCount(4);
+    const titles = await principles.locator("h3").allTextContents();
+    expect(titles).toEqual([
+      "Start with the workflow",
+      "Make complexity legible",
+      "Build AI with context",
+      "Think beyond the interface",
+    ]);
+
+    await expect(principles.nth(0).locator("p")).toContainText(/people, decisions, data, and constraints/i);
+    await expect(principles.nth(1).locator("p")).toContainText(/information architecture, canonical data models/i);
+    await expect(principles.nth(2).locator("p")).toContainText(/business context, integration boundaries, data governance/i);
+    await expect(principles.nth(3).locator("p")).toContainText(/security, monitoring, deployment, maintainability/i);
+    await expect(section.getByText("Four connected principles", { exact: true })).toBeVisible();
+
+    const sequence = await principles.locator(".atlas-approach__waypoint span").allTextContents();
+    expect(sequence).toEqual(["01", "02", "03", "04"]);
+  });
+
+  test("reflows all four principles at 200% root text without horizontal overflow", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+    await page.evaluate(() => document.fonts.ready);
+
+    for (const width of [390, 360, 320]) {
+      await page.setViewportSize({ width, height: 844 });
+      const layout = await page.locator("#approach").evaluate((section) => {
+        const heading = section.querySelector("h2");
+        const headingRect = heading?.getBoundingClientRect();
+        const principles = Array.from(
+          section.querySelectorAll<HTMLElement>(".atlas-approach__principle")
+        );
+        return {
+          viewport: document.documentElement.clientWidth,
+          document: document.documentElement.scrollWidth,
+          body: document.body.scrollWidth,
+          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          headingClipped: Boolean(heading && heading.scrollWidth > heading.clientWidth + 1),
+          headingInViewport: Boolean(
+            headingRect && headingRect.left >= -1 &&
+            headingRect.right <= document.documentElement.clientWidth + 1
+          ),
+          principleCount: principles.length,
+          principleOverflows: principles.some((item) => item.scrollWidth > item.clientWidth + 1),
+          titleCount: section.querySelectorAll(".atlas-approach__principle h3").length,
+        };
+      });
+
+      expect(layout.rootFontSize).toBeGreaterThanOrEqual(32);
+      expect(layout.document).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.body).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.headingClipped).toBe(false);
+      expect(layout.headingInViewport).toBe(true);
+      expect(layout.principleCount).toBe(4);
+      expect(layout.titleCount).toBe(4);
+      expect(layout.principleOverflows).toBe(false);
+    }
+  });
+
+  test("keeps the principle map static and keyboard-neutral under reduced motion", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    const section = page.locator("#approach");
+    await section.scrollIntoViewIfNeeded();
+    await expect(section.locator(".atlas-approach__principle")).toHaveCount(4);
+    await expect(section.getByRole("heading", { level: 3 })).toHaveCount(4);
+
+    const interactiveCount = await section.locator(
+      "a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])"
+    ).count();
+    expect(interactiveCount).toBe(0);
+
+    for (const principle of await section.locator(".atlas-approach__principle article").all()) {
+      await expect(principle).toHaveCSS("opacity", "1");
+    }
+  });
+
+  test("has no axe WCAG A/AA or configured best-practice violations at desktop and mobile", async ({ page }) => {
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      await page.locator("#approach").scrollIntoViewIfNeeded();
+      await page.evaluate(() => document.fonts.ready);
+
+      const results = await new AxeBuilder({ page })
+        .include("#approach")
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"])
+        .analyze();
+      const violations = results.violations.map((violation) => ({
+        id: violation.id,
+        impact: violation.impact,
+        nodes: violation.nodes.map((node) => node.target.join(" ")),
+      }));
+      expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
+    }
+  });
+});
