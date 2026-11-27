@@ -87,6 +87,8 @@ jobs:
             fi
             local output_key="${name//-/_}"
             printf '%s_attempt=%s\n' "$output_key" "$run_attempt" >> "$GITHUB_OUTPUT"
+          }
+
           verify_run external "$EXTERNAL_RUN_ID" ".github/workflows/external-destination-audit.yml"
           verify_run production "$PRODUCTION_RUN_ID" ".github/workflows/production-parity-audit.yml"
           verify_run physical-device "$PHYSICAL_DEVICE_RUN_ID" ".github/workflows/physical-device-acceptance.yml"
