@@ -3601,9 +3601,9 @@ body {
 .atlas-approach__principles::before {
   position: absolute;
   z-index: 1;
-  top: 2.75rem;
-  right: 3.25rem;
-  left: 3.25rem;
+  top: calc(var(--atlas-approach-card-y) + 1.25rem);
+  right: calc(var(--atlas-approach-card-x) + 1.25rem);
+  left: calc(var(--atlas-approach-card-x) + 1.25rem);
   height: 1px;
   background: var(--sea-glass);
   content: "";
@@ -3725,13 +3725,13 @@ body {
 
   .atlas-approach__principles::before {
     display: block;
-    top: 1.5rem;
+    top: 2rem;
     right: auto;
-    bottom: 1.5rem;
-    left: 1.25rem;
+    bottom: 2rem;
+    left: 2.5rem;
     width: 1px;
     height: auto;
-    background: var(--contour-line);
+    background: var(--sea-glass);
   }
 
   .atlas-approach__principle {
@@ -3741,17 +3741,32 @@ body {
   .atlas-approach__principle article {
     --atlas-approach-card-y: 1.5rem;
     --atlas-approach-card-x: 1.25rem;
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    align-items: start;
+    gap: 1rem;
     min-height: auto;
     border: 1px solid var(--contour-line);
     padding: var(--py) var(--px);
   }
 
+  .atlas-approach__waypoint {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
   .atlas-approach__waypoint span {
-    background: var(--atlas-ink);
+    background: var(--deep-mineral);
+  }
+
+  .atlas-approach__waypoint i {
+    display: none;
   }
 
   .atlas-approach__principle-copy {
-    padding-top: 1.5rem;
+    grid-column: 2;
+    grid-row: 1;
+    padding-top: 0;
   }
 
   .atlas-approach__principle-copy h3 {
