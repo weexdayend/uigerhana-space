@@ -3118,12 +3118,16 @@ body {
 }
 
 .atlas-expertise__kind {
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
   margin: 0;
   color: var(--fog);
   font-size: 0.625rem;
   font-weight: 500;
   letter-spacing: 0.09em;
   line-height: 1.6;
+  overflow-wrap: anywhere;
   text-transform: uppercase;
 }
 
