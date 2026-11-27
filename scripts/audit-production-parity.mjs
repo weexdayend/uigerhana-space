@@ -215,7 +215,7 @@ async function inspectGitHubDeployment(expectedCommit) {
 
   try {
     const deploymentResponse = await fetch(
-      apiBase + "/deployments?environment=production&per_page=10",
+      apiBase + "/deployments?per_page=100",
       { headers, signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) }
     );
     if (!deploymentResponse.ok) {
@@ -327,7 +327,7 @@ async function main() {
   addFinding(
     findings,
     "HTTP_TO_HTTPS_REDIRECT",
-    httpRedirect.ok && httpRedirect.finalUrl?.startsWith(siteOrigin.origin + "/")
+    httpRedirect.ok && httpRedirect.status === 200 && httpRedirect.finalUrl?.startsWith(siteOrigin.origin + "/")
       ? "pass"
       : "review",
     httpRedirect.ok
@@ -442,7 +442,11 @@ async function main() {
   const deployment = await inspectGitHubDeployment(EXPECTED_COMMIT);
   const markerStates = revisionMarkers.map((item) => item.comparison);
   const markerMismatch = markerStates.includes("mismatch") || markerStates.includes("invalid-marker");
-  const allMarkersMatch = markerStates.length > 0 && markerStates.every((state) => state === "match");
+  const allRoutesExposeMarker = routeResults.length === PUBLIC_ROUTES.length &&
+    routeResults.every((item) => Boolean(item.metadata?.revisionMarker));
+  const allMarkersMatch = allRoutesExposeMarker &&
+    markerStates.length === PUBLIC_ROUTES.length &&
+    markerStates.every((state) => state === "match");
   const productionCommitParity = markerMismatch
     ? "mismatch"
     : allMarkersMatch
