@@ -2096,6 +2096,7 @@ body {
 .atlas-work__action,
 .atlas-case-study__action {
   display: inline-flex;
+  min-height: 2rem;
   max-width: 100%;
   align-items: center;
   gap: 0.5rem;
@@ -2273,7 +2274,10 @@ body {
 }
 
 .atlas-work__closing-link {
+  display: inline-flex;
+  min-height: 2rem;
   flex: 0 0 auto;
+  align-items: center;
   color: var(--atlas-ink);
   font-size: 0.8125rem;
   font-weight: 600;
