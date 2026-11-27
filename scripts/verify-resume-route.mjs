@@ -86,7 +86,7 @@ for (const selector of [
   "@page {",
   "@media print {",
   ".resume-chrome {\n    display: none !important;",
-  ".resume-role,\n  .resume-skill-row,\n  .resume-certification,\n  .resume-publication-link,\n  .resume-document-footer {\n    break-inside: avoid-page;",
+  ".resume-role,\n  .resume-skill-row,\n  .resume-certification,\n  .resume-publication-link {\n    break-inside: avoid-page;",
 ]) {
   assert.ok(css.includes(selector), "Missing résumé responsive/print style contract: " + selector);
 }
@@ -105,6 +105,9 @@ for (const token of [
 }
 
 assert.match(css, /@page\s*\{\s*size:\s*A4 portrait;\s*margin:\s*16mm 14mm;/);
+assert.match(css, /\.resume-document-footer\s*\{[^}]*break-inside:\s*auto;/s);
+assert.match(css, /\.resume-document-footer\s*\{[^}]*margin-top:\s*0\.9rem\s*!important;/s);
+assert.match(css, /\.resume-role__highlights\s*\{[^}]*line-height:\s*1\.45\s*!important;/s);
 assert.match(css, /\.resume-document\s*\{[^}]*width:\s*min\(calc\(100% - 2rem\), 58\.75rem\)/s);
 assert.match(css, /\.resume-document\s*\{[^}]*background:\s*#f8f6f0/s);
 assert.doesNotMatch(
