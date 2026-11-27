@@ -96,6 +96,6 @@ test("release gate binds report timestamps to each completed source run window",
   }
   assert.ok(evaluator.includes("validateRunTimeProvenance"));
   assert.ok(evaluator.includes("report timestamp must fall within the source workflow run window"));
-  assert.ok(evaluator.includes("manifest must be generated."));
+  assert.ok(evaluator.includes("workflow run must be completed before the provenance manifest is generated."));
   assert.ok(validator.includes("validatedAt: new Date().toISOString()"));
 });
