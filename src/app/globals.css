@@ -3491,3 +3491,282 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* System Atlas — Engineering approach */
+.atlas-approach {
+  --atlas-approach-space: clamp(3.5rem, 7vw, 6.5rem);
+  --atlas-approach-card-y: clamp(1.5rem, 2.5vw, 2rem);
+  --atlas-approach-card-x: clamp(1.25rem, 2vw, 1.75rem);
+  position: relative;
+  overflow: clip;
+  background: var(--atlas-ink);
+  color: var(--limestone);
+  padding-block: var(--atlas-approach-space);
+}
+
+.atlas-approach__container {
+  width: min(100%, 86rem);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.atlas-approach__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 0.9fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 6rem);
+}
+
+.atlas-approach__heading {
+  min-width: 0;
+}
+
+.atlas-approach__eyebrow,
+.atlas-approach__route-heading {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.atlas-approach__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  color: var(--sea-glass);
+}
+
+.atlas-approach__eyebrow span:first-child {
+  color: var(--signal-copper);
+}
+
+.atlas-approach__heading h2 {
+  max-width: 15ch;
+  margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+  color: var(--limestone);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: clamp(2.4rem, 5.2vw, 4.75rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.06em;
+  overflow-wrap: anywhere;
+}
+
+.atlas-approach__introduction {
+  max-width: 48ch;
+  margin: 0 0 0.375rem;
+  color: var(--fog);
+  font-size: clamp(0.9375rem, 1.15vw, 1.0625rem);
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+.atlas-approach__route-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: clamp(3rem, 6vw, 5rem);
+  border-bottom: 1px solid var(--contour-line);
+  padding-bottom: 1rem;
+  color: var(--fog);
+}
+
+.atlas-approach__route-heading p,
+.atlas-approach__route-heading span {
+  margin: 0;
+}
+
+.atlas-approach__route-heading span {
+  color: var(--sage-graphite);
+  white-space: nowrap;
+}
+
+.atlas-approach__principles {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: 1.5rem 0 0;
+  border: 1px solid var(--contour-line);
+  background: var(--contour-line);
+  padding: 0;
+  list-style: none;
+}
+
+.atlas-approach__principles::before {
+  position: absolute;
+  z-index: 1;
+  top: 2.75rem;
+  right: 3.25rem;
+  left: 3.25rem;
+  height: 1px;
+  background: var(--sea-glass);
+  content: "";
+  pointer-events: none;
+}
+
+.atlas-approach__principle {
+  min-width: 0;
+  background: var(--deep-mineral);
+}
+
+.atlas-approach__principle article {
+  --py: var(--atlas-approach-card-y);
+  --px: var(--atlas-approach-card-x);
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: clamp(18rem, 26vw, 22rem);
+  flex-direction: column;
+  background: var(--deep-mineral);
+  padding: var(--py) var(--px);
+}
+
+.atlas-approach__waypoint {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.atlas-approach__waypoint span {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--sea-glass);
+  background: var(--deep-mineral);
+  color: var(--sea-glass);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.atlas-approach__waypoint i {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--signal-copper);
+  border-radius: 50%;
+  background: var(--deep-mineral);
+}
+
+.atlas-approach__principle-copy {
+  margin-top: auto;
+  padding-top: 3rem;
+}
+
+.atlas-approach__principle-copy h3 {
+  max-width: 15ch;
+  margin: 0;
+  color: var(--limestone);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: -0.045em;
+  overflow-wrap: anywhere;
+}
+
+.atlas-approach__principle-copy p {
+  max-width: 38ch;
+  margin: 1rem 0 0;
+  color: var(--fog);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 60rem) {
+  .atlas-approach__header {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+
+  .atlas-approach__introduction {
+    max-width: 60ch;
+  }
+
+  .atlas-approach__principles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .atlas-approach__principles::before {
+    display: none;
+  }
+
+  .atlas-approach__principle article {
+    min-height: 18rem;
+  }
+}
+
+@media (max-width: 42rem) {
+  .atlas-approach__route-heading {
+    align-items: flex-start;
+    font-size: 0.625rem;
+  }
+
+  .atlas-approach__principles {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1px;
+    border: 0;
+    background: transparent;
+    padding-left: 0;
+  }
+
+  .atlas-approach__principles::before {
+    display: block;
+    top: 1.5rem;
+    right: auto;
+    bottom: 1.5rem;
+    left: 1.25rem;
+    width: 1px;
+    height: auto;
+    background: var(--contour-line);
+  }
+
+  .atlas-approach__principle {
+    background: transparent;
+  }
+
+  .atlas-approach__principle article {
+    --atlas-approach-card-y: 1.5rem;
+    --atlas-approach-card-x: 1.25rem;
+    min-height: auto;
+    border: 1px solid var(--contour-line);
+    padding: var(--py) var(--px);
+  }
+
+  .atlas-approach__waypoint span {
+    background: var(--atlas-ink);
+  }
+
+  .atlas-approach__principle-copy {
+    padding-top: 1.5rem;
+  }
+
+  .atlas-approach__principle-copy h3 {
+    max-width: 18ch;
+    font-size: clamp(1.375rem, 6vw, 1.75rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-approach *,
+  .atlas-approach *::before,
+  .atlas-approach *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
