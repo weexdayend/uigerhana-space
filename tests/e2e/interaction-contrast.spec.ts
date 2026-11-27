@@ -291,7 +291,7 @@ test.describe("Phase 8.5 interactive state contrast", () => {
 
     const evidence = {
       method: "Keyboard Tab traversal; computed focus outline measured against the nearest resolved solid parent surface.",
-      criterion: "WCAG 2.2 SC 2.4.11 focus appearance contrast component: at least 3:1.",
+      criterion: "WCAG 2.2 SC 1.4.11 Non-text Contrast: focus-state information is at least 3:1 against adjacent color(s).",
       route: "/cv",
       records,
     };
