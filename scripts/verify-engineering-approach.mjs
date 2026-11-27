@@ -14,7 +14,7 @@ const principles = [
 
 assert.equal((source.match(/\bid: "/g) ?? []).length, 4, "The engineering approach must keep exactly four principles");
 for (const [id, title] of principles) {
-  assert.match(source, new RegExp('id: "' + id + '"[\\s\\S]*?title: "' + title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + '"'));
+  assert.match(source, new RegExp('id: "' + id + '"[\\s\\S]*?title: "' + title + '"'));
 }
 
 assert.match(component, /import \{ ENGINEERING_PRINCIPLES \} from "@\/data\/approach"/);
