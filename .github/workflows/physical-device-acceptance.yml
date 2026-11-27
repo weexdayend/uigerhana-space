@@ -1,0 +1,81 @@
+name: Physical Device Acceptance Audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_commit:
+        description: Full 40-character SHA for the exact reviewed commit
+        required: true
+        type: string
+      evidence_file:
+        description: Evidence JSON committed under evidence/physical-device/
+        required: true
+        default: evidence/physical-device/session.json
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Validate physical-device evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout selected commit
+        uses: actions/checkout@v4
+        with:
+          ref: \${{ github.sha }}
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Verify exact commit and evidence path
+        env:
+          EXPECTED_COMMIT: \${{ inputs.expected_commit }}
+          EVIDENCE_FILE: \${{ inputs.evidence_file }}
+        run: |
+          set -euo pipefail
+          actual_commit="$(git rev-parse HEAD)"
+          if [ "$actual_commit" != "$EXPECTED_COMMIT" ]; then
+            echo "::error::Checked-out commit does not match expected_commit."
+            exit 1
+          fi
+          if ! printf '%s' "$EXPECTED_COMMIT" | grep -Eq '^[a-fA-F0-9]{40}$'; then
+            echo "::error::expected_commit must be a full 40-character SHA."
+            exit 1
+          fi
+          case "$EVIDENCE_FILE" in
+            evidence/physical-device/*.json) ;;
+            *)
+              echo "::error::evidence_file must be inside evidence/physical-device/."
+              exit 1
+              ;;
+          esac
+          test -f "$EVIDENCE_FILE"
+
+      - name: Run validator unit tests
+        run: node --test scripts/validate-physical-device-evidence.test.mjs
+
+      - name: Validate physical-device evidence
+        env:
+          EXPECTED_COMMIT: \${{ inputs.expected_commit }}
+          EVIDENCE_FILE: \${{ inputs.evidence_file }}
+          REPORT_PATH: \${{ runner.temp }}/physical-device-acceptance-report.json
+        run: |
+          set -euo pipefail
+          evidence_dir="$(dirname "$EVIDENCE_FILE")"
+          node scripts/validate-physical-device-evidence.mjs "$EVIDENCE_FILE" "$evidence_dir"
+
+      - name: Upload acceptance report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: physical-device-acceptance-\${{ github.sha }}
+          path: \${{ runner.temp }}/physical-device-acceptance-report.json
+          if-no-files-found: ignore
+          retention-days: 90
