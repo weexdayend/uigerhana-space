@@ -642,3 +642,31 @@ No application code, website UI, public copy, contact details, project evidence,
 - Local Next.js dependency-guide inspection and local browser execution were not available in this editing environment; no local test, screenshot, or assistive-technology result is claimed.
 - The stacked base includes a correction to the Phase 7.3 generalized-domain test locators; the parent CI result must be rechecked independently.
 - No merge or deployment is included.
+
+## 2026-11-28 — Phase 7.5 System Atlas Engineering Approach
+
+**Branch:** `phase-7/engineering-approach-atlas`  
+**Base:** `phase-7/professional-experience-atlas` after the Phase 7.4 contrast correction.
+
+### Source and content audit
+
+- Kept `src/data/approach.ts` and `ENGINEERING_PRINCIPLES` as the only principle source.
+- Preserved all four principle IDs, indices, titles, and descriptions in their existing order.
+- Kept the approach separate from résumé-backed experience, the five skills groups, generalized work domains, and public case studies.
+- No new delivery claims, project outcomes, personal contribution statements, seniority claims, metrics, or client attributions were introduced.
+
+### Delivered
+
+- Rebuilt the existing homepage `ProcessSection` as the System Atlas Engineering Approach section; no parallel section or new route was created.
+- Added a semantic ordered principle map with one editorial introduction, four waypoints, a connected horizontal route on wide layouts, and a vertical route on narrow mobile layouts.
+- Applied Atlas Ink / Deep Mineral / Limestone / Fog / Sea Glass / Signal Copper semantic roles with Manrope headings, Plus Jakarta Sans body copy, and monospace metadata.
+- Added responsive two-column and single-column compositions, root-relative inset spacing, and reduced-motion-safe static rendering. The route is visual context, not an interactive control or a prerequisite for understanding.
+- Added Playwright coverage for source order/content, 200% root-text reflow at narrow widths, keyboard-neutrality, reduced motion, and axe WCAG A/AA plus configured best-practice checks.
+- Added an engineering-approach source-integrity script and CI gate.
+
+### Validation boundary
+
+- The Phase 7.4 axe finding was traced to Signal Copper used as small text on Limestone; that index now uses Deep Mineral (calculated contrast approximately 13.95:1 against Limestone). The Phase 7.4 exact-head CI rerun must confirm this fix independently.
+- GitHub Actions must validate typecheck, content/styleframe gates, expertise/experience/approach integrity, lint, production build, and Chromium/Firefox/WebKit runtime tests on this PR's exact head.
+- The editing environment does not expose an installed `node_modules/next/dist/docs` tree or local browser runtime; no local Next.js guide inspection, typecheck, browser screenshot, or assistive-technology run is claimed.
+- No merge or deployment is included.
