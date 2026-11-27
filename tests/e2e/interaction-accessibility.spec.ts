@@ -1,4 +1,4 @@
-import { expect, test, type Locator } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 interface FocusAuditCase {
   route: string;
@@ -31,7 +31,7 @@ interface HoverAuditCase {
   label: string;
 }
 
-async function focusByTab(page: Parameters<Parameters<typeof test>[1]>[0]["page"], locator: Locator) {
+async function focusByTab(page: Page, locator: Locator) {
   for (let index = 0; index < 100; index += 1) {
     await page.keyboard.press("Tab");
     const isFocused = await locator.evaluate((element) => document.activeElement === element);
