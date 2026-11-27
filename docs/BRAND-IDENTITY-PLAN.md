@@ -248,7 +248,7 @@ Exit criteria:
 
 ## Phase 7 — Site-wide identity integration
 
-**Status:** Active, delivered as reviewable vertical slices. The first slice aligns the homepage Selected Work section and `/work` index with the accepted connected styleframes; the case-study detail route, capabilities, experience, approach, writing/contact, and résumé remain separate follow-on slices.
+**Status:** Active, delivered as reviewable vertical slices. Phase 7.1 aligns the homepage Selected Work section and `/work` index; Phase 7.2 aligns the approved `/work/[slug]` detail route. Capabilities, experience, approach, writing/contact, and résumé remain separate follow-on slices.
 
 **Goal:** extend the approved system consistently.
 
@@ -347,6 +347,6 @@ Continue Phase 7 as scoped, production-grade vertical slices. The current slice 
 - Preserve the existing public content and evidence/disclosure gates.
 - Validate responsive behavior, 200% root-font reflow, keyboard interaction, contrast, and route behavior on the exact PR head before merge.
 
-The next separate slice can align `/work/[slug]` case-study detail. Do not bundle the entire site, CV, or deployment into this change.
+Phase 7.2 is the separate `/work/[slug]` Case Study Detail slice, stacked on the Phase 7.1 review branch. It aligns the approved case-study route with the System Atlas connected styleframe while preserving public publication gates, source-backed copy, project status, and conceptual-diagram disclosures. Do not bundle the entire site, CV, or deployment into this change. After 7.2, continue with the remaining site sections as independent reviewable slices.
 
 Phase 1 remains open only for its outstanding owner-only gates: literal browser 200% zoom/OS text scaling, native print-dialog behavior, production-domain/commit parity, public contact-channel decision, and owner acceptance of prioritized audit findings. The earlier real-device and assistive-technology completion remains a category-level owner attestation; do not invent platform details.

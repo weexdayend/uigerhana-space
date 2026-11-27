@@ -44,28 +44,30 @@ export async function generateMetadata({
 }
 
 function ContentSection({
+  id,
   heading,
   paragraphs,
   bullets,
 }: {
+  id: string;
   heading: string;
   paragraphs: string[];
   bullets?: string[];
 }) {
   return (
-    <section className="grid gap-5 border-t border-[#121518]/18 py-8 sm:grid-cols-12 sm:gap-10">
-      <h2 className="text-xl font-normal tracking-tight sm:col-span-4">{heading}</h2>
-      <div className="space-y-4 sm:col-span-8">
+    <section className="atlas-detail-story__section" aria-labelledby={id}>
+      <h3 className="atlas-detail-story__heading" id={id}>
+        {heading}
+      </h3>
+      <div className="atlas-detail-story__copy">
         {paragraphs.map((paragraph) => (
-          <p key={paragraph} className="text-sm leading-[1.8] text-[#121518]/75 sm:text-base">
-            {paragraph}
-          </p>
+          <p key={paragraph}>{paragraph}</p>
         ))}
         {bullets && (
-          <ul className="space-y-2 pt-1">
+          <ul className="atlas-detail-story__list">
             {bullets.map((bullet) => (
-              <li key={bullet} className="grid grid-cols-[12px_1fr] gap-3 text-sm leading-[1.7] text-[#121518]/75">
-                <span className="mt-[9px] h-1.5 w-1.5 bg-[#b8680c]" aria-hidden="true" />
+              <li key={bullet}>
+                <span aria-hidden="true">—</span>
                 <span>{bullet}</span>
               </li>
             ))}
@@ -82,65 +84,110 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
 
   if (!study) notFound();
 
+  const storySections = [
+    study.challenge,
+    study.approach,
+    study.implementation,
+    study.currentState,
+  ];
+
   return (
-    <main className="min-h-screen bg-[#f2efe7] text-[#121518]">
-      <header className="border-b border-[#121518]/18">
-        <div className="mx-auto flex max-w-[1120px] items-center justify-between gap-4 px-5 py-7 sm:px-10">
-          <Link href="/work" className="text-sm text-[#585f5e] transition-colors hover:text-[#8a5a20]">
-            ← All work
+    <main className="atlas-detail" data-case-study-detail>
+      <header className="atlas-detail__header">
+        <nav
+          className="atlas-detail__header-inner"
+          aria-label="Case study navigation"
+        >
+          <Link className="atlas-detail__nav-link" href="/work">
+            <span aria-hidden="true">←</span>
+            <span>All work</span>
           </Link>
-          <Link href="/cv" className="text-sm transition-colors hover:text-[#8a5a20]">
-            Résumé ↗
+          <Link className="atlas-detail__resume-link" href="/cv">
+            Résumé <span aria-hidden="true">↗</span>
           </Link>
-        </div>
+        </nav>
       </header>
 
-      <article className="mx-auto max-w-[1120px] px-5 py-14 sm:px-10 sm:py-20">
-        <div className="flex flex-wrap items-center gap-3">
-          <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">{study.eyebrow}</p>
-          <span className="border border-[#121518]/18 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.08em] text-[#8a5a20]">
-            {STATUS_LABELS[study.projectStatus]}
-          </span>
-        </div>
-        <h1 className="mt-5 max-w-[16ch] text-[clamp(2.8rem,7vw,6rem)] font-normal leading-[0.94] tracking-[-0.065em]">
-          {study.title}
-        </h1>
-        <p className="mt-7 max-w-[64ch] text-lg leading-[1.75] text-[#121518]/75">{study.summary}</p>
-
-        <div className="mt-12 grid gap-5 border-y border-[#121518]/18 py-6 sm:grid-cols-2">
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#8a5a20]">Context</p>
-            <p className="mt-2 text-sm">{study.context}</p>
+      <section className="atlas-detail__hero" aria-labelledby="case-study-title">
+        <div className="atlas-detail__container">
+          <div className="atlas-detail__hero-meta">
+            <p className="atlas-detail__eyebrow">{study.eyebrow}</p>
+            <span
+              className="atlas-detail__status"
+              data-project-status={study.projectStatus}
+            >
+              <span className="atlas-detail__status-mark" aria-hidden="true" />
+              {STATUS_LABELS[study.projectStatus]}
+            </span>
           </div>
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#8a5a20]">Role</p>
-            <p className="mt-2 text-sm leading-[1.7]">{study.role}</p>
-          </div>
+
+          <h1 className="atlas-detail__title" id="case-study-title">
+            {study.title}
+          </h1>
+          <p className="atlas-detail__summary">{study.summary}</p>
+
+          <dl className="atlas-detail__metadata">
+            <div className="atlas-detail__metadata-item">
+              <dt>Context</dt>
+              <dd>{study.context}</dd>
+            </div>
+            <div className="atlas-detail__metadata-item">
+              <dt>Role</dt>
+              <dd>{study.role}</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <article>
+        <div className="atlas-detail__container">
+          <CaseStudyContributionBreakdown contributions={study.contributions} />
         </div>
 
-        <CaseStudyContributionBreakdown contributions={study.contributions} />
         <CaseStudyArchitecture diagram={study.architectureDiagram} />
-        {study.workflowDiagram && <CaseStudyWorkflowMap workflow={study.workflowDiagram} />}
-        {study.evidenceMap && <CaseStudyEvidenceMap evidence={study.evidenceMap} />}
-        {study.visualStudies.length > 0 && <CaseStudyVisualGallery visuals={study.visualStudies} />}
 
-        <div className="mt-2">
-          <ContentSection {...study.challenge} />
-          <ContentSection {...study.approach} />
-          <ContentSection {...study.implementation} />
-          <ContentSection {...study.currentState} />
+        <div className="atlas-detail__container">
+          {study.workflowDiagram && (
+            <CaseStudyWorkflowMap workflow={study.workflowDiagram} />
+          )}
+          {study.evidenceMap && (
+            <CaseStudyEvidenceMap evidence={study.evidenceMap} />
+          )}
+          {study.visualStudies.length > 0 && (
+            <CaseStudyVisualGallery visuals={study.visualStudies} />
+          )}
+
+          <section
+            className="atlas-detail-story"
+            aria-labelledby="case-study-story-title"
+          >
+            <div className="atlas-detail-story__intro">
+              <p className="atlas-detail__section-kicker">03 / Project story</p>
+              <h2 id="case-study-story-title">From the problem to the current state.</h2>
+            </div>
+            <div className="atlas-detail-story__sections">
+              {storySections.map((section, index) => (
+                <ContentSection
+                  key={section.heading}
+                  id={"case-study-story-" + String(index + 1).padStart(2, "0")}
+                  {...section}
+                />
+              ))}
+            </div>
+          </section>
+
+          <CaseStudyTechnologyMap groups={study.technologyGroups} />
         </div>
-
-        <CaseStudyTechnologyMap groups={study.technologyGroups} />
       </article>
 
-      <footer className="border-t border-[#121518]/18">
-        <div className="mx-auto flex max-w-[1120px] flex-col justify-between gap-4 px-5 py-8 sm:flex-row sm:items-center sm:px-10">
-          <Link href="/work" className="text-sm text-[#585f5e] transition-colors hover:text-[#8a5a20]">
-            ← Explore more work
+      <footer className="atlas-detail__footer">
+        <div className="atlas-detail__footer-inner">
+          <Link className="atlas-detail__footer-link" href="/work">
+            <span aria-hidden="true">←</span>
+            <span>Explore more work</span>
           </Link>
-          <Link href="/" className="text-sm transition-colors hover:text-[#8a5a20]">
-            UI Gerhana home ↗
+          <Link className="atlas-detail__footer-home" href="/" aria-label="UI Gerhana home">
+            UI Gerhana <span aria-hidden="true">↗</span>
           </Link>
         </div>
       </footer>

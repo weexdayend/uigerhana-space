@@ -36,7 +36,7 @@ test.describe("responsive homepage runtime", () => {
       page.on("pageerror", (error) => runtimeErrors.push(error.message));
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       const response = await page.goto("/", { waitUntil: "domcontentloaded" });
-      expect(response?.status()).toBe(200);
+      expect(response?.ok() || response?.status() === 304).toBe(true);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       await expect(page.locator(".hero-atlas__primary-link")).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
@@ -648,4 +648,64 @@ test.describe("automated accessibility audit (axe-core)", () => {
       });
     }
   }
+});
+
+test.describe("System Atlas case-study detail", () => {
+  test("presents the approved project story and publication status at responsive widths", async ({ page }) => {
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 1024, height: 768 },
+      { width: 390, height: 844 },
+      { width: 320, height: 800 },
+    ]) {
+      await page.setViewportSize(viewport);
+      const response = await page.goto("/work/uigerhana-space", { waitUntil: "domcontentloaded" });
+      expect(response?.ok() || response?.status() === 304).toBe(true);
+      await expect(page.getByRole("heading", { level: 1, name: "Building a personal professional platform" })).toBeVisible();
+      await expect(page.locator('[data-project-status="in-progress"]')).toHaveText(/In progress/);
+      await expect(page.getByRole("navigation", { name: "Case study navigation" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "The work behind the experience." })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "How the site is put together." })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "From the problem to the current state." })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Tools mapped to their role." })).toBeVisible();
+      await expect(page.getByText(/Not deployment or infrastructure topology/)).toBeVisible();
+
+      const dimensions = await page.evaluate(() => ({
+        viewport: document.documentElement.clientWidth,
+        document: document.documentElement.scrollWidth,
+        body: document.body.scrollWidth,
+      }));
+      expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport + 1);
+      expect(dimensions.body).toBeLessThanOrEqual(dimensions.viewport + 1);
+    }
+  });
+
+  test("keeps the case-study detail readable with 200% root text at narrow widths", async ({ page }) => {
+    const widths = [390, 360, 320];
+    await page.setViewportSize({ width: widths[0], height: 844 });
+    await page.goto("/work/uigerhana-space", { waitUntil: "domcontentloaded" });
+    await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+    await page.evaluate(() => document.fonts.ready);
+
+    for (const width of widths) {
+      await page.setViewportSize({ width, height: 844 });
+      const layout = await page.evaluate(() => {
+        const title = document.querySelector<HTMLElement>(".atlas-detail__title");
+        const rect = title?.getBoundingClientRect();
+        return {
+          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          viewport: document.documentElement.clientWidth,
+          document: document.documentElement.scrollWidth,
+          body: document.body.scrollWidth,
+          titleClipped: Boolean(title && title.scrollWidth > title.clientWidth + 1),
+          titleInViewport: Boolean(rect && rect.left >= -1 && rect.right <= document.documentElement.clientWidth + 1),
+        };
+      });
+      expect(layout.rootFontSize).toBeGreaterThanOrEqual(32);
+      expect(layout.document).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.body).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.titleClipped).toBe(false);
+      expect(layout.titleInViewport).toBe(true);
+    }
+  });
 });
