@@ -72,17 +72,18 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-05 — Runtime performance
 
-**Status:** Repeatable Chromium lab-baseline instrumentation added in PR #27; exact-head measurements pending.
+**Status:** Initial 12-sample Chromium lab baseline recorded from PR #27 artifact; exact-head revalidation pending after a sitemap URL normalization assertion fix.
 
 **Method:** Run the production build on the local Playwright server. For each of the four public routes, collect one first view in an isolated browser context and two same-context repeat navigations. Record TTFB, FCP, LCP, CLS, DOMContentLoaded/load timing, resource counts and byte totals by resource category, long-task count/duration, console errors, page errors, and failed requests. Preserve all raw samples and per-route medians.
 
 **Interpretation:** The initial run is a desktop Chromium lab sample at 1440 × 900. It is not field Core Web Vitals, INP, mobile-device performance, or a representative-user network profile. Do not set pass/fail performance budgets or claim Lighthouse scores from this initial dataset. Review medians and variance before proposing evidence-based budgets.
 
-**Exit:** Exact-head CI produces a complete artifact with 12 HTTP 200 route samples and per-route summaries. A later representative-device/network and field-data review remains required before production performance acceptance.
+**Initial evidence:** PR Actions [#46057514836](https://github.com/weexdayend/uigerhana-space/actions/runs/46057514836), artifact [#15227537484](https://github.com/weexdayend/uigerhana-space/actions/runs/46057514836/artifacts/15227537484), recorded 12 HTTP 200 Chromium samples across the four routes. Median FCP/LCP: home 164 ms, work index 92 ms, case study 84 ms, CV 112 ms; median CLS was 0 on every route. No console/page/failed-request errors were recorded; one 55 ms long task occurred on the first CV view. These are local lab values with mixed cold/warm cache observations, not budgets or field CWV.
+**Exit:** Re-run the exact PR head after the sitemap assertion patch and preserve the updated report. A later representative-device/network and field-data review remains required before production performance acceptance.
 
 ### ROOT-06 — Route and link integrity
 
-**Status:** Automated route, metadata, sitemap, robots, internal-link, fragment, and external-link-policy checks added in PR #27; exact-head CI pending.
+**Status:** Initial CI run exposed a test-only sitemap URL normalization mismatch on all three engines; the assertion is patched and exact-head revalidation is pending.
 
 **Automated scope:** All rendered anchors on `/`, `/work`, `/work/uigerhana-space`, and `/cv` are inventoried. Internal destinations must return HTTP 200 and internal fragments must resolve to an existing ID. Canonical metadata and sitemap URLs must match the approved public route set. The known unapproved draft case study must remain 404 and absent from the sitemap. External links must use HTTPS; new-tab links must include `noopener` or `noreferrer`.
 
@@ -118,8 +119,8 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 | Literal browser zoom 200% | Actual desktop browser | MANUAL / NOT RUN | Owner evidence required |
 | OS text scaling | Native OS setting | MANUAL / NOT RUN | Record actual platform/settings |
 | Native print dialog / Save PDF | Actual OS/browser dialog | MANUAL / NOT RUN | Headless Chromium PDF is only regression evidence |
-| ROOT-06 route/link integrity | Rendered links, HTTP routes, fragments, canonical, sitemap, robots | PENDING PR #27 | [Route/link test](https://github.com/weexdayend/uigerhana-space/tree/phase-8/route-link-performance-baseline/tests/e2e/release-readiness.spec.ts) |
-| ROOT-05 performance baseline | Chromium production-build lab sample | PENDING PR #27 | 12 samples / 4 routes; no budgets set before report review |
+| ROOT-06 route/link integrity | Rendered links, HTTP routes, fragments, canonical, sitemap, robots | PARTIAL — assertion patch committed; rerun pending | [Initial PR Actions #46057514836](https://github.com/weexdayend/uigerhana-space/actions/runs/46057514836) | Cross-engine rendered-link tests passed; sitemap root trailing-slash comparison failed in all three engines; draft route checks await rerun |
+| ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — INITIAL SNAPSHOT | [Actions #46057514836 artifact #15227537484](https://github.com/weexdayend/uigerhana-space/actions/runs/46057514836/artifacts/15227537484) | 12 HTTP 200 samples; median FCP/LCP 84–164 ms, CLS 0; no runtime errors/request failures; no budgets set |
 | External link reachability | Manual third-party spot-check | NOT VERIFIED | Use destination inventory from PR #27 artifact |
 | Production parity | Non-invasive live verification | NOT VERIFIED | No deployment authority |
 | Final release acceptance | Owner decision | OPEN | Owner sign-off |
@@ -128,7 +129,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 
 1. #24 exact-main CI and #25/#26 stacked exact-head checks completed successfully.
 2. ROOT-01 automated CSS root-text reflow proxy closed by PR #26; literal zoom and native OS scaling stay manual.
-3. PR #27 implements route/link integrity and a repeatable Chromium performance baseline.
+3. PR #27 implements route/link integrity and a repeatable Chromium performance baseline; the first artifact is captured, one sitemap URL-normalization assertion is patched, and exact-head rerun is pending.
 4. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
 5. Complete accessibility/interaction delta audit and responsive/zoom regression.
 6. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
@@ -142,7 +143,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 The automated 200% CSS root-text reflow proxy is now green on PR #26, but the following gates remain open:
 - Literal browser zoom and native OS text scaling have not been accepted on a real browser/OS.
 - Native browser print dialog and OS Save as PDF have not been accepted.
-- PR #27 route/link and performance artifacts still require exact-head CI and review.
+- PR #27 route/link integrity needs an exact-head rerun after the sitemap assertion patch; the initial 12-sample performance artifact is captured but remains lab-only.
 - External destination reachability is not covered by the local-origin link test.
 - Production commit parity is not verified.
 - Field/mobile performance and evidence-based performance budgets are not established.
