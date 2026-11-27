@@ -64,6 +64,9 @@ jobs:
       - name: Physical-device evidence validator tests
         run: npm run test:device-evidence
 
+      - name: Release evidence evaluator tests
+        run: npm run test:release-evidence
+
       - name: Lint
         run: npm run lint
 

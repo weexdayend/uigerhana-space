@@ -1,0 +1,217 @@
+name: Release evidence gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_commit:
+        description: Lowercase full 40-character commit SHA shared by all source audits
+        required: true
+        type: string
+      external_audit_run_id:
+        description: Completed External destination audit workflow run ID
+        required: true
+        type: string
+      production_audit_run_id:
+        description: Completed Production parity audit workflow run ID
+        required: true
+        type: string
+      physical_device_audit_run_id:
+        description: Completed Physical Device Acceptance Audit workflow run ID
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: release-evidence-gate-${{ inputs.expected_commit }}
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    name: Verify source runs and evaluate release evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact reviewed commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_commit }}
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Validate source workflow runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+          EXTERNAL_RUN_ID: ${{ inputs.external_audit_run_id }}
+          PRODUCTION_RUN_ID: ${{ inputs.production_audit_run_id }}
+          PHYSICAL_DEVICE_RUN_ID: ${{ inputs.physical_device_audit_run_id }}
+        run: |
+          set -euo pipefail
+          if ! printf '%s' "$EXPECTED_COMMIT" | grep -Eq '^[0-9a-f]{40}$'; then
+            echo "::error::expected_commit must be a lowercase full 40-character SHA."
+            exit 1
+          fi
+          git cat-file -e "$EXPECTED_COMMIT^{commit}"
+
+          mkdir -p evidence-input/runs
+          verify_run() {
+            local name="$1"
+            local run_id="$2"
+            local expected_path="$3"
+            if ! printf '%s' "$run_id" | grep -Eq '^[1-9][0-9]*$'; then
+              echo "::error::$name run ID must be a positive integer."
+              exit 1
+            fi
+            gh api "/repos/$GITHUB_REPOSITORY/actions/runs/$run_id" > "evidence-input/runs/$name.json"
+            jq -e               --arg sha "$EXPECTED_COMMIT"               --arg workflow "$expected_path"               '(.head_sha | ascii_downcase) == $sha
+                and .event == "workflow_dispatch"
+                and .status == "completed"
+                and (.conclusion == "success" or .conclusion == "failure")
+                and (.path | startswith($workflow))'               "evidence-input/runs/$name.json" > /dev/null || {
+                echo "::error::$name run must be a completed manual dispatch of $expected_path on $EXPECTED_COMMIT."
+                exit 1
+              }
+          }
+
+          verify_run external "$EXTERNAL_RUN_ID" ".github/workflows/external-destination-audit.yml"
+          verify_run production "$PRODUCTION_RUN_ID" ".github/workflows/production-parity-audit.yml"
+          verify_run physical-device "$PHYSICAL_DEVICE_RUN_ID" ".github/workflows/physical-device-acceptance.yml"
+
+      - name: Download external destination evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: external-destination-audit-${{ inputs.expected_commit }}
+          path: evidence-input/external
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.external_audit_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Download production parity evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: production-parity-audit-${{ inputs.expected_commit }}
+          path: evidence-input/production
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.production_audit_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Download physical-device evidence report
+        uses: actions/download-artifact@v4
+        with:
+          name: physical-device-acceptance-${{ inputs.expected_commit }}
+          path: evidence-input/physical-device
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.physical_device_audit_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Build provenance manifest and evaluate evidence
+        env:
+          EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        run: |
+          set -euo pipefail
+
+          find_one() {
+            local directory="$1"
+            local filename="$2"
+            mapfile -t matches < <(find "$directory" -type f -name "$filename" -print)
+            if [ "${#matches[@]}" -ne 1 ]; then
+              echo "::error::Expected exactly one $filename in $directory; found ${#matches[@]}."
+              exit 1
+            fi
+            printf '%s' "${matches[0]}"
+          }
+
+          external_file="$(find_one evidence-input/external external-destination-reachability.json)"
+          production_file="$(find_one evidence-input/production production-parity-audit.json)"
+          physical_file="$(find_one evidence-input/physical-device physical-device-acceptance-report.json)"
+
+          relative_path() {
+            realpath --relative-to=evidence-input "$1"
+          }
+          file_sha() {
+            sha256sum "$1" | cut -d ' ' -f 1
+          }
+
+          external_path="$(relative_path "$external_file")"
+          production_path="$(relative_path "$production_file")"
+          physical_path="$(relative_path "$physical_file")"
+
+          jq -n             --arg repository "$GITHUB_REPOSITORY"             --arg expectedCommit "$EXPECTED_COMMIT"             --arg generatedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)"             --arg externalPath "$external_path"             --arg externalSha "$(file_sha "$external_file")"             --arg productionPath "$production_path"             --arg productionSha "$(file_sha "$production_file")"             --arg physicalPath "$physical_path"             --arg physicalSha "$(file_sha "$physical_file")"             --slurpfile externalRun evidence-input/runs/external.json             --slurpfile productionRun evidence-input/runs/production.json             --slurpfile physicalRun evidence-input/runs/physical-device.json             '{
+              schemaVersion: 1,
+              repository: $repository,
+              expectedCommit: $expectedCommit,
+              generatedAt: $generatedAt,
+              inputs: {
+                externalDestination: {
+                  runId: $externalRun[0].id,
+                  workflowPath: $externalRun[0].path,
+                  headSha: $externalRun[0].head_sha,
+                  event: $externalRun[0].event,
+                  status: $externalRun[0].status,
+                  conclusion: $externalRun[0].conclusion,
+                  artifactName: "external-destination-audit-" + $expectedCommit,
+                  reportPath: $externalPath,
+                  reportSha256: $externalSha
+                },
+                productionParity: {
+                  runId: $productionRun[0].id,
+                  workflowPath: $productionRun[0].path,
+                  headSha: $productionRun[0].head_sha,
+                  event: $productionRun[0].event,
+                  status: $productionRun[0].status,
+                  conclusion: $productionRun[0].conclusion,
+                  artifactName: "production-parity-audit-" + $expectedCommit,
+                  reportPath: $productionPath,
+                  reportSha256: $productionSha
+                },
+                physicalDevice: {
+                  runId: $physicalRun[0].id,
+                  workflowPath: $physicalRun[0].path,
+                  headSha: $physicalRun[0].head_sha,
+                  event: $physicalRun[0].event,
+                  status: $physicalRun[0].status,
+                  conclusion: $physicalRun[0].conclusion,
+                  artifactName: "physical-device-acceptance-" + $expectedCommit,
+                  reportPath: $physicalPath,
+                  reportSha256: $physicalSha
+                }
+              }
+            }' > evidence-input/manifest.json
+
+          mkdir -p artifacts
+          node scripts/evaluate-release-evidence.mjs             evidence-input/manifest.json             artifacts/release-gate-report.json
+
+          {
+            echo "## Release evidence evaluation"
+            echo
+            node -e '
+              const report = require("./artifacts/release-gate-report.json");
+              console.log("- Status: " + report.status.toUpperCase());
+              console.log("- Reviewed commit: " + report.expectedCommit);
+              console.log("- Release approved: " + report.releaseApproved);
+              console.log("- Blockers: " + report.blockers.length);
+              console.log("- Owner review items: " + report.ownerReviewRequired.length);
+              for (const blocker of report.blockers) console.log("- BLOCKED / " + blocker.gate + ": " + blocker.detail);
+              for (const item of report.ownerReviewRequired) console.log("- OWNER / " + item.id + ": " + item.detail);
+            '
+            echo
+            echo "A successful workflow means the evaluation completed; it is not a release approval."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload consolidated release evidence report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-evidence-gate-${{ inputs.expected_commit }}
+          path: |
+            artifacts/release-gate-report.json
+            evidence-input/manifest.json
+          if-no-files-found: warn
+          retention-days: 90
