@@ -84,7 +84,23 @@ Existing owner attestation says real-device and AT checks were completed on 2026
 Result: OWNER CATEGORY ATTESTATION ONLY — DETAILS NOT SUPPLIED  
 Findings:
 
-## F. Final decision
+## F. External destination reachability
+
+Run the dedicated GitHub Actions workflow manually against the reviewed branch/commit. It builds that revision locally, scans the four approved public routes, and probes each distinct external HTTPS destination once.
+
+- [ ] Dispatch `.github/workflows/external-destination-audit.yml` for the exact reviewed ref.
+- [ ] Save the `external-destination-reachability.json` artifact with the session evidence.
+- [ ] Review each URL, source route/label, HTTP status, final redirect URL, content type, and response duration.
+- [ ] Recheck 404/410 results in a separate browser session before treating them as persistent unavailability.
+- [ ] Treat 401/403/405/407/429 as restricted/inconclusive, not automatically broken.
+- [ ] Treat 408/425/5xx and network/TLS/time-out errors as transient or runner-specific observations; retry before making a conclusion.
+- [ ] Confirm destination content is still the intended public profile/article/resource and is appropriate to expose.
+- [ ] Record any replacement decision separately; this audit does not authorize changing public links.
+
+Result: NOT RUN  
+Workflow run / artifact / findings:
+
+## G. Final decision
 
 - [ ] All P1 defects closed with exact-head evidence.
 - [ ] All required engine suites green.
@@ -92,6 +108,7 @@ Findings:
 - [ ] Native print accepted.
 - [ ] Performance baseline reviewed.
 - [ ] Route/link integrity accepted.
+- [ ] External destination reachability and content spot-check reviewed.
 - [ ] Production parity verified read-only.
 - [ ] No unresolved release-blocking accessibility issue.
 - [ ] Owner explicitly authorizes release.
