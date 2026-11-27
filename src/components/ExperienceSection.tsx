@@ -8,7 +8,7 @@ export function ExperienceSection() {
       className="bg-[#f2efe7] py-20 text-[#121518] sm:py-28"
     >
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
-        <div className="grid items-end gap-6 lg:grid-cols-12">
+        <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
           <div className="lg:col-span-6">
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">
               Professional experience
@@ -29,7 +29,7 @@ export function ExperienceSection() {
           {EXPERIENCE.map((role, index) => (
             <article
               key={role.id}
-              className="grid gap-6 border-b border-[#121518]/20 py-8 lg:grid-cols-12 lg:gap-10 lg:py-10"
+              className="grid grid-cols-1 gap-6 border-b border-[#121518]/20 py-8 lg:grid-cols-12 lg:gap-10 lg:py-10"
             >
               <div className="lg:col-span-4">
                 <span className="font-pixel text-2xl text-[#8a5a20]">
