@@ -19,10 +19,6 @@ const STATUS_LABELS = {
   maintained: "Maintained",
 } as const;
 
-// Unknown slugs must be rejected before the route starts streaming a response.
-// Only explicitly approved entries from generateStaticParams are routable.
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return PUBLIC_CASE_STUDIES.map((study) => ({ slug: study.slug }));
 }
