@@ -228,6 +228,65 @@ test.describe("route runtime smoke", () => {
   }
 });
 
+test.describe("System Atlas selected work", () => {
+  test("homepage and work index expose one approved case study without promoting work domains", async ({ page }) => {
+    for (const route of ["/", "/work"]) {
+      await page.setViewportSize({ width: 1440, height: 1000 });
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await page.evaluate(() => document.fonts.ready);
+
+      const featured = page.locator('[data-case-study-card="uigerhana-space"]');
+      await expect(featured).toHaveCount(1);
+      await expect(featured).toHaveAttribute("data-project-status", "in-progress");
+      await expect(featured.locator(".atlas-case-study__eyebrow")).toContainText("In progress");
+      await expect(
+        featured.getByRole("heading", { name: "Building a personal professional platform" })
+      ).toBeVisible();
+      await expect(
+        featured.getByRole("link", { name: /Read case study/ })
+      ).toHaveAttribute("href", "/work/uigerhana-space");
+      await expect(
+        page.getByText("Generalized work domains; not separate public case studies.", { exact: true })
+      ).toBeVisible();
+    }
+  });
+
+  test("featured case study and work domains reflow at 200% root text size", async ({ page }) => {
+    for (const route of ["/", "/work"]) {
+      for (const width of [390, 360, 320]) {
+        await page.setViewportSize({ width, height: 900 });
+        await page.goto(route, { waitUntil: "domcontentloaded" });
+        await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+        await page.evaluate(() => document.fonts.ready);
+
+        const metrics = await page.evaluate(() => {
+          const card = document.querySelector<HTMLElement>("[data-case-study-card]");
+          const cardBox = card?.getBoundingClientRect();
+          return {
+            viewportWidth: document.documentElement.clientWidth,
+            documentWidth: document.documentElement.scrollWidth,
+            bodyWidth: document.body.scrollWidth,
+            cardWithinViewport: Boolean(
+              cardBox &&
+              cardBox.left >= -1 &&
+              cardBox.right <= document.documentElement.clientWidth + 1
+            ),
+            cardWidth: cardBox?.width ?? 0,
+          };
+        });
+
+        expect(
+          metrics.documentWidth,
+          `Document overflow on ${route} at ${width}px: ${JSON.stringify(metrics)}`
+        ).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+        expect(metrics.bodyWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+        expect(metrics.cardWithinViewport).toBe(true);
+        expect(metrics.cardWidth).toBeGreaterThan(0);
+      }
+    }
+  });
+});
+
 test.describe("keyboard and motion behavior", () => {
   test("skip link and mobile story are usable with a keyboard", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
