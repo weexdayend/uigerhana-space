@@ -120,3 +120,22 @@ test("all source audit artifacts include the immutable workflow run attempt", as
   assert.ok(evaluator.includes("input.runAttempt < 1"));
   assert.ok(evaluator.includes("expectedCommit + \"-\" + input.runAttempt"));
 });
+
+ 
+test("release evidence gate checks live source-artifact metadata before download", async () => {
+  const [gate, evaluator] = await Promise.all([
+    workflow("release-evidence-gate.yml"),
+    readFile(new URL("./evaluate-release-evidence.mjs", import.meta.url), "utf8"),
+  ]);
+  assert.ok(gate.includes("gh api --paginate"));
+  assert.ok(gate.includes("/actions/runs/$run_id/artifacts?per_page=100"));
+  assert.ok(gate.includes("artifact_matches"));
+  assert.ok(gate.includes("(.expired == false)"));
+  assert.ok(gate.includes("Date.parse(process.argv[1])"));
+  assert.ok(gate.includes("artifactExpiresAt: $externalArtifact[0].expires_at"));
+  assert.ok(gate.includes("artifactExpiresAt: $productionArtifact[0].expires_at"));
+  assert.ok(gate.includes("artifactExpiresAt: $physicalArtifact[0].expires_at"));
+  assert.ok(evaluator.includes("validateArtifactRetention"));
+  assert.ok(evaluator.includes("artifactExpiresAt <= Date.now()"));
+  assert.ok(evaluator.includes("Source artifact ids must be unique"));
+});
