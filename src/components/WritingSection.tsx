@@ -9,11 +9,11 @@ export function WritingSection() {
     >
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
         <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
-          <div className="lg:col-span-7">
+          <div className="min-w-0 lg:col-span-7">
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#8a5a20]">
               Writing / Notes in public
             </p>
-            <h2 className="mt-4 max-w-[15ch] text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
+            <h2 className="mt-4 max-w-[15ch] break-words text-[clamp(2.1rem,4vw,3.8rem)] font-normal leading-[1.02] tracking-[-0.055em]">
               Ideas behind the systems.
             </h2>
           </div>
@@ -27,7 +27,7 @@ export function WritingSection() {
           {FEATURED_WRITING.map((article, index) => (
             <article
               key={article.id}
-              className="flex min-h-[310px] flex-col bg-[#f8f6f0] p-6 sm:p-8"
+              className="flex min-w-0 min-h-[310px] flex-col bg-[#f8f6f0] p-6 sm:p-8"
             >
               <div className="flex items-center justify-between gap-3">
                 <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-[#8a5a20]">
@@ -41,18 +41,18 @@ export function WritingSection() {
                 <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-[#585f5e]">
                   {article.publication} · {article.readingTime}
                 </p>
-                <h3 className="mt-3 text-xl font-normal leading-snug tracking-[-0.035em] sm:text-2xl">
+                <h3 className="mt-3 break-words text-xl font-normal leading-snug tracking-[-0.035em] sm:text-2xl">
                   <a
                     href={article.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition-colors hover:text-[#8a5a20] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b8680c]"
+                    className="break-words transition-colors hover:text-[#8a5a20] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b8680c]"
                   >
                     {article.title}
                     <span className="ml-2 inline-block text-sm text-[#8a5a20]" aria-hidden="true">↗</span>
                   </a>
                 </h3>
-                <p className="mt-4 text-sm leading-[1.75] text-[#121518]/70">
+                <p className="mt-4 break-words text-sm leading-[1.75] text-[#121518]/70">
                   {article.summary}
                 </p>
               </div>
