@@ -63,9 +63,9 @@ The JSON report lists sessions, platform coverage, attachment count, blockers, f
 
 ## Manual GitHub Actions audit
 
-After this workflow has reached the selected branch, run **Physical Device Acceptance Audit** manually:
+After the workflow file has been merged onto the repository's default branch (required for the manual `workflow_dispatch` entry point), run **Physical Device Acceptance Audit** manually:
 
-- Select the exact branch/commit that contains both the evidence JSON and attachments.
+- In the Actions tab, select the branch/commit that contains both the evidence JSON and attachments.
 - Supply the full expected commit SHA.
 - Supply the evidence JSON path (normally \`evidence/physical-device/session.json\`).
 - Review the uploaded \`physical-device-acceptance-report.json\` artifact and preserve it with the release record.
