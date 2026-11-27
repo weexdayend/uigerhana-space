@@ -135,7 +135,20 @@ The automated mobile-class Chromium artifact is only a controlled lab emulation.
 Result: NOT RUN  
 Device matrix / field data / findings:
 
-## H. Final decision
+## H. Physical mobile touch and gesture acceptance
+
+- [ ] Record device model, OS, browser version, display scale, and viewport dimensions.
+- [ ] Open the mobile navigation using a physical tap; verify open/close state and tap areas.
+- [ ] Tap Work, then follow the work index to the approved case study; verify navigation and browser back behavior.
+- [ ] Swipe through all four Product Journey panels using a natural thumb gesture; verify scroll snapping, no accidental vertical trapping, and final-panel reachability.
+- [ ] Verify native edge-swipe/back navigation and browser chrome interactions on the actual platform.
+- [ ] Repeat with OS reduced-motion and assistive-technology settings enabled where applicable.
+- [ ] Capture screenshots or a short recording and record any missed taps, gesture conflicts, or reachability issues.
+
+Result: NOT RUN  
+Physical devices / browser / OS / findings:
+
+## I. Final decision
 
 - [ ] All P1 defects closed with exact-head evidence.
 - [ ] All required engine suites green.
