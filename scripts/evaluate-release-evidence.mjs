@@ -363,6 +363,9 @@ async function readVerifiedInput(manifestDirectory, key, input, expectedCommit, 
   if (input.workflowPath !== spec.workflowPath) {
     errors.push("Manifest input " + key + " references an unexpected workflow path.");
   }
+  if (!Number.isSafeInteger(input.runAttempt) || input.runAttempt < 1) {
+    errors.push("Manifest input " + key + " has an invalid workflow run attempt.");
+  }
   if (!sameSha(input.headSha, expectedCommit)) {
     errors.push("Manifest input " + key + " workflow head SHA does not match expectedCommit.");
   }
@@ -371,8 +374,9 @@ async function readVerifiedInput(manifestDirectory, key, input, expectedCommit, 
       !["success", "failure"].includes(input.conclusion)) {
     errors.push("Manifest input " + key + " workflow run must be a completed workflow_dispatch with its report artifact available.");
   }
-  if (input.artifactName !== spec.artifactPrefix + expectedCommit) {
-    errors.push("Manifest input " + key + " artifact name is not bound to expectedCommit.");
+  const expectedArtifactName = spec.artifactPrefix + expectedCommit + "-" + input.runAttempt;
+  if (input.artifactName !== expectedArtifactName) {
+    errors.push("Manifest input " + key + " artifact name is not bound to expectedCommit and runAttempt.");
   }
   if (typeof input.reportPath !== "string" || input.reportPath.trim() === "" ||
       isAbsolute(input.reportPath)) {
