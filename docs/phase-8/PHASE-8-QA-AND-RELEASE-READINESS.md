@@ -2,7 +2,7 @@
 
 **Status:** Active — evidence-led QA and release gate; no deployment authorization.
 **Phase 8 starting baseline:** `main` / merge commit `675eaed00b8e06163c8df8b06474fd32cf2554f7` (PR #24).
-**Current main head (2026-11-28):** `3ccf1d0c57135da49e89a7837337a193c478da84` (PR #34 merge; PRs #30–#34 merged sequentially).
+**Current main head (2026-11-28):** `8beead4883f9d6b61ce1b5de5d2fd8439a8d8619` (PR #35 merge; PRs #30–#35 merged sequentially).
 **Scope:** Whole-site quality; fix verified defects only. Do not add decorative UI or silently expand public content.
 
 ## 1. Release principles
@@ -174,6 +174,14 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 **Evaluation:** The evaluator validates the four public-route observations and external destination classifications, production TLS/route/deployment/served-marker evidence, and the physical-device validator result. It rejects path traversal/symlink escape, report digest mismatch, source-run SHA mismatch, unexpected workflow provenance, reused run IDs, and internally inconsistent evidence.
 **Decision boundary:** The result is `invalid`, `blocked`, or `owner-review-required`. Even complete technical evidence always emits `releaseApproved: false` and `releaseDecision: "owner-review-required"`. Human review of destination content and revision-marker provenance, native browser zoom, native OS scaling, native print, field mobile performance/INP, and explicit owner go/no-go remain mandatory.
 **Evidence:** `scripts/evaluate-release-evidence.mjs`; `scripts/evaluate-release-evidence.test.mjs`; `.github/workflows/release-evidence-gate.yml`; [Phase 8.11 operating guide](RELEASE-EVIDENCE-ORCHESTRATION.md).
+
+### ROOT-16 — Manual audit workflow execution preflight
+
+**Status:** INSTRUMENTED — exact-head CI pending.  
+**Finding:** The physical-device manual workflow contained escaped GitHub expression markers in checkout, input environment, and artifact naming. The consolidated gate also accepted a workflow path prefix instead of requiring the exact expected workflow file path.  
+**Remediation:** Use active GitHub expressions, enforce a lowercase full SHA equal to the actual checkout, resolve the evidence JSON with realpath and require it beneath the physical-device evidence root, and require exact workflow path equality when validating source run provenance.  
+**Regression coverage:** Eight Node built-in contract tests inspect expression rendering, exact-SHA checkout, evidence-root containment, artifact naming, explicit source run IDs, read-only permissions, manual-dispatch boundaries, and exact workflow path provenance.  
+**Evidence:** `.github/workflows/physical-device-acceptance.yml`; `.github/workflows/release-evidence-gate.yml`; `scripts/verify-release-workflow-contracts.test.mjs`.
 
 ## 4. Evidence ledger
 

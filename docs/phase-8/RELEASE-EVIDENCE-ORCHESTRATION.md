@@ -21,7 +21,7 @@ Run each workflow manually against the same exact reviewed commit. Select the br
 - **Production parity audit** — .github/workflows/production-parity-audit.yml; set expected_commit to the same full SHA.
 - **Physical Device Acceptance Audit** — .github/workflows/physical-device-acceptance.yml; use the exact commit containing the evidence JSON and attachments.
 
-Each source run must be a completed workflow_dispatch, have the same head_sha, and retain the expected immutable artifact name. Source runs with a failure conclusion may still be evaluated only when their evidence artifact was actually uploaded; the report content, not the workflow conclusion alone, determines whether the gate is blocked. If a report was not produced, artifact download fails closed.
+Each source run must be a completed workflow_dispatch, have the same head_sha, match the exact expected workflow path (not a prefix), and retain the expected immutable artifact name. The selected dispatch branch must point at the same reviewed commit supplied to the audit. Source runs with a failure conclusion may still be evaluated only when their evidence artifact was actually uploaded; the report content, not the workflow conclusion alone, determines whether the gate is blocked. If a report was not produced, artifact download fails closed.
 
 ## Run the consolidated gate
 
@@ -69,6 +69,16 @@ node scripts/evaluate-release-evidence.mjs \
 ~~~
 
 The manifest must refer to three report files relative to its own directory. Every input includes its workflow run metadata, exact artifact name, relative report path, and SHA-256 digest. The evaluator rejects path traversal and symlink escape.
+
+## Workflow preflight
+
+Before dispatch, CI runs static contract tests against the audit workflows. The physical-device workflow verifies that GitHub expressions are active (not escaped), the selected checkout equals the lowercase expected SHA, and the evidence JSON resolves inside the evidence directory even when symlinks are present. The consolidator requires exact workflow-path equality and retrieves artifacts only from explicit run IDs.
+
+Run locally with:
+
+~~~bash
+npm run test:release-workflows
+~~~
 
 ## CI coverage
 

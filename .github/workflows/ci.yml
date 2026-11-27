@@ -67,6 +67,9 @@ jobs:
       - name: Release evidence evaluator tests
         run: npm run test:release-evidence
 
+      - name: Manual audit workflow contract tests
+        run: npm run test:release-workflows
+
       - name: Lint
         run: npm run lint
 
