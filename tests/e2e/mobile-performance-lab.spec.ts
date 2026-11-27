@@ -188,13 +188,12 @@ test.describe("Phase 8.8 mobile-class performance lab", () => {
           ).toBe(200);
 
           const metrics = await page.evaluate(() => {
-            const navigation = performance.getEntriesByType("navigation")[0]
-              as PerformanceNavigationTiming | undefined;
+            const navigation = performance.getEntriesByType("navigation")[0] as
+              PerformanceNavigationTiming | undefined;
             const paints = performance.getEntriesByType("paint");
             const fcp = paints.find((entry) => entry.name === "first-contentful-paint")
               ?.startTime ?? null;
-            const resources = performance.getEntriesByType("resource")
-              as PerformanceResourceTiming[];
+            const resources = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
             const transferByType: Record<string, number> = {
               script: 0,
               stylesheet: 0,
