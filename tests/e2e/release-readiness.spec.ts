@@ -174,16 +174,23 @@ test.describe("release route and link integrity", () => {
         "every robots directive must keep unpublished route out of search indexing: " + draftRoute
       ).toBe(true);
 
+      const publicationEvidence = {
+        route: draftRoute,
+        responseStatus: status,
+        responseUrl: response?.url() ?? null,
+        notFoundUiVisible: true,
+        caseStudyDetailRendered: false,
+        robotsDirectives,
+        noindex: robotsDirectives.length > 0 && robotsDirectives.every((directive) => directive.includes("noindex")),
+      };
+
+      const publicationEvidenceJson = JSON.stringify(publicationEvidence, null, 2);
+      await writeFile(
+        testInfo.outputPath("draft-route-publication-boundary.json"),
+        publicationEvidenceJson
+      );
       await testInfo.attach("draft-route-publication-boundary.json", {
-        body: JSON.stringify({
-          route: draftRoute,
-          responseStatus: status,
-          responseUrl: response?.url() ?? null,
-          notFoundUiVisible: true,
-          caseStudyDetailRendered: false,
-          robotsDirectives,
-          noindex: robotsDirectives.length > 0 && robotsDirectives.every((directive) => directive.includes("noindex")),
-        }, null, 2),
+        body: publicationEvidenceJson,
         contentType: "application/json",
       });
     });
