@@ -39,17 +39,17 @@ The existing suite is the base; Phase 8 should improve evidence quality, fix the
 
 ## 3. Prioritized findings
 
-### ROOT-01 — P1: homepage clips/overflows at 200% text scale
+### ROOT-01 — P1: public routes clip/overflow at 200% root text
 
 **Status:** OPEN at Phase 8 start.
-**Evidence:** `docs/styleframes/system-atlas/connected/DESIGN-QA.md` records the production app homepage heading clipping and document overflow under 200% CSS root-font-size stress at 390px, reproduced in Chromium, Firefox, and WebKit. The diagnostic is preserved as an expected failure so it cannot be mistaken for a passing layout.
+**Evidence:** Historical exact-head Playwright diagnostics in the connected responsive acceptance evidence record document-width overflow and clipped visible headings under 200% CSS root-font-size stress at a 390px viewport. Reported document widths were 429px on `/`, 390px on `/work` (heading clipping without page overflow), 469px on `/work/uigerhana-space`, and 442px on `/cv`. The original diagnostic ran in Chromium, Firefox, and WebKit. Some recorded headings were screen-reader-only; Phase 8's new element-level diagnostic excludes `.sr-only` from visible-heading findings while retaining actual overflow geometry.
 **Required work:**
-- Reproduce on the current Phase 8 base before changing styles.
-- Trace the exact overflowing element(s), computed dimensions, font metrics, and responsible layout constraints.
-- Fix the source layout without hiding content, clipping text, reducing user text size, or introducing horizontal page scroll.
-- Add a focused regression that fails before the fix and passes after it in all three engines.
-- Preserve screenshots/diagnostic JSON and state exact engine versions.
-**Exit:** 200% root-text stress at 390px (and existing 360/320 matrix) has no page-level overflow or clipped heading/action content in Chromium, Firefox, and WebKit. Any intended local horizontal scroller must remain independently operable and not expand the document.
+- Reproduce all four routes at 390px and then expand the matrix to 360px and 320px before changing styles.
+- Trace the exact overflowing element(s), computed dimensions, font metrics, and responsible layout constraints for each route/width; inspect ancestors rather than treating every nested scrollWidth difference as a page defect.
+- Fix shared responsive typography/container constraints and any genuinely route-specific layout source without hiding content, clipping text, reducing user text size, or introducing horizontal page scroll.
+- Add focused regressions that fail before the fix and pass after it in all three engines.
+- Preserve per-route/per-width screenshots, machine-readable element/ancestor diagnostics, and exact browser engine versions.
+**Exit:** 200% root-text stress at 390px, 360px, and 320px has no page-level overflow or clipped visible heading/action content on all four public routes in Chromium, Firefox, and WebKit. Screen-reader-only headings are assessed semantically, not as visual layout. Any intended local horizontal scroller must remain independently operable and not expand the document.
 
 ### ROOT-02 — P1/P2: literal zoom and OS text scaling
 
