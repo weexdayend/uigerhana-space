@@ -71,7 +71,7 @@ test.describe("Phase 8.8 mobile-class performance lab", () => {
       hasTouch: true,
       cpuThrottlingRate: 4,
       network: {
-        connectionType: "cellular4g",
+        connectionType: "cellular4g" as const,
         roundTripLatencyMs: 150,
         downloadBitsPerSecond: 1_600_000,
         uploadBitsPerSecond: 750_000,
