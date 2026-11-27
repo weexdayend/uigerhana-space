@@ -83,9 +83,9 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-06 — Route and link integrity
 
-**Status:** Initial CI run exposed a test-only sitemap URL normalization mismatch on all three engines; the assertion is patched and exact-head revalidation is pending.
+**Status:** Sitemap normalization is fixed. The next exact-head run exposed an invalid HTTP-404-only assertion for streamed `notFound()` results; the guard now checks not-found UI, hidden detail content, and `noindex` for each draft slug independently.
 
-**Automated scope:** All rendered anchors on `/`, `/work`, `/work/uigerhana-space`, and `/cv` are inventoried. Internal destinations must return HTTP 200 and internal fragments must resolve to an existing ID. Canonical metadata and sitemap URLs must match the approved public route set. The known unapproved draft case study must remain 404 and absent from the sitemap. External links must use HTTPS; new-tab links must include `noopener` or `noreferrer`.
+**Automated scope:** All rendered anchors on `/`, `/work`, `/work/uigerhana-space`, and `/cv` are inventoried. Internal destinations must return HTTP 200 and internal fragments must resolve to an existing ID. Canonical metadata and sitemap URLs must match the approved public route set. Each known unpublished draft slug must render not-found UI, omit `[data-case-study-detail]`, and carry a `noindex` robots directive; the slug must also remain absent from the sitemap. The observed response status is recorded as 200 or 404 because Next.js can stream a not-found UI with HTTP 200. External links must use HTTPS; new-tab links must include `noopener` or `noreferrer`.
 
 **Limitation:** External third-party HTTP reachability is not probed by the local-origin CI check. The emitted inventory is the source for manual external-destination spot-checks. Avoid treating intentionally gated unpublished case studies as broken public routes.
 
@@ -119,8 +119,8 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 | Literal browser zoom 200% | Actual desktop browser | MANUAL / NOT RUN | Owner evidence required |
 | OS text scaling | Native OS setting | MANUAL / NOT RUN | Record actual platform/settings |
 | Native print dialog / Save PDF | Actual OS/browser dialog | MANUAL / NOT RUN | Headless Chromium PDF is only regression evidence |
-| ROOT-06 route/link integrity | Rendered links, HTTP routes, fragments, canonical, sitemap, robots | PARTIAL — assertion patch committed; rerun pending | [Initial PR Actions #46057514836](https://github.com/weexdayend/uigerhana-space/actions/runs/46057514836) | Cross-engine rendered-link tests passed; sitemap root trailing-slash comparison failed in all three engines; draft route checks await rerun |
-| ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — INITIAL SNAPSHOT | [Actions #46057514836 artifact #15227537484](https://github.com/weexdayend/uigerhana-space/actions/runs/46057514836/artifacts/15227537484) | 12 HTTP 200 samples; median FCP/LCP 84–164 ms, CLS 0; no runtime errors/request failures; no budgets set |
+| ROOT-06 route/link integrity | Rendered links, fragments, canonical, sitemap, robots and unpublished-route behavior | PARTIAL — streamed not-found semantic checks committed; rerun pending | [PR Actions #46058407707](https://github.com/weexdayend/uigerhana-space/actions/runs/46058407707); [artifact #15227981742](https://github.com/weexdayend/uigerhana-space/actions/runs/46058407707/artifacts/15227981742) | Sitemap and link audit passed; status-only 404 assertion failed/flaked because streamed `notFound()` can return 200; next run verifies UI + noindex + no detail per slug |
+| ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — RERUN SNAPSHOT | [Actions #46058407707 artifact #15227981742](https://github.com/weexdayend/uigerhana-space/actions/runs/46058407707/artifacts/15227981742) | 12 HTTP 200 samples; median FCP/LCP home 164 ms, work 96 ms, case study 124 ms, CV 68 ms; CLS 0; no runtime errors/request failures; no budgets set |
 | External link reachability | Manual third-party spot-check | NOT VERIFIED | Use destination inventory from PR #27 artifact |
 | Production parity | Non-invasive live verification | NOT VERIFIED | No deployment authority |
 | Final release acceptance | Owner decision | OPEN | Owner sign-off |
@@ -129,7 +129,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 
 1. #24 exact-main CI and #25/#26 stacked exact-head checks completed successfully.
 2. ROOT-01 automated CSS root-text reflow proxy closed by PR #26; literal zoom and native OS scaling stay manual.
-3. PR #27 implements route/link integrity and a repeatable Chromium performance baseline; the first artifact is captured, one sitemap URL-normalization assertion is patched, and exact-head rerun is pending.
+3. PR #27 implements route/link integrity and a repeatable Chromium performance baseline; sitemap normalization is fixed, performance and link artifacts are recorded, and the unpublished-route gate is being corrected to verify streamed not-found UI plus `noindex`.
 4. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
 5. Complete accessibility/interaction delta audit and responsive/zoom regression.
 6. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
@@ -143,7 +143,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 The automated 200% CSS root-text reflow proxy is now green on PR #26, but the following gates remain open:
 - Literal browser zoom and native OS text scaling have not been accepted on a real browser/OS.
 - Native browser print dialog and OS Save as PDF have not been accepted.
-- PR #27 route/link integrity needs an exact-head rerun after the sitemap assertion patch; the initial 12-sample performance artifact is captured but remains lab-only.
+- PR #27 needs an exact-head rerun for the per-slug not-found UI + `noindex` publication boundary; the 12-sample performance artifact is captured but remains lab-only.
 - External destination reachability is not covered by the local-origin link test.
 - Production commit parity is not verified.
 - Field/mobile performance and evidence-based performance budgets are not established.
