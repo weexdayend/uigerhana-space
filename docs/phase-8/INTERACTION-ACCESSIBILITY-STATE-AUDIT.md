@@ -1,7 +1,7 @@
 # Phase 8.4 — Interaction Accessibility State Audit
 
-**Status:** Automated state and target-geometry checks added; exact-head CI pending.
-**Stack base:** PR #27 / `phase-8/route-link-performance-baseline`.
+**Status:** PASS — automated state and target-geometry checks passed on exact-head push and PR workflows.
+**Stack base:** PR #28 / `phase-8/interaction-accessibility-states`.
 **Scope:** Browser-observable interaction states for the currently approved public routes. No UI redesign or production behavior changes are included.
 
 ## 1. Why this slice exists
@@ -43,6 +43,12 @@ Focus and target geometry run in Chromium, Firefox, and WebKit. Pointer-state me
 - JSON evidence is uploaded with the matching CI artifact.
 - Any failure is traced to either a real UI defect or a demonstrated test-contract issue; assertions must not be weakened only to force a green run.
 
-## 5. Release boundary
+## 5. Exact-head validation
+
+- PR Actions [#46066904014](https://github.com/weexdayend/uigerhana-space/actions/runs/46066904014) and push Actions [#46066883235](https://github.com/weexdayend/uigerhana-space/actions/runs/46066883235) both completed successfully.
+- Both runtime jobs: 327 passed, 6 skipped, 0 failed.
+- Artifacts: [PR #15230689950](https://github.com/weexdayend/uigerhana-space/actions/runs/46066904014/artifacts/15230689950) and [push #15230759858](https://github.com/weexdayend/uigerhana-space/actions/runs/46066883235/artifacts/15230759858).
+
+## 6. Release boundary
 
 This slice is test and evidence only. Native browser 200% zoom, native OS text scaling, the actual print dialog/Save as PDF flow, physical-device behavior, external link reachability, production commit parity, and final owner release acceptance remain separate gates. Release remains NO-GO until all required evidence and owner approval exist.
