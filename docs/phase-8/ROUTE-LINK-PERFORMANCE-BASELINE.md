@@ -1,6 +1,6 @@
 # Phase 8.3 — Route, Link & Performance Baseline
 
-**Status:** Automated release checks added; exact-head CI evidence pending.
+**Status:** Initial CI evidence captured; sitemap URL normalization assertion patched and exact-head revalidation pending.
 **Stack base:** `phase-8/root-01-text-reflow` / PR #26 head `fb4de1234ad75d87d34a1f544847ef96a6f95845`.
 **Public origin:** `https://uigerhana.space`.
 
@@ -58,7 +58,29 @@ The resulting 12 samples record:
 
 The JSON artifact includes per-route medians and all raw samples. Record the exact commit, browser version, viewport, cache protocol, and CI runner context with the artifact.
 
-## 4. Interpretation rules
+## 4. Initial CI evidence snapshot
+
+The first PR workflow run for branch head `25c024a78bbaed796f90ca8b8bb201084a3c4f17` completed the quality job successfully and produced browser evidence under [Actions run #46057514836](https://github.com/weexdayend/uigerhana-space/actions/runs/46057514836).
+
+- Browser job result: 302 passed, 3 failed, 4 skipped.
+- All three failures were the same test assertion in Chromium, Firefox, and WebKit: the sitemap serialized the homepage as `https://uigerhana.space`, while the expected string used `https://uigerhana.space/`. The four public routes and their page metadata were checked before this assertion. The implementation now normalizes sitemap locations through the URL parser before comparison.
+- The rendered-link integrity test completed successfully in all three engines. External host reachability was intentionally not checked.
+- The draft-route 404 assertions occur after the sitemap assertion and therefore remain pending the next exact-head run.
+
+The Chromium performance test itself completed and emitted 12 HTTP 200 samples (three navigations per route). Its attached report is retained in artifact [`portfolio-browser-qa-3eb5785ba46d793dcb4a9ab4401208b08a9390a3`](https://github.com/weexdayend/uigerhana-space/actions/runs/46057514836/artifacts/15227537484), artifact ID `15227537484`, SHA-256 `5fbff9b31ea38157bd3b2e8bc69e3765caaf63d55b31aacb26d158972cba260a`. The archive includes `phase-8-performance-baseline.json`.
+
+| Route | Median TTFB | Median FCP / LCP | Median CLS | Median transfer bytes | Median resources |
+|---|---:|---:|---:|---:|---:|
+| `/` | 4.1 ms | 164 / 164 ms | 0 | 0 B | 15 |
+| `/work` | 2.3 ms | 92 / 92 ms | 0 | 23,801 B | 22 |
+| `/work/uigerhana-space` | 2.5 ms | 84 / 84 ms | 0 | 10,433 B | 19 |
+| `/cv` | 2.7 ms | 112 / 112 ms | 0 | 9,124 B | 18 |
+
+Across those 12 samples there were no recorded console errors, page errors, or failed requests. One 55 ms long task was observed on the first `/cv` view; the other 11 samples recorded none. Transfer medians mix one isolated-context first view with two same-context repeats, so they must not be interpreted as cold-cache transfer budgets. These figures are local desktop Chromium lab observations, not field CWV or mobile/network results.
+
+The next run writes the public-route metadata and rendered-link inventory JSON files directly into the uploaded browser-QA artifact, in addition to the Playwright report attachments.
+
+## 5. Interpretation rules
 
 This is a repeatable **lab baseline**, not field Core Web Vitals:
 - It does not claim field LCP/CLS or real-user performance.
@@ -69,7 +91,7 @@ This is a repeatable **lab baseline**, not field Core Web Vitals:
 
 The test should remain observational until the baseline is reviewed. A green test means the production build loaded the intended route set and produced a complete timing/resource report; it does not mean those timings already meet a performance target.
 
-## 5. Release gates still outside this slice
+## 6. Release gates still outside this slice
 
 - Live external-link reachability and third-party destination content.
 - Native browser 200% zoom.
