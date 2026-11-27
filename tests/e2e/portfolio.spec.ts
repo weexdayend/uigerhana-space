@@ -736,10 +736,12 @@ test.describe("System Atlas expertise and capabilities", () => {
     await expect(section.getByText("Technical capability", { exact: true }).first()).toBeVisible();
     await expect(section.getByText(/does not imply a separate published project/i)).toBeVisible();
 
-    const domains = page.locator("#work .work-domains");
+    const domains = page.locator("#work .atlas-work-domains");
     await expect(domains).toHaveCount(1);
-    await expect(page.getByRole("heading", { name: /Generalized work domains/i })).toBeVisible();
-    await expect(page.locator("#work .work-domains [data-case-study]")).toHaveCount(0);
+    await expect(domains.getByRole("heading", { level: 3, name: "Areas I have worked across." })).toBeVisible();
+    await expect(domains.locator(".atlas-work-domain")).toHaveCount(4);
+    await expect(domains.getByText("Generalized work domains; not separate public case studies.")).toBeVisible();
+    await expect(domains.locator("[data-case-study]")).toHaveCount(0);
 
     const layout = await section.evaluate((element) => ({
       width: element.getBoundingClientRect().width,
