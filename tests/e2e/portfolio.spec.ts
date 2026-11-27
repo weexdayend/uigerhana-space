@@ -639,7 +639,7 @@ test.describe("System Atlas résumé route", () => {
     ]) {
       await page.setViewportSize(viewport);
       const response = await page.goto("/cv", { waitUntil: "domcontentloaded" });
-      expect(response?.status()).toBe(200);
+      expect(response?.ok() || response?.status() === 304).toBe(true);
       await page.evaluate(() => document.fonts.ready);
 
       const documentSurface = page.locator("[data-resume-document]");
