@@ -508,7 +508,7 @@ test.describe("keyboard and motion behavior", () => {
             return {
               tag: element.tagName.toLowerCase(),
               className: typeof element.className === "string" ? element.className : "",
-              text: (element.textContent || "").trim().replace(/\\s+/g, " ").slice(0, 90),
+              text: (element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 90),
               left: Math.round(rect.left * 10) / 10,
               right: Math.round(rect.right * 10) / 10,
               width: Math.round(rect.width * 10) / 10,
@@ -596,7 +596,7 @@ test.describe("keyboard and motion behavior", () => {
               tag: element.tagName.toLowerCase(),
               id: element.id || null,
               className: typeof element.className === "string" ? element.className : "",
-              text: (element.innerText || element.textContent || "").trim().replace(/\\s+/g, " ").slice(0, 110),
+              text: (element.innerText || element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 110),
               rect: {
                 left: Math.round(rect.left * 10) / 10,
                 right: Math.round(rect.right * 10) / 10,
@@ -1475,7 +1475,7 @@ test.describe("System Atlas writing and publication", () => {
             .map((item) => ({
               tag: item.tagName.toLowerCase(),
               className: item.className,
-              text: (item.textContent ?? "").replace(/\\s+/g, " ").trim().slice(0, 100),
+              text: (item.textContent ?? "").replace(/\s+/g, " ").trim().slice(0, 100),
               scrollWidth: item.scrollWidth,
               clientWidth: item.clientWidth,
             })),
