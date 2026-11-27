@@ -165,7 +165,7 @@ node scripts/validate-physical-device-evidence.mjs \
   evidence/physical-device
 ```
 
-7. Alternatively, after the workflow reaches the selected branch, dispatch `.github/workflows/physical-device-acceptance.yml` with the same exact commit SHA and evidence file path.
+7. Alternatively, after `.github/workflows/physical-device-acceptance.yml` has been merged onto the repository's default branch (required for its manual `workflow_dispatch` entry point), open Actions, select **Physical Device Acceptance Audit**, choose the branch containing the evidence files, and supply the same exact commit SHA and evidence file path.
 8. Review the JSON report and uploaded workflow artifact. Resolve every invalid item, failed scenario, and missing platform/session before asking for owner acceptance.
 
 Result: NOT RUN — no physical Android/iOS evidence has been supplied.  
