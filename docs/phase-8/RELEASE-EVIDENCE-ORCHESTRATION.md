@@ -31,7 +31,7 @@ After the three source workflows have completed:
 
 1. Open **Actions → Release evidence gate**.
 2. Supply the lowercase full 40-character reviewed commit SHA.
-3. Supply the run ID for each of the three source workflows.
+3. Supply the run ID for each of the three source workflows. The release gate resolves each run's current positive attempt automatically; do not substitute an artifact name or an attempt number manually.
 4. Dispatch the evaluator and review release-gate-report.json plus the matching provenance manifest artifact.
 
 The workflow checks the GitHub Actions run metadata (workflow_dispatch, workflow path, exact head SHA, and completed status) before downloading the named artifacts from those specific run IDs. It uses read-only actions: read and contents: read permissions.
