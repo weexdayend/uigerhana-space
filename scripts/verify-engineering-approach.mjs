@@ -21,7 +21,7 @@ assert.match(component, /import \{ ENGINEERING_PRINCIPLES \} from "@\/data\/appr
 assert.match(component, /ENGINEERING_PRINCIPLES\.map/);
 assert.match(component, /<section[\s\S]*?id="approach"/);
 assert.match(component, /aria-labelledby="approach-title"/);
-assert.match(component, /<ol className="atlas-approach__principles"/);
+assert.match(component, /<span[\\s\\S]*?className="atlas-approach__route"/);\nassert.match(component, /<ol className="atlas-approach__principles"/);
 assert.match(component, /<article aria-labelledby=\{\x60approach-\$\{principle\.id\}\x60\}/);
 assert.match(component, /principle\.index/);
 assert.match(component, /principle\.title/);
