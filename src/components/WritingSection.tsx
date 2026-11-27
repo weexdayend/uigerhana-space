@@ -24,12 +24,12 @@ export function WritingSection() {
           </p>
         </header>
 
-        <div className="atlas-writing__articles" aria-label="Featured articles">
+        <div className="atlas-writing__articles">
           {FEATURED_WRITING.map((article, index) => (
             <article className="atlas-writing__article" key={article.id}>
               <div className="atlas-writing__article-topline">
                 <span className="atlas-writing__category">{article.category}</span>
-                <span className="atlas-writing__index" aria-label={"Article " + (index + 1)}>
+                <span className="atlas-writing__index" aria-hidden="true">
                   {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
