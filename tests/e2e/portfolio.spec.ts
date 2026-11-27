@@ -398,41 +398,103 @@ test.describe("keyboard and motion behavior", () => {
     }
   });
 
-  test("200% root-font-size reflows the System Atlas hero without clipping", async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
+  test("200% root-font-size reflows the System Atlas hero at 320, 360, and 390px", async ({ page }, testInfo) => {
+    const widths = [390, 360, 320];
+    const reports: Array<{
+      viewportWidth: number;
+      documentWidth: number;
+      bodyWidth: number;
+      rootFontSize: number;
+      headingClipped: boolean;
+      headingWithinViewport: boolean;
+      actionsWithinViewport: boolean;
+      overflowCandidates: Array<{
+        tag: string;
+        className: string;
+        text: string;
+        left: number;
+        right: number;
+        width: number;
+        scrollWidth: number;
+        clientWidth: number;
+      }>;
+    }> = [];
+
+    await page.setViewportSize({ width: widths[0], height: 844 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
     await page.evaluate(() => document.fonts.ready);
 
-    const layout = await page.evaluate(() => {
-      const heading = document.querySelector<HTMLElement>("[data-hero-title]");
-      const headingBox = heading?.getBoundingClientRect();
-      const actionsBox = document.querySelector<HTMLElement>("[data-hero-actions]")?.getBoundingClientRect();
-      return {
-        rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
-        viewportWidth: document.documentElement.clientWidth,
-        documentWidth: document.documentElement.scrollWidth,
-        bodyWidth: document.body.scrollWidth,
-        headingClipped: Boolean(heading && heading.scrollWidth > heading.clientWidth + 1),
-        headingWithinViewport: Boolean(
-          headingBox &&
-          headingBox.left >= -1 &&
-          headingBox.right <= document.documentElement.clientWidth + 1
-        ),
-        actionsWithinViewport: Boolean(
-          actionsBox &&
-          actionsBox.left >= -1 &&
-          actionsBox.right <= document.documentElement.clientWidth + 1
-        ),
-      };
+    for (const viewportWidth of widths) {
+      await page.setViewportSize({ width: viewportWidth, height: 844 });
+      const report = await page.evaluate(() => {
+        const viewportWidth = document.documentElement.clientWidth;
+        const heading = document.querySelector<HTMLElement>("[data-hero-title]");
+        const headingBox = heading?.getBoundingClientRect();
+        const actionsBox = document.querySelector<HTMLElement>("[data-hero-actions]")?.getBoundingClientRect();
+        const overflowCandidates = Array.from(document.body.querySelectorAll<HTMLElement>("*"))
+          .filter((element) => {
+            const style = getComputedStyle(element);
+            const rect = element.getBoundingClientRect();
+            return style.display !== "none" &&
+              style.visibility !== "hidden" &&
+              rect.width > 0 &&
+              rect.height > 0 &&
+              (rect.right > viewportWidth + 1 || element.scrollWidth > element.clientWidth + 1);
+          })
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            return {
+              tag: element.tagName.toLowerCase(),
+              className: typeof element.className === "string" ? element.className : "",
+              text: (element.innerText || "").trim().replace(/\\s+/g, " ").slice(0, 90),
+              left: Math.round(rect.left * 10) / 10,
+              right: Math.round(rect.right * 10) / 10,
+              width: Math.round(rect.width * 10) / 10,
+              scrollWidth: element.scrollWidth,
+              clientWidth: element.clientWidth,
+            };
+          })
+          .slice(0, 12);
+
+        return {
+          viewportWidth,
+          documentWidth: document.documentElement.scrollWidth,
+          bodyWidth: document.body.scrollWidth,
+          rootFontSize: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+          headingClipped: Boolean(heading && heading.scrollWidth > heading.clientWidth + 1),
+          headingWithinViewport: Boolean(
+            headingBox &&
+            headingBox.left >= -1 &&
+            headingBox.right <= viewportWidth + 1
+          ),
+          actionsWithinViewport: Boolean(
+            actionsBox &&
+            actionsBox.left >= -1 &&
+            actionsBox.right <= viewportWidth + 1
+          ),
+          overflowCandidates,
+        };
+      });
+      reports.push(report);
+    }
+
+    await testInfo.attach("system-atlas-root-font-200-percent-reflow.json", {
+      body: JSON.stringify(reports, null, 2),
+      contentType: "application/json",
     });
 
-    expect(layout.rootFontSize).toBeGreaterThanOrEqual(32);
-    expect(layout.documentWidth).toBeLessThanOrEqual(layout.viewportWidth + 1);
-    expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewportWidth + 1);
-    expect(layout.headingClipped).toBe(false);
-    expect(layout.headingWithinViewport).toBe(true);
-    expect(layout.actionsWithinViewport).toBe(true);
+    for (const layout of reports) {
+      expect(layout.rootFontSize).toBeGreaterThanOrEqual(32);
+      expect(
+        layout.documentWidth,
+        `Document overflow at ${layout.viewportWidth}px: ${JSON.stringify(layout.overflowCandidates)}`
+      ).toBeLessThanOrEqual(layout.viewportWidth + 1);
+      expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewportWidth + 1);
+      expect(layout.headingClipped).toBe(false);
+      expect(layout.headingWithinViewport).toBe(true);
+      expect(layout.actionsWithinViewport).toBe(true);
+    }
   });
 
   test("CV print media hides browser controls and preserves all résumé sections", async ({ page }) => {
