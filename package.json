@@ -19,6 +19,7 @@
     "test:device-evidence": "node --test scripts/validate-physical-device-evidence.test.mjs",
     "test:release-evidence": "node --test scripts/evaluate-release-evidence.test.mjs",
     "test:release-workflows": "node --test scripts/verify-release-workflow-contracts.test.mjs",
+    "test:build-revision": "node --test scripts/verify-build-revision.test.mjs",
     "evaluate:release-evidence": "node scripts/evaluate-release-evidence.mjs"
   },
   "dependencies": {
