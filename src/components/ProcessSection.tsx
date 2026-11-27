@@ -8,7 +8,7 @@ export function ProcessSection() {
       className="bg-[#0b0e11] py-20 text-[#e8e4d8] sm:py-28"
     >
       <div className="mx-auto max-w-[1360px] px-5 sm:px-10">
-        <div className="grid items-end gap-6 lg:grid-cols-12">
+        <div className="grid grid-cols-1 items-end gap-6 lg:grid-cols-12">
           <div className="lg:col-span-6">
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#f0b765]">
               Engineering philosophy
@@ -24,7 +24,7 @@ export function ProcessSection() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-px border border-[#e8e4d8]/18 bg-[#e8e4d8]/18 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid grid-cols-1 gap-px border border-[#e8e4d8]/18 bg-[#e8e4d8]/18 sm:grid-cols-2 lg:grid-cols-4">
           {ENGINEERING_PRINCIPLES.map((principle) => (
             <article
               key={principle.id}
