@@ -71,10 +71,10 @@ export function PortfolioJourneyMap() {
                 </div>
               </li>
             ))}
-            <li className="atlas-project-map__note">
-              Current public surface · Four connected routes · One approved public case study
-            </li>
           </ol>
+          <p className="atlas-project-map__note">
+            Current public surface · Four connected routes · One approved public case study
+          </p>
         </div>
       </div>
     </section>

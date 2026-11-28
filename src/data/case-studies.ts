@@ -114,7 +114,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     projectStatus: "in-progress",
     context: "Independent personal platform · Web",
     role:
-      "Product direction, identity and visual direction, information architecture, content architecture, interface design, and frontend implementation.",
+      "Product direction, identity and content decisions, information architecture, visual direction, and implementation oversight.",
     challenge: {
       heading: "One identity, not a services landing page",
       paragraphs: [
@@ -126,7 +126,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       heading: "Make the system legible",
       paragraphs: [
         "The experience is organized as a route through four connected ideas: understand the person, explore relevant work, inspect how a project is shaped, and continue into professional depth.",
-        "The selected System Atlas direction uses a restrained Basalt / Limestone foundation, Sea Glass as the route signal, and Signal Copper for decisive emphasis. Manrope and Plus Jakarta Sans establish the display and reading hierarchy.",
+        "The current visual proposal uses a restrained Basalt / Limestone foundation, Sea Glass as the route signal, and Signal Copper for decisive emphasis. Manrope and Plus Jakarta Sans establish the display and reading hierarchy.",
       ],
       bullets: [
         "Lead with the owner-approved Product Engineer positioning and the line “From pixel to production.”",
@@ -186,7 +186,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         area: "Frontend implementation",
         description:
-          "Directed and implemented the Next.js application structure, reusable presentation components, responsive layouts, motion behavior, and print-oriented résumé experience.",
+          "Directed the Next.js application structure, reusable presentation components, responsive layouts, motion behavior, and print-oriented résumé experience.",
       },
     ],
     architectureDiagram: {
