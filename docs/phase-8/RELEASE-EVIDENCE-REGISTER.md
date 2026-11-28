@@ -36,8 +36,9 @@ Keep this ledger current as Phase 8 progresses. Each PASS must link to exact com
 | P8-SOURCE-01 | Exact-commit source audit operating procedure | READY — NOT DISPATCHED | [Source audit runbook](EXACT-COMMIT-SOURCE-AUDIT-RUNBOOK.md); external, production, physical-device, and release gate workflows | External/production require same-SHA manual dispatch; physical-device workflow still requires real Android/iOS sessions and attachments |
 | P8-PROD-01 | production commit parity | NOT VERIFIED | Future read-only verification | No deployment authority |
 | P8-OWNER-01 | final owner go/no-go | OPEN | Owner decision | Release remains blocked |
+**Phase 8.17 reconciliation:** [Exact-main release evidence reconciliation](RELEASE-EVIDENCE-LEDGER-RECONCILIATION.md). `main` SHA at the time of this reconciliation: `369ad07c7928e7e52660fbfac44bd57471fec840`; post-merge CI #46126760208 passed; exact-main browser artifact #15255838687 expires 2026-12-12 08:43:37 UTC. Automated contract regression passes do not represent source audit dispatches or owner acceptance.
 
 **Phase 8.18:** [Strict production revision marker enforcement](STRICT-PRODUCTION-REVISION-MARKER.md) and [exact-commit source audit runbook](EXACT-COMMIT-SOURCE-AUDIT-RUNBOOK.md). Main now points to PR #41 merge `0dd152dc2c28bc5aec49b9f7564cb32f627dea16`; post-merge CI #46128282652 has quality passed, runtime still in progress at the time of this update. No source audit results have been collected.
 
 
-**Phase 8.17 reconciliation:** [Exact-main release evidence reconciliation](RELEASE-EVIDENCE-LEDGER-RECONCILIATION.md). Latest verified `main` SHA: `369ad07c7928e7e52660fbfac44bd57471fec840`; post-merge CI #46126760208 passed; exact-main browser artifact #15255838687 expires 2026-12-12 08:43:37 UTC. Automated contract regression passes do not represent source audit dispatches or owner acceptance.
+
