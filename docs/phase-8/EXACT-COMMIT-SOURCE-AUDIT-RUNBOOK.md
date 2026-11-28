@@ -35,7 +35,7 @@ The audit builds the selected repository revision and probes unique external HTT
 
 The workflow performs unauthenticated GET requests to the canonical public routes, robots.txt, sitemap.xml, HTTP origin, TLS endpoint, and read-only GitHub production deployment endpoints. It does not deploy or mutate production. A green workflow only means the report was produced. Route availability, GitHub deployment-record parity, and served-commit parity are distinct results.
 
-**Revision marker interpretation:** A marker is accepted only as a complete 40-character hexadecimal SHA, equal to the expected SHA after trimming and lowercase normalization. An abbreviated prefix is invalid. Every exposed marker source on each route (HTTP header and all matching meta tags) must agree. A duplicate or conflicting marker prevents `marker-match`. Even four exact route matches are owner-review evidence until the real build/deployment process is proven to inject the SHA that built the running application.
+**Revision marker interpretation:** A marker is accepted only as a complete 40-character hexadecimal SHA, equal to the expected SHA after trimming and lowercase normalization. An abbreviated prefix is invalid. Every exposed marker source on each route (HTTP header and all matching meta tags) must agree. A conflicting duplicate or source disagreement prevents `marker-match`; repeated identical marker values are harmless. Even four exact route matches are owner-review evidence until the real build/deployment process is proven to inject the SHA that built the running application.
 
 ## 4. Physical Android and iOS evidence
 
