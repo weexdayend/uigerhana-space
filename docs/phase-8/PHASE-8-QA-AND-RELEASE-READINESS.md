@@ -2,7 +2,7 @@
 
 **Status:** Active — evidence-led QA and release gate; no deployment authorization.
 **Phase 8 starting baseline:** `main` / merge commit `675eaed00b8e06163c8df8b06474fd32cf2554f7` (PR #24).
-**Current main head (2026-11-28):** `8beead4883f9d6b61ce1b5de5d2fd8439a8d8619` (PR #35 merge; PRs #30–#35 merged sequentially).
+**Current main head (2026-11-28):** `369ad07c7928e7e52660fbfac44bd57471fec840` (PR #40 merge; exact-main CI run #46126760208 passed).
 **Scope:** Whole-site quality; fix verified defects only. Do not add decorative UI or silently expand public content.
 
 ## 1. Release principles
@@ -147,7 +147,7 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-12 — Mobile-class performance lab
 
-**Status:** RECORDED — PR-triggered exact-head quality and browser QA passed; matching push-triggered browser QA remains pending.
+**Status:** RECORDED — PR exact-head evidence plus post-merge exact-main browser QA passed. The mobile-class lab test passed once in Chromium on `369ad07c7928e7e52660fbfac44bd57471fec840`; Firefox/WebKit skipped that Chromium-specific lab case.
 **Method:** Chromium local production-build emulation on a 390 × 844 CSS viewport, device scale factor 3, mobile layout/touch mode, 4× CPU throttle, and controlled cellular-4G-like network (150 ms RTT, 1.6 Mbps down, 750 Kbps up). Two navigations are collected for each of the four approved routes: one isolated-context first view and one same-context repeat.
 **Metrics:** TTFB, FCP, LCP/element, CLS, DOMContentLoaded/load timing, resource and byte totals/categories, long tasks, viewport/scroll widths, and navigation console/page/request errors. Raw JSON and per-route medians are retained.
 **Evidence:** `tests/e2e/mobile-performance-lab.spec.ts`; [Phase 8.8 methodology and observed medians](MOBILE-PERFORMANCE-LAB.md); PR Actions [#46072238941](https://github.com/weexdayend/uigerhana-space/actions/runs/46072238941); artifact [#15234410023](https://github.com/weexdayend/uigerhana-space/actions/runs/46072238941/artifacts/15234410023). PR runtime passed 334 tests / 11 skipped / 0 failed; the new mobile lab test passed once in Chromium.
@@ -169,7 +169,7 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-15 — Consolidated release evidence orchestration
 
-**Status:** IMPLEMENTED — PR CI pending; manual source audits and their exact-commit artifacts are still required.
+**Status:** IMPLEMENTED — exact-main CI regression passed in [run #46126760208](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208); manual source audits and their exact-commit artifacts are still required.
 **Method:** The release evidence gate accepts the run IDs of the external-destination, production-parity, and physical-device workflows. It validates each run's workflow path, manual-dispatch event, completed state, exact head SHA, and artifact name before downloading the artifacts from those specific runs. A provenance manifest binds each JSON report to its run metadata and SHA-256.
 **Evaluation:** The evaluator validates the four public-route observations and external destination classifications, production TLS/route/deployment/served-marker evidence, and the physical-device validator result. It rejects path traversal/symlink escape, report digest mismatch, source-run SHA mismatch, unexpected workflow provenance, reused run IDs, and internally inconsistent evidence.
 **Decision boundary:** The result is `invalid`, `blocked`, or `owner-review-required`. Even complete technical evidence always emits `releaseApproved: false` and `releaseDecision: "owner-review-required"`. Human review of destination content and revision-marker provenance, native browser zoom, native OS scaling, native print, field mobile performance/INP, and explicit owner go/no-go remain mandatory.
@@ -177,7 +177,7 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-16 — Manual audit workflow execution preflight
 
-**Status:** INSTRUMENTED — exact-head CI pending.  
+**Status:** PASS — exact-main workflow-contract regression passed in [run #46126760208](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208); this does not mean a source audit was dispatched.  
 **Finding:** The physical-device manual workflow contained escaped GitHub expression markers in checkout, input environment, and artifact naming. The consolidated gate also accepted a workflow path prefix instead of requiring the exact expected workflow file path.  
 **Remediation:** Use active GitHub expressions, enforce a lowercase full SHA equal to the actual checkout, resolve the evidence JSON with realpath and require it beneath the physical-device evidence root, and require exact workflow path equality when validating source run provenance.  
 **Regression coverage:** Eight Node built-in contract tests inspect expression rendering, exact-SHA checkout, evidence-root containment, artifact naming, explicit source run IDs, read-only permissions, manual-dispatch boundaries, and exact workflow path provenance.  
@@ -185,7 +185,7 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-17 — Source-run report timestamp provenance
 
-**Status:** INSTRUMENTED — exact-head CI pending.  
+**Status:** PASS — exact-main timestamp-provenance regression passed in [run #46126760208](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208); owner freshness policy remains open.  
 **Finding:** The release evidence manifest verified source run IDs, exact workflow paths, event, conclusion, commit SHA, artifact name, and report digest, but it did not prove that the embedded report was generated during the workflow run being referenced.  
 **Remediation:** Capture each GitHub Actions run's `created_at` and `updated_at`; require external/production `checkedAt` and physical-device `validatedAt` to fall within that run window; require the provenance manifest to be generated after all source runs have completed.  
 **Boundary:** This binds a report to its specific source run but does not impose a maximum evidence age. The owner must define the acceptable freshness window before release. Release approval remains false and owner review remains mandatory.  
@@ -194,7 +194,7 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-18 — Attempt-aware source audit artifacts
 
-**Status:** INSTRUMENTED — exact-head CI pending.  
+**Status:** PASS — exact-main attempt-aware artifact regression passed in [run #46126760208](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208); source audit evidence is still required.  
 **Finding:** GitHub Actions reruns keep the original workflow `run_id` while incrementing `run_attempt`. Commit-only artifact names did not distinguish the report package uploaded by each attempt.  
 **Remediation:** Name every source audit artifact with the reviewed commit SHA and `github.run_attempt`; read and validate `run_attempt` from the referenced source run metadata; download by explicit run ID and attempt-specific artifact name; store the attempt in the manifest; reject invalid attempt numbers or mismatched artifact names.  
 **Boundary:** This prevents ambiguous artifact selection across reruns. It does not prove the truth of physical-device attestations or served-marker provenance. Machine evidence remains owner-review-only.  
@@ -203,7 +203,7 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-19 — Evidence artifact retention and expiry
 
-**Status:** INSTRUMENTED — exact-head CI pending.  
+**Status:** PASS — exact-main artifact-expiry regression passed in [run #46126760208](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208); source audit evidence is still required.  
 **Finding:** Commit + attempt-specific names prevent cross-attempt ambiguity, but the release evaluator did not independently establish that the selected artifact still existed, remained unexpired, or would remain available through evaluation.  
 **Remediation:** Query paginated artifact metadata from each exact source run; require exactly one matching name, positive artifact ID, non-empty size, `expired=false`, and a future effective `expires_at`; download only that exact artifact from its explicit run ID; retain artifact ID, creation/expiry timestamps, expiry state, and size in the manifest.  
 **Evaluation:** Reject duplicate artifact IDs, artifact creation outside the source run window, expired/unknown expiry state, and expiry at or before manifest/evaluation time.  
@@ -213,7 +213,7 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-20 — Build-time revision provenance marker
 
-**Status:** IMPLEMENTED — exact-head CI pending; live production injection and parity remain NOT VERIFIED.  
+**Status:** IMPLEMENTED — PR #40 and exact-main CI passed in [run #46126760208](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208); live production injection and parity remain NOT VERIFIED.  
 **Contract:** A build may receive `UI_GERHANA_REVISION`, which must be a full 40-character hexadecimal Git SHA. The app normalizes it to lowercase and emits `<meta name="ui-gerhana-revision" content="...">` through root metadata on every public route. Missing input omits the marker; invalid or abbreviated input fails rather than emitting ambiguous provenance.  
 **CI acceptance:** GitHub Actions supplies the checked-out `github.sha` to both production builds. Node unit tests cover absence, normalization, and invalid values; Playwright checks the rendered marker on all four public routes in Chromium, Firefox, and WebKit.  
 **Boundary:** This does not configure a hosting provider or prove that production has received the variable. The deployment process must pass the SHA of the exact source revision it builds. A live marker match remains owner-review evidence, not automatic production parity or release approval.  
@@ -229,6 +229,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 | #24 exact-main CI | Quality + cross-engine runtime | PASS | [Actions #46054077202](https://github.com/weexdayend/uigerhana-space/actions/runs/46054077202) |
 | #25 QA foundation | Exact-head quality + runtime | PASS | [Actions #46054485925](https://github.com/weexdayend/uigerhana-space/actions/runs/46054485925) |
 | #26 responsive remediation | Exact-head quality + Chromium/Firefox/WebKit | PASS | [PR Actions #46055899645](https://github.com/weexdayend/uigerhana-space/actions/runs/46055899645) and [push Actions #46055893632](https://github.com/weexdayend/uigerhana-space/actions/runs/46055893632) |
+| PR #40 build revision provenance / exact main | Build-time SHA contract + cross-engine route assertion | PASS | [PR #40](https://github.com/weexdayend/uigerhana-space/pull/40); [post-merge Actions #46126760208](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208); [artifact #15255838687](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208/artifacts/15255838687) |
 | ROOT-01 200% CSS root text | Four routes × 390/360/320px × three engines | PASS — automated proxy | PR #26 exact-head CI; native zoom/OS text scaling remain manual |
 | Literal browser zoom 200% | Actual desktop browser | MANUAL / NOT RUN | Owner evidence required |
 | OS text scaling | Native OS setting | MANUAL / NOT RUN | Record actual platform/settings |
@@ -237,6 +238,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 | ROOT-09 interaction-state and target audit | Focus-visible, hover delta, mobile menu pointer state, and 24 × 24 CSS px primary targets | PASS — AUTOMATED EXACT HEAD | PR Actions #46066904014; push Actions #46066883235; artifacts #15230689950 / #15230759858 | 327 passed / 6 skipped / 0 failed on both runtime jobs; native AT and physical-device acceptance remain manual |
 | ROOT-10 interaction-state contrast | Focus indicator 3:1 and sampled hover text 4.5:1 on solid surfaces | PASS — EXACT HEAD | PR #29 head `acc25faae7575b19293cae5fffef96aecaa64215`; push Actions #46068569732; PR Actions #46068576358; artifact #15231449634 | Both exact-head quality/runtime checks passed; scope remains sampled controls/solid surfaces only |
 | ROOT-11 external destination reachability | Bounded GET probes from reviewed local production build | READY — NOT RUN | `.github/workflows/external-destination-audit.yml`; `tests/e2e/release-readiness.spec.ts` | Manual dispatch required; results classify restricted/transient separately and do not gate CI |
+| ROOT-12 mobile-class performance lab | Controlled Chromium mobile emulation | RECORDED — EXACT-MAIN TEST PASS | [Post-merge Actions #46126760208](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208); [browser artifact #15255838687](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208/artifacts/15255838687); `tests/e2e/mobile-performance-lab.spec.ts` | One Chromium lab execution passed on exact main; Firefox/WebKit skip the Chromium-specific test; no field CWV, INP, or physical-device claim |
 | ROOT-05 performance baseline | Chromium production-build lab sample | RECORDED — FINAL EXACT HEAD | [PR Actions #46061556961](https://github.com/weexdayend/uigerhana-space/actions/runs/46061556961); artifact #15228823778 | 12 HTTP 200 samples / 4 routes; median FCP/LCP home 144 ms, work 84 ms, case study 84 ms, CV 120 ms; median CLS 0; no console/page/request errors; individual long tasks retained; no budgets set |
 | External link reachability | Manual third-party spot-check | NOT VERIFIED | Use destination inventory from PR #27 artifact |
 | Production parity | Non-invasive live verification | NOT VERIFIED | No deployment authority |
@@ -257,6 +259,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 7. Complete accessibility/interaction delta audit and responsive/zoom regression.
 8. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
 9. Verify production parity read-only and record external destination spot-checks.
+10. Phase 8.17 reconciles the release ledger to exact main `369ad07c7928e7e52660fbfac44bd57471fec840`; see [the reconciliation record](RELEASE-EVIDENCE-LEDGER-RECONCILIATION.md). Automated source-audit contracts are green, but source audit dispatches and owner acceptance remain outstanding.
 10. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
 
 ## 6. Release decision
