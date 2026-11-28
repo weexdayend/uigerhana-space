@@ -1,6 +1,6 @@
 # Phase 8.16 — Build Revision Provenance Marker
 
-**Status:** Implemented in the Phase 8.16 branch; exact-head CI and deployment-side adoption are pending.  
+**Status:** Implemented and merged in PR #40; exact-head PR CI and post-merge exact-main CI passed. Deployment-side adoption and live production parity remain NOT VERIFIED.  
 **Release boundary:** This change adds an application contract only. It does not deploy, alter production configuration, or claim live commit parity.
 
 ## Problem
@@ -22,6 +22,8 @@ Both GitHub Actions production builds receive the exact `github.sha` for the com
 1. Node built-in unit tests cover absent input, lowercase normalization, whitespace trimming, and rejection of abbreviated/non-hex values.
 2. Playwright verifies that every approved public route serves exactly one marker matching the build SHA.
 3. The marker check runs in the Chromium, Firefox, and WebKit projects alongside the existing release route checks.
+
+**Verified evidence:** PR #40 head `7211972ffa47847ad728a8552d08154a92a3cab6` passed exact-head CI in [PR run #46126060893](https://github.com/weexdayend/uigerhana-space/actions/runs/46126060893). After merge, exact `main` SHA `369ad07c7928e7e52660fbfac44bd57471fec840` passed both quality and runtime jobs in [post-merge run #46126760208](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208); the browser suite completed 339 passed / 15 skipped / 0 failed. The exact-main browser artifact is [#15255838687](https://github.com/weexdayend/uigerhana-space/actions/runs/46126760208/artifacts/15255838687). This verifies the application/CI contract only; it does not prove production environment injection or live served revision.
 
 ## Deployment requirement
 
