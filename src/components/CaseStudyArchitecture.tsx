@@ -13,7 +13,7 @@ export function CaseStudyArchitecture({
       <div className="atlas-detail-architecture__inner">
         <header className="atlas-detail-architecture__intro">
           <p className="atlas-detail__section-kicker">
-            02 / Code architecture view
+            03 / Code architecture view
           </p>
           <h2 id="case-study-architecture-title">{diagram.title}.</h2>
           <p>{diagram.description}</p>

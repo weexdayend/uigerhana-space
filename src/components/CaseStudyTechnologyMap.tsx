@@ -12,7 +12,7 @@ export function CaseStudyTechnologyMap({
     >
       <div className="atlas-detail-section__layout">
         <header className="atlas-detail-section__intro">
-          <p className="atlas-detail__section-kicker">04 / Technology map</p>
+          <p className="atlas-detail__section-kicker">05 / Technology map</p>
           <h2 id="case-study-technology-title">Tools mapped to their role.</h2>
           <p>
             Technologies are grouped by the part of the website they support,

@@ -106,165 +106,147 @@ export interface CaseStudy {
 export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "uigerhana-space",
-    title: "Building a personal professional platform",
-    eyebrow: "Independent product · In progress",
+    title: "Building a professional platform from identity to evidence",
+    eyebrow: "Independent product · Professional platform · In progress",
     summary:
-      "Reframing a personal website into a coherent professional identity, portfolio, and résumé experience.",
+      "A personal platform connecting a Product Engineer's point of view to selected work, capabilities, experience, and a source-backed résumé—without presenting private projects as public proof.",
     publicationStatus: "approved",
     projectStatus: "in-progress",
-    context: "Independent personal project",
+    context: "Independent personal platform · Web",
     role:
       "Product direction, identity and content decisions, information architecture, visual direction, and implementation oversight.",
     challenge: {
-      heading: "The challenge",
+      heading: "One identity, not a services landing page",
       paragraphs: [
-        "The initial concept had a strong visual signature, but its content was framed more like a software-services landing page than a personal professional platform.",
-        "The project needed one narrative that could introduce a Product Engineer, provide credible evidence through work, and support both business conversations and professional opportunities.",
+        "The earlier website experience leaned toward a software-services presentation. It did not make the personal Product Engineer identity, the range of work, and the reasoning behind that work feel like one connected story.",
+        "The platform needed to serve potential clients and professional peers without splitting into conflicting personas or using private project details as public proof.",
       ],
     },
     approach: {
-      heading: "Product and experience approach",
+      heading: "Make the system legible",
       paragraphs: [
-        "Reposition the experience around product thinking, interface design, software engineering, and production-minded work.",
-        "Retain the Obsidian, Stone, and Amber palette, Geist typography, Pixelify Sans accents, editorial grids, and Bayer-dithered artwork while changing the information architecture.",
+        "The experience is organized as a route through four connected ideas: understand the person, explore relevant work, inspect how a project is shaped, and continue into professional depth.",
+        "The current visual proposal uses a restrained Basalt / Limestone foundation, Sea Glass as the route signal, and Signal Copper for decisive emphasis. Manrope and Plus Jakarta Sans establish the display and reading hierarchy.",
       ],
       bullets: [
-        "Lead with a clear Product Engineer identity.",
-        "Make work, expertise, experience, and engineering philosophy discoverable.",
-        "Treat factual accuracy and project disclosure as part of the product experience.",
+        "Lead with the owner-approved Product Engineer positioning and the line “From pixel to production.”",
+        "Use one coherent visual language across the homepage, work index, case-study detail, and résumé.",
+        "Keep source-backed professional content separate from private project evidence and publication-pending case studies.",
+        "Use GSAP for purposeful route motion while preserving a complete static and reduced-motion experience.",
       ],
     },
     implementation: {
-      heading: "Implementation",
+      heading: "A connected content and presentation system",
       paragraphs: [
-        "Create typed content modules for profile, experience, skills, work domains, and engineering principles.",
-        "Build the homepage, portfolio, and online résumé from shared sources so professional facts are not manually duplicated.",
+        "Typed content modules provide shared records for the public profile, experience, skills, work domains, writing, engineering principles, and case studies.",
+        "The App Router presents those records through a homepage, selected-work index, approved case-study detail route, and print-oriented résumé. Publication status is checked before a case study can enter the public selector or resolve as a public detail page.",
       ],
       bullets: [
-        "Next.js App Router, React, and TypeScript.",
-        "Tailwind CSS with Geist and Pixelify Sans.",
-        "Custom Bayer-dithered canvas and SVG visuals.",
-        "Print-oriented résumé page with browser Print / Save PDF support.",
-        "Case-study publication gate based on explicit approval status.",
+        "Next.js 16 App Router, React 19, and TypeScript.",
+        "Tailwind CSS 4 with Manrope display typography and Plus Jakarta Sans for body and interface text.",
+        "GSAP and ScrollTrigger for the homepage's staged narrative, with reduced-motion behavior.",
+        "Reusable case-study contribution, source-architecture, workflow, evidence, and technology views.",
+        "A résumé route with browser print / Save PDF presentation.",
+        "An explicit approved-only case-study publication boundary.",
       ],
     },
     currentState: {
-      heading: "Current state",
+      heading: "What exists today",
       paragraphs: [
-        "The current implementation includes the identity foundation, homepage sections, typed professional content, an online résumé, and an evidence-led case-study route.",
-        "The work is still in progress. The visual samples below are generated visual assets and studies from the site's own renderer, not screenshots of a completed product. Other professional project case studies remain gated until their role, evidence, and disclosure details are reviewed.",
+        "The public platform currently connects four visitor routes: the homepage, work index, this case-study detail, and the online résumé. Its work index also presents four generalized work domains derived from the résumé.",
+        "This self-platform story is the only approved public case study. Three deeper project records remain draft-only while their personal contribution, evidence, project status, and disclosure boundaries are reviewed. The platform remains in progress; no completed business outcome or verified production deployment is claimed.",
+      ],
+      bullets: [
+        "The current contact section points visitors to the résumé and verified public profiles; a direct public contact destination has not yet been approved.",
+        "Generated artwork is not presented as a screenshot of a shipped application.",
+        "Private client and product identities remain generalized or unpublished.",
       ],
     },
     contributions: [
       {
         area: "Product direction",
         description:
-          "Defined the Product Engineer positioning, primary audience, website goals, and the story the platform should communicate.",
+          "Established the Product Engineer positioning, primary audiences, website goals, and the visitor journey that connects identity to evidence.",
       },
       {
-        area: "Information architecture",
+        area: "Brand and visual direction",
         description:
-          "Reshaped the site around introduction, selected work, expertise, experience, engineering philosophy, and résumé access.",
+          "Selected the System Atlas territory and shaped its route metaphor, Basalt / Limestone palette proposal, Manrope and Plus Jakarta Sans pairing, and restrained GSAP motion language.",
       },
       {
-        area: "Visual direction",
+        area: "Experience architecture",
         description:
-          "Retained and applied the Obsidian, Stone, and Amber palette, editorial layout, pixel accents, and ordered-dither visual language.",
+          "Connected the homepage, selected-work index, case-study detail, and résumé into one route system with shared navigation and content hierarchy.",
       },
       {
-        area: "Content architecture",
+        area: "Content and evidence model",
         description:
-          "Established typed, shared records for profile, experience, skills, work domains, case studies, and technical principles.",
+          "Established typed shared records and an explicit publication gate that separates approved public case studies from draft-only project material.",
       },
       {
-        area: "Implementation oversight",
+        area: "Frontend implementation",
         description:
-          "Directed the Next.js application structure, portfolio routes, online résumé, and quality workflow while the project remains in progress.",
+          "Directed the Next.js application structure, reusable presentation components, responsive layouts, motion behavior, and print-oriented résumé experience.",
       },
     ],
     architectureDiagram: {
-      title: "How the site is put together",
+      title: "How the platform is assembled",
       description:
-        "A conceptual view of the current source organization: shared typed content feeds App Router pages, which are rendered through reusable presentation components. This is a code-architecture map, not a deployment or infrastructure topology.",
+        "A source-structure view of the current application: typed content feeds App Router pages, which render through reusable interface components. This describes the codebase, not hosting or deployment topology.",
       stages: [
         {
-          label: "Shared content",
-          description: "Typed records under src/data",
+          label: "Typed content",
+          description: "Shared records under src/data",
           items: [
-            "Profile & site metadata",
-            "Experience & skills",
-            "Work domains & case studies",
-            "Engineering principles",
+            "Profile, experience, and skills",
+            "Work domains and approved case studies",
+            "Writing and engineering principles",
+            "Site identity and metadata",
           ],
         },
         {
-          label: "App routes",
+          label: "Visitor routes",
           description: "Next.js App Router",
           items: [
-            "/ — Homepage",
-            "/work — Work index",
-            "/work/[slug] — Case study",
-            "/cv — Online résumé",
+            "/ — Homepage and narrative",
+            "/work — Selected work and domains",
+            "/work/[slug] — Approved case-study detail",
+            "/cv — Online résumé and print view",
           ],
         },
         {
-          label: "Presentation",
-          description: "Reusable UI and visual primitives",
+          label: "Presentation system",
+          description: "Reusable React components and visual primitives",
           items: [
-            "Editorial page sections",
-            "Case-study templates",
-            "Résumé and print layout",
-            "Canvas, SVG, and pixel visuals",
+            "System Atlas route and section layouts",
+            "Case-study contribution and evidence views",
+            "Source-architecture and technology maps",
+            "Résumé document and print controls",
           ],
         },
       ],
     },
-    visualStudies: [
-      {
-        id: "eclipse-horizon",
-        art: "eclipse-horizon",
-        title: "Eclipse horizon",
-        label: "Used on homepage",
-        caption:
-          "The current hero artwork, rendered with the site's Bayer 4×4 dither palette.",
-      },
-      {
-        id: "grid-waves",
-        art: "grid-waves",
-        title: "Ordered grid waves",
-        label: "Renderer study",
-        caption:
-          "A procedural wave pattern exploring tonal depth within a restrained palette.",
-      },
-      {
-        id: "isometric-cubes",
-        art: "isometric-cubes",
-        title: "Isometric volume",
-        label: "Renderer study",
-        caption:
-          "A geometric luminance field exploring depth, repetition, and amber accents.",
-      },
-    ],
+    visualStudies: [],
     technologyGroups: [
       {
         category: "Application",
-        purpose: "Routing and page composition",
-        technologies: ["Next.js 16 App Router", "React 19", "TypeScript"],
+        purpose: "Routing, page composition, and rendering",
+        technologies: ["Next.js 16.4.6 App Router", "React 19.3.0", "TypeScript"],
       },
       {
         category: "Interface system",
-        purpose: "Layout, typography, and styling",
-        technologies: ["Tailwind CSS 4", "Geist", "Pixelify Sans"],
+        purpose: "Responsive layout, typography, and visual tokens",
+        technologies: ["Tailwind CSS 4.3.3", "Manrope", "Plus Jakarta Sans", "CSS custom properties"],
       },
       {
-        category: "Visual rendering",
-        purpose: "Procedural artwork and crisp geometric details",
-        technologies: ["Canvas 2D", "SVG", "Bayer 4×4 ordered dithering"],
+        category: "Motion and graphics",
+        purpose: "Narrative transitions and the System Atlas route",
+        technologies: ["GSAP 3.15.1", "ScrollTrigger", "SVG", "CSS motion states"],
       },
       {
-        category: "Quality workflow",
-        purpose: "Configured checks for the development branch",
-        technologies: ["TypeScript", "ESLint", "GitHub Actions"],
+        category: "Content architecture",
+        purpose: "Shared professional facts and controlled publication",
+        technologies: ["Typed TypeScript records", "Approved-only case-study selector", "App Router metadata"],
       },
     ],
   },

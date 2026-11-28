@@ -13,14 +13,14 @@ export function CaseStudyContributionBreakdown({
       <div className="atlas-detail-section__layout">
         <header className="atlas-detail-section__intro">
           <p className="atlas-detail__section-kicker">
-            01 / Contribution breakdown
+            02 / Contribution breakdown
           </p>
           <h2 id="case-study-contributions-title">
             The work behind the experience.
           </h2>
           <p>
-            The responsibilities represented in this personal project. These
-            are workstreams, not percentage or effort estimates.
+            The responsibilities represented in this project. These are
+            workstreams, not percentage or effort estimates.
           </p>
         </header>
 

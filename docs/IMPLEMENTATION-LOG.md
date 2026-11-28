@@ -1,5 +1,25 @@
 # Implementation Log
 
+## 2026-11-28 — Portfolio proof: System Atlas case-study rework
+
+**Branch:** portfolio-proof/system-atlas-case-study
+
+### Delivered
+
+- Reframed the public UI Gerhana case study around the current System Atlas identity and the actual four-route visitor journey.
+- Added a visual route map linking the homepage, work index, case-study detail, and résumé.
+- Replaced the outdated Obsidian / Geist / Pixelify description with the selected Basalt / Limestone / Sea Glass / Signal Copper direction and Manrope / Plus Jakarta Sans pairing.
+- Updated the contribution breakdown, source-architecture view, and technology map to reflect the current implementation.
+- Removed procedural renderer studies from this case-study narrative so generated artwork is not used as a substitute for product evidence.
+
+### Evidence boundaries
+
+- The project remains in progress.
+- The public case study continues to describe this personal platform only.
+- Three deeper project records remain draft-only pending contribution, evidence, status, and disclosure review.
+- No business outcome, client attribution, or production deployment parity is claimed.
+
+
 ## 2026-11-26 — Portfolio case-study foundation
 
 **Branch:** work/uigerhana-personal-identity-v1
