@@ -7,6 +7,7 @@ import { CaseStudyEvidenceMap } from "@/components/CaseStudyEvidenceMap";
 import { CaseStudyTechnologyMap } from "@/components/CaseStudyTechnologyMap";
 import { CaseStudyWorkflowMap } from "@/components/CaseStudyWorkflowMap";
 import { CaseStudyVisualGallery } from "@/components/CaseStudyVisualGallery";
+import { PortfolioJourneyMap } from "@/components/PortfolioJourneyMap";
 import { getPublicCaseStudy, PUBLIC_CASE_STUDIES } from "@/data/case-studies";
 
 interface CaseStudyPageProps {
@@ -139,6 +140,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         </div>
       </section>
 
+      {study.slug === "uigerhana-space" && <PortfolioJourneyMap />}
+
       <article>
         <div className="atlas-detail__container">
           <CaseStudyContributionBreakdown contributions={study.contributions} />
@@ -162,7 +165,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
             aria-labelledby="case-study-story-title"
           >
             <div className="atlas-detail-story__intro">
-              <p className="atlas-detail__section-kicker">03 / Project story</p>
+              <p className="atlas-detail__section-kicker">04 / Project story</p>
               <h2 id="case-study-story-title">From the problem to the current state.</h2>
             </div>
             <div className="atlas-detail-story__sections">
