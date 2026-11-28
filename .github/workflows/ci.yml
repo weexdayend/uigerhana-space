@@ -18,6 +18,8 @@ jobs:
     name: Typecheck, lint, and build
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      UI_GERHANA_REVISION: ${{ github.sha }}
 
     steps:
       - name: Checkout
@@ -70,6 +72,9 @@ jobs:
       - name: Manual audit workflow contract tests
         run: npm run test:release-workflows
 
+      - name: Build revision provenance contract tests
+        run: npm run test:build-revision
+
       - name: Lint
         run: npm run lint
 
@@ -80,6 +85,8 @@ jobs:
     name: Runtime visual and accessibility QA
     runs-on: ubuntu-latest
     timeout-minutes: 50
+    env:
+      UI_GERHANA_REVISION: ${{ github.sha }}
 
     steps:
       - name: Checkout

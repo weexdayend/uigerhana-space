@@ -67,9 +67,9 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-04 — Production parity / release integrity
 
-**Status:** INSTRUMENTED — read-only audit workflow added; no live audit result is claimed yet. Production commit parity remains NOT VERIFIED.
+**Status:** INSTRUMENTED — read-only audit workflow and build-time marker contract exist; no live audit result is claimed yet. Production commit parity remains NOT VERIFIED.
 
-**Source finding:** The repository declares `https://uigerhana.space` as the canonical origin but has no documented deployment workflow/host contract and the app does not currently emit a build-time revision marker. A GitHub deployment record alone does not prove what the live CDN/application server currently serves.
+**Source finding:** The repository declares `https://uigerhana.space` as the canonical origin but has no verified provider-specific deployment workflow/host contract. Phase 8.16 adds an optional build-time revision marker that is emitted only when the exact full source SHA is supplied through `UI_GERHANA_REVISION`. A GitHub deployment record or CI marker alone does not prove what the live CDN/application server currently serves.
 
 **Automated method:** Manually dispatch `.github/workflows/production-parity-audit.yml` with the full 40-character expected commit SHA. The workflow checks out that commit, then performs unauthenticated GET checks for TLS certificate authorization/validity, HTTP-to-HTTPS redirect, the four public routes, title/description/H1/canonical/indexability metadata, robots.txt, and sitemap.xml. It also reads the latest GitHub `production` deployment record/status using `deployments: read`, and looks for an explicit `X-UI-Gerhana-Revision` header or `ui-gerhana-revision` meta marker. The full report is uploaded as a 90-day artifact.
 
@@ -77,7 +77,7 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 **Evidence:** `scripts/audit-production-parity.mjs`; `.github/workflows/production-parity-audit.yml`; [Phase 8.7 methodology](PRODUCTION-PARITY-AND-DEPLOYMENT-EVIDENCE.md).
 
-**Boundary:** The workflow is GET-only and read-only. It does not deploy, change DNS/configuration/environment, purge caches, access application secrets, or invent a hosting-provider contract. A successful workflow run means evidence was collected, not that production passed. Native/browser, field-performance, external-content, and owner release gates remain independent.
+**Boundary:** The workflow is GET-only and read-only. It does not deploy, change DNS/configuration/environment, purge caches, access application secrets, or invent a hosting-provider contract. The app emits a marker only when its production build is explicitly supplied the exact source SHA; no current provider integration is assumed. A successful workflow run means evidence was collected, not that production passed. Native/browser, field-performance, external-content, and owner release gates remain independent.
  
 ### ROOT-05 — Runtime performance
 
@@ -210,6 +210,14 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 **Boundary:** The actual API `expires_at` is authoritative because repository/organization retention limits may shorten requested upload retention. No minimum days-remaining or arbitrary evidence-age policy is invented; freshness policy stays owner-controlled. The machine gate never approves release.  
 **Regression coverage:** Evaluator tests cover expired artifacts, expiry before evaluation, out-of-window artifact creation, duplicate artifact IDs, and output metadata. Workflow contract tests inspect exact run-artifact lookup and fail-closed expiry handling.  
 **Evidence:** `docs/phase-8/EVIDENCE-ARTIFACT-EXPIRY.md`; `.github/workflows/release-evidence-gate.yml`; `scripts/evaluate-release-evidence.mjs`.
+
+### ROOT-20 — Build-time revision provenance marker
+
+**Status:** IMPLEMENTED — exact-head CI pending; live production injection and parity remain NOT VERIFIED.  
+**Contract:** A build may receive `UI_GERHANA_REVISION`, which must be a full 40-character hexadecimal Git SHA. The app normalizes it to lowercase and emits `<meta name="ui-gerhana-revision" content="...">` through root metadata on every public route. Missing input omits the marker; invalid or abbreviated input fails rather than emitting ambiguous provenance.  
+**CI acceptance:** GitHub Actions supplies the checked-out `github.sha` to both production builds. Node unit tests cover absence, normalization, and invalid values; Playwright checks the rendered marker on all four public routes in Chromium, Firefox, and WebKit.  
+**Boundary:** This does not configure a hosting provider or prove that production has received the variable. The deployment process must pass the SHA of the exact source revision it builds. A live marker match remains owner-review evidence, not automatic production parity or release approval.  
+**Evidence:** [Phase 8.16 build revision provenance](BUILD-REVISION-PROVENANCE.md); `src/lib/build-revision.js`; `src/app/layout.tsx`; `tests/e2e/release-readiness.spec.ts`; `.github/workflows/ci.yml`.
 
 ## 4. Evidence ledger
 

@@ -10,6 +10,7 @@ import "./globals.css";
 import { PROFILE } from "@/data/profile";
 import { PUBLIC_PROFILES } from "@/data/writing";
 import { SITE_META } from "@/data/site";
+import { normalizeBuildRevision } from "@/lib/build-revision";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -49,7 +50,10 @@ const personStructuredData = {
   ],
 };
 
+const BUILD_REVISION = normalizeBuildRevision(process.env.UI_GERHANA_REVISION);
+
 export const metadata: Metadata = {
+  other: BUILD_REVISION ? { "ui-gerhana-revision": BUILD_REVISION } : undefined,
   metadataBase: new URL(SITE_META.siteUrl),
   alternates: { canonical: "/" },
   title: { default: "Irvan Gerhana — Product Engineer", template: "%s | Irvan Gerhana" },

@@ -48,6 +48,12 @@ npm run test:e2e
 
 The suite covers desktop/tablet/mobile viewport behavior, route smoke checks, selected keyboard and reduced-motion flows, and axe-core WCAG A/AA checks. GitHub Actions uploads screenshots and traces as artifacts. The owner has confirmed that real-device and assistive-technology checks are complete; literal 200% zoom/text scaling and native print-dialog checks remain open. See `docs/RUNTIME-QA-BASELINE.md` for exact scope and evidence boundaries.
 
+### Build revision provenance
+
+Production builds can emit a public `ui-gerhana-revision` meta marker when the build environment supplies `UI_GERHANA_REVISION` as the full 40-character SHA of the exact source commit being built. When the variable is absent, no revision marker is emitted. GitHub CI sets it from the checked-out workflow commit and tests the rendered marker on every public route across Chromium, Firefox, and WebKit.
+
+A real deployment pipeline must provide the SHA of the source revision used for that production build. This repository does not assume a hosting provider or configure a production deployment; a marker match remains an observation until the build/deployment process is verified independently. See `docs/phase-8/BUILD-REVISION-PROVENANCE.md`.
+
 ## Routes
 
 - `/` — personal homepage

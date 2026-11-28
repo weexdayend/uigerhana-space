@@ -61,6 +61,21 @@ function median(values: number[]): number | null {
 }
 
 test.describe("release route and link integrity", () => {
+  test("exposes the exact build revision on every public route", async ({ page }) => {
+    const expectedRevision = process.env.UI_GERHANA_REVISION?.trim().toLowerCase();
+    test.skip(!expectedRevision, "Build revision provenance is opt-in outside configured CI/deployment builds.");
+    if (!expectedRevision) return;
+
+    expect(expectedRevision).toMatch(/^[0-9a-f]{40}$/);
+    const marker = page.locator('meta[name="ui-gerhana-revision"]');
+
+    for (const route of PUBLIC_ROUTES) {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await expect(marker, route + " revision marker count").toHaveCount(1);
+      await expect(marker, route + " build revision marker").toHaveAttribute("content", expectedRevision);
+    }
+  });
+
   test("serves the complete public route set with canonical metadata, sitemap, and robots", async ({
     page,
     request,

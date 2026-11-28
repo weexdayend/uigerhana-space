@@ -5,9 +5,11 @@
 
 ## Source review findings
 
-The current application declares https://uigerhana.space as its canonical site origin. The repository does not contain a deployment workflow or a documented production deployment contract. The application also does not currently emit a build-time commit revision header or meta marker.
+The current application declares https://uigerhana.space as its canonical site origin. The repository does not contain a provider-specific deployment workflow or a verified production deployment contract. Phase 8.16 adds an optional, host-agnostic build-time meta marker: a build supplied with `UI_GERHANA_REVISION` as a full commit SHA emits `<meta name="ui-gerhana-revision">` on every public route. GitHub CI supplies the exact checked-out commit SHA and verifies the rendered marker.
 
-Therefore, production commit parity cannot honestly be inferred from a successful GitHub build, a GitHub deployment record, or matching page content alone.
+The marker is omitted when the variable is absent, and invalid/abbreviated values fail the build. The code does not infer a SHA from a branch name, GitHub deployment record, runtime environment, or current repository HEAD.
+
+Therefore, production commit parity still cannot honestly be inferred from a successful GitHub build, a GitHub deployment record, or matching page content alone. The real deployment build must explicitly receive the SHA of the source revision it is building, and the live audit must observe that marker.
 
 ## Audit method
 
@@ -38,9 +40,9 @@ The outcome distinguishes deploymentRecordParity from productionCommitParity. A 
 ## Current limitations and next prerequisite
 
 - There is no documented deployment workflow or known host-specific deployment integration in this repository.
-- There is no trusted served commit marker in the current application.
-- This slice intentionally does not add a marker by guessing the hosting provider or inventing an environment variable. That would require a verified deployment contract and a controlled implementation in the actual build pipeline.
+- The application now supports a trusted-format build marker when the build input is explicitly supplied and validated; see [Phase 8.16 build revision provenance](BUILD-REVISION-PROVENANCE.md).
+- No production deployment pipeline currently wires `UI_GERHANA_REVISION` to the exact source commit. That provider-neutral deployment integration must be verified before a live marker can be trusted.
 - No deploy, DNS change, environment change, cache purge, secret access, or production mutation is performed.
 - The external inspection path used during this bake could not retrieve the live domain directly; the manual GitHub Actions runner audit is the next evidence collection path.
 
-**Current production commit parity: NOT VERIFIED.** The source has no evidence mechanism yet that binds the live response to a Git SHA. Even a future marker match remains a review item until its build/deployment provenance is confirmed.
+**Current production commit parity: NOT VERIFIED.** The source now has an opt-in build-time evidence marker, but the production build pipeline has not been shown to inject the exact source SHA and no fresh live audit result has been collected. A future marker match remains a review item until its build/deployment provenance is confirmed.
