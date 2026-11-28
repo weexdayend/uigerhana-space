@@ -2,7 +2,7 @@
 
 **Status:** Active — evidence-led QA and release gate; no deployment authorization.
 **Phase 8 starting baseline:** `main` / merge commit `675eaed00b8e06163c8df8b06474fd32cf2554f7` (PR #24).
-**Current main head (2026-11-28):** `369ad07c7928e7e52660fbfac44bd57471fec840` (PR #40 merge; exact-main CI run #46126760208 passed).
+**Current main head (2026-11-28):** `0dd152dc2c28bc5aec49b9f7564cb32f627dea16` (PR #41 merge; quality job passed and runtime QA is running in [exact-main CI #46128282652](https://github.com/weexdayend/uigerhana-space/actions/runs/46128282652)).
 **Scope:** Whole-site quality; fix verified defects only. Do not add decorative UI or silently expand public content.
 
 ## 1. Release principles
@@ -67,7 +67,7 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 
 ### ROOT-04 — Production parity / release integrity
 
-**Status:** INSTRUMENTED — read-only audit workflow and build-time marker contract exist; no live audit result is claimed yet. Production commit parity remains NOT VERIFIED.
+**Status:** INSTRUMENTED — read-only audit workflow, strict full-SHA marker comparison, and build-time marker contract exist; no live audit result is claimed yet. Production commit parity remains NOT VERIFIED.
 
 **Source finding:** The repository declares `https://uigerhana.space` as the canonical origin but has no verified provider-specific deployment workflow/host contract. Phase 8.16 adds an optional build-time revision marker that is emitted only when the exact full source SHA is supplied through `UI_GERHANA_REVISION`. A GitHub deployment record or CI marker alone does not prove what the live CDN/application server currently serves.
 
@@ -78,6 +78,8 @@ The existing suite is the base; Phase 8 improves evidence quality, remediates on
 **Evidence:** `scripts/audit-production-parity.mjs`; `.github/workflows/production-parity-audit.yml`; [Phase 8.7 methodology](PRODUCTION-PARITY-AND-DEPLOYMENT-EVIDENCE.md).
 
 **Boundary:** The workflow is GET-only and read-only. It does not deploy, change DNS/configuration/environment, purge caches, access application secrets, or invent a hosting-provider contract. The app emits a marker only when its production build is explicitly supplied the exact source SHA; no current provider integration is assumed. A successful workflow run means evidence was collected, not that production passed. Native/browser, field-performance, external-content, and owner release gates remain independent.
+
+**Phase 8.18 hardening:** The auditor now requires exact full-40-character SHA equality and inspects all header/meta marker values per route. Prefixes and conflicting marker values cannot be treated as served-commit matches. The regression tests are pending exact-head CI; live production parity remains NOT VERIFIED.
  
 ### ROOT-05 — Runtime performance
 
@@ -260,7 +262,8 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 8. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
 9. Verify production parity read-only and record external destination spot-checks.
 10. Phase 8.17 reconciles the release ledger to exact main `369ad07c7928e7e52660fbfac44bd57471fec840`; see [the reconciliation record](RELEASE-EVIDENCE-LEDGER-RECONCILIATION.md). Automated source-audit contracts are green, but source audit dispatches and owner acceptance remain outstanding.
-11. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
+11. Phase 8.18 rejects abbreviated and conflicting served revision markers, adds regression tests, and documents exact-commit source audit collection; see [the Phase 8.18 record](STRICT-PRODUCTION-REVISION-MARKER.md) and [dispatch runbook](EXACT-COMMIT-SOURCE-AUDIT-RUNBOOK.md).
+12. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
 
 ## 6. Release decision
 
