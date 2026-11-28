@@ -146,7 +146,8 @@ test("production parity audit requires every served marker to be an exact full S
     readFile(new URL("./compare-revision-marker.mjs", import.meta.url), "utf8"),
   ]);
   assert.ok(audit.includes('import { compareRevisionMarkers } from "./compare-revision-marker.mjs"'));
-  assert.ok(audit.includes('meta.filter((item) => item.name?.toLowerCase() === "ui-gerhana-revision")'));
+  assert.ok(audit.includes("const revisionMarkers = meta"));
+  assert.ok(audit.includes('.filter((item) => item.name?.toLowerCase() === "ui-gerhana-revision")'));
   assert.ok(audit.includes('response.headers["x-ui-gerhana-revision"]'));
   assert.ok(audit.includes("markers: markerSources"));
   assert.ok(audit.includes("revisionMarkers.every((item) => item.markers.length > 0)"));
