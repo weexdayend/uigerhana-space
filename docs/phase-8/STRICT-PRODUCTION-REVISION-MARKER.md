@@ -13,7 +13,7 @@ The read-only production parity auditor accepted a 7–40-character hexadecimal 
 - Add a pure revision-marker comparator that requires both the expected commit and each exposed marker to be full 40-character hexadecimal SHAs.
 - Compare exact normalized equality only; prefixes are `invalid-marker`, not matches.
 - Inspect the HTTP `X-UI-Gerhana-Revision` header and every `ui-gerhana-revision` meta tag on each public route.
-- Require all available marker sources on a route to agree. Conflicting header/meta or duplicate meta values become `mismatch`; malformed or abbreviated markers become `invalid-marker`.
+- Require all available marker sources on a route to agree. Conflicting header/meta or conflicting duplicate meta values become `mismatch`; repeated identical values remain an agreeing set. Malformed or abbreviated markers become `invalid-marker`.
 - Emit one `servedRevisionMarkers` entry for each approved route, including routes with no marker. Missing markers remain `not-exposed` and cannot satisfy the exact-route evidence requirement.
 - Add Node regression tests for exact matching, case/whitespace normalization, missing markers, abbreviated SHA, malformed/overlong values, mismatching full SHA, invalid expected SHA, and conflicting marker sources.
 - Run the new test suite in the CI quality job.
