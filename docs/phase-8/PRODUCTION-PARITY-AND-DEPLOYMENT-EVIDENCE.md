@@ -24,6 +24,8 @@ The workflow checks out that exact commit and performs read-only inspection:
 5. **GitHub deployment record:** latest production deployment record and latest status, using read-only GitHub API permission.
 6. **Served revision marker:** looks only for the explicit X-UI-Gerhana-Revision response header or ui-gerhana-revision meta marker.
 
+**Marker acceptance rule:** A served marker is accepted only when it contains the complete 40-character hexadecimal SHA and equals the expected commit after trimming and lowercase normalization. Abbreviated 7–39 character prefixes are invalid, not matches. The auditor inspects the response header and every matching meta marker on each route; every exposed value must agree. Duplicate or cross-source disagreement is a mismatch. Missing markers remain not-verifiable. The JSON report retains a per-route comparison even when no marker is exposed, so incomplete evidence cannot masquerade as a complete marker set.
+
 The report is uploaded as production-parity-audit.json and retained for 90 days.
 
 ## Interpretation
@@ -35,7 +37,7 @@ The report is uploaded as production-parity-audit.json and retained for 90 days.
 | GitHub production deployment record | Commit and status recorded by GitHub for the environment | What a CDN or app server currently serves |
 | Served revision marker matching SHA | The live response declares the expected build revision | Trustworthiness unless the deployment process injects the marker from the actual build commit |
 
-The outcome distinguishes deploymentRecordParity from productionCommitParity. A matching GitHub deployment record with no served revision marker is **not verifiable**, not a pass. A marker mismatch is reported as a mismatch. If every route declares the expected SHA, the report says marker-match—not verified—because an owner must still confirm that the deployment process injects the marker from the exact source commit used to build the running application. The workflow's own green status means the audit executed and saved evidence; it is not a production release pass.
+The outcome distinguishes deploymentRecordParity from productionCommitParity. A marker can produce `marker-match` only when every exposed value on every approved route is an exact full-SHA match; prefixes and conflicting duplicates cannot pass. A matching GitHub deployment record with no served revision marker is **not verifiable**, not a pass. A marker mismatch is reported as a mismatch. If every route declares the expected SHA, the report says marker-match—not verified—because an owner must still confirm that the deployment process injects the marker from the exact source commit used to build the running application. The workflow's own green status means the audit executed and saved evidence; it is not a production release pass.
 
 ## Current limitations and next prerequisite
 
