@@ -63,6 +63,8 @@ jobs:
 
       - name: Production parity audit syntax
         run: node --check scripts/audit-production-parity.mjs
+      - name: Production parity revision marker contract tests
+        run: npm run test:production-parity
       - name: Physical-device evidence validator tests
         run: npm run test:device-evidence
 

@@ -139,3 +139,19 @@ test("release evidence gate checks live source-artifact metadata before download
   assert.ok(evaluator.includes("artifactExpiresAt <= Date.now()"));
   assert.ok(evaluator.includes("Source artifact ids must be unique"));
 });
+
+test("production parity audit requires every served marker to be an exact full SHA", async () => {
+  const [audit, comparator] = await Promise.all([
+    readFile(new URL("./audit-production-parity.mjs", import.meta.url), "utf8"),
+    readFile(new URL("./compare-revision-marker.mjs", import.meta.url), "utf8"),
+  ]);
+  assert.ok(audit.includes('import { compareRevisionMarkers } from "./compare-revision-marker.mjs"'));
+  assert.ok(audit.includes("const revisionMarkers = meta"));
+  assert.ok(audit.includes('.filter((item) => item.name?.toLowerCase() === "ui-gerhana-revision")'));
+  assert.ok(audit.includes('response.headers["x-ui-gerhana-revision"]'));
+  assert.ok(audit.includes("markers: markerSources"));
+  assert.ok(audit.includes("revisionMarkers.every((item) => item.markers.length > 0)"));
+  assert.ok(comparator.includes("/^[0-9a-f]{40}$/"));
+  assert.ok(!comparator.includes("{7,40}"));
+  assert.ok(comparator.includes("value === expected"));
+});
