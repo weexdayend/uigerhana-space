@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile, appendFile } from "node:fs/promises";
 import tls from "node:tls";
+import { compareRevisionMarkers } from "./compare-revision-marker.mjs";
 
 const REQUEST_TIMEOUT_MS = 15_000;
 const PUBLIC_ROUTES = ["/", "/work", "/work/uigerhana-space", "/cv"];
@@ -66,23 +67,18 @@ function inspectHtml(html, requestedUrl) {
       canonical = null;
     }
   }
-  const revisionMeta = meta.find((item) => item.name?.toLowerCase() === "ui-gerhana-revision");
+  const revisionMarkers = meta
+    .filter((item) => item.name?.toLowerCase() === "ui-gerhana-revision")
+    .map((item) => item.content ?? "");
   return {
     title,
     description: decodeText(description),
     h1,
     canonical,
     robots,
-    revisionMarker: revisionMeta?.content ?? null,
+    revisionMarker: revisionMarkers[0] ?? null,
+    revisionMarkers,
   };
-}
-
-function compareRevision(marker, expected) {
-  const value = typeof marker === "string" ? marker.trim().toLowerCase() : "";
-  if (!value) return "not-exposed";
-  if (!/^[0-9a-f]{7,40}$/.test(value)) return "invalid-marker";
-  const sha = expected.toLowerCase();
-  return sha.startsWith(value) || value.startsWith(sha) ? "match" : "mismatch";
 }
 
 async function fetchText(url) {
@@ -355,9 +351,20 @@ async function main() {
       canonicalMatches &&
       !hasNoindex;
 
-    const marker = response.headers["x-ui-gerhana-revision"] ?? html?.revisionMarker ?? null;
-    const revisionState = compareRevision(marker, EXPECTED_COMMIT);
-    if (marker) revisionMarkers.push({ route, marker, comparison: revisionState });
+    const headerMarker = response.headers["x-ui-gerhana-revision"] ?? null;
+    const metaMarkers = html?.revisionMarkers ?? [];
+    const markerSources = [
+      ...(headerMarker === null ? [] : [{ source: "header", marker: headerMarker }]),
+      ...metaMarkers.map((markerValue) => ({ source: "meta", marker: markerValue })),
+    ];
+    const markerValues = markerSources.map((item) => item.marker);
+    const revisionState = compareRevisionMarkers(markerValues, EXPECTED_COMMIT);
+    revisionMarkers.push({
+      route,
+      marker: markerValues[0] ?? null,
+      markers: markerSources,
+      comparison: revisionState,
+    });
 
     routeResults.push({
       route,
@@ -378,7 +385,8 @@ async function main() {
             canonicalMatches,
             robots: html.robots,
             hasNoindex,
-            revisionMarker: marker,
+            revisionMarker: markerValues[0] ?? null,
+            revisionMarkers: markerSources,
           }
         : null,
       state: routePass ? "pass" : "review",
@@ -442,8 +450,8 @@ async function main() {
   const deployment = await inspectGitHubDeployment(EXPECTED_COMMIT);
   const markerStates = revisionMarkers.map((item) => item.comparison);
   const markerMismatch = markerStates.includes("mismatch") || markerStates.includes("invalid-marker");
-  const allRoutesExposeMarker = routeResults.length === PUBLIC_ROUTES.length &&
-    routeResults.every((item) => Boolean(item.metadata?.revisionMarker));
+  const allRoutesExposeMarker = revisionMarkers.length === PUBLIC_ROUTES.length &&
+    revisionMarkers.every((item) => item.markers.length > 0);
   const allMarkersMatch = allRoutesExposeMarker &&
     markerStates.length === PUBLIC_ROUTES.length &&
     markerStates.every((state) => state === "match");
