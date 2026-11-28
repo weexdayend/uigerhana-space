@@ -260,7 +260,7 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 8. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
 9. Verify production parity read-only and record external destination spot-checks.
 10. Phase 8.17 reconciles the release ledger to exact main `369ad07c7928e7e52660fbfac44bd57471fec840`; see [the reconciliation record](RELEASE-EVIDENCE-LEDGER-RECONCILIATION.md). Automated source-audit contracts are green, but source audit dispatches and owner acceptance remain outstanding.
-10. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
+11. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
 
 ## 6. Release decision
 
