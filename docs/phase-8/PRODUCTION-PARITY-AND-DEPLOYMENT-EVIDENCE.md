@@ -26,6 +26,9 @@ The workflow checks out that exact commit and performs read-only inspection:
 
 **Marker acceptance rule:** A served marker is accepted only when it contains the complete 40-character hexadecimal SHA and equals the expected commit after trimming and lowercase normalization. Abbreviated 7–39 character prefixes are invalid, not matches. The auditor inspects the response header and every matching meta marker on each route; every exposed value must agree. Duplicate or cross-source disagreement is a mismatch. Missing markers remain not-verifiable. The JSON report retains a per-route comparison even when no marker is exposed, so incomplete evidence cannot masquerade as a complete marker set.
 
+
+The comparison implementation is covered by [`scripts/compare-revision-marker.test.mjs`](../../scripts/compare-revision-marker.test.mjs) and runs in the CI quality job. See [Phase 8.18](STRICT-PRODUCTION-REVISION-MARKER.md) for the regression contract and [the source audit runbook](EXACT-COMMIT-SOURCE-AUDIT-RUNBOOK.md) for exact-commit dispatch steps.
+
 The report is uploaded as production-parity-audit.json and retained for 90 days.
 
 ## Interpretation
