@@ -257,13 +257,13 @@ Use this table as the source of truth. Replace PENDING only with an exact eviden
 7. Phase 8.9 adds Chromium touch-emulated navigation/swipe journeys; PR #33 exact-head runtime passed 336 tests / 15 skipped, including both mobile touch journeys in Chromium.
 8. Phase 8.10 adds a physical-device evidence contract, SHA-verified attachment validator, self-tests, and a read-only manual audit workflow; PR #34 passed 8/8 validator tests, but no physical sessions are claimed until owner evidence is supplied.
 9. Phase 8.11 adds exact-commit source-run orchestration, cross-run artifact verification, and a release evidence report that remains owner-review-only.
-6. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
-7. Complete accessibility/interaction delta audit and responsive/zoom regression.
-8. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
-9. Verify production parity read-only and record external destination spot-checks.
-10. Phase 8.17 reconciles the release ledger to exact main `369ad07c7928e7e52660fbfac44bd57471fec840`; see [the reconciliation record](RELEASE-EVIDENCE-LEDGER-RECONCILIATION.md). Automated source-audit contracts are green, but source audit dispatches and owner acceptance remain outstanding.
-11. Phase 8.18 rejects abbreviated and conflicting served revision markers, adds regression tests, and documents exact-commit source audit collection; see [the Phase 8.18 record](STRICT-PRODUCTION-REVISION-MARKER.md) and [dispatch runbook](EXACT-COMMIT-SOURCE-AUDIT-RUNBOOK.md).
-12. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
+10. Review exact-head route/link and performance artifacts; only then decide any measured remediation or budget.
+11. Complete accessibility/interaction delta audit and responsive/zoom regression.
+12. Complete native zoom / OS text-scale / native print / desktop pinned-story owner runbook.
+13. Verify production parity read-only and record external destination spot-checks.
+14. Phase 8.17 reconciles the release ledger to exact main `369ad07c7928e7e52660fbfac44bd57471fec840`; see [the reconciliation record](RELEASE-EVIDENCE-LEDGER-RECONCILIATION.md). Automated source-audit contracts are green, but source audit dispatches and owner acceptance remain outstanding.
+15. Phase 8.18 rejects abbreviated and conflicting served revision markers, adds regression tests, and documents exact-commit source audit collection; see [the Phase 8.18 record](STRICT-PRODUCTION-REVISION-MARKER.md) and [dispatch runbook](EXACT-COMMIT-SOURCE-AUDIT-RUNBOOK.md).
+16. Record explicit go/no-go. Keep release blocked while any required P1 or owner gate remains open.
 
 ## 6. Release decision
 
